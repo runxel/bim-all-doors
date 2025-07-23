@@ -1,4 +1,4 @@
-# bim-all-doors
+# bim_all_doors
 Türenkonfigurator / BIM-Tool für Archicad
 
 Aktuelle Version:
