@@ -7,10 +7,15 @@ Folgende Unterverzeichnisse werden synchronisiert
   xxx.lib
   xxx.parameters
   xxx.xml
-  source.xxx_macro
 
 Ordner wie 
 
   Backup
 
-bleiben lokal
+bleiben lokal.
+
+Unklar ist noch, ob
+
+  source.xxx_macro
+
+öffentlich sein soll.
