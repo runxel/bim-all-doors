@@ -1,0 +1,1328 @@
+! #############################################################################
+!
+! BIM-all-doors - DOOR SYSTEM
+!
+! Module: Main Door Element
+!
+! (p) 2018-2021 BY DORMAKABA / WRITTEN BY FRANK BEISTER
+! openSource by CCO1.0 license since 2025
+!
+! https://github.com/dormakaba/bim-all-doors
+! 
+! #############################################################################
+
+FILE_DEPENDENCE	"Generic_frame_macro.gsm",
+				"Generic_panel_macro.gsm",
+				"Generic_hinge_macro.gsm",
+				"Generic_case_macro.gsm",
+				"Generic_grip_macro.gsm",
+				"DORMAKABA_TS_closer_macro.gsm",
+				"DORMAKABA_BTS_hinge_macro.gsm",
+				"DORMAKABA_ED_automation_macro.gsm",
+				"DORMAKABA_ACS_access_control_macro.gsm",
+				"DORMAKABA_OGRO_handle_macro.gsm",
+				"DORMAKABA_OGRO_handles3D.gsm",
+				"DORMAKABA Logo XEA.gsm"
+
+! macro_runtype = ...
+! 1: return UI page hirarchy
+! 2: return UI page names
+! 4: return UI page picts
+! 16: draw 2D floor view, +1 Bs, +2 BGS, +4 SF
+! 32: draw 3D floor view, +1 Bs, +2 BGS, +4 SF
+! 128: User Interface
+! 256: return error queue
+
+! Elektrifizierung notwendig wg. Komponente ...
+! bs_door_electrified = ...
+! 1: (Allgemein) (Bit 0)
+! 2: Zarge (Bit 1)
+! 4: Türblatt (Bit 2)
+! 8: Türschließer (Bit 3)
+! 16: Türautomatik (Bit 4)
+! 32: Türschloss (Bit 5)
+! 64: Sensor (Bit 5)
+! 128: Zugangskontrollsystem (Bit 6)
+
+! Schalter/Taster erforderlich wg. Komponente ...
+! bs_door_external_button = ...
+! 1: (Allgemein) (Bit 0)
+! 2: (Zarge) (Bit 1)
+! 4: (Türblatt) (Bit 2)
+! 8: Türschließer (Bit 3)
+! 16: Türautomatik (Bit 4)
+! 32: Türschloss (Bit 5)
+
+
+! =============================================================================
+! GLOBAL SETTINGS
+! =============================================================================
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (start)
+
+! --------- PRODUCT PARAMETERS
+
+! --------- DEFAULT VALUE ARRAYS
+
+! --------- dk_cont_pens[i][…]
+	dka_handle_penC2 = 1
+	dka_handle_penC3 = 2
+	dka_frame_penC2 = 3
+	dka_frame_penC3 = 4
+	dka_panel_penC2 = 5
+	dka_panel_penC3 = 6
+	dka_opline2D = 7
+	dka_oplineSA = 8
+	dka_opline3D = 9
+	dka_topview_penC2 = 10
+	dka_penInvisible = 11
+	dka_closer_penSA = 12
+	dka_closer_pen3D = 13
+	dka_grip_penC2 = 14
+	dka_grip_penC3 = 15
+	dka_wallhole_side2D = 16
+	dka_wallhole_lintel2D1 = 17
+	dka_wallhole_lintel2D2 = 18
+! --------- dk_fill_pens[i][…]
+	dka_handle_penF = 1
+	dka_frame_penF = 2
+	dka_side1_penF = 3
+	dka_side2_penF = 4
+	dka_panel_penF = 5
+	dka_panelfill1_penF = 6
+	dka_panelfill2_penF = 7
+	dka_panelfill3_penF = 8
+	dka_panel2fill1_penF = 9
+	dka_panel2fill2_penF = 10
+	dka_panel2fill3_penF = 11
+	dka_topview_penF = 12
+	dka_fan_penF = 13
+	dka_gap_filling_penF = 14
+	dka_grip_penF = 15
+	dka_wallhole_penF = 16
+! --------- dk_bkg_pens[i][…]
+	dka_handle_penB = 1
+	dka_frame_penB = 2
+	dka_side1_penB = 3
+	dka_side2_penB = 4
+	dka_panel_penB = 5
+	dka_panelfill1_penB = 6
+	dka_panelfill2_penB = 7
+	dka_panelfill3_penB = 8
+	dka_panel2fill1_penB = 9
+	dka_panel2fill2_penB = 10
+	dka_panel2fill3_penB = 11
+	dka_topview_penB = 12
+	dka_fan_penB = 13
+	dka_gap_filling_penB = 14
+	dka_grip_penB = 15
+	dka_wallhole_penB = 16
+! --------- dk_fills[i][…]
+	dka_handle_fill = 1
+	dka_frame_fill = 2
+	dka_side1_fill = 3
+	dka_side2_fill = 4
+	dka_panel_fill = 5
+	dka_panelfill1_fill = 6
+	dka_panelfill2_fill = 7
+	dka_panelfill3_fill = 8
+	dka_panel2fill1_fill = 9
+	dka_panel2fill2_fill = 10
+	dka_panel2fill3_fill = 11
+	dka_topview_fill = 12
+	dka_fan_fill = 13
+	dka_gap_filling_fill = 14
+	dka_grip_fill = 15
+	dka_wallhole_fill = 16
+! --------- dk_linetype[i][…]
+	dka_invisible = 1
+	dka_wallhole_lintelBS1 = 2
+	dka_wallhole_lintelBGS1 = 3
+	dka_wallhole_lintelBS2 = 4
+	dka_wallhole_lintelBGS2 = 5
+! --------- dk_materials[i][…]
+	dka_handle_mat = 1
+	dka_plate_mat = 2
+	dka_frame_mat_BS = 3
+	dka_frame_mat_BGS = 4
+	dka_side1_mat_BS = 5
+	dka_side1_mat_BGS = 6
+	dka_side2_mat_BS = 7
+	dka_side2_mat_BGS = 8
+	dka_fan_mat_BS = 9
+	dka_fan_mat_BGS = 10
+	dka_panel_mat_BS = 11
+	dka_panel_mat_BGS = 12
+	dka_panelfill1_mat_BS = 13
+	dka_panelfill1_mat_BGS = 14
+	dka_panelfill2_mat_BS = 15
+	dka_panelfill2_mat_BGS = 16
+	dka_panelfill3_mat_BS = 17
+	dka_panelfill3_mat_BGS = 18
+	dka_panel2_mat_BS = 19
+	dka_panel2_mat_BGS = 20
+	dka_panel2fill1_mat_BS = 21
+	dka_panel2fill1_mat_BGS = 22
+	dka_panel2fill2_mat_BS = 23
+	dka_panel2fill2_mat_BGS = 24
+	dka_panel2fill3_mat_BS = 25
+	dka_panel2fill3_mat_BGS = 26
+	dka_panel_bandings_mat = 27
+	dka_panel2_bandings_mat = 28
+	dka_hinge_mat = 29
+	dka_closer_mat = 30
+	dka_automation_mat = 31
+	dka_grip_mat_BS1 = 32
+	dka_grip_mat_BS2 = 33
+	dka_grip_mat_BGS1 = 34
+	dka_grip_mat_BGS2 = 35
+	dka_acs_mat = 36
+! --------- dk_open_leaf[i][…]
+	dka_leaf_angle2D = 1
+	dka_leaf2_angle2D = 2
+	dka_leaf_angleSA = 3
+	dka_leaf2_angleSA = 4
+	dka_leaf_angle3D = 5
+	dka_leaf2_angle3D = 6
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (end)
+
+! Develop: Arraygröße anpassen
+j = VARDIM1(dk_materials) : k = 36 : FOR i = j+1 TO k : dk_materials[i] = dk_materials[j] : NEXT i
+IF j<k THEN PARAMETERS dk_materials=dk_materials
+
+j = VARDIM1(dk_cont_pens) : k = 18 : FOR i = j+1 TO k : dk_cont_pens[i] = dk_cont_pens[j] : NEXT i
+IF j<k THEN PARAMETERS dk_cont_pens=dk_cont_pens
+
+j = VARDIM1(dk_fill_pens) : k = 16 : FOR i = j+1 TO k : dk_fill_pens[i] = dk_fill_pens[j] : NEXT i
+IF j<k THEN PARAMETERS dk_fill_pens=dk_fill_pens
+j = VARDIM1(dk_bkg_pens) : k = 16 : FOR i = j+1 TO k : dk_bkg_pens[i] = dk_bkg_pens[j] : NEXT i
+IF j<k THEN PARAMETERS dk_bkg_pens=dk_bkg_pens
+
+j = VARDIM1(dk_fills) : k = 16 : FOR i = j+1 TO k : dk_fills[i] = dk_fills[j] : NEXT i
+IF j<k THEN PARAMETERS dk_fills=dk_fills
+
+j = VARDIM1(dk_linetype) : k = 5 : FOR i = j+1 TO k : dk_linetype[i] = dk_linetype[j] : NEXT i
+IF j<k THEN PARAMETERS dk_linetype=dk_linetype
+
+
+! »»» Arrays
+DIM errorR[], errorQ[], errorT[]
+
+! »»» Init
+errorI = 0 	   !»» Index der Fehlermeldungen
+errorQ[1] = ""
+
+facingLintelBS			= 0
+facingLintelBGS			= 0
+frame2wallSurfaceBS		= 0
+frame2wallSurfaceBGS	= 0
+
+! »»» Constants and commons
+
+tlr = 0.00001  !»» accurancy
+version = 1.90 !»» Objektversion
+txt = ""       !»» Text für alles
+htspt = 1
+
+! »»» Localization
+
+IF language=4 or language=5 THEN sprache = 4  !4  !»»  Englisch
+IF language=1 or language=2 or language=3 THEN sprache = 1  !»»  Deutsch
+
+
+! --------- Common Text (Deutsch)
+	! IF sprache = 1 THEN
+	! 	context[1] = "Stahl"
+	! 	context[2] = "Aluminium"
+	! 	context[3] = "Holz"
+	! 	ENDIF
+! --------- Common Text (Englisch)
+	! IF sprache = 4 THEN
+	! 	context[1] = "Steel"
+	! 	context[2] = "Aluminium"
+	! 	context[3] = "Wood"
+	! 	ENDIF
+
+
+! »»» Common keywords
+
+IF sprache = 1 THEN
+
+	commonKey = "allgemein" 
+	naKey = "[-]"  !"undefiniert" 
+	noKey = "nein" 
+	yesKey = "ja"
+
+	ELSE
+
+	commonKey = "allgemein"  !"generic"    !---> Anpassen der Inhalte!
+	naKey = "[-]"  !"common"
+	noKey = "no"
+	yesKey = "yes"
+	equalize=""
+
+	ENDIF
+
+
+! »»» Level of ...
+
+dk_LoItxt = "" ! UI-Text LoI
+dk_LoDtxt = "" ! UI-Text LoD
+
+!»» (by Model View Options) ...Information
+IF dk_LOI = -2 THEN
+	ef_LoI = -3
+	sts = 0
+	IF versionStamp < 1.53 THEN sts = LIBRARYGLOBAL("OpenLibraryGlobals", "ef_LoI", ef_LoI)
+	IF sts=0 THEN sts = LIBRARYGLOBAL("BIM-all-doors_mvo", "dk_LOI", ef_LoI)
+	IF sts=0 THEN
+		dk_LoItxt = "Globale Einstellungen nicht geladen. (undefiniert)"
+		dk_LoI = 0
+		ef_LoI = -2
+		ELSE
+		dk_LoItxt = "Nach Modelleinstellung: "
+		dk_LoI = ef_LoI
+		IF dk_LoI=0 THEN dk_LoItxt = dk_LoItxt + "undefiniert"
+		IF dk_LoI=2 THEN dk_LoItxt = dk_LoItxt + "Vorplanung"
+		IF dk_LoI=4 THEN dk_LoItxt = dk_LoItxt + "Entwurfsplanung"
+		IF dk_LoI=5 THEN dk_LoItxt = dk_LoItxt + "Ausführungsplanung"
+		IF dk_LoI=6 THEN dk_LoItxt = dk_LoItxt + "Werkplanung"
+		ef_LoI = -1
+		ENDIF
+	ELSE
+	ef_LoI = 0
+	ENDIF
+
+!»» (by Model View Options) ...Detail
+! im Array dk_LOD[1-3] : Grundriss / 3D / Schnitt+Ansicht
+j = 0
+FOR i=1 TO 3
+	ef_LoD = -3
+	IF dk_LOD[i] = -3 THEN  !»» wie Grundriss
+		dk_LOD[i]=dk_LOD[1]
+		ENDIF
+	IF dk_LOD[i] = -1 AND i=2 THEN  !»» 3D kann nicht maßstabsabhängig sein!
+		dk_LOD[i] = 100
+		j = BITSET(j,2)
+		ENDIF
+	IF dk_LOD[i] = -2 THEN  !»» nach Model View Options
+		sts = 0
+		IF versionStamp < 1.53 THEN sts = LIBRARYGLOBAL("OpenLibraryGlobals", "ef_LoD", ef_LOD)  !»» MVO?
+		IF sts=0 THEN
+			IF i = 1 THEN sts = LIBRARYGLOBAL("BIM-all-doors_mvo", "dk_LoD_2D", ef_LOD)  !»» MVO Grundriss?
+			IF i = 2 THEN sts = LIBRARYGLOBAL("BIM-all-doors_mvo", "dk_LoD_3D", ef_LOD)  !»» MVO 3D?
+			IF i = 3 THEN sts = LIBRARYGLOBAL("BIM-all-doors_mvo", "dk_LoD_SE", ef_LOD)  !»» MVO Schnitte / Ansichten?
+			ENDIF
+		ENDIF
+	IF dk_LOD[i] = -1 OR (dk_LOD[i] = -2 AND ef_LOD = -1) THEN  !»» nach Maßstab
+		!»» by scale
+		dk_LoD[i] = -1
+		j = BITSET(j,0)
+		ELSE
+		IF dk_LoD[i] = -2 THEN
+			j = BITSET(j,1)
+			!»» by MVO!
+			IF sts=0 THEN
+				dk_LoDtxt = "(MVO-Fehler!) "
+				dk_LoD[i] = 100
+				j = BITSET(j,7)
+				ELSE
+				dk_LoD[i] = ef_LoD
+				ENDIF
+			ELSE
+			ENDIF
+		ENDIF
+	NEXT i
+ef_LoD = -j
+
+dki_LOD = 0  ! Wird im Kontextskript ermittelt
+
+! ------------------------------------------- Substitute dropped parameters
+
+! »»» Einsetzumgebung
+Wandtyp = 1 * (ABS(WALL_INCL) > tlr) + 4 * (ABS(WIDO_ORIG_DIST) > tlr)  ! 0 = gerade, 1 = Trapezformwand, 4 = Gebogene Wand
+
+! »»» Horitontale Teilung
+IF bs_door_sidelight = "L" OR bs_door_sidelight = "LR" THEN gs_sidelight_left = 1  ELSE gs_sidelight_left = 0
+IF bs_door_sidelight = "R" OR bs_door_sidelight = "LR" THEN gs_sidelight_right = 1 ELSE gs_sidelight_right = 0
+
+! SidelightWidth
+sidelightWidthRight = gs_sidelight_width_right
+sidelightWidthLeft  = gs_sidelight_width_left
+
+! »»» Vertikale Teilung
+gs_kamp = gs_door_transom
+! gs_door_transom   = gs_kamp
+gs_am = gs_transom_height
+! gs_transom_height = gs_am
+
+! »»» Ist da was über dem Türblatt?
+oberLichtBlende = gs_door_transom * (1 + (bs_inner_frame = 2))  ! 1: Oberlicht, 2:Oberblende
+
+! »»»  Rohbauöffnung unten vergößern?
+	IF iHoleUnderThreshold = 1 THEN  ! Wandöffnung zum aktuellen Geschoss
+		thresholdExtraHole = max(0, AC_Sill_To_Curr_Story)
+		ELSE
+		IF iHoleUnderThreshold = 2 THEN  ! Wandöffnung zu Wandunterkante
+			thresholdExtraHole = max(0, SYMB_POS_Y) !WIDO_SILL_HEIGHT
+			ELSE
+			IF iHoleUnderThreshold = 3 THEN  ! Wandöffnung individuelle Höhe
+				thresholdExtraHole = max(0, min(thresholdBottomOversize, SYMB_POS_Y))
+				ELSE  ! Wandöffnung wie Rohbauöffnung
+				thresholdExtraHole = 0
+				ENDIF
+			ENDIF
+		ENDIF
+
+
+! »»» Falzart
+! IF bs_leaf_oversize < tlr OR bs_leaf_overhang < tlr THEN stumpf = 1 ELSE stumpf = 0
+! IF bs_door_leafs > 1 AND ( dk_panel_folding_nmbr > 0 AND dk_panel_folding_dimensions[1][1] > 0 ) THEN
+! 	mittelfalz = 1
+! 	mittelfalzBezug = dk_panel_folding_dimensions[dk_panel_folding_nmbr][1]
+! 	ELSE
+! 	mittelfalz = 0
+! 	mittelfalzBezug = 0
+! 	ENDIF
+
+! -------------------------------------------------- Loaded macro libraries
+
+! »»» ZARGE | FRAME - Allgemein, 1 Makro für 4 Zargentypen
+IF frame_system = "Blockzarge" THEN
+	frame_macro = "Generic_frame_macro.gsm"
+	dk_frametype = "BZ"
+	ELSE
+	IF frame_system = "Eckzarge" THEN
+		frame_macro = "Generic_frame_macro.gsm"
+		dk_frametype = "EZ"
+		ELSE
+		IF frame_system = "Umfassungszarge" THEN
+			frame_macro = "Generic_frame_macro.gsm"
+			dk_frametype = "UZ"
+			ELSE
+			IF frame_system = "Rohrrahmenzarge" THEN
+				frame_macro = "Generic_frame_macro.gsm"
+				dk_frametype = "RR"
+				ELSE
+				IF frame_system = "Futter+Bekleidung" THEN
+					frame_macro = "Generic_frame_macro.gsm"
+					dk_frametype = "FB"
+					ELSE
+					IF frame_system = "Stockrahmen" THEN
+						frame_macro = "Generic_frame_macro.gsm"
+						dk_frametype = "SR"
+						ELSE
+						IF frame_system # commonKey THEN frame_macro = frame_system+"_frame_macro"
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+
+! »»» TÜRBLATT | PANEL - Allgemein
+IF panel_system = commonKey THEN
+	panel_macro = "Generic_panel_macro"
+	ELSE
+	panel_macro = panel_system+"_panel_macro"
+	ENDIF
+
+! »»» BÄNDER | HINGE - Allgemein
+IF hinge_system = commonKey THEN
+	hinge_macro = "Generic_hinge_macro"
+	ELSE
+	hinge_macro = hinge_system+"_hinge_macro"
+	ENDIF
+
+! »»» BESCHLÄGE | HANDLE - DORMAKABA
+handle_macro = handle_system+"_handle_macro"
+
+! »»» TÜRSCHLIESSER | CLOSER - DORMAKABA
+closer_macro = closer_system+"_closer_macro"
+
+! »»» TÜRAUTOMATION | AUTOMATION - DORMAKABA
+automation_macro = automation_system+"_automation_macro"
+
+! »»» ZUGANGSKONTROLLE | ACCESS CONTROL - Allgemein
+IF access_control_system = commonKey OR access_control_system = "" THEN 
+	access_control_macro = "DORMAKABA_ACS_access_control_macro"
+	ELSE
+	access_control_macro = access_control_system+"_access_control_macro"
+	ENDIF
+
+! »»» SCHLOSS | CASE - Allgemein
+IF case_system = commonKey THEN
+	case_macro = "Generic_case_macro"
+	ELSE
+	case_macro = case_system+"_case_macro"
+	ENDIF
+
+! »»» STOSSGRIFF | GRIP - Allgemein
+IF grip_system = commonKey THEN
+	grip_macro = "Generic_grip_macro"
+	ELSE
+	grip_macro = grip_system+"_grip_macro"
+	ENDIF
+
+
+! -------------------------------------------------- [ GS: Öffnungsmaße einstellen ]
+
+	IF gs_nominal_size = 1  THEN gs_wallhole_nominal = 1 ELSE gs_wallhole_nominal = 0 ! Rohbauöffnung ist Nominalmaß
+	IF gs_nominal_size = 2  THEN gs_baurichtmass_nominal = 1 ELSE gs_baurichtmass_nominal = 0  ! Baurichtmaß ist Nominalmaß
+	IF gs_nominal_size = 4  THEN gs_reveal_nominal = 1 ELSE gs_reveal_nominal = 0  ! Architekturlichte ist Nominalmaß
+	IF gs_nominal_size = 8  THEN gs_unit_nominal = 1 ELSE gs_unit_nominal = 0  ! Rahmen-Außenmaß ist Nominalmaß
+	IF gs_nominal_size = 16 THEN gs_egress_nominal = 1 ELSE gs_egress_nominal = 0  ! Türblattmaß ist Nominalmaß
+	IF gs_nominal_size = 32 THEN dk_FrameRebate_nominal = 1 ELSE dk_FrameRebate_nominal = 0  ! Zargenfalzmaß ist Nominalmaß
+	IF gs_nominal_size = 64 THEN gs_leaf_nominal = 1 ELSE gs_leaf_nominal = 0  ! Lichtes Zargenmaß ist Nominalmaß
+	! IF gs_nominal_size = 64 THEN ... ! Freies Durchgangsmaß ist Nominalmaß
+
+
+! -------------------------------------------------- Baurichtmaß - Abwechungen zu Wandöffnungsmaßen
+
+	gs_baurichtmass_outer_left  = 0.005
+	gs_baurichtmass_outer_right = 0.005
+	gs_baurichtmass_outer_upper = 0.010
+	gs_baurichtmass_outer_lower = 0
+
+
+! -------------------------------------------------- Status - Werte berechnen
+
+	IF bs_leaf_oversize < tlr OR bs_leaf_overhang < tlr THEN stumpf = 1 ELSE stumpf = 0
+	oberLichtBlende = gs_door_transom * (1 + (bs_inner_frame = 2))  ! 1: Oberlicht, 2:Oberblende
+
+! =============================================================================
+! Ende
+! =============================================================================
+
+! gosub "MSParametersCalculation"   ! Minimal Space Parameters
+
+goto "MasterScriptEnd"  ! Überspringe SUBs
+
+END
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+! -------------------------------------------------- Koordinaten und Positionen 2D+3D
+
+"startposition":
+
+	! Transformation auf Standardabsetz-Einstellungen
+	isRotated = ( round_int (SYMB_ROTANGLE) = 180 )
+	IF isRotated THEN w = 180 ELSE w = 0
+	IF GLOB_SCRIPT_TYPE = 2 THEN ROT2 w ELSE ROTY w
+
+	! ... gespiegelt? ... dann zurück
+	IF SYMB_MIRRORED THEN sts = -1 ELSE sts = 1
+	! IF GLOB_PREVIEW_MODE = 1 THEN sts = -sts
+	IF GLOB_SCRIPT_TYPE = 2 THEN MUL2 sts, 1 ELSE MULX sts
+
+	! ... Auf anderer Seite der Bezugsebene?
+	isFlipped = ( WIDO_REVEAL_SIDE EXOR isRotated ) 
+
+	! ... Versatz um auf Wandaußenfläche zu kommen?
+	radiusWand = 0 : abstandWand =  0 : mittelpunktWand = 0
+	IF BITTEST(Wandtyp,2) THEN
+		! ... Bei gekrümmter Wand auf Sehnenposition der Rohbauöffnungsweite
+		x = ac_wallhole_width
+		radiusWand = ( SQR((A/2)^2+WIDO_ORIG_DIST^2) - WIDO_SILL * (1-2*isFlipped) ) * SGN(WIDO_ORIG_DIST)
+		y = SQR(radiusWand^2 - (x/2)^2) * SGN(WIDO_ORIG_DIST)
+		abstandWand = y - WIDO_ORIG_DIST
+		mittelpunktWand = SQR(radiusWand^2 - (x/2)^2) * SGN(WIDO_ORIG_DIST) *  (1-2*WIDO_REVEAL_SIDE)
+		ELSE
+		! ... Bei gerader Wand nur Anschlag ignorieren
+		abstandWand = -WIDO_SILL
+		ENDIF
+	IF isFlipped THEN abstandWand = abstandWand + WALL_THICKNESS
+	IF GLOB_SCRIPT_TYPE = 2 THEN ADD2 0, -abstandWand * (1-2*isFlipped) ELSE ADDZ +abstandWand * (1-2*isFlipped)
+
+	! ... Wenn gedreht oder gespiegelt: Andere Wandseite
+	isRotated = ( WIDO_REVEAL_SIDE EXOR isRotated ) 
+	IF isRotated THEN
+		w = 180 : s = WALL_THICKNESS
+		ELSE
+		w = 0 : s = 0
+		ENDIF
+
+	IF GLOB_SCRIPT_TYPE = 2 THEN ROT2 w		ELSE ROTY w
+	IF GLOB_SCRIPT_TYPE = 2 THEN ADD2 0, s	ELSE ADDZ -s
+
+"initialize":
+
+	offsetWallSurfaceBS		= 0
+	offsetFrameSurfaceBS	= -offsetWallSurfaceBS - dk_frame_indention1
+
+	! Keine Falzfugen?
+	IF dki_LOD > 0 THEN sts = dk_LOD[dki_LOD]<500 ELSE sts = 0
+	IF sts THEN
+		panel_folding_gap  = 0
+		panel_folding_gap2 = 0
+		ELSE
+		panel_folding_gap  = dk_panel_folding_gap  !0.004  ...  Fuge Türblatt zu Zarge
+		panel_folding_gap2 = dk_panel_folding_gap2 !0.006  ...  Fuge Türblatt an Mittelfuge
+		ENDIF
+
+	! Abmessungen
+
+	GOSUB "unitSizeDiff"
+	GOSUB "LeafSizeDiff"
+	
+	! Längs zur Wand
+	offsetFrameCenter = ( gs_tolerance_left - gs_tolerance_right ) / 2
+
+	offsetLeftEgressCorner	= -offsetFrameCenter + ac_unit_width / 2 - unitDLeft
+	offsetRightEgressCorner	= -offsetFrameCenter - ac_unit_width / 2 + unitDRight
+
+	! Türblattebene zu Zargenspiegelebene
+	offsetPanelSurfaceBS = bs_leaf_overhang
+	offsetHingePanelSurfaceBS = bs_leaf_overhang - bs_ancor_hinge_Y
+
+	! Montageplatz Obentürschließer auf Bandgegenseite
+	! (werden im FRAME-Makro berechnet und zurückgegeben)
+
+	! Abstand Bandachse zu IK Zarge:
+	HingeEgressDistance = bs_ancor_hinge_X + gs_vb
+
+	! Abstand Bandachse zu AK Türblatt:
+	HingePanelGap = HingeEgressDistance - LeafEgressD
+	! HingePanelGap = bs_ancor_hinge_X - LeafEgressD
+
+	! Verkleinerung Türblatt ggü. Zargenfalzmaß 
+	IF gs_leaf_thk - bs_leaf_overhang > gs_vt THEN
+		! Türblatt ragt in lichte Öffnung
+		offsetPanelFolding = gs_vb + panel_folding_gap
+		ELSE
+		! Türblatt schlägt in Falz
+		offsetPanelFolding = panel_folding_gap + \
+			dk_folding_dimensions[1][2] * (bs_folding_nmbr > 1) + \
+			dk_folding_dimensions[2][2] * (bs_folding_nmbr > 2)
+		ENDIF
+
+	! Verkleinerung Türblatt BS ggü. BGS am Schloss 
+	IF bs_door_leafs > 1 THEN
+ 		IF dk_panel_folding_nmbr > 0 THEN
+ 			offsetPanelFoldingLS = dk_panel_folding_dimensions[1][1]
+ 			ELSE
+ 			offsetPanelFoldingLS = 0
+	 		ENDIF
+		ELSE
+		offsetPanelFoldingLS = bs_leaf_oversize  * NOT(stumpf) - panel_folding_gap * stumpf + offsetPanelFolding
+		ENDIF
+
+	! Achse Türgriff von Außenkante Türblatt
+	IF bs_door_leafs > 1 THEN
+		IF dk_panel_folding_nmbr > 0 THEN
+			DornMaszPlus = dk_panel_folding_dimensions[1][1] - (dk_panel_folding_nmbr > 1) * dk_panel_folding_dimensions[dk_panel_folding_nmbr][1] + gs_han_pos
+			ELSE
+			DornMaszPlus = gs_han_pos
+			ENDIF
+		DornMaszPlus2 = panel_folding_gap2 - (dk_panel_folding_nmbr > 0) * dk_panel_folding_dimensions[1][1] + gs_han_pos2
+		ELSE
+		DornMaszPlus  = ( bs_leaf_oversize + panel_folding_gap ) * NOT(stumpf) + gs_han_pos
+		DornMaszPlus2 = 0
+		ENDIF
+
+	IF dk_panel_folding_ancor = 1 THEN
+		! am Falz verankert
+		leafFrameSurfDiff = gs_leaf_thk - gs_vt
+		ELSE
+		leafFrameSurfDiff = bs_leaf_overhang
+		ENDIF
+
+	RETURN
+
+"initializeWallhole":
+
+	DIM WSP[][]
+	WSV = VARDIM2(WALL_SKINS_PARAMS)+1
+
+	! #### Schichtattribute festlegen oder lesen
+	IF (dk_wallcontour_unique OR WALL_SKINS_NUMBER < 1) AND GLOB_STRUCTURE_DISPLAY = 0 THEN
+		! Fester, einheitlicher Stift
+		WSN = 1
+		WSV = 20
+		WSP[WSN][2]  = WALL_THICKNESS						! Nominale Schichtdicke
+		WSP[WSN][6]  = 3             						! Kern (0=nein, 1=ja, 3=letzte Schicht)
+		WSP[WSN][11] = dk_cont_pens[dka_wallhole_side2D]	! Wandendestift
+		WSP[WSN][WSV] = 1									! Sichtbarkeit
+		ELSE
+		! Wie Mehrschichtende
+		WSN = WALL_SKINS_NUMBER
+		WSP = WALL_SKINS_PARAMS
+		FOR i = 1 TO WSN
+			IF GLOB_STRUCTURE_DISPLAY THEN
+				WSP[i][11] = dk_cont_pens[dka_wallhole_side2D]	! Wandendestift
+				WSP[i][WSV] = NOT( ( GLOB_STRUCTURE_DISPLAY = 1 AND WSP[i][6] = 0 ) OR ( GLOB_STRUCTURE_DISPLAY = 2 AND WSP[i][15] = 1 ) ) ! Sichtbarkeit
+				ELSE
+				WSP[i][WSV] = 1 ! Sichtbarkeit
+				ENDIF
+			NEXT i
+		ENDIF
+
+	! #### Lochabmessungen
+	dickeWand = 0  ! Dicke nach Summe der Schichtdicken
+	x = ac_wallhole_width
+	FOR i = 1 TO WSN
+		dickeWand = dickeWand + WSP[i][2]
+		IF ABS(WSP[i][6] - 3) < tlr THEN
+			Kernende = i
+			ENDIF
+		NEXT i
+
+	! #### KONISCHE WAND - in Verbreiterungsschicht anpassen
+	deltaKernL = 0 : deltaKernR = 0  ! Versatz der Wandleibungen ab Kernende
+	IF BITTEST(Wandtyp,0) THEN
+		! Schicht auf wahres Maß in der Mitte erweitern
+		WSP[Kernende][2] = WSP[Kernende][2] + WALL_THICKNESS - dickeWand
+		IF WALL_END_THICKNESS > WALL_START_THICKNESS THEN
+			deltaKernL = +X/2 * TAN(WALL_INCL) * (1-2*isFlipped)
+			deltaKernR = -X/2 * TAN(WALL_INCL) * (1-2*isFlipped)
+			ELSE
+			deltaKernL = +X/2 * TAN(WALL_INCL) * (1-2*isFlipped)
+			deltaKernR = -X/2 * TAN(WALL_INCL) * (1-2*isFlipped)
+			ENDIF
+		ENDIF
+
+	! #### KREISBOGENWAND
+	IF BITTEST(Wandtyp,2) THEN
+		! exakte Dicke nach Summe der Schichtdicken
+		dickeWand = 0
+		x = ac_wallhole_width
+		y = ABS(mittelpunktWand)
+		r = ABS(radiusWand)
+		IF isflipped THEN
+			! Richtung konvex
+			FOR i = 1 to WSN
+				s = y - COS( ASN( (x/2) / (r-WSP[i][2]) ) ) * (r-WSP[i][2])
+				r = r - WSP[i][2]
+				y = y - s
+				dickeWand = dickeWand + s
+				WSP[i][2] = s
+				NEXT i
+			ELSE
+			! Richtung konkav
+			FOR i = WSN to 1 STEP -1
+				s = COS( ASN( (x/2) / (r+WSP[i][2]) ) ) * (r+WSP[i][2]) - y
+				r = r + WSP[i][2]
+				y = y + s
+				dickeWand = dickeWand + s
+				WSP[i][2] = s
+				NEXT i
+			ENDIF
+		ENDIF
+
+	RETURN
+
+
+! -------------------------------------------------- Positionen geöffnete Türflügel
+
+"OpeningLineGF_300":
+	d  = 0  ! Abstand Bandachse zu Oberfläche Türblatt BS
+	IF bs_door_leafs = 1 THEN
+		r  = ac_egress_width
+		ELSE
+		r  = ac_leaf_width - ( HingeEgressDistance - HingePanelGap )
+		ENDIF
+	dx  = 0
+	IF ac_OpeningSide = "R" THEN 
+		IF NOT(gs_sidelight_right) THEN 
+			dx = unitDRight + gs_tolerance_right
+			r = r + dx
+			ENDIF		
+		IF NOT(gs_sidelight_left) AND bs_door_leafs = 1 THEN
+			r = r + unitDLeft + gs_tolerance_left
+			ENDIF
+		ELSE  ! "L"
+		IF NOT(gs_sidelight_left) THEN
+			dx = unitDLeft + gs_tolerance_left
+			r = r + dx
+			ENDIF
+		IF NOT(gs_sidelight_right) AND bs_door_leafs = 1 THEN
+			r = r + unitDRight + gs_tolerance_right
+			ENDIF
+		ENDIF
+	dy = -gs_ub_st2 * NOT( dk_frametype = "RR" )
+	dw = 0
+	x  = COS(w)*r
+	y  = SIN(w)*r
+	z  = gapHeightUnderPanel + ac_leaf_height / 2
+	RETURN
+				
+"OpeningLineGF_350":
+	d  = 0  ! Abstand Bandachse zu Oberfläche Türblatt BS
+	IF bs_door_leafs = 1 THEN
+		r  = ac_egress_width
+		ELSE
+		r  = ac_leaf_width - ( HingeEgressDistance - HingePanelGap )
+		ENDIF
+	dx = 0
+	dy = -gs_ub_st2 * NOT( dk_frametype = "RR" )
+	dw = 0
+	x  = COS(w)*r
+	y  = SIN(w)*r
+	z  = gapHeightUnderPanel + ac_leaf_height / 2
+	RETURN
+				
+"OpeningLineGF_400":
+"OpeningLineGF_500":
+	d  = offsetHingePanelSurfaceBS  ! Abstand Bandachse zu Oberfläche Türblatt BS
+	! r  = SQR ( (ac_leaf_width + bs_ancor_hinge_X - (gs_vb + bs_leaf_oversize) )^2 + d^2 )
+	r  = SQR ( (ac_leaf_width + HingePanelGap)^2 + d^2 )
+	dx = HingeEgressDistance
+	dy = bs_ancor_hinge_Y
+	dw = ASN( d / r )
+	x  = COS(w)*r
+	y  = SIN(w)*r
+	z  = gapHeightUnderPanel + ac_leaf_height / 2
+	RETURN
+		
+		
+"OpeningLineSF_300":
+	d = 0  ! Abstand Bandachse zu Oberfläche Türblatt BGS
+	! r  = SQR ( (gs_SecondLeaf_w + dk_panel_folding_dimensions[1][1]*(dk_panel_folding_nmbr>0) - panel_folding_gap2 + bs_ancor_hinge_X - (gs_vb + bs_leaf_oversize) )^2 + s^2 )
+	r  = ac_egress_width - r + \
+		NOT(gs_sidelight_right) * (unitDRight + gs_tolerance_right) + \
+		NOT(gs_sidelight_left)  * (unitDLeft  + gs_tolerance_left)		
+	dx = 0
+	IF ac_OpeningSide = "L" THEN 
+		IF NOT(gs_sidelight_right) THEN 
+			dx = unitDRight + gs_tolerance_right
+			! r = r + dx
+			ENDIF		
+		ELSE
+		IF NOT(gs_sidelight_left) THEN
+			dx = unitDLeft + gs_tolerance_left
+			! r = r + dx
+			ENDIF
+		ENDIF
+	dy = -gs_ub_st2 * NOT( dk_frametype = "RR" )
+	dw = 0
+	x  = COS(w)*r
+	y  = SIN(w)*r
+	RETURN
+
+"OpeningLineSF_350":
+	d = 0  ! Abstand Bandachse zu Oberfläche Türblatt BGS
+	! r  = SQR ( (gs_SecondLeaf_w + dk_panel_folding_dimensions[1][1]*(dk_panel_folding_nmbr>0) - panel_folding_gap2 + bs_ancor_hinge_X - (gs_vb + bs_leaf_oversize) )^2 + s^2 )
+	r  = ac_egress_width - r
+	dx = 0
+	dy = -gs_ub_st2 * NOT( dk_frametype = "RR" )
+	dw = 0
+	x  = COS(w)*r
+	y  = SIN(w)*r
+	RETURN
+
+"OpeningLineSF_400":
+	d = bs_leaf_overhang - bs_ancor_hinge_Y  ! Abstand Bandachse zu Oberfläche Türblatt BGS
+	r  = SQR ( (HingePanelGap + gs_SecondLeaf_w - panel_folding_gap2)^2 + d^2 )
+	dx = HingeEgressDistance
+	dy = bs_ancor_hinge_Y
+	dw = ASN( d / r )
+	x  = COS(w)*r
+	y  = SIN(w)*r
+	RETURN
+
+"OpeningLineSF_500":
+	d = bs_leaf_overhang - gs_leaf_thk - bs_ancor_hinge_Y  ! Abstand Bandachse zu Oberfläche Türblatt BGS
+	! r  = SQR ( (gs_SecondLeaf_w + dk_panel_folding_dimensions[1][1]*(dk_panel_folding_nmbr>0) - panel_folding_gap2 + bs_ancor_hinge_X - (gs_vb + bs_leaf_oversize) )^2 + d^2 )
+	! r  = SQR ( (gs_SecondLeaf_w + dk_panel_folding_dimensions[1][1]*(dk_panel_folding_nmbr>0) - panel_folding_gap2 + HingePanelGap)^2 + d^2 )
+	r  = SQR ( (HingePanelGap + gs_SecondLeaf_w + dk_panel_folding_dimensions[1][1]*(dk_panel_folding_nmbr>0) - panel_folding_gap2)^2 + d^2 )
+	dx = HingeEgressDistance
+	dy = bs_ancor_hinge_Y
+	dw = ASN( d / r )
+	x  = COS(w)*r
+	y  = SIN(w)*r
+	RETURN
+
+
+! -------------------------------------------------- Lichten Durchgang berechnen
+
+"calcUsableClearance":
+	! dk_UCrelation:
+	! Bit 0 : Relevanz Türblatt oder Beschlag
+	! Bit 2 : Maximale Durchgangsbreite bei optimalem Öffnungswinkel
+	! Bit 3 : Durchgangsbreite nach Pos. Türblatt in 2D
+	! Bit 4 : Durchgangsbreite nach Pos. Türblatt in 3D
+	! Bit 5 : Durchgangsbreite GF / SF+GF bei Doppelflügel
+
+	! Grundannahme / gar kein Türblatt drin
+	bs_UsableClearance	= ac_egress_width
+	bs_UsableHeight		= ac_egress_height
+	UCminimalAngleGT	= 0
+	UCminimalAngleGB	= 0
+	UCminimalAngleST	= 0
+	UCminimalAngleSB	= 0
+
+	IF bs_door_leafs < 1 THEN RETURN
+
+	!-----------------------------------------
+	! #### BERECHNUNG GANGFLÜGEL ...
+
+	! Einzelwerte des lichten Durchgangs
+	UCG1 = 0 : UCG2 = 0 : UCG3 = 0
+	UCS1 = 0 : UCS2 = 0 : UCS3 = 0
+
+	! Bemessungswinkel ermitteln
+	UCangle = 90  ! ...fixiert / erste Annahme
+	IF bittest(dk_UCrelation, 3) THEN UCangle = 180 - dk_open_leaf[dka_leaf_angle2D]  ! ...gemäß 2D Öffnungswinkel
+	IF bittest(dk_UCrelation, 4) THEN UCangle = 180 - dk_open_leaf[dka_leaf_angle3D]  ! ...gemäß 3D Öffnungswinkel
+
+	! Einschränkung (2) gem. Bemessungspunkt: Gemessen von Bandachse zu ...
+
+	IF NOT( BITTEST(dk_UCrelation, 0)) OR gs_handle_type2 = "-" THEN
+
+		! ... Beschlag nicht möglich, da keiner auf BGS vorhanden
+		UCG2 = 0 : UCminimalAngleGB = 90
+
+		ELSE
+
+		! ... Beschlag (BGS) (Makroaufruf zum auslesen der Abmessungen)
+		x = 0 : y = 0
+		IF BITTEST(bs_acs_handles,1) THEN
+			CALL access_control_macro PARAMETERS ALL htspt=htspt, dk_LOD=500, dk_visibleLeaf = dk_visibleLeaf,
+				macro_runtype = 256+1, 
+				RETURNED_PARAMETERS x,y
+			ELSE
+			CALL handle_macro PARAMETERS ALL htspt=htspt, dk_LOD=500, dk_visibleLeaf = dk_visibleLeaf,
+				macro_runtype = 256+1, 
+				RETURNED_PARAMETERS x,y
+			ENDIF
+		IF UCangle > 90+tlr/2 THEN x = 0
+
+		! Einschränkung nach Beschlägen berechnen.
+		! x = bs_ancor_hinge_X + bs_FrameRebate_width  + bs_leaf_oversize - DornMaszPlus - x
+		x = bs_ancor_hinge_X + dk_panel_folding_gap * stumpf - bs_leaf_oversize * NOT(stumpf) + ac_leaf_width - DornMaszPlus - x
+		y = gs_leaf_thk - offsetHingePanelSurfaceBS + y
+		GOSUB "calcHandicap"
+		UCG2 = s : UCminimalAngleGB = alpha
+
+		ENDIF
+
+	! ... und (3) ...
+	IF NOT( BITTEST(dk_UCrelation, 0)) OR BS_pushbar_BGS = "-" THEN
+
+		! ... Stossgriff nicht möglich, da keiner auf BGS vorhanden
+		UCG3 = 0 : UCminimalAngleGS = 90
+
+		ELSE
+
+		! ... Stossgriff (BGS) (Makroaufruf zum auslesen der Abmessungen)
+		x = 0 : y = 0
+		CALL grip_macro PARAMETERS ALL htspt=htspt, dk_LOD=500, dk_visibleLeaf = dk_visibleLeaf,
+			macro_runtype = 256+1, 
+			RETURNED_PARAMETERS x0,x,y
+		IF UCangle > 90+tlr/2 THEN x = 0
+
+		! Einschränkung nach Beschlägen berechnen.
+		! x = bs_ancor_hinge_X + bs_FrameRebate_width  + bs_leaf_oversize - DornMaszPlus - x
+		x = bs_ancor_hinge_X + dk_panel_folding_gap * stumpf - bs_leaf_oversize * NOT(stumpf) + ac_leaf_width - x0 - x
+		y = gs_leaf_thk - offsetHingePanelSurfaceBS + y
+		GOSUB "calcHandicap"
+		UCG3 = s : UCminimalAngleGS = alpha
+
+		ENDIF
+
+	! Einschränkung (1+4) gem. Bandachse zu Türblattaußenkante auf BGS berechnen.
+	IF UCangle > 90+tlr/2 THEN 
+
+		! Koordinaten Bemessungspunkt: Gemessen von Bandachse zu  Türblattecke am Falz (BGS) ...
+		! x = bs_ancor_hinge_X + bs_FrameRebate_width - offsetPanelFolding  ! ... an Schlosskante
+		x = bs_ancor_hinge_X + dk_panel_folding_gap * stumpf - bs_leaf_oversize * NOT(stumpf) + ac_leaf_width - offsetPanelFoldingLS  ! ... an Schlosskante
+		y = gs_leaf_thk - offsetHingePanelSurfaceBS
+		GOSUB "calcHandicap"
+		UCG1 = s : UCminimalAngleGT = alpha
+
+		ELSE
+
+		x = bs_ancor_hinge_X + offsetPanelFolding  ! Türblattecke am Falz (BGS) an Bandkante
+		y = gs_leaf_thk - offsetHingePanelSurfaceBS
+		GOSUB "calcHandicap"
+		UCG1 = s : UCminimalAngleGT = alpha
+
+		ENDIF
+
+	! Ergebnis übernehmen
+	IF bs_door_leafs = 1 THEN   ! 1 Türblatt
+		dk_UCdistanceRight	= 0
+		bs_UsableClearance	= ac_egress_width + MIN( 0, HingeEgressDistance - MAX (UCG1, UCG2, UCG3))
+		bs_UsableHeight		= ac_egress_height
+		ENDIF
+
+
+	!-----------------------------------------
+	! #### BERECHNUNG STANDFLÜGEL ...
+	
+	IF bs_door_leafs = 2 THEN  ! 2 Türblätter 
+
+		! Bemessungswinkel ermitteln
+		UCangle = 90  ! ...fixiert / erste Annahme
+		IF bittest(dk_UCrelation, 3) THEN UCangle = 180 - dk_open_leaf[dka_leaf2_angle2D]  ! ...gemäß 2D Öffnungswinkel
+		IF bittest(dk_UCrelation, 4) THEN UCangle = 180 - dk_open_leaf[dka_leaf2_angle3D]  ! ...gemäß 3D Öffnungswinkel
+
+		! Einschränkung (2) gem. Bemessungspunkt: Gemessen von Bandachse zu ...
+
+		IF NOT( BITTEST(dk_UCrelation, 0)) OR gs_handle_type3 = "-" OR gs_handle_side3 THEN
+
+			! ... Beschlag nicht möglich, da keiner auf BGS vorhanden
+			UCS2 = 0 : UCminimalAngleSB = 90
+
+			ELSE
+
+			! ... Beschlag (BGS) (Makroaufruf zum auslesen der Abmessungen)
+			x = 0 : y = 0
+			IF BITTEST(bs_acs_handles,3) THEN
+				CALL access_control_macro PARAMETERS ALL htspt=htspt, dk_LOD=500, dk_visibleLeaf = dk_visibleLeaf,
+					macro_runtype = 256+2, 
+					RETURNED_PARAMETERS x,y
+				ELSE
+				CALL handle_macro PARAMETERS ALL htspt=htspt, dk_LOD=500, dk_visibleLeaf = dk_visibleLeaf,
+					macro_runtype = 256+2, 
+					RETURNED_PARAMETERS x,y
+					ENDIF
+			IF UCangle > 90+tlr/2 THEN x = 0
+
+			! Einschränkung nach Beschlägen berechnen.
+			x = bs_ancor_hinge_X + dk_panel_folding_gap * stumpf - bs_leaf_oversize * NOT(stumpf) + gs_SecondLeaf_w - DornMaszPlus2 - x
+			y = gs_leaf_thk - offsetHingePanelSurfaceBS + y
+			GOSUB "calcHandicap"
+			UCS2 = s : UCminimalAngleSB = alpha
+
+			ENDIF
+
+		! ... und (3) ...
+		IF NOT( BITTEST(dk_UCrelation, 0)) OR BS_pushbar_BGS = "-" OR NOT(BS_pushbar_SF) THEN
+
+			! ... Stossgriff nicht möglich, da keiner auf BGS vorhanden
+			UCS3 = 0 : UCminimalAngleSS = 90
+
+			ELSE
+
+			! ... Stossgriff (BGS) (Makroaufruf zum auslesen der Abmessungen)
+			x = 0 : y = 0
+			CALL grip_macro PARAMETERS ALL htspt=htspt, dk_LOD=500, dk_visibleLeaf = dk_visibleLeaf,
+				macro_runtype = 256+2, 
+				RETURNED_PARAMETERS x0,x,y
+			IF UCangle > 90+tlr/2 THEN x = 0
+
+			! Einschränkung nach Beschlägen berechnen.
+			! x = bs_ancor_hinge_X + bs_FrameRebate_width  + bs_leaf_oversize - DornMaszPlus - x
+			x = bs_ancor_hinge_X + dk_panel_folding_gap * stumpf - bs_leaf_oversize * NOT(stumpf) + gs_SecondLeaf_w - x0 - x
+			y = gs_leaf_thk - offsetHingePanelSurfaceBS + y
+			GOSUB "calcHandicap"
+			UCS3 = s : UCminimalAngleSS = alpha
+
+			ENDIF
+
+		! Einschränkung (1+4) gem. Bandachse zu Türblattaußenkante auf BGS berechnen.
+		IF UCangle > 90+tlr/2 THEN 
+
+			! Koordinaten Bemessungspunkt: Gemessen von Bandachse zu  Türblattecke am Falz (BGS) ...
+			x = bs_ancor_hinge_X + dk_panel_folding_gap * stumpf - bs_leaf_oversize * NOT(stumpf) + gs_SecondLeaf_w - dk_panel_folding_gap2 + offsetPanelFoldingLS  ! ... an Schlosskante
+			y = gs_leaf_thk - offsetHingePanelSurfaceBS
+			GOSUB "calcHandicap"
+
+			UCS1 = s : UCminimalAngleST = alpha
+
+			ELSE
+
+			x = bs_ancor_hinge_X + offsetPanelFolding  ! Türblattecke am Falz (BGS) an Bandkante
+			y = gs_leaf_thk - offsetHingePanelSurfaceBS
+			GOSUB "calcHandicap"
+			UCS1 = s : UCminimalAngleST = alpha
+
+			ENDIF
+
+		! Ergebnis übernehmen
+		IF BITTEST(dk_UCrelation, 5) THEN
+			! Nur lichter Durchgang durch Gangflügel
+			dk_UCdistanceRight	= gs_SecondLeaf_w - LeafEgressD - dk_panel_folding_gap2 + (dk_panel_folding_nmbr > 0) * dk_panel_folding_dimensions[1][1]
+			ELSE
+			! Ggf. Einschränkung durch hereinragenden Standflügel
+			dk_UCdistanceRight	= ABS( MIN( 0, HingeEgressDistance - MAX (UCS1, UCS2, UCS3) ) )
+			ENDIF
+		bs_UsableClearance	= ac_egress_width - dk_UCdistanceRight + MIN( 0, HingeEgressDistance - MAX (UCG1, UCG2, UCG3))
+		bs_UsableHeight		= ac_egress_height
+
+		ENDIF
+
+	! bubblehelp = "alpha="+str(alpha,3,1) + \
+	! 	" x="+str(bs_ancor_hinge_X + dk_panel_folding_gap * stumpf - bs_leaf_oversize * NOT(stumpf) + gs_SecondLeaf_w,7,5) + \
+	! 	" gap2="+str(dk_panel_folding_gap2,7,5) + \
+	! 	" vb="+str((dk_panel_folding_nmbr > 0) * dk_panel_folding_dimensions[1][1],7,5) + \
+	! 	" dorn="+str(gs_han_pos2,7,5) + \
+	! 	" DM2="+str(DornMaszPlus2,7,5) + \
+	! 	" UCangle="+str(UCangle,3,1)
+
+	RETURN
+
+"calcHandicap":
+	! Abstand Bandachse zu Bemessungsecke
+	IF ABS(x^2 + y^2) > tlr THEN r = SQR( x^2 + y^2 ) ELSE r = 0
+
+	! Optimalen Öffnungswinkel auf maximale lichte Breite berechnen
+	s = HingeEgressDistance
+
+	! ---> nachfolgend auskommentiert, weil sonst lichter Durchgang falsch berechnet wird.
+
+	! IF ABS(s) > r OR r < tlr OR ABS(y) > ABS(x) OR x < tlr THEN
+
+	! 	! Berechnung nicht möglich
+	! 	s = y
+	! 	w = 0
+	! 	alpha = 0
+
+	! 	ELSE
+
+	alpha = MAX(0, MIN(180, ACS( (s / r) MOD 1 ) + ATN( y / x ) ) )
+
+		IF NOT( bittest(dk_UCrelation, 2) ) THEN
+
+			! Einschränkung der lichten Weite berechnen
+			IF ABS(UCangle - 90) < tlr THEN
+				!  auf 90°
+				w = 0 : s = y
+				ELSE
+				! freier Öffnungswinkel
+				IF ABS(y)<tlr THEN w = 90 ELSE w = ATN( y / x )
+				w = 180 - UCangle - w
+				s = COS(w) * r
+				ENDIF
+
+
+			ENDIF
+
+		! ENDIF
+
+	RETURN
+
+
+! -------------------------------------------------- [ GS+: Distanzen Lichter Durchgang zu Bezugsöffnungsmaß (?) bzw. Rahmenaußenmaß ]
+
+"unitSizeDiff":
+
+	IF gs_sidelight_left   THEN unitDLeft  = sidelightWidthLeft  ELSE unitDLeft = gs_frame_width_left
+
+	IF gs_sidelight_right  THEN unitDRight = sidelightWidthRight ELSE unitDRight = gs_frame_width_right
+
+	! IF oberLichtBlende = 1 THEN unitDUpper = gs_transom_height   ELSE unitDUpper = gs_frame_width_upper
+	IF oberLichtBlende = 1 THEN unitDUpper		= gs_transom_height ELSE unitDUpper		= gs_frame_width_upper
+	IF oberLichtBlende = 2 THEN egressDUpper	= gs_transom_height ELSE egressDUpper	= unitDUpper
+
+	unitDLower = 0
+
+	RETURN
+
+
+! -------------------------------------------------- [ GS+: Leaf (Oversize) Dimensions ]
+
+"LeafSizeDiff":
+
+	IF stumpf THEN
+		LeafEgressD = gs_vb - dk_panel_folding_gap * (bs_door_leafs > 0)
+		ELSE
+		LeafEgressD = gs_vb + bs_leaf_oversize * (bs_door_leafs > 0)
+		ENDIF
+
+
+	leafDLeft	= LeafEgressD
+	leafDRight	= LeafEgressD
+
+	IF oberLichtBlende = 2 THEN
+		leafDUpper = dk_panel_folding_dimensions[1][1] - dk_panel_folding_gap2
+		ELSE
+		leafDUpper = LeafEgressD
+		ENDIF
+
+	leafDLower	= -gapHeightUnderPanel * (bs_door_leafs > 0)
+
+	RETURN
+
+
+! -------------------------------------------------- [ Fehlermeldung aufgelaufen? ]
+
+"checkErrorMessages":
+
+	! FRAME
+	CALL frame_macro PARAMETERS ALL dk_frametype = dk_frametype, dk_LOD=500, macro_runtype=256, 
+		! RETURNED_PARAMETERS errorR
+		RETURNED_PARAMETERS offsetFrameSurfaceBGS,
+			facingLintelBS, facingLintelBGS,
+			frame2wallSurfaceBS, frame2wallSurfaceBGS, errorR
+	txt = "... in Modul Zarge" : GOSUB "appendMessages"
+
+	! PANEL
+	CALL panel_macro PARAMETERS ALL dk_LOD=500, macro_runtype=256 RETURNED_PARAMETERS errorR
+	txt = "... in Modul Türblatt" : GOSUB "appendMessages"
+
+	! HINGE
+	CALL hinge_macro PARAMETERS ALL dk_LOD=500, macro_runtype=256 RETURNED_PARAMETERS errorR
+	txt = "... in Modul Bänder" : GOSUB "appendMessages"
+
+	! AUTOMATION
+	CALL automation_macro PARAMETERS ALL, dk_LOD=500,
+		dk_frametype=dk_frametype,
+		HingePanelGap = HingePanelGap,
+		HingeEgressDistance = HingeEgressDistance,
+		offsetHingePanelSurfaceBS  = offsetHingePanelSurfaceBS,
+		offsetFrameSurfaceBGS = offsetFrameSurfaceBGS,
+		facingLintelBS  = facingLintelBS,
+		facingLintelBGS = facingLintelBGS,
+		frame2wallSurfaceBS  = frame2wallSurfaceBS,
+		frame2wallSurfaceBGS = frame2wallSurfaceBGS,
+		macro_runtype=256 RETURNED_PARAMETERS errorR
+	txt = "... in Modul Türautomation" : GOSUB "appendMessages"
+
+	! CLOSER
+	CALL closer_macro PARAMETERS ALL, dk_LOD=500,
+		dk_frametype=dk_frametype,
+		HingePanelGap = HingePanelGap,
+		HingeEgressDistance = HingeEgressDistance,
+		offsetHingePanelSurfaceBS  = offsetHingePanelSurfaceBS,
+		offsetFrameSurfaceBGS = offsetFrameSurfaceBGS,
+		facingLintelBS  = facingLintelBS,
+		facingLintelBGS = facingLintelBGS,
+		frame2wallSurfaceBS  = frame2wallSurfaceBS,
+		frame2wallSurfaceBGS = frame2wallSurfaceBGS,
+		macro_runtype=256 RETURNED_PARAMETERS errorR
+	txt = "... in Modul Türschließer" : GOSUB "appendMessages"
+
+	! ACCESS CONTROL
+	IF versionStamp > 1.60 THEN
+		CALL access_control_macro PARAMETERS ALL dk_LOD=500, macro_runtype=256 RETURNED_PARAMETERS errorR
+		txt = "... in Modul Zugangskontrolle" : GOSUB "appendMessages"
+		ENDIF
+
+	! HANDLES
+	CALL handle_macro PARAMETERS ALL dk_LOD=500, macro_runtype=256 RETURNED_PARAMETERS errorR
+	txt = "... in Modul Beschläge" : GOSUB "appendMessages"
+
+	! CASE
+	CALL case_macro PARAMETERS ALL dk_LOD=500, macro_runtype=256 RETURNED_PARAMETERS errorR
+	txt = "... in Modul Türschloss" : GOSUB "appendMessages"
+	
+	RETURN
+
+"appendMessages":
+	FOR i = 1 TO VARDIM1(errorR)
+		IF errorR[i] <> "" THEN
+			errorI = errorI+1 : errorQ[errorI] = errorR[i] : errorT[errorI] = txt
+			ENDIF
+		NEXT i
+	RETURN
+
+
+! -------------------------------------------------- [ Vorschaubild nach Bitmaps berechnen
+
+"DYNVALUES_ICON":
+
+	! »» Symbol zusammenbauen
+
+	iconFrameMat = 2-(bs_frame_material = "AL") + \
+					 (bs_frame_material = "KU") + \
+					 (bs_frame_material = "ST")*2
+	iconPanelMat = 2-(bs_panel_material = "AL") + \
+					 (bs_panel_material = "KU") + \
+					 (bs_panel_material = "ST")*2 + \
+					 (bs_panel_material = "GL")*3
+
+	! Seitenfelder
+	iconLeft  = gs_sidelight_left  * 4 + iconFrameMat
+	iconRight = gs_sidelight_right * 4 + iconFrameMat
+
+	! Sturz
+	iconTop = iconFrameMat
+
+	! Oberlicht/-blende
+	IF oberLichtBlende = 1 THEN iconTransom = iconFrameMat
+	IF oberLichtBlende = 2 THEN iconTransom = 4 + iconPanelMat
+
+	! Türblatt
+	IF bs_door_leafs > 0 THEN
+		iconDoor = iconPanelMat  + 5 * (bs_door_leafs = 2) + ( bs_panel_type # "VB" ) * ( 10 + (oberLichtBlende > 0) * 10 )
+		ELSE
+		iconDoor = 0
+		ENDIF
+
+	! »» Bezeichnung zusammenbauen
+
+	txt = ""
+	IF bs_frame_material = "KU" THEN
+
+		txt = "Kunststoffprofiltür"
+
+		ELSE
+
+		! Zarge
+		IF bs_frame_material = "ST" THEN
+			txt = "Stahl"
+			ELSE
+			IF bs_frame_material = "AL" THEN
+				txt = "Aluminium"
+				ELSE
+				IF bs_frame_material = "HO" THEN
+					txt = "Holz"
+					ENDIF
+				ENDIF
+			ENDIF
+
+		IF txt # "" THEN
+			txt = txt + "-" + frame_system
+			ENDIF
+
+		! Türblatt
+		IF bs_panel_material = "ST" THEN
+
+			IF txt # "" THEN txt = txt + " mit "
+			txt = txt + "Stahl"
+			IF bs_panel_type = "RP" THEN txt = txt + "rahmen" ELSE txt = txt + "blech"
+			txt = txt + "türblatt"
+
+			ELSE
+
+			IF bs_panel_material = "AL" THEN
+
+				IF txt # "" THEN txt = txt + " mit "
+				txt = txt + "Aluminium"
+				IF bs_panel_type = "RP" THEN txt = txt + "rahmen" ELSE txt = txt + "blech"
+				txt = txt + "türblatt"
+
+				ELSE
+
+				IF bs_panel_material = "HO" THEN
+					IF txt # "" THEN txt = txt + " mit "
+					txt = txt + "Holz"
+					IF bs_panel_type = "RP" THEN txt = txt + "rahmen"
+					txt = txt + "türblatt"
+					ELSE
+					IF bs_panel_material = "GL" THEN
+						IF txt # "" THEN txt = txt + " mit "
+						txt = txt + "Glastürblatt"
+						ENDIF
+					ENDIF
+
+				ENDIF
+
+			ENDIF
+		
+		ENDIF
+
+	! 2 Flügel
+	IF bs_door_leafs = 0 THEN
+		txt = txt + ", ohne Türblatt"
+		ELSE
+		IF bs_door_leafs = 2 THEN txt = txt + ", 2-flügelig"
+		ENDIF
+
+	RETURN
+
+
+! =============================================================================
+
+"MasterScriptEnd":
+

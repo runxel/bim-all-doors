@@ -1,0 +1,317 @@
+
+IF NOT( BITTEST(macro_runtype,5) ) OR NOT(dk_visibleLeaf) OR (stand AND NOT(BS_pushbar_SF)) THEN END
+
+
+! ----------------------------------------------------------------- [ Grunddefinition der Variablen ]
+
+! Status der Kanten
+msk = 15
+msk2 = 15+64
+msk3 = 1+2+8+64
+
+PEN dk_cont_pens[dka_grip_penC3]
+SECT_FILL dk_fills[dka_grip_fill], dk_bkg_pens[dka_grip_penB], dk_fill_pens[dka_grip_penF], dk_cont_pens[dka_grip_penC2]
+
+gripT = "-"
+
+
+! =============================================================================
+! Bandseite
+! =============================================================================
+
+IF BITTEST(macro_runtype,0) THEN
+	gripT = BS_pushbar_BS
+	gripX = BS_pushbar_posX_BS
+	gripY = BS_pushbar_posY_BS
+	gripM1 = dk_materials[dka_grip_mat_BS1]
+	gripM2 = dk_materials[dka_grip_mat_BS2]
+	ENDIF
+
+
+! =============================================================================
+! Bandgegenseite
+! =============================================================================
+
+IF BITTEST(macro_runtype,1) THEN
+	gripT = BS_pushbar_BGS
+	gripX = BS_pushbar_posX_BGS
+	gripY = BS_pushbar_posY_BGS
+	gripM1 = dk_materials[dka_grip_mat_BGS1]
+	gripM2 = dk_materials[dka_grip_mat_BGS2]
+	ENDIF
+
+
+! =============================================================================
+! Standflügel
+! =============================================================================
+
+IF BITTEST(macro_runtype,2) THEN
+	ENDIF
+
+
+! =============================================================================
+! AUSGABE
+! =============================================================================
+
+IF gripT # "-" THEN
+	! IF dk_LOD < 101 THEN GOSUB "LoD100" + gripT
+	! IF dk_LOD > 100 AND dk_LOD < 201 THEN GOSUB "LoD200" + gripT
+	! IF dk_LOD > 200 AND dk_LOD < 301 THEN GOSUB "LoD300" + gripT
+	! IF dk_LOD > 300 AND dk_LOD < 351 THEN GOSUB "LoD350" + gripT
+	IF dk_LOD > 350 AND dk_LOD < 401 THEN GOSUB "LoD400" + gripT
+	IF dk_LOD > 400 THEN GOSUB "LoD500" + gripT
+	ENDIF
+
+! ------------------------------------------------------------------------- [ ENDE ]
+
+END htspt
+
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+
+! ------------------------------------------------------------------------ [ MODELLE 2D ]
+
+! »»» Einfache Darstellung
+
+"LoD100SV":
+"LoD100SH":
+"LoD100BH":
+"LoD100GB":
+	RETURN
+
+
+! »»» Reduzierte Darstellung
+
+"LoD200SV":
+"LoD200SH":
+"LoD200BH":
+"LoD200GB":
+	RETURN
+
+
+! »»» Einfache Darstellung
+
+"LoD300SV":
+"LoD300SH":
+"LoD300BH":
+"LoD300GB":
+	RETURN
+
+"LoD350SV":
+"LoD350SH":
+"LoD350BH":
+"LoD350GB":
+	RETURN
+
+
+! »»» Normale Darstellung
+
+"LoD400SV":  ! vertikale Stange
+	r = dk_pushbar_diameter/2
+
+	! Anschlussblech unten
+	ADD gripX - r, -dk_pushbar_distance_surface, dk_pushbar_distance_bottom
+	MATERIAL gripM2
+	BLOCK 2*r, dk_pushbar_distance_surface, dk_pushbar_plate_thk
+
+	! Stange
+	ADDz dk_pushbar_plate_thk
+	h = ac_leaf_height - dk_pushbar_distance_bottom - dk_pushbar_distance_top - 2 * dk_pushbar_plate_thk
+	MATERIAL gripM1
+	BLOCK 2*r, 2*r, h
+
+	! Anschlussblech oben
+	ADDz h
+	MATERIAL gripM2
+	BLOCK 2*r, dk_pushbar_distance_surface, dk_pushbar_plate_thk
+
+	DEL 3
+	RETURN
+
+"LoD400SH":  ! horizontale Stange
+	r = dk_pushbar_diameter/2
+
+	! Anschlussblech links
+	ADD dk_pushbar_distance_left, -dk_pushbar_distance_surface, gripY - r
+	MATERIAL gripM2
+	BLOCK dk_pushbar_plate_thk, dk_pushbar_distance_surface, 2*r
+
+	! Querbrett
+	ADDx dk_pushbar_plate_thk
+	h = leafWidth - dk_pushbar_distance_left - dk_pushbar_distance_right - 2 * dk_pushbar_plate_thk
+	MATERIAL gripM1
+	BLOCK h, 2*r, 2*r
+
+	! Anschlussblech rechts
+	ADDx h
+	MATERIAL gripM2
+	BLOCK dk_pushbar_plate_thk, dk_pushbar_distance_surface, 2*r
+
+	DEL 3
+	RETURN
+
+"LoD400BH":  ! horizontales Brett
+	! Anschlussblech links
+	ADD dk_pushbar_distance_left, -dk_pushbar_distance_surface, gripY - dk_pushbar_width/2
+	MATERIAL gripM2
+	BLOCK dk_pushbar_plate_thk, dk_pushbar_distance_surface, dk_pushbar_width
+
+	! Querbrett
+	ADDx dk_pushbar_plate_thk
+	h = leafWidth - dk_pushbar_distance_left - dk_pushbar_distance_right - 2 * dk_pushbar_plate_thk
+	MATERIAL gripM1
+	BLOCK h, dk_pushbar_thk, dk_pushbar_width
+
+	! Anschlussblech rechts
+	ADDx h
+	MATERIAL gripM2
+	BLOCK dk_pushbar_plate_thk, dk_pushbar_distance_surface, dk_pushbar_width
+
+	DEL 3
+	RETURN
+
+"LoD400GB":  ! Griffbrett
+	h = 0.35
+	! Anschlussblech links
+	ADD dk_pushbar_distance_left, -dk_pushbar_distance_surface, gripY - r/2
+	MATERIAL gripM2
+	BLOCK dk_pushbar_plate_thk, dk_pushbar_distance_surface, h
+
+	! Griffbrett
+	ADDx dk_pushbar_plate_thk
+	MATERIAL gripM1
+	BLOCK dk_pushbar_width, dk_pushbar_thk, h
+
+	DEL 2
+	RETURN
+
+! »»» Komplettee Darstellung
+
+"LoD500SV":  ! vertikale Stange
+	r = dk_pushbar_diameter/2
+
+	! Anschlussblech unten
+	ADD gripX, 0, dk_pushbar_distance_bottom
+	htspt=htspt+1 : HOTSPOT 0, -dk_pushbar_distance_surface, 0, htspt
+	GOSUB "Anschluss"
+
+	! Stange
+	ADDz dk_pushbar_plate_thk
+	PUT 0, -dk_pushbar_distance_surface+r, 900+msk2,
+		r, 360, 4000+msk2,
+		r-dk_pushbar_pipe_thk, 360, 4000+msk2
+	h = ac_leaf_height - dk_pushbar_distance_bottom - dk_pushbar_distance_top - 2 * dk_pushbar_plate_thk
+	n = 3
+	GOSUB "polySV"
+
+	! Anschlussblech oben
+	ADDz h
+	GOSUB "Anschluss"
+	htspt=htspt+1 : HOTSPOT 0, -dk_pushbar_distance_surface, h, htspt
+
+	DEL 3
+	RETURN
+
+"LoD500SH":  ! horizontale Stange
+	r = dk_pushbar_diameter/2
+
+	! Anschlussblech links
+	ADD dk_pushbar_distance_left, 0, gripY
+	ROTy 90
+	htspt=htspt+1 : HOTSPOT 0, -dk_pushbar_distance_surface, 0, htspt
+	GOSUB "Anschluss"
+
+	! Stange
+	ADDz dk_pushbar_plate_thk
+	PUT 0, -dk_pushbar_distance_surface+r, 900+msk2,
+		r, 360, 4000+msk2,
+		r-dk_pushbar_pipe_thk, 360, 4000+msk2
+	h = leafWidth - dk_pushbar_distance_left - dk_pushbar_distance_right - 2 * dk_pushbar_plate_thk
+	n = 3
+	GOSUB "polySV"
+
+	! Anschlussblech rechts
+	ADDz h
+	GOSUB "Anschluss"
+	htspt=htspt+1 : HOTSPOT 0, -dk_pushbar_distance_surface, h, htspt
+
+	DEL 4
+	RETURN
+
+"LoD500BH":  ! horizontales Brett
+	! Anschlussblech links
+	ADD dk_pushbar_distance_left, -dk_pushbar_distance_surface, gripY - dk_pushbar_width/2
+	htspt=htspt+1 : HOTSPOT 0, 0, 0, htspt
+	htspt=htspt+1 : HOTSPOT 0, 0, dk_pushbar_width, htspt
+	MATERIAL gripM2
+	BLOCK dk_pushbar_plate_thk, dk_pushbar_distance_surface, dk_pushbar_width
+
+	! Querbrett
+	ADDx dk_pushbar_plate_thk
+	h = leafWidth - dk_pushbar_distance_left - dk_pushbar_distance_right - 2 * dk_pushbar_plate_thk
+	MATERIAL gripM1
+	BLOCK h, dk_pushbar_thk, dk_pushbar_width
+
+	! Anschlussblech rechts
+	ADDx h
+	htspt=htspt+1 : HOTSPOT dk_pushbar_plate_thk, 0, 0, htspt
+	htspt=htspt+1 : HOTSPOT dk_pushbar_plate_thk, 0, dk_pushbar_width, htspt
+	MATERIAL gripM2
+	BLOCK dk_pushbar_plate_thk, dk_pushbar_distance_surface, dk_pushbar_width
+
+	DEL 3
+	RETURN
+
+"LoD500GB":  ! Griffbrett
+	h = 0.35
+	! Anschlussblech links
+	ADD dk_pushbar_distance_left, -dk_pushbar_distance_surface, gripY - r/2
+	htspt=htspt+1 : HOTSPOT 0, 0, 0, htspt
+	htspt=htspt+1 : HOTSPOT 0, 0, h, htspt
+	MATERIAL gripM2
+	BLOCK dk_pushbar_plate_thk, dk_pushbar_distance_surface, h
+
+	! Griffbrett
+	ADDx dk_pushbar_plate_thk
+	MATERIAL gripM1
+	BLOCK dk_pushbar_width, dk_pushbar_thk, h
+
+	htspt=htspt+1 : HOTSPOT dk_pushbar_width, 0, 0, htspt
+	htspt=htspt+1 : HOTSPOT dk_pushbar_width, 0, h, htspt
+	DEL 2
+	RETURN
+
+
+! ------------------------------------------------------------------------ [ Regelteile ]
+
+"Anschluss":
+	PUT -r, 0, msk,
+		r, 0, msk,
+		0, -dk_pushbar_distance_surface+r, 900+msk2,
+		r, -dk_pushbar_distance_surface+r, msk2,
+		-r, -dk_pushbar_distance_surface+r, 1000+msk2,
+		-r, 0, -1
+	h = dk_pushbar_plate_thk
+	n = 6
+	GOSUB "polyTV"
+	RETURN
+
+! ------------------------------------------------------------------------ [ Polygone ausgeben ]
+
+"polyTV":
+	MATERIAL gripM2
+	PRISM_ n, h, GET(n*3)
+	RETURN
+
+"polySV":
+	MATERIAL gripM1
+	PRISM_ n, h, GET(n*3)
+	RETURN

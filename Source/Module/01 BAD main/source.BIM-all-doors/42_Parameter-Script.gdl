@@ -1,0 +1,132 @@
+﻿! ----------------------------------- PARAMETER VALUE LIST [Extendable Component Door] (start)
+
+VALUES{2} "language" 1, "Deutsch", 4, "English"
+VALUES "show_start_screen" 0, 1, 2
+VALUES "A" 0.635, 0.76, 0.885, 1.01, 1.135, 1.26, 1.51, 1.76, 1.885, 2.01, 2.135, 2.26, 2.51,
+	2.76, 3.01, CUSTOM
+VALUES "ac_wallhole_width" 0.635, 0.76, 0.885, 1.01, 1.135, 1.26, 1.51, 1.76, 1.885, 2.01, 2.135, 2.26, 2.51,
+	2.76, 3.01, CUSTOM
+VALUES "ac_reveal_width" 0.635, 0.76, 0.885, 1.01, 1.135, 1.26, 1.51, 1.76, 1.885, 2.01, 2.135, 2.26, 2.51,
+	2.76, 3.01, CUSTOM
+VALUES "ac_baurichtmass_width" 0.625, 0.75, 0.875, 1, 1.125, 1.25, 1.5, 1.75, 1.875, 2, 2.125, 2.25, 2.5, 2.75,
+	3, CUSTOM
+VALUES "ac_unit_width" 0.625, 0.75, 0.875, 1, 1.125, 1.25, 1.5, 1.75, 1.875, 2, 2.125, 2.25, 2.5, 2.75,
+	3, CUSTOM
+VALUES "ac_egress_width" 0.525, 0.65, 0.775, 0.9, 1.025, 1.15, 1.4, 1.65, 1.775, 1.9, 2.025, 2.15, 2.4, 2.65,
+	2.9, CUSTOM
+VALUES "bs_FrameRebate_width" 0.555, 0.68, 0.805, 0.93, 1.055, 1.18, 1.43, 1.68, 1.805, 1.93, 2.055, 2.18, 2.43,
+	2.68, 2.93, CUSTOM
+VALUES "bs_OuterFrame_width" 0.895, 0.995, 1.045, 1.095, 1.195, 1.295, 1.395, 1.445, CUSTOM
+VALUES "B" 2.01, 2.135, 2.26, 2.51, 2.76, 3.01, CUSTOM
+VALUES "ac_wallhole_height" 2.01, 2.135, 2.26, 2.51, 2.76, 3.01, CUSTOM
+VALUES "ac_reveal_height" 2.01, 2.135, 2.26, 2.51, 2.76, 3.01, CUSTOM
+VALUES "ac_baurichtmass_height" 2, 2.125, 2.25, 2.5, 2.75, 3, CUSTOM
+VALUES "ac_unit_height" 2, 2.125, 2.25, 2.5, 2.75, 3, CUSTOM
+VALUES "ac_egress_height" 1.95, 2.075, 2.2, 2.45, 2.7, 2.95, CUSTOM
+VALUES "bs_FrameRebate_height" 1.965, 2.09, 2.215, 2.465, 2.715, 2.965, CUSTOM
+VALUES "bs_OuterFrame_height" 2.095, 2.195, 2.295, 2.395, 2.445, CUSTOM
+VALUES{2} "gs_nominal_size" 1, "Rohbauöffnung ist Nominalmaß", 2, "Rohbaulichte ist Nominalmaß", 4, "Rahmen-Außenmaß ist Nominalmaß",
+	8, "Lichtes Zargenmaß ist Nominalmaß", 16, "Türblattmaß ist Nominalmaß", 32, "Baurichtmaß ist Nominalmaß",
+	64, "Freies Durchgangsmaß ist Nominalmaß"
+VALUES{2} "dk_tolerance" 0, "Keine Bautoleranzen", 1, "wie Baurichtmaß", 2, "individuell"
+VALUES{2} "dk_UCrelation" 2, "90° (auf Beschlag)", 4, "maximal (auf Beschlag)", 8, "nach 2D (auf Beschlag)",
+	16, "nach 3D (auf Beschlag)", 3, "90° (auf Türblatt)", 5, "maximal (auf Türblatt)",
+	9, "nach 2D (auf Türblatt)", 17, "nach 3D (auf Türblatt)", 34, "90° (auf Beschlag) - GF fest",
+	36, "maximal (auf Beschlag) - GF fest", 40, "nach 2D (auf Beschlag) - GF fest", 48, "nach 3D (auf Beschlag) - GF fest",
+	35, "90° (auf Türblatt) - GF fest", 37, "maximal (auf Türblatt) - GF fest", 41, "nach 2D (auf Türblatt) - GF fest",
+	49, "nach 3D (auf Türblatt) - GF fest"
+VALUES{2} "msType" 0, "Aus", 1, "Bewegungsflächen", 2, "Lichter Durchgang", 5, "Bewegungsflächen (Modelldarstellung)",
+	6, "Lichter Durchgang (Modelldarstellung)"
+VALUES{2} "iHoleUnderThreshold" 0, "Wandöffnung wie Rohbauöffnung", 1, "Wandöffnung zum aktuellen Geschoss", 2, "Wandöffnung zu Wandunterkante",
+	3, "Wandöffnung individuelle Höhe"
+VALUES{2} "gs_wallcontour_id" 0, "Aus", 2, "rechts", 1, "links", 3, "beide Seiten"
+VALUES{2} "dk_lintelcontour_id" 0, "Aus", 1, "Bandseite", 2, "Bandgegenseite", 3, "beide Seiten", 4, "Nach Modelleinstellung"
+VALUES "dk_wallcontourstyle_LoD" 2, 3, 4, 5, 6
+VALUES{2} "bs_demand_FireResistance" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_demand_SmokeResistance" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_demand_NoiseInsulaion" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_demand_Accessibility" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_demand_AdmissionControl" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_demand_MoistureProofing" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_demand_EscapeRoute" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES "bs_quality_SHE" "[-]", "nein", "Nachströmen", "Abströmen", CUSTOM
+VALUES "bs_quality_FireResistanceRating" "[-]", "nein", "T30", "T60", "T90", "EI30", "EI60", "EI90", "EI90-M", "EI30-ef",
+	"EI60-ef", "EI90-ef", CUSTOM
+VALUES "bs_quality_SmokeResistance" "[-]", "nein", "Sm", "Sa", "E", CUSTOM
+VALUES "bs_quality_NoiseInsulaion" "[-]", "nein", "SK1", "SK2", "SK3", CUSTOM
+VALUES "bs_quality_ThermalInsulaion" "[-]", "nein", "0,8", "0,9", "1,0", "1,1", "1,2", "1,5", "2,0", CUSTOM
+VALUES "bs_quality_RadiationProtection" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_BurglaryProtection" "[-]", "nein", "RC1N", "RC2N", "RC2N", "RC3", "RC4", "RC5", "RC6", CUSTOM
+VALUES "bs_quality_StrafingProtection" "[-]", "nein", "BR1", "BR1-S", "BR1-NS", "BR2", "BR2-S", "BR2-NS", "BR3", "BR3-S",
+	"BR3-NS", "BR4", "BR4-S", "BR4-NS", "BR5", "BR5-S", "BR5-NS", "BR6", "BR6-S", "BR6-NS",
+	"BR7", "BR7-S", "BR7-NS", "SG1", "SG1-S", "SG1-NS", "SG2", "SG2-S", "SG2-NS", CUSTOM
+VALUES "bs_quality_DetonationProtection" "[-]", "nein", "ER1", "ER2", "ER3", "ER4", CUSTOM
+VALUES "bs_quality_LaserProtection" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_FloodProtection" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_ClimateClass" "[-]", "nein", "I", "II", "III", CUSTOM
+VALUES "bs_quality_MechanicalLoad" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_VandalismProtection" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_AccidentPrevention" "[-]", "nein", "nach DGVU", CUSTOM
+VALUES "bs_quality_WetRoom" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_DampArea" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_GasDefense" "[-]", "nein", "Unterdruck", "Überdruck", CUSTOM
+VALUES "bs_quality_Tightness" "[-]", "nein", "luftdicht", "dampfdicht", "schlagregendicht", CUSTOM
+VALUES "bs_quality_BurglaryAlarmSystem" "[-]", "nein", "A", "B", "C"
+VALUES "bs_quality_EscapeRoute" "[-]", "-", "FW", "RW", "FW+RW"
+VALUES "bs_quality_SelfClosing" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_Automation" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_AntiTrapProtection" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_Hygiene" "[-]", "nein", "desinfektionsmittelfest", "Hochdruckreinigung", CUSTOM
+VALUES "bs_quality_Sustainability" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_UsefulLife" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_IntensityOfUse" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_CorrosionPrevention" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_EMShielding" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_Accessibility" "[-]", "nein", "DIN 18040", "DIN 18040 (R)", CUSTOM
+VALUES "bs_quality_ActuatingForce" "[-]", "nein", "CEN/TR 15894:2009", "DIN 18040", "DIN 18040 (R)", CUSTOM
+VALUES "bs_ac_identify1" "[-]", "J", "ID", "ZID"
+VALUES "bs_ac_identify2" "[-]", "J", "ID", "ZID"
+VALUES "bs_ac_opening1" "[-]", "MÖ", "UÖ", "AÖ"
+VALUES "bs_ac_opening2" "[-]", "MÖ", "UÖ", "AÖ"
+VALUES "bs_ac_closing" "[-]", "MS", "PS", "GS"
+VALUES "bs_ac_status" "[-]", "G", "ZO", "IBO"
+VALUES{2} "bs_ctrl_leaf_position" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_locking" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_handle_actuation" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_key_actuation" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_distance_actuation" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_time_opened" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_emergency_opened" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_breakthrough" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_burst" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_sabotage" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "dk_id_zoneOrientation" 0, "Aus", 1, "Raumnummer BS", 2, "Raumnummer BGS", 5, "Geschoss + Raumnummer BS",
+	6, "Geschoss + Raumnummer BGS", 8, "Bezugsraumnummer", 12, "Geschoss + Bezugsraumnummer",
+	16, "Objekt-ID"
+VALUES "dk_refRoom_orientation" "BS", "BGS"
+VALUES "gs_frame_type" "EZ", "UZ", "FB", "RR", "BZ", "SR"
+VALUES "bs_door_OpeningType" "Drehflügeltür Anschlagtür", "Drehflügeltür Pendeltür", "Drehflügeltür Raumspar-Schwenktür",
+	"Schiebetür", "Bogenschiebetür Segmentausführung", "Bogenschiebetür Halbkreisausführung",
+	"Bogenschiebetür Vollkreisausführung", "Karusseltür", "Faltflügeltür"
+VALUES{2} "gs_list_orientationDef_m" 0, "individuell", 1, "Automatisch"
+VALUES "ac_OpeningSide" "L", "R", "-"
+VALUES "ac_OpeningSide2" "L", "R", "-"
+VALUES "bs_case_hole" 0.008, 0.009, 0.01, CUSTOM
+VALUES "bs_case_hole2" 0.008, 0.009, 0.01, CUSTOM
+VALUES{2} "dk_opening2D" 0, " Aus", 1, " Bogen", 2, " Gerade", 4, " nach Modelldarstellung"
+VALUES{2} "dk_openingSA" 0, " Aus", 1, "zu Griff", 2, "zu Band", 4, " nach Modelldarstellung"
+VALUES{2} "dk_opening3D" 0, " Aus", 1, "zu Griff", 2, "zu Band", 4, " nach Modelldarstellung"
+VALUES{2} "dk_openLineType_BS" 1, "Vollinie", 2, "Strichlinie", 3, "Punktiert", 4, "Strichpunkt-Linie"
+VALUES{2} "dk_openLineType_BGS" 1, "Vollinie", 2, "Strichlinie", 3, "Punktiert", 4, "Strichpunkt-Linie"
+VALUES{2} "dk_openLineType_SF" 0, "Aus", 1, "Vollinie", 2, "Strichlinie", 3, "Punktiert", 4, "Strichpunkt-Linie"
+VALUES{2} "dk_openingLineSymbol" 0, "Aus", 1, "Kreis", 2, "Quadrat", 3, "Raute", 4, "Kreuz"
+VALUES{2} "dk_openingLineSymbol2" 0, "Aus", 1, "Kreis", 2, "Quadrat", 3, "Raute", 4, "Kreuz"
+VALUES "LibraryLangCode" "GER", "AUT", "CHE"
+VALUES{2} "dk_LOI" 2, "Vorplanung", 4, "Entwurfsplanung", 5, "Ausführungsplanung", 6, "Werk- und Detailplanung",
+	-2, "global definiert (MVO)"
+VALUES{2} "dk_LOD" 100, "symbolisch (100)", 200, "einfach (200)", 300, "repräsentativ (300)", 350, "repräsentativ (350)",
+	400, "exakt (400)", 500, "as built (500)", -2, "global definiert (MVO)", -1, "nach Maßstab",
+	-3, "einheitlich"
+VALUES "develop" 0, 1, 2, 3, 4, 5, 6, 7, 8
+
+! --------------------------------------------------------------- PARAMETER VALUE LISTS (end)

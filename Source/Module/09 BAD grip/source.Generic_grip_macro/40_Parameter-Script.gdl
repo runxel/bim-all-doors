@@ -1,0 +1,73 @@
+
+! ------------------------------------------------------------------------[ Module development settings ]
+
+IF macro_runtype = 0 THEN
+	VALUES{2} "macro_runtype" 0, "IDLE", 1,"handshake page hirarchy", 2,"handshake page names", 3,"CALL UI page", 5,"return element values", 10,"rebuilt VALUE lists"
+	ENDIF
+
+
+! =============================================================================
+! PLAUSIBILITY
+! =============================================================================
+
+! ----------------------------------------------------------------- Parameterabhängigkeiten
+
+IF BS_pushbar_BS = "-" THEN
+	LOCK "BS_pushbar_posY_BS", "bs_pushbar_posX_BS", "bs_pushbar_surface_BS"
+	ENDIF
+
+IF BS_pushbar_BS = "SV" THEN
+	LOCK "BS_pushbar_posY_BS"
+	ENDIF
+
+IF BS_pushbar_BS = "SH" OR BS_pushbar_BS = "BH" THEN
+	LOCK "BS_pushbar_posX_BS"
+	ENDIF
+
+IF BS_pushbar_BGS = "-" THEN
+	LOCK "BS_pushbar_posY_BGS", "bs_pushbar_posX_BGS", "bs_pushbar_surface_BGS"
+	ENDIF
+
+IF BS_pushbar_BGS = "SV" THEN
+	LOCK "BS_pushbar_posY_BGS"
+	ENDIF
+
+IF BS_pushbar_BGS = "SH" OR BS_pushbar_BGS = "BH" THEN
+	LOCK "BS_pushbar_posX_BGS"
+	ENDIF
+
+IF bs_door_leafs < 2 THEN LOCK "bs_pushbar_SF"
+
+
+! =============================================================================
+! VALUES
+! =============================================================================
+
+! ----------------------------------- PARAMETER VALUE LIST [ECD.hinge] (start)
+
+VALUES "bs_pushbar_BS" "-", "SV", "SH", "BH", "GB"
+VALUES "bs_pushbar_BGS" "-", "SV", "SH", "BH", "GB"
+VALUES "bs_pushbar_surface_BS" " ", "-", "B", "S", "T", "P", "N", "L", "V", "Z", "C", "E", "I", "G", "X", CUSTOM
+VALUES "bs_pushbar_surface_BGS" " ", "-", "B", "S", "T", "P", "N", "L", "V", "Z", "C", "E", "I", "G", "X", CUSTOM
+VALUES "bs_pushbar_posX_BS" 0.1, 0.15, 0.2, 0.25, CUSTOM
+VALUES "bs_pushbar_posY_BS" 0.85, 1.05, 1.2, CUSTOM
+VALUES "bs_pushbar_posX_BGS" 0.1, 0.15, 0.2, 0.25, CUSTOM
+VALUES "bs_pushbar_posY_BGS" 0.85, 1.05, 1.2, CUSTOM
+VALUES "develop" 0, 1, 2, 3, 4, 5, 6, 7, 8
+
+! --------------------------------------------------------------- PARAMETER VALUE LISTS (end)
+
+
+! ---------------------------------------------------------------------- !
+
+END
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+

@@ -1,0 +1,339 @@
+
+! ######################################
+!
+! bim_all_doors - DOOR SYSTEM
+!
+! Module: Grip Macro
+!
+! Manufacturer: common
+! Linie: common
+!
+! (p) 2018 BY DORMAKABA
+! openSource by CCO1.0 license since 2025
+!
+! https://github.com/dormakaba/bim-all-doors
+! 
+! ######################################
+
+
+! =============================================================================
+! GLOBAL SETTINGS
+! =============================================================================
+
+! »»» Arrays
+DIM clr1[], clr2[][], UI_page_subs[]
+DIM UI_page_names[], UI_page_icons[], UI_page_type[]
+
+! »»» Constants
+tlr = 0.00001   !»» accurancy
+version = 1.90  !»» Objektversion
+txt = ""	    !»»  Text für alles
+
+
+! »»» Localization
+sprache = language  !»»  Deutsch
+
+
+! »»» Common keywords
+IF sprache = 1 THEN
+
+	commonKey = "unspezifiziert" 
+	naKey = "undefiniert" 
+	noKey = "nein" 
+	yesKey = "ja"
+
+	ELSE
+		
+	commonKey = "unspecific"
+	naKey = "common"
+	noKey = "no"
+	yesKey = "yes"
+
+	ENDIF
+
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (start)
+
+! --------- PRODUCT PARAMETERS
+
+! --------- DEFAULT VALUE ARRAYS
+
+! --------- dk_folding_dimensions[i][…]
+	dki_Falz1 = 1
+	dki_Falz2 = 2
+! --------- dk_panel_folding_dimensions[i][…]
+	dki_Mittelfalz1 = 1
+	dki_Mittelfalz2 = 2
+	dki_Mittelfalz3 = 3
+! --------- dk_open_leaf[i][…]
+	dka_leaf_angle2D = 1
+	dka_leaf2_angle2D = 2
+	dka_leaf_angleSA = 3
+	dka_leaf2_angleSA = 4
+	dka_leaf_angle3D = 5
+	dka_leaf2_angle3D = 6
+! --------- dk_cont_pens[i][…]
+	dka_handle_penC2 = 1
+	dka_handle_penC3 = 2
+	dka_frame_penC2 = 3
+	dka_frame_penC3 = 4
+	dka_panel_penC2 = 5
+	dka_panel_penC3 = 6
+	dka_opline2D = 7
+	dka_oplineSA = 8
+	dka_opline3D = 9
+	dka_topview_penC2 = 10
+	dka_penInvisible = 11
+	dka_closer_penSA = 12
+	dka_closer_pen3D = 13
+	dka_grip_penC2 = 14
+	dka_grip_penC3 = 15
+! --------- dk_fill_pens[i][…]
+	dka_handle_penF = 1
+	dka_frame_penF = 2
+	dka_side1_penF = 3
+	dka_side2_penF = 4
+	dka_panel_penF = 5
+	dka_panelfill1_penF = 6
+	dka_panelfill2_penF = 7
+	dka_panelfill3_penF = 8
+	dka_panel2fill1_penF = 9
+	dka_panel2fill2_penF = 10
+	dka_panel2fill3_penF = 11
+	dka_topview_penF = 12
+	dka_fan_penF = 13
+	dka_gap_filling_penF = 14
+	dka_grip_penF = 15
+! --------- dk_bkg_pens[i][…]
+	dka_handle_penB = 1
+	dka_frame_penB = 2
+	dka_side1_penB = 3
+	dka_side2_penB = 4
+	dka_panel_penB = 5
+	dka_panelfill1_penB = 6
+	dka_panelfill2_penB = 7
+	dka_panelfill3_penB = 8
+	dka_panel2fill1_penB = 9
+	dka_panel2fill2_penB = 10
+	dka_panel2fill3_penB = 11
+	dka_topview_penB = 12
+	dka_fan_penB = 13
+	dka_gap_filling_penB = 14
+	dka_grip_penB = 15
+! --------- dk_fills[i][…]
+	dka_handle_fill = 1
+	dka_frame_fill = 2
+	dka_side1_fill = 3
+	dka_side2_fill = 4
+	dka_panel_fill = 5
+	dka_panelfill1_fill = 6
+	dka_panelfill2_fill = 7
+	dka_panelfill3_fill = 8
+	dka_panel2fill1_fill = 9
+	dka_panel2fill2_fill = 10
+	dka_panel2fill3_fill = 11
+	dka_topview_fill = 12
+	dka_fan_fill = 13
+	dka_gap_filling_fill = 14
+	dka_grip_fill = 15
+! --------- dk_linetype[i][…]
+	dka_invisible = 1
+! --------- dk_materials[i][…]
+	dka_handle_mat = 1
+	dka_plate_mat = 2
+	dka_frame_mat_BS = 3
+	dka_frame_mat_BGS = 4
+	dka_side1_mat_BS = 5
+	dka_side1_mat_BGS = 6
+	dka_side2_mat_BS = 7
+	dka_side2_mat_BGS = 8
+	dka_fan_mat_BS = 9
+	dka_fan_mat_BGS = 10
+	dka_panel_mat_BS = 11
+	dka_panel_mat_BGS = 12
+	dka_panelfill1_mat_BS = 13
+	dka_panelfill1_mat_BGS = 14
+	dka_panelfill2_mat_BS = 15
+	dka_panelfill2_mat_BGS = 16
+	dka_panelfill3_mat_BS = 17
+	dka_panelfill3_mat_BGS = 18
+	dka_panel2_mat_BS = 19
+	dka_panel2_mat_BGS = 20
+	dka_panel2fill1_mat_BS = 21
+	dka_panel2fill1_mat_BGS = 22
+	dka_panel2fill2_mat_BS = 23
+	dka_panel2fill2_mat_BGS = 24
+	dka_panel2fill3_mat_BS = 25
+	dka_panel2fill3_mat_BGS = 26
+	dka_panel_bandings_mat = 27
+	dka_panel2_bandings_mat = 28
+	dka_hinge_mat = 29
+	dka_closer_mat = 30
+	dka_automation_mat = 31
+	dka_grip_mat_BS1 = 32
+	dka_grip_mat_BS2 = 33
+	dka_grip_mat_BGS1 = 34
+	dka_grip_mat_BGS2 = 35
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (end)
+
+! ----------------------------------- MULTILINGUAL TEXT [Gemeric grip] (start)
+
+! --------- RESET array variables
+	DIM uiTXT[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		uiTXT[1] = "STOSSGRIFF"
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text ()
+	IF language = 4 THEN
+		uiTXT[1] = "PUSH BAR"
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+
+! ------------------------------------------------------------------------[ environment ]
+
+! »»» Falzart
+IF bs_leaf_oversize < tlr OR bs_leaf_overhang < tlr THEN stumpf = 1 ELSE stumpf = 0
+
+! »»» Separater Aufruf der Flügel?
+stand = BITTEST(macro_runtype,2)
+
+! »»» Flügelbreite
+IF stand THEN
+	leafWidth = gs_SecondLeaf_w
+	ELSE
+	leafWidth = ac_leaf_width
+	ENDIF
+
+
+! =============================================================================
+! Defiition UI-Seiten / LoI
+! =============================================================================
+
+!  UI_page_type =  -2 > sub of ROOT, -1 > sub of last, 1 > sub of first macro page
+
+seiten = 0
+
+IF dk_LOI = 5 THEN
+	seiten = 1
+	UI_page_names[seiten] = uiTXT[1]  ! "STOSSGRIFF"
+	UI_page_icons[seiten] = "dk_title_grip 18x18.png"
+	UI_page_type[seiten]  = -1
+	UI_page_subs[seiten] = 8400
+	ENDIF
+
+IF dk_LOI = 6 THEN
+	seiten = 1
+	UI_page_names[seiten] = uiTXT[1]  ! "STOSSGRIFF"
+	UI_page_icons[seiten] = "dk_title_grip 18x18.png"
+	UI_page_type[seiten]  = -1
+	UI_page_subs[seiten] = 8400
+
+	! IF dk_LOI = dk_LOI+1 THEN
+	! 	seiten = seiten+1
+	! 	UI_page_names[seiten] = "SCHLOSS 2. Seite"
+	! 	UI_page_icons[seiten] = "uiTab_DoorHorizontalDim_flat(1).png"
+	! 	UI_page_type[seiten]  = 1
+	! 	UI_page_subs[seiten] = 4500
+	! 	ENDIF
+
+	ENDIF
+
+
+! =============================================================================
+! FEHLERARRAY
+! =============================================================================
+
+! »»» Fehlermeldungen
+DIM errorQ[]
+errorI = 0
+errorQ[1] = ""
+sts =0
+
+! »»» Plausibilitäten
+IF GLOB_PREVIEW_MODE THEN
+	! IF sts THEN
+	! 	GOSUB "debuginfo"
+	! 	errorI = errorI+1 : errorQ[errorI] = ""+txt
+	! 	ENDIF
+	ENDIF
+
+
+! =============================================================================
+! question - answer mode  / HANDSHAKE
+! =============================================================================
+
+IF macro_runtype = 1   THEN END UI_page_type   ! »»» return UI page hirarchy
+IF macro_runtype = 2   THEN END UI_page_names  ! »»» return UI page names
+IF macro_runtype = 4   THEN END UI_page_icons  ! »»» return UI page picts
+IF macro_runtype = 256 THEN END errorQ  ! »»» Fehlermeldung
+
+! IF macro_runtype = 64 AND errorI > 0 THEN
+!	 txt = ""
+!	 FOR i=1 TO errorI
+!		 txt=txt+errorQ[i]+"\n"+"\n"
+!		 NEXT i
+!	 PRINT txt
+!	 ENDIF
+
+
+! =============================================================================
+! Abmessungen zurückgeben
+! =============================================================================
+
+! »»» Koordinaten Griffe Gang- oder Standflügel Bandgegenseite
+IF macro_runtype = 257 OR ( macro_runtype = 258 AND BS_pushbar_SF ) THEN
+
+	gripX0 = 0 : gripX = 0 : gripY = 0
+
+	IF BS_pushbar_BGS = "SV" THEN
+		gripX0 = BS_pushbar_posX_BGS   ! - gs_han_pos
+		gripX  = 0 ! dk_pushbar_diameter / 2
+		gripY  = dk_pushbar_distance_surface
+		ENDIF
+
+	IF BS_pushbar_BGS = "SH" OR BS_pushbar_BGS = "BH" THEN
+		gripX0 = dk_pushbar_distance_left
+		gripX  = leafWidth - gripX0 - dk_pushbar_distance_right
+		gripY  = dk_pushbar_distance_surface
+		ENDIF
+
+	IF BS_pushbar_BGS = "GB" THEN
+		gripX0 = BS_pushbar_posX_BGS
+		gripX  = dk_pushbar_width
+		gripY  = dk_pushbar_distance_surface
+		ENDIF
+
+	END gripX0, gripX, gripY
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ ... ]
+
+GOTO "masterend"
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+! »»» Übersetzung Fehlerliste aus gesetzten Bits:
+"debuginfo":
+	IF BITTEST(sts,0) THEN txt = "Problem! " ELSE txt=""
+	IF BITTEST(sts,1) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "AAA"
+	IF BITTEST(sts,2) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "BBB"
+	! IF txt # "" THEN txt = " ("+txt+")"
+	RETURN
+
+
+"masterend":
+
+

@@ -1,0 +1,249 @@
+IF NOT( BITTEST(macro_runtype,4) ) OR NOT(dk_visibleLeaf) OR (stand AND NOT(BS_pushbar_SF)) THEN END
+
+gripT = "-"
+
+! PEN dk_cont_pens[dka_grip_penC2]
+! dk_grip_fill = 64   ! Massive Schraffur
+! FILL dk_grip_fill
+
+
+! =============================================================================
+! Bandseite
+! =============================================================================
+
+IF BITTEST(macro_runtype,0) THEN
+	gripT = BS_pushbar_BS
+	gripX = BS_pushbar_posX_BS
+	gripY = BS_pushbar_posY_BS
+	ENDIF
+
+
+! =============================================================================
+! Bandgegenseite
+! =============================================================================
+
+IF BITTEST(macro_runtype,1) THEN
+	gripT = BS_pushbar_BGS
+	gripX = BS_pushbar_posX_BGS
+	gripY = BS_pushbar_posY_BGS
+	ENDIF
+
+
+! =============================================================================
+! Standflügel
+! =============================================================================
+
+IF BITTEST(macro_runtype,2) THEN
+	ENDIF
+
+
+! =============================================================================
+! AUSGABE
+! =============================================================================
+
+IF gripT # "-" THEN
+	msk = 1
+	DRAWINDEX 10
+	! IF dk_LOD < 101 THEN GOSUB "LoD100" + gripT
+	! IF dk_LOD > 100 AND dk_LOD < 201 THEN GOSUB "LoD200" + gripT
+	! IF dk_LOD > 200 AND dk_LOD < 301 THEN GOSUB "LoD300" + gripT
+	! IF dk_LOD > 300 AND dk_LOD < 351 THEN GOSUB "LoD350" + gripT
+	IF dk_LOD > 350 AND dk_LOD < 401 THEN GOSUB "LoD400" + gripT
+	IF dk_LOD > 400 THEN GOSUB "LoD500" + gripT
+	DRAWINDEX 50
+	ENDIF
+
+
+! ------------------------------------------------------------------------- [ ENDE ]
+
+END htspt
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+
+! ------------------------------------------------------------------------ [ MODELLE 2D ]
+
+! »»» Einfache Darstellung
+
+"LoD100SV":
+"LoD100SH":
+"LoD100BH":
+"LoD100GB":
+	RETURN
+
+
+! »»» Reduzierte Darstellung
+
+"LoD200SV":
+"LoD200SH":
+"LoD200BH":
+"LoD200GB":
+	RETURN
+
+
+! »»» Einfache Darstellung
+
+"LoD300SV":
+"LoD300SH":
+"LoD300BH":
+"LoD300GB":
+	RETURN
+
+"LoD350SV":
+"LoD350SH":
+"LoD350BH":
+"LoD350GB":
+	RETURN
+
+
+! »»» Normale Darstellung
+
+"LoD400SV":
+	r = dk_pushbar_diameter/2
+
+	! CIRCLE2 gripX, -dk_pushbar_distance_surface+r, r
+
+	ADD2 gripX, 0
+	! Querschnitt
+	PUT 0, -dk_pushbar_distance_surface+r, 900+msk,
+		r, 360, 4000+msk
+	n = 2
+	GOSUB "polySV"
+	DEL 1
+
+	RETURN
+
+"LoD400SH":
+"LoD400BH":
+	POLY2 4,1,
+		dk_pushbar_distance_left, 0,
+		dk_pushbar_distance_left, dk_pushbar_distance_surface,
+		leafWidth - dk_pushbar_distance_right, dk_pushbar_distance_surface,
+		leafWidth - dk_pushbar_distance_right, 0
+	RETURN
+
+"LoD400GB":
+	RECT2 gripX, -dk_pushbar_distance_surface + dk_pushbar_thk,  gripX+dk_pushbar_width, -dk_pushbar_distance_surface
+	RETURN
+
+
+! »»» Komplettee Darstellung
+
+"LoD500SV":  ! vertikale Stange
+	ADD2 gripX, 0
+	r = dk_pushbar_diameter/2
+
+	! Anschlussblech
+	PUT -r, 0, msk,
+		r, 0, msk,
+		0, -dk_pushbar_distance_surface+r, 900+msk,
+		r, -dk_pushbar_distance_surface+r, msk,
+		-r, -dk_pushbar_distance_surface+r, 1000+msk,
+		-r, 0, -1
+	n = 6
+	GOSUB "polyTV"
+
+	! Querschnitt
+	PUT 0, -dk_pushbar_distance_surface+r, 900+msk,
+		r, 360, 4000+msk,
+		r-dk_pushbar_pipe_thk, 360, 4000+msk
+	n = 3
+	GOSUB "polySV"
+
+	DEL 1
+
+	htspt=htspt+1 : HOTSPOT2 gripX,-dk_pushbar_distance_surface, htspt
+	RETURN
+
+"LoD500SH":  ! horizontale Stange
+	s = dk_pushbar_diameter
+	GOTO "horizontal"
+
+"LoD500BH":  ! horizontales Brett
+	s = dk_pushbar_thk
+
+	"horizontal":
+	! Anschlussblech
+	ADD2 dk_pushbar_distance_left, 0
+	PUT 0, 0, msk,
+		dk_pushbar_plate_thk, 0, msk,
+		dk_pushbar_plate_thk, -dk_pushbar_distance_surface, msk,
+		0, -dk_pushbar_distance_surface, msk,
+		0, 0, -1
+	n = 5
+	GOSUB "polyTV"
+	htspt=htspt+1 : HOTSPOT2 0,-dk_pushbar_distance_surface, htspt
+
+	! Brett
+	ADD2 dk_pushbar_plate_thk, 0
+	r = leafWidth -dk_pushbar_distance_left - dk_pushbar_distance_right - 2 * dk_pushbar_plate_thk
+	PUT 0, -dk_pushbar_distance_surface + s, msk,
+		r, -dk_pushbar_distance_surface + s, msk,
+		r, -dk_pushbar_distance_surface, msk,
+		0, -dk_pushbar_distance_surface, msk,
+		0, -dk_pushbar_distance_surface + s, -1
+	n = 5
+	GOSUB "polyTV"
+
+	! Anschlussblech
+	ADD2 r, 0
+	PUT 0, 0, msk,
+		dk_pushbar_plate_thk, 0, msk,
+		dk_pushbar_plate_thk, -dk_pushbar_distance_surface, msk,
+		0, -dk_pushbar_distance_surface, msk,
+		0, 0, -1
+	n = 5
+	GOSUB "polyTV"
+	htspt=htspt+1 : HOTSPOT2 dk_pushbar_plate_thk,-dk_pushbar_distance_surface, htspt
+
+	DEL 3
+	RETURN
+
+"LoD500GB":  ! Griffbrett
+	! Anschlussblech
+	ADD2 gripX, 0
+	PUT 0, 0, msk,
+		dk_pushbar_plate_thk, 0, msk,
+		dk_pushbar_plate_thk, -dk_pushbar_distance_surface, msk,
+		0, -dk_pushbar_distance_surface, msk,
+		0, 0, -1
+	n = 5
+	GOSUB "polyTV"
+	htspt=htspt+1 : HOTSPOT2 0,-dk_pushbar_distance_surface, htspt
+
+	! Brett
+	ADD2 dk_pushbar_plate_thk, 0
+	r = dk_pushbar_width - dk_pushbar_plate_thk
+	PUT 0, -dk_pushbar_distance_surface + dk_pushbar_thk, msk,
+		r, -dk_pushbar_distance_surface + dk_pushbar_thk, msk,
+		r, -dk_pushbar_distance_surface, msk,
+		0, -dk_pushbar_distance_surface, msk,
+		0, -dk_pushbar_distance_surface + dk_pushbar_thk, -1
+	n = 5
+	GOSUB "polyTV"
+	htspt=htspt+1 : HOTSPOT2 r,-dk_pushbar_distance_surface, htspt
+
+	DEL 2
+	RETURN
+
+
+! ------------------------------------------------------------------------ [ Polygone ausgeben ]
+
+"polyTV":
+	FILL dk_fills[dka_topview_fill]
+	PEN dk_cont_pens[dka_topview_penC2]
+	POLY2_B n, 1+2+4, dk_fill_pens[dka_topview_penF], dk_bkg_pens[dka_topview_penB], GET(n*3)
+	RETURN
+
+"polySV":
+	FILL dk_fills[dka_grip_fill]
+	PEN dk_cont_pens[dka_grip_penC2]
+	POLY2_B n, 1+2+4, dk_fill_pens[dka_grip_penF], dk_bkg_pens[dka_grip_penB], GET(n*3)
+	RETURN

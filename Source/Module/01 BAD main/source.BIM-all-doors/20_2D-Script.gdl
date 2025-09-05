@@ -1,0 +1,1127 @@
+
+IF develop THEN
+
+	! s=0.12
+	! call "Koordinatenkreuz", PARAMETERS A = s, B = s, zzyzx = s, sx = 35, sy = 15, sz = 55,
+	! 	C = s/3, D = s/6, aTXT = "xyz", E = 0.75, mah = 1, trt = 0, ebene = "Aus", posE = 1, ex1 = -0.15,
+	! 	ex2 = 0.75, ey1 = -0.15, ey2 = 0.75, matE = 1, stiftE = 8, achsV = "Aus",
+	! 	stiftR = 1, rT = "Aus", winkel = 30, vx = 1, vy = 0.5, vz = 0.2, sv = 4, zw = 1
+
+	DEFINE STYLE "outfieldstyle" "Arial", 1.00 * 100/GLOB_SCALE, 5, 0
+	STYLE "outfieldstyle"
+
+	IF develop = 1 THEN GOSUB "devParas1"
+
+	IF develop = 2 THEN GOSUB "devParas2"
+
+	IF develop = 8 THEN
+		PROJECT2{3} 4, 270, 3+32, 1+2 + (4+8)*0,
+			1,  !Hintergrundstift,
+			0,0, 0,  !Schraffur - Ursprung+Richtung
+			PARAMETERS macro_runtype = BITSET(macro_runtype,5)
+		ENDIF
+	
+	ENDIF
+
+
+!------------------------------------------------------------------ [ Conditionale Voreinstellungen ]
+
+dki_LOD = 1 ! Index im Level of Detail Array (Grundriss...)
+
+!»» Level of Detail maßstabsabhängig
+IF dk_LoD[dki_LOD] = -1 THEN
+	IF GLOB_SCALE < 10 THEN
+		dk_LoD[dki_LOD] = 500
+		ELSE
+		IF GLOB_SCALE < 26 THEN
+			dk_LoD[dki_LOD] = 400
+			ELSE
+			IF GLOB_SCALE < 51 THEN
+				dk_LoD[dki_LOD] = 350
+				ELSE
+				IF GLOB_SCALE < 101 THEN
+					dk_LoD[dki_LOD] = 300
+					ELSE
+					IF GLOB_SCALE < 500 THEN
+						dk_LOD[dki_LOD] = 200
+						ELSE
+						dk_LoD[dki_LOD] = 100
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+
+!»» Level of Detail maximal für Favoriten-Preview
+IF GLOB_PREVIEW_MODE = 3 THEN
+	dk_LoD[dki_LOD] = 500
+	dk_open_leaf[dka_leaf_angle2D] = 0 : dk_open_leaf[dka_leaf2_angle2D] = 0
+	gs_open_2D = 90 : gs_open_2D_s = 90
+	ENDIF
+	
+!»» Favoriten-Preview aus Türsymbolik
+IF GLOB_PREVIEW_MODE = 3 THEN
+	GOSUB "DYNVALUES_ICON"
+	GOSUB "DisplayPreviewIcon"
+	END
+	ENDIF
+
+! ------------------------------------------------------------------------[ Öffnungswinkel Türblätter ]
+
+dk_open_leaf_2D = dk_open_leaf[dka_leaf_angle2D] : dk_open_leaf_2D_s = dk_open_leaf[dka_leaf2_angle2D]
+
+
+! ------------------------------------------------------------------------[ Koordinatenursprung einheitlich setzen ]
+
+GOSUB "startposition"
+
+IF develop THEN
+	! s=0.05
+	! call "Koordinatenkreuz", PARAMETERS A = s, B = s, zzyzx = s, sx = 35, sy = 15, sz = 55,
+	! 	C = s/3, D = s/6, aTXT = "xyz", E = 0.75, mah = 1, trt = 0, ebene = "Aus", posE = 1, ex1 = -0.15,
+	! 	ex2 = 0.75, ey1 = -0.15, ey2 = 0.75, matE = 1, stiftE = 8, achsV = "Aus",
+	! 	stiftR = 1, rT = "Aus", winkel = 30, vx = 1, vy = 0.5, vz = 0.2, sv = 4, zw = 1
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ Wandöffnung herstellen ]
+
+IF dk_wallhole_control THEN
+
+	FILL dk_fills[dka_wallhole_fill]
+	GOSUB "initializeWallhole"
+
+	! #### Loch schneiden
+	msk = 1
+	IF BITTEST(Wandtyp,2) THEN
+		IF develop = 3 THEN GOSUB "devParas4"
+		! gekrümmte Wand
+		PUT 0, mittelpunktWand, 900+msk,
+			-x/2, -dickeWand - deltaKernR, msk,
+			+x/2, -dickeWand - deltaKernL, 3000+msk,
+			+x/2, 0, msk,
+			-x/2, 0, 3000+msk
+		ELSE
+		IF develop = 3 THEN GOSUB "devParas3"
+		! gerade/Trapez- Wand
+		PUT -x/2, -WALL_THICKNESS - deltaKernR, msk,
+			+x/2, -WALL_THICKNESS - deltaKernL, msk,
+			+x/2, 0, msk,
+			-x/2, 0, msk
+		ENDIF
+	WALLHOLE2 nsp/3, 0+32,
+		dk_fill_pens[dka_wallhole_penF], dk_bkg_pens[dka_wallhole_penB],
+		0, 0, 0, GET(nsp)
+
+	! #### Ausgabe seitliche Laibungslinien
+	LINE_TYPE 1
+	t = 0
+
+	IF isFlipped THEN
+
+		! Schichtreihenfolge aufsteigend
+		FOR i = 1 TO WSN
+			IF WSP[i][11] > 0 AND WSP[i][WSV] THEN
+				PEN WSP[i][11]
+				IF BITTEST(gs_wallcontour_id,1) THEN WALLLINE2 -x/2, -t - deltaKernR * (i>Kernende), -x/2, -t - WSP[i][2] - deltaKernR * (i>Kernende-1)
+				IF BITTEST(gs_wallcontour_id,0) THEN WALLLINE2  x/2, -t - deltaKernL * (i>Kernende),  x/2, -t - WSP[i][2] - deltaKernL * (i>Kernende-1)
+				ENDIF
+			t = t + WSP[i][2]
+			NEXT i
+
+		ELSE
+
+		! Schichtreihenfolge umgedreht
+		FOR i = WSN TO 1 STEP -1
+			IF WSP[i][11] > 0 AND WSP[i][WSV] THEN
+				PEN WSP[i][11]
+				IF BITTEST(gs_wallcontour_id,1) THEN WALLLINE2 -x/2, -t - deltaKernR * (i<Kernende), -x/2, -t - WSP[i][2] - deltaKernR * (i<Kernende+1)
+				IF BITTEST(gs_wallcontour_id,0) THEN WALLLINE2  x/2, -t - deltaKernL * (i<Kernende),  x/2, -t - WSP[i][2] - deltaKernL * (i<Kernende+1)
+				ENDIF
+			t = t + WSP[i][2]
+			NEXT i
+		ENDIF
+
+	! #### Ausgabe Sturzlinien
+
+	! Start und Ende nach Strukturdarstellung bestimmen
+	LintelPos1 = 0
+	FOR i = 1 TO WSN
+		IF WSP[i][WSV] THEN i = 999 ELSE LintelPos1 = LintelPos1 + WSP[i][2]
+		NEXT i
+	LintelPos2 = 0
+	FOR i = WSN TO 1 STEP -1
+		IF WSP[i][WSV] THEN i = 0 ELSE LintelPos2 = LintelPos2 + WSP[i][2]
+		NEXT i
+	IF isFlipped THEN
+		LintelPos1 = -LintelPos1
+		ELSE
+		s = LintelPos1
+		LintelPos1 = -LintelPos2
+		LintelPos2 = s
+		ENDIF
+
+	i = 1 + (dk_LOD[dki_LOD] > 100) + (dk_LOD[dki_LOD] > 200) + (dk_LOD[dki_LOD] > 300) + (dk_LOD[dki_LOD] > 350) + (dk_LOD[dki_LOD] > 400)
+
+	IF dk_lintelcontour_id[i] THEN
+
+		! Ausgabe ... an der Bandseite
+		IF i < dk_wallcontourstyle_LoD THEN
+			! Stil 1
+			PEN dk_cont_pens[dka_wallhole_lintel2D1]
+			LINE_TYPE dk_linetype[dka_wallhole_lintelBS1]
+			ELSE
+			! Stil 2
+			PEN dk_cont_pens[dka_wallhole_lintel2D2]
+			LINE_TYPE dk_linetype[dka_wallhole_lintelBS2]
+			ENDIF
+		IF BITTEST(dk_lintelcontour_id[i],0) THEN
+			IF BITTEST(Wandtyp,2) THEN
+				!  gekrümmte Wand
+				r = ABS(radiusWand) ! - LintelPos1
+				w = ASN( (x/2) / r )
+				IF GLOB_PREVIEW_MODE = 1 THEN
+					ARC2 0,mittelpunktWand, r, 270-w - 180*isflipped, 270+w - 180*isflipped
+					ELSE
+					WALLARC2 0,mittelpunktWand, r, 270-w - 180*isflipped, 270+w - 180*isflipped
+					ENDIF
+				ELSE
+				!  gerade Wand
+				IF GLOB_PREVIEW_MODE = 1 THEN
+					LINE2 -x/2, LintelPos1,  x/2, LintelPos1
+					ELSE
+					WALLLINE2 -x/2, LintelPos1,  x/2, LintelPos1
+					ENDIF
+				ENDIF
+			ENDIF
+
+		! ... an der Bandgegenseite
+		IF i < dk_wallcontourstyle_LoD THEN LINE_TYPE dk_linetype[dka_wallhole_lintelBGS1] ELSE LINE_TYPE dk_linetype[dka_wallhole_lintelBGS2]
+		IF BITTEST(dk_lintelcontour_id[i],1) THEN
+			IF BITTEST(Wandtyp,2) THEN
+				!  gekrümmte Wand
+				r = ABS(radiusWand) + WALL_THICKNESS * (1-2*isflipped) ! + LintelPos2
+				w = ASN( (x/2) / r )
+				IF GLOB_PREVIEW_MODE = 1 THEN
+					ARC2 0,mittelpunktWand, r, 270-w - 180*isflipped, 270+w - 180*isflipped
+					ELSE
+					WALLARC2 0,mittelpunktWand, r, 270-w - 180*isflipped, 270+w - 180*isflipped
+					ENDIF
+				ELSE
+				!  gerade Wand
+				IF GLOB_PREVIEW_MODE = 1 THEN
+					LINE2 -x/2, -WALL_THICKNESS + LintelPos2 - deltaKernR,  +x/2, -WALL_THICKNESS + LintelPos2 - deltaKernL
+					ELSE
+					WALLLINE2 -x/2, -WALL_THICKNESS + LintelPos2 - deltaKernR,  +x/2, -WALL_THICKNESS + LintelPos2 - deltaKernL
+					ENDIF
+				ENDIF
+			ENDIF
+
+		ENDIF
+
+	LINE_TYPE 1
+
+	ELSE
+
+	! #### KEINE WANDÖFFNUNG
+	IF Wandtyp # 0 THEN
+		GOSUB "initializeWallhole"
+		ELSE
+		x = ac_wallhole_width
+		ENDIF
+
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ Fangpunkte der Türumfassung ]
+
+htspt = 0
+IF BITTEST(Wandtyp,2) THEN ! »» KREISBOGENWAND
+	htspt = htspt+1 : HOTSPOT2 -x/2, 0, htspt
+	htspt = htspt+1 : HOTSPOT2  x/2, 0, htspt
+	htspt = htspt+1 : HOTSPOT2 -x/2, -dickeWand - deltaKernR, htspt
+	htspt = htspt+1 : HOTSPOT2  x/2, -dickeWand - deltaKernL, htspt
+	ELSE
+	IF BITTEST(Wandtyp,0) THEN  ! »» KONISCHE WAND
+		htspt = htspt+1 : HOTSPOT2 -x/2, 0, htspt
+		htspt = htspt+1 : HOTSPOT2  x/2, 0, htspt
+		htspt = htspt+1 : HOTSPOT2 -x/2, -WALL_THICKNESS - deltaKernR, htspt
+		htspt = htspt+1 : HOTSPOT2  x/2, -WALL_THICKNESS - deltaKernL, htspt
+		ELSE ! »» GERADE
+		htspt = htspt+1 : HOTSPOT2 -x/2, 0, htspt
+		htspt = htspt+1 : HOTSPOT2  x/2, 0, htspt
+		htspt = htspt+1 : HOTSPOT2 -x/2, -WALL_THICKNESS, htspt
+		htspt = htspt+1 : HOTSPOT2  x/2, -WALL_THICKNESS, htspt
+		ENDIF
+	ENDIF
+
+
+! =============================================================================
+! Start der Tür
+! =============================================================================
+
+! ------------------------------------------------------------------------[ FRAME ]
+
+htspt = 1000
+CALL frame_macro PARAMETERS ALL htspt=htspt,
+	dk_frametype=dk_frametype,
+	offsetWallSurfaceBS = offsetWallSurfaceBS,
+	dk_LOD=dk_LOD[dki_LOD], 
+	macro_runtype = 16, 
+	RETURNED_PARAMETERS offsetFrameSurfaceBGS,
+		facingLintelBS, facingLintelBGS,
+		frame2wallSurfaceBS, frame2wallSurfaceBGS, htspt
+
+! ------------------------------------------------------------------------[ LEAF / PANEL + components ]
+
+dk_visibleLeaf=0
+
+! #### GANGFLÜGEL
+IF bs_door_leafs > 0 THEN
+
+	! #### GANGFLÜGEL: POSITIONIEREN
+	GOSUB "goToOpeningCornerG" + ac_OpeningSide ! Auf Öffnungsecke
+
+	! #### GANGFLÜGEL: TÜRBÄNDER
+	ADD2 -HingeEgressDistance, bs_ancor_hinge_Y  ! Auf Bandachse
+	htspt = 1100
+	CALL hinge_macro PARAMETERS ALL htspt=htspt,
+		dk_frametype=dk_frametype,
+		dk_LOD=dk_LOD[dki_LOD],
+		gs_open_2D = 0, gs_open_2D_s = 0,
+		gs_open_3D = 0, gs_open_3D_s = 0,
+		macro_runtype = 16+0, 
+		RETURNED_PARAMETERS htspt
+
+	! #### GANGFLÜGEL: AUSRICHTEN
+	ROT2 dk_open_leaf_2D ! Öffnungswinkel
+	ADD2 HingePanelGap, -bs_ancor_hinge_Y  ! Auf Bandseite...
+
+	! #### GANGFLÜGEL: AUSGABE TÜRBLATT
+	ADD2 0, leafFrameSurfDiff
+	htspt = 1200
+	CALL panel_macro PARAMETERS ALL htspt=htspt,
+		dk_LOD=dk_LOD[dki_LOD],
+		gs_open_2D = 0, gs_open_2D_s = 0,
+		gs_open_3D = 0, gs_open_3D_s = 0,
+		macro_runtype = 16+0, 
+		RETURNED_PARAMETERS htspt, dk_visibleLeaf
+	DEL 1
+
+	! #### GANGFLÜGEL: ZUGANGSKONTROLLSYSTEM BS
+	ADD2 ac_leaf_width - DornMaszPlus, leafFrameSurfDiff  ! Auf Dornmaß
+	ROT2 180
+	htspt = 1500
+	IF versionStamp > 1.60 THEN
+		CALL access_control_macro PARAMETERS ALL htspt=htspt,
+			dk_LOD=dk_LOD[dki_LOD], 
+			dk_visibleLeaf = dk_visibleLeaf,
+			macro_runtype = 16+1, 
+			RETURNED_PARAMETERS htspt
+		ENDIF
+	DEL 2
+
+	! #### GANGFLÜGEL: BESCHLÄGE BS
+	ADD2 ac_leaf_width - DornMaszPlus, leafFrameSurfDiff  ! Auf Dornmaß
+	ROT2 180
+	htspt = 1300
+	CALL handle_macro PARAMETERS ALL htspt=htspt,
+		dk_LOD=dk_LOD[dki_LOD], 
+		dk_visibleLeaf = dk_visibleLeaf,
+		macro_runtype = 16+1, 
+		RETURNED_PARAMETERS htspt
+	DEL 2
+
+	! #### GANGFLÜGEL: ZUGANGSKONTROLLSYSTEM BGS
+	ADD2 ac_leaf_width - DornMaszPlus, leafFrameSurfDiff - gs_leaf_thk  ! Auf Dornmaß
+	MUL2 -1,1
+	htspt = 1550
+	IF versionStamp > 1.60 THEN
+		CALL access_control_macro PARAMETERS ALL htspt=htspt,
+			dk_LOD=dk_LOD[dki_LOD], 
+			dk_visibleLeaf = dk_visibleLeaf,
+			macro_runtype = 16+2, 
+			RETURNED_PARAMETERS htspt
+		ENDIF
+	DEL 2
+
+	! #### GANGFLÜGEL: BESCHLÄGE BGS
+	ADD2 ac_leaf_width - DornMaszPlus, leafFrameSurfDiff - gs_leaf_thk  ! Auf Dornmaß
+	MUL2 -1,1
+	htspt = 1350
+	CALL handle_macro PARAMETERS ALL htspt=htspt,
+		dk_LOD=dk_LOD[dki_LOD], 
+		dk_visibleLeaf = dk_visibleLeaf,
+		macro_runtype = 16+2, 
+		RETURNED_PARAMETERS htspt
+	DEL 2
+
+	! #### GANGFLÜGEL: STOSSGRIFF BS
+	ADD2 ac_leaf_width, leafFrameSurfDiff  ! Auf Außenkante am Falz
+	ROT2 180
+	htspt = 1400
+	CALL grip_macro PARAMETERS ALL htspt=htspt,
+		dk_LOD=dk_LOD[dki_LOD], 
+		dk_visibleLeaf = dk_visibleLeaf,
+		macro_runtype = 16+1, 
+		RETURNED_PARAMETERS htspt
+	DEL 2
+
+	! #### GANGFLÜGEL: STOSSGRIFF BGS
+	ADD2 ac_leaf_width, leafFrameSurfDiff - gs_leaf_thk  ! Auf Außenkante am Falz
+	MUL2 -1,1
+	htspt = 1450
+	CALL grip_macro PARAMETERS ALL htspt=htspt,
+		dk_LOD=dk_LOD[dki_LOD], 
+		dk_visibleLeaf = dk_visibleLeaf,
+		macro_runtype = 16+2, 
+		RETURNED_PARAMETERS htspt
+	DEL 2
+
+	! #### GANGFLÜGEL: AUTOMATIK / ANTRIEB / SCHLIESSER
+	DEL 2 ! zurück auf Bandachse
+	htspt = 1600
+	IF bs_automation_type # "-" THEN
+		CALL automation_macro PARAMETERS ALL htspt=htspt,
+		dk_frametype=dk_frametype,
+			dk_LOD=dk_LOD[dki_LOD], 
+			dk_visibleLeaf = dk_visibleLeaf,
+			HingePanelGap = HingePanelGap,
+			HingeEgressDistance = HingeEgressDistance,
+			offsetHingePanelSurfaceBS  = offsetHingePanelSurfaceBS,
+			offsetFrameSurfaceBGS = offsetFrameSurfaceBGS,
+			facingLintelBS  = facingLintelBS,
+			facingLintelBGS = facingLintelBGS,
+			frame2wallSurfaceBS  = frame2wallSurfaceBS,
+			frame2wallSurfaceBGS = frame2wallSurfaceBGS,
+			macro_runtype = 16+1, 
+			RETURNED_PARAMETERS htspt
+		ENDIF
+	htspt = 1700
+	IF bs_closer_type # "-" THEN
+		CALL closer_macro PARAMETERS ALL htspt=htspt,
+			dk_LOD=dk_LOD[dki_LOD], 
+			dk_frametype=dk_frametype,
+			dk_visibleLeaf = dk_visibleLeaf,
+			HingePanelGap = HingePanelGap,
+			HingeEgressDistance = HingeEgressDistance,
+			offsetHingePanelSurfaceBS  = offsetHingePanelSurfaceBS,
+			offsetFrameSurfaceBGS = offsetFrameSurfaceBGS,
+			facingLintelBS  = facingLintelBS,
+			facingLintelBGS = facingLintelBGS,
+			frame2wallSurfaceBS  = frame2wallSurfaceBS,
+			frame2wallSurfaceBGS = frame2wallSurfaceBGS,
+			macro_runtype = 16+1, 
+			RETURNED_PARAMETERS htspt
+		ENDIF
+
+	! #### GANGFLÜGEL: ENDE / AUF AUSGANGSPUNKT
+	DEL 3
+
+	ENDIF
+
+
+! #### STANDFLÜGEL
+IF bs_door_leafs > 1 THEN
+
+	! #### STANDFLÜGEL: POSITIONIEREN
+	GOSUB "goToOpeningCornerS" + ac_OpeningSide ! Auf Öffnungsecke
+
+	! #### STANDFLÜGEL: TÜRBÄNDER
+	ADD2 -HingeEgressDistance, bs_ancor_hinge_Y
+	htspt = 2100
+	CALL hinge_macro PARAMETERS ALL htspt=htspt,
+		dk_frametype=dk_frametype,
+		dk_LOD=dk_LOD[dki_LOD],
+		gs_open_2D = 0, gs_open_2D_s = 0,
+		gs_open_3D = 0, gs_open_3D_s = 0,
+		macro_runtype = 16+1, 
+		RETURNED_PARAMETERS htspt
+
+	! #### STANDFLÜGEL: AUSRICHTEN
+	ROT2 dk_open_leaf_2D_s
+	ADD2 HingePanelGap, -bs_ancor_hinge_Y  ! Auf Bandseite...
+
+	! #### STANDFLÜGEL: AUSGABE TÜRBLATT
+	ADD2 0, leafFrameSurfDiff  ! ... und Außenseite.
+	htspt = 2200
+	CALL panel_macro PARAMETERS ALL htspt=htspt,
+		dk_LOD=dk_LOD[dki_LOD], 
+		gs_open_2D = 0, gs_open_2D_s = 0,
+		gs_open_3D = 0, gs_open_3D_s = 0,
+		macro_runtype = 16+1, 
+		RETURNED_PARAMETERS htspt, dk_visibleLeaf
+	DEL 1
+
+	! #### STANDFLÜGEL: BESCHLÄGE
+	IF gs_handle_side3 THEN
+		ADD2 gs_SecondLeaf_w - DornMaszPlus2, leafFrameSurfDiff  ! Auf Dornmaß
+		MUL2 -1,-1 !ROTz 180
+		ELSE
+		ADD2 gs_SecondLeaf_w - DornMaszPlus2, leafFrameSurfDiff - gs_leaf_thk  ! Auf Dornmaß
+		MUL2 -1,1
+		ENDIF
+	htspt = 2300
+	CALL handle_macro PARAMETERS ALL htspt=htspt,
+		dk_LOD=dk_LOD[dki_LOD], 
+		dk_visibleLeaf = dk_visibleLeaf,
+		macro_runtype = 16+4, 
+		RETURNED_PARAMETERS htspt
+	DEL 2
+
+	! #### STANDFLÜGEL: STOSSGRIFF BS
+	ADD2 gs_SecondLeaf_w, leafFrameSurfDiff  ! Auf Außenkante am Falz
+	MUL2 -1,-1 !ROTz 180
+	htspt = 2400
+	CALL grip_macro PARAMETERS ALL htspt=htspt,
+		dk_LOD=dk_LOD[dki_LOD], 
+		dk_visibleLeaf = dk_visibleLeaf,
+		macro_runtype = 16+1+4, 
+		RETURNED_PARAMETERS htspt
+	DEL 2
+
+	! #### STANDFLÜGEL: STOSSGRIFF BGS
+	ADD2 gs_SecondLeaf_w, leafFrameSurfDiff - gs_leaf_thk  ! Auf Außenkante am Falz
+	MUL2 -1,1
+	htspt = 2450
+	CALL grip_macro PARAMETERS ALL htspt=htspt,
+		dk_LOD=dk_LOD[dki_LOD], 
+		dk_visibleLeaf = dk_visibleLeaf,
+		macro_runtype = 16+2+4, 
+		RETURNED_PARAMETERS htspt
+	DEL 2
+
+	! #### GANGFLÜGEL: AUTOMATIK / ANTRIEB / SCHLIESSER
+	DEL 2
+	ADD2 0, 0
+	htspt = 2600
+	IF bs_automation_type # "-" THEN
+		CALL automation_macro PARAMETERS ALL htspt=htspt,
+			dk_LOD=dk_LOD[dki_LOD], 
+			dk_frametype=dk_frametype,
+			dk_visibleLeaf = dk_visibleLeaf,
+			HingePanelGap = HingePanelGap,
+			offsetHingePanelSurfaceBS  = offsetHingePanelSurfaceBS,
+			offsetFrameSurfaceBGS = offsetFrameSurfaceBGS,
+			facingLintelBS  = facingLintelBS,
+			facingLintelBGS = facingLintelBGS,
+			frame2wallSurfaceBS  = frame2wallSurfaceBS,
+			frame2wallSurfaceBGS = frame2wallSurfaceBGS,
+			macro_runtype = 16+2, 
+			RETURNED_PARAMETERS htspt
+		ENDIF
+	htspt = 2700
+	IF bs_closer_type # "-" THEN
+		CALL closer_macro PARAMETERS ALL htspt=htspt,
+			dk_LOD=dk_LOD[dki_LOD], 
+			dk_frametype=dk_frametype,
+			dk_visibleLeaf = dk_visibleLeaf,
+			HingePanelGap = HingePanelGap,
+			HingeEgressDistance = HingeEgressDistance,
+			offsetHingePanelSurfaceBS  = offsetHingePanelSurfaceBS,
+			offsetFrameSurfaceBGS = offsetFrameSurfaceBGS,
+			facingLintelBS  = facingLintelBS,
+			facingLintelBGS = facingLintelBGS,
+			frame2wallSurfaceBS  = frame2wallSurfaceBS,
+			frame2wallSurfaceBGS = frame2wallSurfaceBGS,
+			macro_runtype = 16+4, 
+			RETURNED_PARAMETERS htspt
+		ENDIF
+	DEL 1
+
+
+	! #### STANDFLÜGEL: ENDE / AUF AUSGANGSPUNKT
+	DEL 3
+
+	ENDIF
+
+
+! #### OPENING LINES / MINIMAL SPACES
+
+htspt = 3000
+IF dk_opening2D > 0 AND bs_door_leafs > 0 AND dk_LOD[dki_LOD] > 100 THEN GOSUB "drawOpeningLines2D"
+
+htspt = 3100
+IF BITTEST(msType,2) THEN
+	IF versionStamp < 1.53 OR BITTEST(msType,0) THEN
+		sts = LIBRARYGLOBAL ("LibraryGlobals13", "showBMinSpace", showMinSpace)
+		ELSE
+		sts = LIBRARYGLOBAL("BIM-all-doors_mvo", "showUseableClearance", showMinSpace)
+		ENDIF
+	ELSE
+	showMinSpace = (msType > 0)
+	ENDIF
+IF showMinSpace THEN GOSUB "showMinSpace"
+
+
+! =============================================================================
+! Ende
+! =============================================================================
+
+DEL 5
+
+END
+
+
+! =============================================================================
+! =============================================================================
+! SUBROUTINES
+! =============================================================================
+! =============================================================================
+
+"devParas0":
+	IF round_int (SYMB_ROTANGLE) = 180 THEN txt ="D" ELSE txt = "-"
+	IF SYMB_MIRRORED THEN txt = txt+"S" ELSE txt = txt+"-"
+	IF WIDO_REVEAL_SIDE THEN txt = txt+"A" ELSE txt = txt+"-"
+	IF WALL_FLIPPED THEN txt = txt+"F" ELSE txt = txt+"-"
+	RETURN
+
+"devParas1":
+	GOSUB "devParas0"
+	TEXT2 0, -WALL_THICKNESS/2 * 0, txt + "\n" + ac_OpeningSide + ac_OpeningSide2
+	RETURN
+
+"devParas2":
+	TEXT2 0, -WALL_THICKNESS/2,	\
+		"LiD:" + STR("%.1",100*ac_egress_width) + "cm\n" + \
+		"ZFM:" + STR("%.1",100*bs_FrameRebate_width) + "cm\n" + \
+		"RB:" + STR("%.1",100*ac_unit_width) + "cm\n" + \
+		"GF:" + STR("%.1",100*ac_leaf_width) + "cm\n" + \
+		"SF:" + STR("%.1",100*gs_SecondLeaf_w) + "cm\n" + \
+		"Gap:" + STR("%.0",1000*dk_panel_folding_gap) + "mm\n" + \
+		"Over:" + STR("%.0",1000*bs_leaf_oversize) + "mm\n"
+	RETURN
+
+"devParas3":
+	GOSUB "devParas0"
+	TEXT2 0, -WALL_THICKNESS/2 * 0, txt + "|"  + STRSUB("F-",2-isFlipped,1) + STRSUB("R-",2-isRotated,1)
+	RETURN
+
+"devParas4":
+	! circle2 0,0, 0.02
+	! circle2 -a/2,0, 0.02
+	! circle2 a/2,0, 0.02
+	! LINE2 0,0, 0,-mittelpunktWand
+
+	! CIRCLE2 0,abstandWand + radiusWand, 0.02
+	! CIRCLE2 0,abstandWand - WALL_THICKNESS, 0.015
+	! CIRCLE2 0,abstandWand - dickeWand, 0.01
+
+	! circle2 0,-WIDO_ORIG_DIST, 0.02
+	! circle2 0,-WIDO_SILL / COS(omega), 0.02
+	! circle2 0,-WIDO_SILL / COS(omega)+WALL_THICKNESS, 0.02
+
+	TEXT2 0, 0.4,	"M:" + STR("%.1",100*WIDO_ORIG_DIST) + "cm / " + \
+				STR("%.1",100*mittelpunktWand) + "cm\n" + \
+				"a:" + STR("%.1",100*abstandWand) + "cm" + \
+				"r:" + STR("%.1",100*radiusWand) + "cm\n" + \
+				"D:" + STR("%.0",1000*WALL_THICKNESS) + "mm / " + \
+				STR("%.0",1000*dickeWand) + "mm\n"
+	RETURN
+
+"devPos1":
+	circle2 -dx+0, dy, 0.0005
+	circle2 -dx+HingePanelGap, dy, 0.0005
+	circle2 -dx+HingePanelGap + gs_SecondLeaf_w, dy, 0.0005
+	circle2 -dx+HingePanelGap + gs_SecondLeaf_w - panel_folding_gap2, dy+0.001, 0.0005
+	circle2 -dx+HingePanelGap + gs_SecondLeaf_w + dk_panel_folding_dimensions[1][1]*(dk_panel_folding_nmbr>0) - panel_folding_gap2, dy, 0.0005
+	circle2 -dx+r, dy, 0.0005
+	RETURN
+
+! ----------------------------------------------------------------- [ Positionierungen ]
+
+"goToOpeningCornerGL":
+"goToOpeningCornerSR":
+	ADD2 offsetLeftEgressCorner, offsetFrameSurfaceBS
+	flip = 1 : MUL2 1 - 2*flip,1
+	RETURN
+	
+"goToOpeningCornerG":
+"goToOpeningCornerGR":
+"goToOpeningCornerSL":
+	ADD2 offsetRightEgressCorner, offsetFrameSurfaceBS
+	flip = 0 : MUL2 1 - 2*flip,1
+	RETURN
+
+! ----------------------------------------------------------------- [ Öffnungslinien ]
+
+"drawOpeningLines2D":
+
+	! Stift 
+	gs_opLinePen = dk_cont_pens[dka_opline2D]
+
+	! Nach MVO?
+	IF dk_opening2D = 4 THEN
+
+		result = 0
+		sts = LIBRARYGLOBAL ("LibraryGlobals13", "D_showBOpLine2D", result)
+
+		IF sts > 0 AND result THEN
+
+			! Stift für Linien
+			sts = LIBRARYGLOBAL ("LibraryGlobals13", "D_opLinePen", gs_opLinePen)
+
+			! Form des Aufschlages
+			sts = LIBRARYGLOBAL ("LibraryGlobals13", "D_showBOpLine2D", dk_opening2D)
+
+			! Linientypen dieses Flügels nach MVO
+			sts = LIBRARYGLOBAL ("LibraryGlobals13", "D_swingLineType2", or_swingLineType2)
+			sts = LIBRARYGLOBAL ("LibraryGlobals13", "D_swingLineType", or_swingLineType)
+
+			ELSE
+
+			! deaktiviert
+			dk_opening2D = 0
+
+			ENDIF
+		ENDIF
+
+	! Ausgabe Gangflügel
+	IF dk_opening2D AND bs_door_leafs > 0 THEN
+
+		DRAWINDEX 10
+		IF gs_opLinePen>0 THEN PEN gs_opLinePen ELSE PEN SYMB_VIEW_PEN
+
+		! Transformation und Berechnung Koordinaten
+		GOSUB "goToOpeningCornerG" + ac_OpeningSide ! Auf Öffnungsecke
+		IF SYMB_MIRRORED THEN flip = 1-flip
+
+		LINE_TYPE or_swingLineType
+		! text2 0,0, gs_open_2D
+
+		! Öffnungsparameter für Öffnungsbögen
+		IF dk_LOD[dki_LOD] < 350 THEN
+			w  = gs_open_2D : GOSUB "OpeningLineGF_300"
+			ELSE
+			w  = gs_open_2D : GOSUB "OpeningLineGF_"+STR(dk_LOD[dki_LOD],1,0)
+			ENDIF
+
+		! Berechnung und Ausgabe
+		IF gs_open_2D > 0 THEN
+
+			! Öffnungsbogen oder -linie
+			IF dk_opening2D = 1 THEN
+				ARC2 -dx, dy, r, -dw, w
+				ELSE
+				LINE2 -dx + COS(-dw)*r, dy + sin(-dw)*r, -dx+x, dy+y
+				ENDIF
+
+			! Türblattlinie, wenn Türblatt nicht dargestellt oder eigener Winkel
+			IF dk_visibleLeaf = 0 OR ABS(dk_open_leaf[dka_leaf_angle2D] - gs_open_2D) > tlr THEN
+				s = 0.09 / 2 : k = dk_openingLineSymbol
+				IF k AND dk_LOD[dki_LOD]>200 THEN
+					GOSUB "OpeningLineLeafWithSymbol"
+					ELSE
+					LINE2 -dx,dy, -dx+x, dy+y
+					ENDIF
+				ENDIF
+
+			! msk = 1
+			! poly2_ 5, 1+2+4,
+			! 	-dx, dy, msk,
+			! 	-dx, dy, 900+msk,
+			! 	-dx + r, dy, msk,
+			! 	-dx+x, dy+y, 3000+msk,
+			! 	-dx, dy, -1
+
+			ENDIF
+
+		! Fangpunkte Aufschlagbogen
+		htspt = htspt+1 : HOTSPOT2 -dx, dy, htspt, gs_open_2D,6 + 512*flip !Mittelpunkt
+		htspt = htspt+1 : HOTSPOT2 -dx+r,dy, htspt, gs_open_2D,4+128 !Basispunkt
+		htspt = htspt+1 : HOTSPOT2 -dx+x, dy+y, htspt,gs_open_2D,5 !Beweglicher Punkt
+
+		IF dk_visibleLeaf THEN
+			! Auf Türblattecke drehen
+			ADD2 -dx, dy
+			ROT2 dw
+			ADD2 dx, -dy
+
+			IF dk_opening_locked THEN
+				! Drehung 2D/3D gelockt
+				w = dk_open_leaf[dka_leaf_angle3D]
+				x = COS(w)*r : y  = SIN(w)*r
+				htspt = htspt+1 : HOTSPOT2 -dx, dy, htspt, dk_open_leaf[dka_leaf_angle3D],6 + 512*flip !Mittelpunkt
+				htspt = htspt+1 : HOTSPOT2 -dx+r,dy, htspt, dk_open_leaf[dka_leaf_angle3D],4+128 !Basispunkt
+				htspt = htspt+1 : HOTSPOT2 -dx+x, dy+y, htspt,dk_open_leaf[dka_leaf_angle3D],5 !Beweglicher Punkt
+
+				ELSE
+
+				! Drehung 2D
+				w  = dk_open_leaf[dka_leaf_angle2D]
+				x  = COS(w)*r : y  = SIN(w)*r
+				htspt = htspt+1 : HOTSPOT2 -dx, dy, htspt, dk_open_leaf[dka_leaf_angle2D],6 + 512*flip !Mittelpunkt
+				htspt = htspt+1 : HOTSPOT2 -dx+r,dy, htspt, dk_open_leaf[dka_leaf_angle2D],4+128 !Basispunkt
+				htspt = htspt+1 : HOTSPOT2 -dx+x, dy+y, htspt,dk_open_leaf[dka_leaf_angle2D],5 !Beweglicher Punkt
+				ENDIF
+			
+			! Anfangsdrehung zurück
+			DEL 3
+			ENDIF
+
+		DEL 2
+
+		ENDIF
+
+	! Ausgabe Standflügel
+	IF dk_opening2D AND bs_door_leafs > 1 THEN
+
+		! Transformation und Berechnung Koordinaten
+		GOSUB "goToOpeningCornerS" + ac_OpeningSide ! Auf Öffnungsecke
+		IF SYMB_MIRRORED THEN flip = 1-flip
+
+		LINE_TYPE or_swingLineType2
+		! text2 0,0, gs_open_2D_s
+
+		! Öffnungsparameter für Öffnungsbögen
+		IF dk_LOD[dki_LOD] < 350 THEN
+			w  = gs_open_2D_s : GOSUB "OpeningLineSF_300"
+			ELSE
+			w  = gs_open_2D_s : GOSUB "OpeningLineSF_"+STR(dk_LOD[dki_LOD],1,0)
+			ENDIF
+
+		! Berechnung und Ausgabe
+		IF gs_open_2D_s > 0 THEN
+
+			! Öffnungsbogen oder -linie
+			IF dk_opening2D = 1 THEN
+				ARC2 -dx, dy, r, dw, w
+				ELSE
+				LINE2 -dx + COS(dw)*r, dy + sin(dw)*r, -dx+x, dy+y
+				ENDIF
+
+			! Türblattlinie, wenn Türblatt nicht dargestellt oder eigener Winkel
+			IF dk_visibleLeaf = 0 OR ABS(dk_open_leaf[dka_leaf2_angle2D] - gs_open_2D_s) > tlr THEN
+				s = 0.09 / 2 : k = dk_openingLineSymbol2
+				IF k AND dk_LOD[dki_LOD]>200 THEN
+					GOSUB "OpeningLineLeafWithSymbol"
+					ELSE
+					LINE2 -dx,dy, -dx+x, dy+y
+					ENDIF
+				ENDIF
+
+			! msk = 1
+			! poly2_ 5, 1+2+4,
+			! 	-dx, dy, msk,
+			! 	-dx, dy, 900+msk,
+			! 	-dx + r, dy, msk,
+			! 	-dx+x, dy+y, 3000+msk,
+			! 	-dx, dy, -1
+
+			ENDIF
+
+		! Fangpunkte Aufschlagbogen
+		htspt = htspt+1 : HOTSPOT2 -dx, dy, htspt, gs_open_2D_s,6 + 512*flip !Mittelpunkt
+		htspt = htspt+1 : HOTSPOT2 -dx + r, dy, htspt, gs_open_2D_s,4+128 !Basispunkt
+		htspt = htspt+1 : HOTSPOT2 -dx+x, dy+y, htspt,gs_open_2D_s,5 !Beweglicher Punkt
+
+		! Und Türblatt
+		IF dk_visibleLeaf THEN
+			IF develop THEN GOSUB "devPos1"
+			! IF dk_LOD[dki_LOD] > 400 THEN GOSUB "OpeningLineSF_400"
+
+			! Auf Türblattecke drehen
+			ADD2 -dx, dy
+			ROT2 dw
+			ADD2 dx, -dy
+
+			IF dk_opening_locked THEN
+
+				! Drehung 2D/3D gelockt
+				w = dk_open_leaf[dka_leaf2_angle3D]
+				x = COS(w)*r : y  = SIN(w)*r
+				htspt = htspt+1 : HOTSPOT2 -dx, dy, htspt, dk_open_leaf[dka_leaf2_angle3D],6 + 512*flip !Mittelpunkt
+				htspt = htspt+1 : HOTSPOT2 -dx+r,dy, htspt, dk_open_leaf[dka_leaf2_angle3D],4+128 !Basispunkt
+				htspt = htspt+1 : HOTSPOT2 -dx+x, dy+y, htspt,dk_open_leaf[dka_leaf2_angle3D],5 !Beweglicher Punkt
+
+				ELSE
+
+				! Drehung 2D
+				w  = dk_open_leaf[dka_leaf2_angle2D]
+				x  = COS(w)*r : y  = SIN(w)*r
+				htspt = htspt+1 : HOTSPOT2 -dx, dy, htspt, dk_open_leaf[dka_leaf2_angle2D],6 + 512*flip !Mittelpunkt
+				htspt = htspt+1 : HOTSPOT2 -dx+r,dy, htspt, dk_open_leaf[dka_leaf2_angle2D],4+128 !Basispunkt
+				htspt = htspt+1 : HOTSPOT2 -dx+x, dy+y, htspt,dk_open_leaf[dka_leaf2_angle2D],5 !Beweglicher Punkt
+				ENDIF
+			
+			! Anfangsdrehung zurück
+			DEL 3
+			ENDIF
+
+		DEL 2
+
+		ENDIF
+
+	RETURN
+
+"OpeningLineLeafWithSymbol":
+	ADD2 -dx+x/2, dy+y/2 : ROT2 w
+	IF k = 1 THEN ! Kreis
+		LINE2 -r/2,0, -s,0 : LINE2 r/2,0, s,0 :  LINE_TYPE 1
+		CIRCLE2 0, 0, s
+		ELSE ! Quadrat
+		IF k = 2 THEN 
+			LINE2 -r/2,0, -s,0 : LINE2 r/2,0, s,0 :  LINE_TYPE 1
+			RECT2 -s,-s,s,s
+			ELSE
+			IF k = 3 THEN ! Raute
+				LINE2 -r/2,0, -s*1.4,0 : LINE2 r/2,0, s*1.4,0 :  LINE_TYPE 1
+				ROT2 45
+				RECT2 -s,-s,s,s
+				DEL 1
+				ELSE
+				IF k = 4 THEN ! Kreuz
+					LINE2 -r/2,0, r/2,0 :  LINE_TYPE 1
+					LINE2 -s,-s, s,s
+					LINE2 -s,s, s,-s
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+	DEL 2
+	RETURN
+
+
+! ----------------------------------------------------------------- [ Türsymbolik ]
+
+"DisplayPreviewIcon":
+
+	! Seitenfeld links
+	ADD2 0.6,0
+	IF iconLeft > 4 THEN
+		PICTURE2 21 + iconLeft,0.2,0.8,0
+		ELSE
+		PICTURE2 21 + iconLeft,0.07,0.8,0
+		ENDIF
+	DEL 1
+
+	! Seitenfeld rechts
+	IF iconRight > 4 THEN
+		PICTURE2 21 + iconRight,0.2,0.8,0
+		ELSE
+		ADD2 0.13,0
+		PICTURE2 21 + iconRight,0.07,0.8,0
+		DEL 1
+		ENDIF
+
+	!  Tür
+	IF iconDoor > 0 AND ( ac_OpeningSide = "L" OR gs_list_orientationDef_m ) THEN
+		ADD2 0.18,0
+		PICTURE2 29 + iconDoor,0.44,0.75,0
+		DEL 1
+		ENDIF
+
+	IF iconDoor > 0 AND ( ac_OpeningSide = "R" AND gs_list_orientationDef_m = 0 ) THEN
+		ADD2 0.62,0 : MUL2 -1, 1
+		PICTURE2 29 + iconDoor,0.44,0.75,0
+		DEL 2
+		ENDIF
+
+	! Sturz / Oberlicht
+	ADD2 0.18,0.73
+	PICTURE2 17 + iconTop ,0.44,0.07,0
+	DEL 1
+
+	IF iconTransom > 0 AND iconTransom < 10 THEN
+		ADD2 0.18,0.61
+		PICTURE2 8 + iconTransom,0.44,0.12,0
+		DEL 1
+		ENDIF
+
+	! Anforderungen
+	s = 0.12 : t = 0.01
+	ADD2 0.7 + 0.12*(iconLeft > 4), 0.8 - s : n = 1
+
+	IF bs_demand_FireResistance = 1 THEN
+		PICTURE2 "dk_ui_demands_fire 36x36.png", s,s, 1
+		ADD2 0, -s -t : n = n+1
+		ENDIF
+	IF bs_demand_SmokeResistance = 1 THEN
+		PICTURE2 "dk_ui_demands_smoke 36x36.png", s,s, 1
+		ADD2 0, -s -t : n = n+1
+		ENDIF
+
+	IF bs_demand_NoiseInsulaion = 1 THEN
+		PICTURE2 "dk_ui_demands_noise 36x36.png", s,s, 1
+		ADD2 0, -s -t : n = n+1
+		ENDIF
+
+	IF bs_demand_MoistureProofing = 1 THEN
+		PICTURE2 "dk_ui_demands_moisture 36x36.png", s,s, 1
+		ADD2 0, -s -t : n = n+1
+		ENDIF
+
+	! DEL n
+	! ADD2 0.7 + 0.12*(iconLeft > 4) + s + t, 0.8 - s : n = 1
+
+	IF bs_demand_Accessibility = 1 THEN
+		PICTURE2 "dk_ui_demands_accessability 36x36.png", s,s, 1
+		ADD2 0, -s -t : n = n+1
+		ENDIF
+
+	IF bs_demand_AdmissionControl = 1 THEN
+		PICTURE2 "dk_ui_demands_admission 36x36.png", s,s, 1
+		ADD2 0, -s -t : n = n+1
+		ENDIF
+
+	IF bs_demand_EscapeRoute = 1 THEN
+		PICTURE2 "dk_ui_demands_escape 36x36.png", s,s, 1
+		ADD2 0, -s -t : n = n+1
+		ENDIF
+
+	IF bs_door_electrified > 0 THEN
+		PICTURE2 "dk_electric 16x16.png", s,s, 1
+		ADD2 0, -s -t : n = n+1
+		ENDIF
+
+	DEL n
+	RETURN
+
+
+! ----------------------------------------------------------------- [ Minimale Bewegungsflächen ]
+
+"getAttributesMS":	! #### Attribute aus den Modelleinstellungen lesen
+
+	sts = 0
+
+	IF BITTEST(msType,1) AND versionStamp > 1.52 THEN
+		! »»» Darstellungsattribute aus eigenem MVO Objekt holen
+		sts = LIBRARYGLOBAL ("BIM-all-doors_mvo", "dk_fill", reqMSFillType)
+		sts = LIBRARYGLOBAL ("BIM-all-doors_mvo", "dk_fill_pen", reqMSFillPen)
+		sts = LIBRARYGLOBAL ("BIM-all-doors_mvo", "dk_bkg_pen", reqMSFillBackPen)
+		sts = LIBRARYGLOBAL ("BIM-all-doors_mvo", "dk_linetype", reqMSContLineType)
+		sts = LIBRARYGLOBAL ("BIM-all-doors_mvo", "dk_cont_pen", reqMSContLinePen)
+		ENDIF
+
+	IF BITTEST(msType,0) OR sts = 0 THEN
+		! »»» Darstellungsattribute aus Graphisoft-Modul holen
+		sts = LIBRARYGLOBAL ("LibraryGlobals13", "MSFillType", reqMSFillType)
+		sts = LIBRARYGLOBAL ("LibraryGlobals13", "MSFillPen", reqMSFillPen)
+		sts = LIBRARYGLOBAL ("LibraryGlobals13", "MSFillBackPen", reqMSFillBackPen)
+		sts = LIBRARYGLOBAL ("LibraryGlobals13", "MSContLineType", reqMSContLineType)
+		sts = LIBRARYGLOBAL ("LibraryGlobals13", "MSContLinePen", reqMSContLinePen)
+		ENDIF
+
+	RETURN
+
+"showMinSpace":
+
+	DRAWINDEX 10
+
+	GOSUB "goToOpeningCornerG" + STRSUB(ac_OpeningSide,1,bs_door_leafs) ! Auf Öffnungsecke
+	GOSUB "getAttributesMS"
+
+	! #### Lichter Durchgang
+	IF BITTEST(msType,1) THEN
+
+		! RECT2 ac_egress_width-bs_UsableClearance, -gs_vt,  ac_egress_width, ac_leaf_width + bs_ancor_hinge_y + HingePanelGap
+
+		! »»» Koordinaten Polygon
+		s = ac_leaf_width + bs_ancor_hinge_y + HingePanelGap
+		msk = 1
+		PUT ac_egress_width - dk_UCdistanceRight - bs_UsableClearance, -gs_vt, msk,
+			ac_egress_width - dk_UCdistanceRight - bs_UsableClearance, s, msk,
+			ac_egress_width - dk_UCdistanceRight - bs_UsableClearance/2, s + 0.1, msk,
+			ac_egress_width - dk_UCdistanceRight, s, msk,
+			ac_egress_width - dk_UCdistanceRight, -gs_vt, msk,
+			ac_egress_width - dk_UCdistanceRight - bs_UsableClearance/2, -gs_vt-0.1, msk
+
+		ENDIF
+
+	! #### Bewegungsfläche Bandseite
+	IF BITTEST(msType,0) AND bs_door_leafs > 0 THEN
+
+		! »»» Bewegungsfläche in Türniesche?
+		sts = 0
+		IF offsetFrameSurfaceBS < 0 THEN
+			! RECHTE SEITE
+			IF	gs_sidelight_right * gs_sidelight_width_right + \	!mit Seitenfeld
+				(1-gs_sidelight_right) * gs_frame_width_right \		!ohne Seitenfeld
+				< msOpeningSideWidth1 * (ac_OpeningSide = "L") + \
+				msOpeningSideWidth2 * (ac_OpeningSide = "R") - tlr THEN sts = 1
+			! LINKE SEITE
+			IF	gs_sidelight_left * gs_sidelight_width_left + \	!mit Seitenfeld
+				(1-gs_sidelight_left) * gs_frame_width_left \		!ohne Seitenfeld
+				< msOpeningSideWidth1 * (ac_OpeningSide = "R") + \
+				msOpeningSideWidth2 * (ac_OpeningSide = "L") - tlr THEN sts = 1
+			ENDIF
+		s = -sts * offsetFrameSurfaceBS  !frame2wallSurfaceBS
+
+		! »»» Koordinaten Polygon
+		msk = 1
+		PUT ac_egress_width + msOpeningSideWidth1,  s, msk,
+			ac_egress_width + msOpeningSideWidth1,  s + ms_openingSDepth, msk,
+			-msOpeningSideWidth2,  s + ms_openingSDepth, msk,
+			-msOpeningSideWidth2,  s, msk
+
+		! »»» Fangpunkte
+		htspt = htspt+1 : HOTSPOT2 ac_egress_width + msOpeningSideWidth1,  s + ms_openingSDepth, htspt
+		htspt = htspt+1 : HOTSPOT2 -msOpeningSideWidth2,  s + ms_openingSDepth, htspt
+
+		ENDIF
+
+	! #### Polygon ausgeben
+	IF nsp > 8 THEN 
+		LINE_TYPE reqMSContLineType
+		PEN reqMSContLinePen
+		FILL reqMSFillType
+
+		POLY2_B NSP/3, 1+2+4,reqMSFillPen,reqMSFillBackPen, GET(NSP)
+		ENDIF
+
+	! #### Bewegungsfläche Bandgegenseite
+	IF BITTEST(msType,0) AND bs_door_leafs > 0 THEN
+
+		! »»» Bewegungsfläche in Türniesche?
+		sts = 0
+		IF offsetFrameSurfaceBGS < 0 THEN
+			! RECHTE SEITE
+			IF	gs_sidelight_right * gs_sidelight_width_right + \	!mit Seitenfeld
+				(1-gs_sidelight_right) * gs_frame_width_right \		!ohne Seitenfeld
+				< msOppositeSideWidth1 * (ac_OpeningSide = "L") + \
+				msOppositeSideWidth2 * (ac_OpeningSide = "R") - tlr THEN sts = 1
+			! LINKE SEITE
+			IF	gs_sidelight_left * gs_sidelight_width_left + \	!mit Seitenfeld
+				(1-gs_sidelight_left) * gs_frame_width_left \		!ohne Seitenfeld
+				< msOppositeSideWidth1 * (ac_OpeningSide = "R") + \
+				msOppositeSideWidth2 * (ac_OpeningSide = "L") - tlr THEN sts = 1
+			ENDIF
+		IF	(gs_sidelight_left OR \
+			(msOppositeSideWidth1 < tlr) * (ac_OpeningSide = "R") + \
+			(msOppositeSideWidth2 < tlr) * (ac_OpeningSide = "L")) AND \
+			(gs_sidelight_right OR \
+			(msOppositeSideWidth1 < tlr) * (ac_OpeningSide = "L") + \
+			(msOppositeSideWidth2 < tlr) * (ac_OpeningSide = "R")) THEN
+			s = dk_frame_thk_post + sts * (frame2wallSurfaceBGS - (gs_frame_thk-dk_frame_thk_post))
+			ELSE
+			IF dk_frametype = "UZ" OR dk_frametype = "FB" THEN
+				s = sts * offsetFrameSurfaceBGS
+				ELSE
+				s = gs_frame_thk + sts * frame2wallSurfaceBGS
+				ENDIF
+			ENDIF
+
+		! »»» Koordinaten Polygon
+		msk = 1
+		PUT	-msOppositeSideWidth2, -s, msk,
+			-msOppositeSideWidth2, -s-ms_oppositeSDepth, msk,
+			ac_egress_width+msOppositeSideWidth1, -s-ms_oppositeSDepth, msk,
+			ac_egress_width+msOppositeSideWidth1, -s, msk
+
+		! »»» Fangpunkte
+		htspt = htspt+1 : HOTSPOT2 -msOppositeSideWidth2, -s-ms_oppositeSDepth, htspt
+		htspt = htspt+1 : HOTSPOT2 ac_egress_width+msOppositeSideWidth1, -s-ms_oppositeSDepth, htspt
+
+		ENDIF
+
+	! #### Polygon ausgeben
+	IF nsp > 8 THEN 
+		POLY2_B NSP/3, 1+2+4,reqMSFillPen,reqMSFillBackPen, GET(NSP)
+		ENDIF
+
+	DRAWINDEX 40
+
+	DEL 2
+
+	RETURN

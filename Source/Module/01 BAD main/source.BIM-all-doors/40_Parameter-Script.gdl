@@ -1,0 +1,2061 @@
+
+! =============================================================================
+! GLOBAL SETTINGS
+! =============================================================================
+
+IF bs_door_manufacturer = "develop" AND develop =0 THEN
+	develop = 1
+	PARAMETERS develop = develop, bs_door_manufacturer = ""
+	ENDIF
+IF NOT(develop) THEN HIDEPARAMETER all
+
+! #### Substitute dropped parameters
+
+LOCK "bs_door_OpeningType"
+LOCK "bs_OuterFrame_width", "bs_OuterFrame_height"
+
+PARAMETERS bs_door_OpeningType = "Drehflügel"
+PARAMETERS gs_frame_type = dk_frametype
+
+IF bs_door_manufacturer = "reset_undefined" THEN
+	IF bs_quality_FireResistanceRating 	= "undefiniert" THEN PARAMETERS bs_quality_FireResistanceRating = "[-]"
+	IF bs_quality_SmokeResistance 		= "undefiniert" THEN PARAMETERS bs_quality_SmokeResistance = "[-]"
+	IF bs_quality_NoiseInsulaion 		= "undefiniert" THEN PARAMETERS bs_quality_NoiseInsulaion = "[-]"
+	IF bs_quality_ThermalInsulaion 		= "undefiniert" THEN PARAMETERS bs_quality_ThermalInsulaion = "[-]"
+	IF bs_quality_BurglaryProtection 	= "undefiniert" THEN PARAMETERS bs_quality_BurglaryProtection = "[-]"
+	IF bs_quality_StrafingProtection 	= "undefiniert" THEN PARAMETERS bs_quality_StrafingProtection = "[-]"
+	IF bs_quality_DetonationProtection 	= "undefiniert" THEN PARAMETERS bs_quality_DetonationProtection = "[-]"
+	IF bs_quality_RadiationProtection 	= "undefiniert" THEN PARAMETERS bs_quality_RadiationProtection = "[-]"
+	IF bs_quality_LaserProtection 		= "undefiniert" THEN PARAMETERS bs_quality_LaserProtection = "[-]"
+	IF bs_quality_FloodProtection 		= "undefiniert" THEN PARAMETERS bs_quality_FloodProtection = "[-]"
+	IF bs_quality_VandalismProtection 	= "undefiniert" THEN PARAMETERS bs_quality_VandalismProtection = "[-]"
+	IF bs_quality_GasDefense 			= "undefiniert" THEN PARAMETERS bs_quality_GasDefense = "[-]"
+	IF bs_quality_EscapeRoute			= "undefiniert" THEN PARAMETERS bs_quality_EscapeRoute = "[-]"
+	IF bs_quality_SHE					= "undefiniert" THEN PARAMETERS bs_quality_SHE = "[-]"
+	IF bs_quality_SelfClosing			= "undefiniert" THEN PARAMETERS bs_quality_SelfClosing = "[-]"
+	IF bs_quality_Automation			= "undefiniert" THEN PARAMETERS bs_quality_Automation = "[-]"
+	IF bs_quality_AntiTrapProtection	= "undefiniert" THEN PARAMETERS bs_quality_AntiTrapProtection = "[-]"
+	IF bs_quality_ClimateClass			= "undefiniert" THEN PARAMETERS bs_quality_ClimateClass = "[-]"
+	IF bs_quality_WetRoom				= "undefiniert" THEN PARAMETERS bs_quality_WetRoom = "[-]"
+	IF bs_quality_DampArea				= "undefiniert" THEN PARAMETERS bs_quality_DampArea = "[-]"
+	IF bs_quality_Tightness				= "undefiniert" THEN PARAMETERS bs_quality_Tightness = "[-]"
+	IF bs_quality_Hygiene				= "undefiniert" THEN PARAMETERS bs_quality_Hygiene = "[-]"
+	IF bs_quality_Sustainability		= "undefiniert" THEN PARAMETERS bs_quality_Sustainability = "[-]"
+	IF bs_quality_ExplosionSafety		= "undefiniert" THEN PARAMETERS bs_quality_ExplosionSafety = "[-]"
+	IF bs_quality_MechanicalLoad		= "undefiniert" THEN PARAMETERS bs_quality_MechanicalLoad = "[-]"
+	IF bs_quality_CorrosionPrevention	= "undefiniert" THEN PARAMETERS bs_quality_CorrosionPrevention = "[-]"
+	IF bs_quality_UsefulLife			= "undefiniert" THEN PARAMETERS bs_quality_UsefulLife = "[-]"
+	IF bs_quality_IntensityOfUse		= "undefiniert" THEN PARAMETERS bs_quality_IntensityOfUse = "[-]"
+	IF bs_quality_EMShielding			= "undefiniert" THEN PARAMETERS bs_quality_EMShielding = "[-]"
+	IF bs_quality_BurglaryAlarmSystem	= "undefiniert" THEN PARAMETERS bs_quality_BurglaryAlarmSystem = "[-]"
+	IF bs_quality_AccidentPrevention	= "undefiniert" THEN PARAMETERS bs_quality_AccidentPrevention = "[-]"
+	IF bs_quality_Accessibility			= "undefiniert" THEN PARAMETERS bs_quality_Accessibility = "[-]"
+	IF bs_quality_ActuatingForce		= "undefiniert" THEN PARAMETERS bs_quality_ActuatingForce = "[-]"
+	IF bs_ac_identify1					= "undefiniert" THEN PARAMETERS bs_ac_identify1 = "[-]"
+	IF bs_ac_identify2					= "undefiniert" THEN PARAMETERS bs_ac_identify2 = "[-]"
+	IF bs_ac_opening1					= "undefiniert" THEN PARAMETERS bs_ac_opening1 = "[-]"
+	IF bs_ac_opening2					= "undefiniert" THEN PARAMETERS bs_ac_opening2 = "[-]"
+	IF bs_ac_closing					= "undefiniert" THEN PARAMETERS bs_ac_closing = "[-]"
+	IF bs_ac_status						= "undefiniert" THEN PARAMETERS bs_ac_status = "[-]"
+	ENDIF
+
+! ----------------------------------- PARAMETER VALUE LIST [Extendable Component Door] (start)
+
+VALUES{2} "language" 1, "Deutsch", 4, "English"
+VALUES "show_start_screen" 0, 1, 2
+VALUES "A" 0.635, 0.76, 0.885, 1.01, 1.135, 1.26, 1.51, 1.76, 1.885, 2.01, 2.135, 2.26, 2.51,
+	2.76, 3.01, CUSTOM
+VALUES "ac_wallhole_width" 0.635, 0.76, 0.885, 1.01, 1.135, 1.26, 1.51, 1.76, 1.885, 2.01, 2.135, 2.26, 2.51,
+	2.76, 3.01, CUSTOM
+VALUES "ac_reveal_width" 0.635, 0.76, 0.885, 1.01, 1.135, 1.26, 1.51, 1.76, 1.885, 2.01, 2.135, 2.26, 2.51,
+	2.76, 3.01, CUSTOM
+VALUES "ac_baurichtmass_width" 0.625, 0.75, 0.875, 1, 1.125, 1.25, 1.5, 1.75, 1.875, 2, 2.125, 2.25, 2.5, 2.75,
+	3, CUSTOM
+VALUES "ac_unit_width" 0.625, 0.75, 0.875, 1, 1.125, 1.25, 1.5, 1.75, 1.875, 2, 2.125, 2.25, 2.5, 2.75,
+	3, CUSTOM
+VALUES "ac_egress_width" 0.525, 0.65, 0.775, 0.9, 1.025, 1.15, 1.4, 1.65, 1.775, 1.9, 2.025, 2.15, 2.4, 2.65,
+	2.9, CUSTOM
+VALUES "bs_FrameRebate_width" 0.555, 0.68, 0.805, 0.93, 1.055, 1.18, 1.43, 1.68, 1.805, 1.93, 2.055, 2.18, 2.43,
+	2.68, 2.93, CUSTOM
+VALUES "bs_OuterFrame_width" 0.895, 0.995, 1.045, 1.095, 1.195, 1.295, 1.395, 1.445, CUSTOM
+VALUES "B" 2.01, 2.135, 2.26, 2.51, 2.76, 3.01, CUSTOM
+VALUES "ac_wallhole_height" 2.01, 2.135, 2.26, 2.51, 2.76, 3.01, CUSTOM
+VALUES "ac_reveal_height" 2.01, 2.135, 2.26, 2.51, 2.76, 3.01, CUSTOM
+VALUES "ac_baurichtmass_height" 2, 2.125, 2.25, 2.5, 2.75, 3, CUSTOM
+VALUES "ac_unit_height" 2, 2.125, 2.25, 2.5, 2.75, 3, CUSTOM
+VALUES "ac_egress_height" 1.95, 2.075, 2.2, 2.45, 2.7, 2.95, CUSTOM
+VALUES "bs_FrameRebate_height" 1.965, 2.09, 2.215, 2.465, 2.715, 2.965, CUSTOM
+VALUES "bs_OuterFrame_height" 2.095, 2.195, 2.295, 2.395, 2.445, CUSTOM
+VALUES{2} "gs_nominal_size" 1, "Rohbauöffnung ist Nominalmaß", 2, "Rohbaulichte ist Nominalmaß", 4, "Rahmen-Außenmaß ist Nominalmaß",
+	8, "Lichtes Zargenmaß ist Nominalmaß", 16, "Türblattmaß ist Nominalmaß", 32, "Baurichtmaß ist Nominalmaß",
+	64, "Freies Durchgangsmaß ist Nominalmaß"
+VALUES{2} "dk_tolerance" 0, "Keine Bautoleranzen", 1, "wie Baurichtmaß", 2, "individuell"
+VALUES{2} "dk_UCrelation" 2, "90° (auf Beschlag)", 4, "maximal (auf Beschlag)", 8, "nach 2D (auf Beschlag)",
+	16, "nach 3D (auf Beschlag)", 3, "90° (auf Türblatt)", 5, "maximal (auf Türblatt)",
+	9, "nach 2D (auf Türblatt)", 17, "nach 3D (auf Türblatt)", 34, "90° (auf Beschlag) - GF fest",
+	36, "maximal (auf Beschlag) - GF fest", 40, "nach 2D (auf Beschlag) - GF fest", 48, "nach 3D (auf Beschlag) - GF fest",
+	35, "90° (auf Türblatt) - GF fest", 37, "maximal (auf Türblatt) - GF fest", 41, "nach 2D (auf Türblatt) - GF fest",
+	49, "nach 3D (auf Türblatt) - GF fest"
+VALUES{2} "msType" 0, "Aus", 1, "Bewegungsflächen", 2, "Lichter Durchgang", 5, "Bewegungsflächen (Modelldarstellung)",
+	6, "Lichter Durchgang (Modelldarstellung)"
+VALUES{2} "AC_WallContours" 0, "Keine Linien", 1, "Leibungslinien und Wandaußenseitenkanten", 2, "Nur die seitlichen Leibungslinien",
+	3, "Wandaußenseitenkanten"
+VALUES{2} "AC_Hole_Hotspot_Control" 0, "keine", 1, "in 2D", 2, "in 3D", 3, "alle"
+VALUES{2} "iHoleUnderThreshold" 0, "Wandöffnung wie Rohbauöffnung", 1, "Wandöffnung zum aktuellen Geschoss", 2, "Wandöffnung zu Wandunterkante",
+	3, "Wandöffnung individuelle Höhe"
+VALUES{2} "gs_wallcontour_id" 0, "Aus", 1, "links", 2, "rechts", 3, "beide Seiten"
+VALUES{2} "dk_lintelcontour_id" 0, "Aus", 1, "Bandseite", 2, "Bandgegenseite", 3, "beide Seiten", 4, "Nach Modelleinstellung"
+VALUES "dk_wallcontourstyle_LoD" 2, 3, 4, 5, 6
+VALUES{2} "bs_demand_FireResistance" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_demand_SmokeResistance" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_demand_NoiseInsulaion" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_demand_Accessibility" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_demand_AdmissionControl" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_demand_MoistureProofing" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_demand_EscapeRoute" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES "bs_quality_SHE" "[-]", "nein", "Nachströmen", "Abströmen", CUSTOM
+VALUES "bs_quality_FireResistanceRating" "[-]", "nein", "T30", "T60", "T90", "EI30", "EI60", "EI90", "EI90-M", "EI30-ef",
+	"EI60-ef", "EI90-ef", CUSTOM
+VALUES "bs_quality_SmokeResistance" "[-]", "nein", "Sm", "Sa", "E", CUSTOM
+VALUES "bs_quality_NoiseInsulaion" "[-]", "nein", "SK1", "SK2", "SK3", CUSTOM
+VALUES "bs_quality_ThermalInsulaion" "[-]", "nein", "0,8", "0,9", "1,0", "1,1", "1,2", "1,5", "2,0", CUSTOM
+VALUES "bs_quality_RadiationProtection" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_BurglaryProtection" "[-]", "nein", "RC1N", "RC2N", "RC2N", "RC3", "RC4", "RC5", "RC6", CUSTOM
+VALUES "bs_quality_StrafingProtection" "[-]", "nein", "BR1", "BR1-S", "BR1-NS", "BR2", "BR2-S", "BR2-NS", "BR3", "BR3-S",
+	"BR3-NS", "BR4", "BR4-S", "BR4-NS", "BR5", "BR5-S", "BR5-NS", "BR6", "BR6-S", "BR6-NS",
+	"BR7", "BR7-S", "BR7-NS", "SG1", "SG1-S", "SG1-NS", "SG2", "SG2-S", "SG2-NS", CUSTOM
+VALUES "bs_quality_DetonationProtection" "[-]", "nein", "ER1", "ER2", "ER3", "ER4", CUSTOM
+VALUES "bs_quality_LaserProtection" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_FloodProtection" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_ClimateClass" "[-]", "nein", "I", "II", "III", CUSTOM
+VALUES "bs_quality_MechanicalLoad" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_VandalismProtection" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_AccidentPrevention" "[-]", "nein", "nach DGVU", CUSTOM
+VALUES "bs_quality_WetRoom" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_DampArea" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_GasDefense" "[-]", "nein", "Unterdruck", "Überdruck", CUSTOM
+VALUES "bs_quality_Tightness" "[-]", "nein", "luftdicht", "dampfdicht", "schlagregendicht", CUSTOM
+VALUES "bs_quality_BurglaryAlarmSystem" "[-]", "nein", "A", "B", "C"
+VALUES "bs_quality_EscapeRoute" "[-]", "-", "FW", "RW", "FW+RW"
+VALUES "bs_quality_SelfClosing" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_Automation" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_AntiTrapProtection" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_Hygiene" "[-]", "nein", "desinfektionsmittelfest", "Hochdruckreinigung", CUSTOM
+VALUES "bs_quality_Sustainability" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_UsefulLife" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_IntensityOfUse" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_CorrosionPrevention" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_EMShielding" "[-]", "ja", "nein", CUSTOM
+VALUES "bs_quality_Accessibility" "[-]", "nein", "DIN 18040", "DIN 18040 (R)", CUSTOM
+VALUES "bs_quality_ActuatingForce" "[-]", "nein", "CEN/TR 15894:2009", "DIN 18040", "DIN 18040 (R)", CUSTOM
+VALUES "bs_ac_identify1" "[-]", "J", "ID", "ZID"
+VALUES "bs_ac_identify2" "[-]", "J", "ID", "ZID"
+VALUES "bs_ac_opening1" "[-]", "MÖ", "UÖ", "AÖ"
+VALUES "bs_ac_opening2" "[-]", "MÖ", "UÖ", "AÖ"
+VALUES "bs_ac_closing" "[-]", "MS", "PS", "GS"
+VALUES "bs_ac_status" "[-]", "G", "ZO", "IBO"
+VALUES{2} "bs_ctrl_leaf_position" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_locking" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_handle_actuation" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_key_actuation" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_distance_actuation" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_time_opened" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_emergency_opened" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_breakthrough" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_burst" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "bs_ctrl_sabotage" 2, "undefiniert", 1, "ja", 0, "nein"
+VALUES{2} "dk_id_zoneOrientation" 0, "Aus", 1, "Raumnummer BS", 2, "Raumnummer BGS", 5, "Geschoss + Raumnummer BS",
+	6, "Geschoss + Raumnummer BGS", 8, "Bezugsraumnummer", 12, "Geschoss + Bezugsraumnummer",
+	16, "Objekt-ID"
+VALUES "dk_refRoom_orientation" "BS", "BGS"
+VALUES "gs_frame_type" "EZ", "UZ", "FB", "RR", "BZ", "SR"
+VALUES "bs_door_OpeningType" "Drehflügeltür Anschlagtür", "Drehflügeltür Pendeltür", "Drehflügeltür Raumspar-Schwenktür",
+	"Schiebetür", "Bogenschiebetür Segmentausführung", "Bogenschiebetür Halbkreisausführung",
+	"Bogenschiebetür Vollkreisausführung", "Karusseltür", "Faltflügeltür"
+VALUES{2} "gs_list_orientationDef_m" 0, "individuell", 1, "Automatisch"
+VALUES "ac_OpeningSide" "L", "R", "-"
+VALUES "ac_OpeningSide2" "L", "R", "-"
+VALUES "bs_case_hole" 0.008, 0.009, 0.01, CUSTOM
+VALUES "bs_case_hole2" 0.008, 0.009, 0.01, CUSTOM
+VALUES{2} "dk_opening2D" 0, " Aus", 1, " Bogen", 2, " Gerade", 4, " nach Modelldarstellung"
+VALUES{2} "dk_openingSA" 0, " Aus", 1, "zu Griff", 2, "zu Band", 4, " nach Modelldarstellung"
+VALUES{2} "dk_opening3D" 0, " Aus", 1, "zu Griff", 2, "zu Band", 4, " nach Modelldarstellung"
+VALUES{2} "dk_openLineType_BS" 1, "Vollinie", 2, "Strichlinie", 3, "Punktiert", 4, "Strichpunkt-Linie"
+VALUES{2} "dk_openLineType_BGS" 1, "Vollinie", 2, "Strichlinie", 3, "Punktiert", 4, "Strichpunkt-Linie"
+VALUES{2} "dk_openLineType_SF" 0, "Aus", 1, "Vollinie", 2, "Strichlinie", 3, "Punktiert", 4, "Strichpunkt-Linie"
+VALUES{2} "dk_openingLineSymbol" 0, "Aus", 1, "Kreis", 2, "Quadrat", 3, "Raute", 4, "Kreuz"
+VALUES{2} "dk_openingLineSymbol2" 0, "Aus", 1, "Kreis", 2, "Quadrat", 3, "Raute", 4, "Kreuz"
+VALUES{2} "dk_LOI" 2, "Vorplanung", 4, "Entwurfsplanung", 5, "Ausführungsplanung", 6, "Werk- und Detailplanung",
+	-2, "global definiert (MVO)"
+VALUES{2} "dk_LOD" 100, "symbolisch (100)", 200, "einfach (200)", 300, "repräsentativ (300)", 350, "repräsentativ (350)",
+	400, "exakt (400)", 500, "as built (500)", -2, "global definiert (MVO)", -1, "nach Maßstab",
+	-3, "einheitlich"
+VALUES "develop" 0, 1, 2, 3, 4, 5, 6, 7, 8
+
+! --------------------------------------------------------------- PARAMETER VALUE LISTS (end)
+
+! --------------------------------------------------- Minimalabstände  Wertebereiche
+
+	IF bs_door_leafs = 2 THEN PUT -gs_SecondLeaf_w + gs_vb
+	PUT 0, 0.1, 0.2, 0.3, 0.4, 0.5
+
+	VALUES "msOpeningSideWidth1"	USE(nsp), RANGE (-ac_egress_width - MIN(0,msOpeningSideWidth2)	,] , CUSTOM 
+	VALUES "msOppositeSideWidth1"	USE(nsp), RANGE (-ac_egress_width - MIN(0,msOppositeSideWidth2)	,] , CUSTOM 
+
+	VALUES "msOpeningSideWidth2"	USE(nsp), RANGE (-ac_egress_width - MIN(0,msOpeningSideWidth1)	,] , CUSTOM 
+	VALUES "msOppositeSideWidth2"	GET(nsp), RANGE (-ac_egress_width - MIN(0,msOppositeSideWidth1)	,] , CUSTOM 
+
+	VALUES "ms_openingSDepth" RANGE [0, )
+	VALUES "ms_oppositeSDepth" RANGE [0, )
+
+
+! --------------------------------------------------- Türtypkennung setzen
+
+	bs_door_ConstructionType = bs_frame_material + "-" + dk_frametype
+	IF bs_door_ConstructionType = "HO-UZ" THEN bs_door_ConstructionType = "HO-FB"
+
+	IF bs_door_leafs = 0 THEN
+		bs_door_ConstructionType = bs_door_ConstructionType + " oF"
+		ELSE
+		IF dk_frametype = bs_panel_material THEN
+			IF bs_frame_material # bs_panel_type THEN
+				bs_door_ConstructionType = bs_door_ConstructionType + "+" + bs_panel_type
+				ENDIF
+			ELSE
+			bs_door_ConstructionType = bs_door_ConstructionType + "+" + bs_panel_material + "-" + bs_panel_type
+			ENDIF
+		IF bs_door_leafs = 2 THEN bs_door_ConstructionType = bs_door_ConstructionType + "-2F"
+		ENDIF
+
+	PARAMETERS bs_door_ConstructionType = bs_door_ConstructionType
+
+! -------------------------------------------------- UI settings
+
+IF (gs_ui_current_page = 4 AND dk_LOI = 4) OR (gs_ui_current_page = 6 AND dk_LOI > 4) THEN 
+	VALUES{2} "gs_ui_sub_tabpage" 0, "GRUNDRISS", 1, "SCHNITT"
+	ENDIF
+
+! -------------------------------------------------- Stifte
+
+FOR i=1 TO 255 : PUT i : NEXT i
+
+VALUES "dk_cont_pens" USE(nsp)
+! VALUES "dk_bkg_pens"  USE(nsp), 0
+VALUES "dk_fill_pens" GET(nsp)
+
+! #### -1 für Hintergrund nicht zulässig
+sts =0
+FOR i=1  TO VARDIM1(dk_bkg_pens)
+	IF dk_bkg_pens[i] < 0 THEN
+		sts = 1
+		dk_bkg_pens[i] = 0
+	ENDIF
+	NEXT i
+IF sts THEN PARAMETERS dk_bkg_pens = dk_bkg_pens
+
+! -------------------------------------------------- Tür-ID
+
+roomname  = "" : number  = ""
+roomname2 = "" : number2 = ""
+geschossnummer = 0
+
+! IF BITTEST(dk_id_zoneOrientation,0) OR BITTEST(dk_id_zoneOrientation,1) THEN
+	! sts = REQUEST ("Zone_relations", "", category_name, code, roomname, number , category_name2, code2, roomname2, number2)
+	! ENDIF
+sts = REQUEST ("Zone_relations", "", txt, txt, roomname, number , txt, txt, roomname2, number2)
+IF BITTEST(dk_id_zoneOrientation,2) THEN
+	! GLOB_CH_STORY_DIST, GLOB_HSTORY_ELEV
+	! sts = REQUEST ("HOME_STORY", "", geschossnummer, geschossname)
+	sts = REQUEST ("HOME_STORY", "", geschossnummer, txt)
+	ENDIF
+
+txt = ""
+IF BITTEST(dk_id_zoneOrientation,0) THEN txt = number
+IF BITTEST(dk_id_zoneOrientation,1) THEN txt = number2
+IF BITTEST(dk_id_zoneOrientation,3) AND dk_refRoom_orientation = "BS"  THEN txt = number
+IF BITTEST(dk_id_zoneOrientation,3) AND dk_refRoom_orientation = "BGS" THEN txt = number2
+IF BITTEST(dk_id_zoneOrientation,2) THEN txt = STR(geschossnummer,1,0) + STRSUB(".",1 + (txt=""),1) + txt
+IF BITTEST(dk_id_zoneOrientation,4) THEN txt = GLOB_ID + txt
+
+BS_ID = dk_id_PrefixSuffix[1] + txt + dk_id_PrefixSuffix[2]
+PARAMETERS BS_ID = BS_ID
+
+
+! -------------------------------------------------- Bezugsraum
+
+IF dk_refRoom_orientation = "BGS" THEN
+	dk_refRoom_nmbr = number2
+	dk_refRoom_name = roomname2
+	dk_2ndRoom_nmbr = number
+	dk_2ndRoom_name = roomname
+	ELSE
+	dk_refRoom_nmbr = number
+	dk_refRoom_name = roomname
+	dk_2ndRoom_nmbr = number2
+	dk_2ndRoom_name = roomname2
+	ENDIF
+
+! -------------------------------------------------- Öffnungsbgrenzung 2D+3D
+
+VALUES "gs_open_2D" RANGE [0, 180]
+VALUES "gs_open_2D_s" RANGE [0, 180]
+VALUES "gs_open_3D" RANGE [0, 180]
+VALUES "gs_open_3D_s" RANGE [0, 180]
+! IF gs_open_2D   < 0 OR gs_open_2D   >180 THEN PARAMETERS gs_open_2D   = MIN( MAX(0, gs_open_2D   - 180 * (gs_open_2D   > 270)), 180)
+! IF gs_open_2D_s < 0 OR gs_open_2D_s >180 THEN PARAMETERS gs_open_2D_s = MIN( MAX(0, gs_open_2D_s - 180 * (gs_open_2D_s > 270)), 180)
+! IF gs_open_3D   < 0 OR gs_open_3D   >180 THEN PARAMETERS gs_open_3D   = MIN( MAX(0, gs_open_3D   - 180 * (gs_open_3D   > 270)), 180)
+! IF gs_open_3D_s < 0 OR gs_open_3D_s >180 THEN PARAMETERS gs_open_3D_s = MIN( MAX(0, gs_open_3D_s - 180 * (gs_open_3D_s > 270)), 180)
+
+! VALUES "dk_open_leaf" RANGE [0, 180]
+
+FOR i = 1 TO VARDIM1(dk_open_leaf)
+	IF dk_open_leaf[i] < 0 OR dk_open_leaf[i] > 180 THEN
+		PARAMETERS dk_open_leaf[i] = MIN( MAX(0, dk_open_leaf[i] - 360 * (dk_open_leaf[i] > 270)), 180)
+		ENDIF
+	NEXT i
+
+! -------------------------------------------------- Öffnungslinien 2D
+
+IF dk_opening2D = 4 OR dk_opening2D = 0 THEN
+	LOCK "or_swingLineType", "or_swingLineType2",
+		"gs_open_2D", "gs_open_2D_s",
+		"dk_openingLineSymbol", "dk_openingLineSymbol2"
+	ENDIF
+
+! -------------------------------------------------- Öffnungswinkel gekoppelt?
+
+IF dk_opening_locked AND ( GLOB_MODPAR_NAME = "dk_open_leaf" OR GLOB_MODPAR_NAME = "dk_opening_locked" ) THEN
+	IF ABS(dk_open_leaf[dka_leaf_angle2D] - dk_open_leaf[dka_leaf_angle3D]) > tlr THEN
+		dk_open_leaf[dka_leaf_angle2D] = dk_open_leaf[dka_leaf_angle3D]
+		PARAMETERS dk_open_leaf[dka_leaf_angle2D] = dk_open_leaf[dka_leaf_angle2D]
+		ENDIF
+	IF ABS(dk_open_leaf[dka_leaf2_angle2D] - dk_open_leaf[dka_leaf2_angle3D]) > tlr THEN
+		dk_open_leaf[dka_leaf2_angle2D] = dk_open_leaf[dka_leaf2_angle3D]
+		PARAMETERS dk_open_leaf[dka_leaf2_angle2D] = dk_open_leaf[dka_leaf2_angle2D]
+		ENDIF
+	ENDIF
+
+! -------------------------------------------------- Wenn Hauptflügel schließt ggf. Öffnungswinkel des 2. Flügels anpassen
+
+IF bs_door_leafs = 2 THEN
+	IF dk_open_leaf[dka_leaf_angle2D] < 12 AND dk_open_leaf[dka_leaf_angle2D] < dk_open_leaf[dka_leaf2_angle2D] AND dk_open_leaf[dka_leaf2_angle2D] < 180 THEN
+		dk_open_leaf[dka_leaf2_angle2D] = dk_open_leaf[dka_leaf_angle2D]
+		PARAMETERS dk_open_leaf[dka_leaf2_angle2D] = dk_open_leaf[dka_leaf2_angle2D]
+		ENDIF
+	IF dk_open_leaf[dka_leaf_angleSA] < 12 AND dk_open_leaf[dka_leaf_angleSA] < dk_open_leaf[dka_leaf2_angleSA] AND dk_open_leaf[dka_leaf2_angleSA] < 180 THEN
+		dk_open_leaf[dka_leaf2_angleSA] = dk_open_leaf[dka_leaf_angleSA]
+		PARAMETERS dk_open_leaf[dka_leaf2_angleSA] = dk_open_leaf[dka_leaf2_angleSA]
+		ENDIF
+	IF dk_open_leaf[dka_leaf_angle3D] < 12 AND dk_open_leaf[dka_leaf_angle3D] < dk_open_leaf[dka_leaf2_angle3D] AND dk_open_leaf[dka_leaf2_angle3D] < 180 THEN
+		dk_open_leaf[dka_leaf2_angle3D] = dk_open_leaf[dka_leaf_angle3D]
+		PARAMETERS dk_open_leaf[dka_leaf2_angle3D] = dk_open_leaf[dka_leaf2_angle3D]
+		ENDIF
+	ENDIF 
+
+! -------------------------------------------------- Lichte Öffnung berechnen und Auswahl ggf. Nachjustieren
+
+GOSUB "initialize"
+GOSUB "calcUsableClearance"
+PARAMETERS bs_UsableClearance = bs_UsableClearance, bs_UsableHeight = bs_UsableHeight, dk_UCdistanceRight = dk_UCdistanceRight
+
+IF NOT(BITTEST(dk_UCrelation, 0)) AND (bs_demand_Accessibility = 1 OR bs_demand_EscapeRoute = 1) THEN
+	dk_UCrelation = BITSET(dk_UCrelation, 0, 1)
+	PARAMETERS dk_UCrelation = dk_UCrelation
+	ENDIF
+
+IF NOT(BITTEST(dk_UCrelation, 5)) AND bs_door_leafs < 2 THEN
+	dk_UCrelation = BITSET(dk_UCrelation, 5, 0)
+	PARAMETERS dk_UCrelation = dk_UCrelation
+	ENDIF
+
+
+! =============================================================================
+! Plausibilitätscheck
+! ============================================================================= 
+
+! -------------------------------------------------- Anforderungen an die Tür
+
+GOSUB "CheckQualityDemand"
+
+! -------------------------------------------------- Bautoleranzen ((Maß für BRM)
+
+IF dk_tolerance < 2 THEN
+
+	IF GLOB_MODPAR_NAME = "dk_tolerance" THEN
+		gs_tolerance_left	= gs_baurichtmass_outer_left * dk_tolerance
+		gs_tolerance_right	= gs_baurichtmass_outer_right * dk_tolerance
+		gs_tolerance_upper	= gs_baurichtmass_outer_upper * dk_tolerance
+		PARAMETERS gs_tolerance_left = gs_tolerance_left , gs_tolerance_right = gs_tolerance_right , gs_tolerance_upper =  gs_tolerance_upper
+		ENDIF
+	LOCK "gs_tolerance_left", "gs_tolerance_right", "gs_tolerance_upper"
+	LOCK "ac_baurichtmass_width", "ac_baurichtmass_height"
+	ELSE
+
+	! individuelle Toleranzen dreiseitig
+	! VALUES "gs_tolerance_left" RANGE [0,]
+	! VALUES "gs_tolerance_right" RANGE [0,]
+	! VALUES "gs_tolerance_upper" RANGE [0,]
+
+	ENDIF
+
+! -------------------------------------------------- Door Orientation Listing Parameters
+
+IF bs_door_leafs < 1 THEN
+
+	! Ken Türblatt
+
+	LOCK "gs_list_orientationDef_m", "ac_OpeningSide", "ac_OpeningSide2"
+	PARAMETERS ac_OpeningSide = "-", ac_OpeningSide2 = "-"
+
+	ELSE
+
+	IF gs_list_orientationDef_m THEN
+
+		! Nach Einsetzpunkt in Wand
+		ac_OpeningSide = "-"
+		
+		IF SYMB_MIRRORED THEN
+			ac_OpeningSide = "R"
+			ELSE
+			ac_OpeningSide = "L"
+			ENDIF
+
+		IF WIDO_REVEAL_SIDE THEN ac_OpeningSide = STRSUB( "LR", STRSTR(ac_OpeningSide, "L")+1, 1)
+
+		LOCK "ac_OpeningSide"
+		! HIDEPARAMETER "ac_OpeningSide"
+		PARAMETERS ac_OpeningSide = ac_OpeningSide
+
+		ELSE
+
+		! Manuell ausgerichtet
+		IF ac_OpeningSide = "-" THEN
+			IF SYMB_MIRRORED THEN
+				ac_OpeningSide = "R"
+				ELSE
+				ac_OpeningSide = "L"
+				ENDIF
+			IF WIDO_REVEAL_SIDE THEN ac_OpeningSide = STRSUB( "LR", STRSTR(ac_OpeningSide, "L")+1, 1)
+			PARAMETERS ac_OpeningSide = ac_OpeningSide
+			ENDIF
+
+		ENDIF
+
+	IF bs_door_leafs > 1 THEN ac_OpeningSide2 = STRSUB( "LR", STRSTR(ac_OpeningSide, "L")+1, 1) ELSE ac_OpeningSide2 = "-"
+
+	LOCK "ac_OpeningSide2"
+	! HIDEPARAMETER "ac_OpeningSide2"
+	PARAMETERS ac_OpeningSide2 = ac_OpeningSide2
+
+	ENDIF
+
+
+! =============================================================================
+! ORIGINAL GRAPHISOFT CODE - MODIFIED
+! =============================================================================
+
+! -------------------------------------------------- [ GS+: Parameter geändert? Abhängigkeiten neu berechnen? ]
+
+	bChangedLeaf	= (	GLOB_MODPAR_NAME = "bs_door_leafs" | GLOB_MODPAR_NAME = "symm" | GLOB_MODPAR_NAME = "gs_vb" | \
+					GLOB_MODPAR_NAME = "gapHeightUnderPanel" | GLOB_MODPAR_NAME = "dk_panel_folding_gap2" | \
+					GLOB_MODPAR_NAME = "bs_leaf_oversize" | GLOB_MODPAR_NAME = "dk_panel_folding_dimensions" )
+
+	bChangedFanlight	= ( GLOB_MODPAR_NAME = "gs_door_transom" | GLOB_MODPAR_NAME = "gs_transom_height" | \
+					GLOB_MODPAR_NAME = "bs_inner_frame"  | GLOB_MODPAR_NAME = "bs_door_leafs" )    ! | GLOB_MODPAR_NAME = "gs_kamp" | GLOB_MODPAR_NAME = "gs_am")
+
+	bChangedSidelight	= ( GLOB_MODPAR_NAME = "bs_door_sidelight" | \
+					GLOB_MODPAR_NAME = "bDiffSidelightWidth" | \
+					GLOB_MODPAR_NAME = "dk_sidelight_transom1" | \
+					GLOB_MODPAR_NAME = "dk_sidelight_transom2" | \
+					GLOB_MODPAR_NAME = "gs_sidelight_width_right" | \
+					GLOB_MODPAR_NAME = "gs_sidelight_width_left")
+
+	bRecalculate	= (	bChangedSidelight | bChangedFanlight | bChangedLeaf | \
+					GLOB_MODPAR_NAME = "panel_system"	|	\
+					GLOB_MODPAR_NAME = "frame_system"	|	\
+					GLOB_MODPAR_NAME = "gs_vb"	|	\
+					! GLOB_MODPAR_NAME = "gs_rebate_width"	|	\
+					GLOB_MODPAR_NAME = "gs_different_framewidth"		|	\
+					GLOB_MODPAR_NAME = "gs_frame_width"	|	\
+					GLOB_MODPAR_NAME = "gs_frame_width_left"	|	\
+					GLOB_MODPAR_NAME = "gs_frame_width_right"	|	\
+					GLOB_MODPAR_NAME = "gs_frame_width_left_2"	|	\
+					GLOB_MODPAR_NAME = "gs_frame_width_right_2"	|	\
+					GLOB_MODPAR_NAME = "gs_frame_width_upper"	|	\
+					GLOB_MODPAR_NAME = "gs_frame_width_transom"	|	\
+					GLOB_MODPAR_NAME = "gs_frame_width_bottom_sl"	|	\
+					GLOB_MODPAR_NAME = "gs_frame_width_transom_sl"	|	\
+					GLOB_MODPAR_NAME = "gs_frame_width_upper_sl"	|	\
+					! GLOB_MODPAR_NAME = "gs_vt"	|	\
+					! GLOB_MODPAR_NAME = "gs_frame_thk"	|	\
+					! GLOB_MODPAR_NAME = "dk_different_frame_thk"	|	\
+					! GLOB_MODPAR_NAME = "dk_frame_thk_post"	|	\
+					! GLOB_MODPAR_NAME = "dk_frame_thk_upper"	|	\
+					! GLOB_MODPAR_NAME = "dk_frame_thk_bottom"	|	\
+					! GLOB_MODPAR_NAME = "dk_frame_thk_transom"	|	\
+					! GLOB_MODPAR_NAME = "bs_frame_thk_EZ"	|	\
+					! GLOB_MODPAR_NAME = "glass_thk"	|	\
+					! GLOB_MODPAR_NAME = "bs_fanlight_filling_thk"	|	\
+					! GLOB_MODPAR_NAME = "bs_sidelight_filling_thk1"	|	\
+					! GLOB_MODPAR_NAME = "bs_sidelight_filling_thk2"	|	\
+					GLOB_MODPAR_NAME = "dk_tolerance"	|	\
+					GLOB_MODPAR_NAME = "gs_tolerance_left"	|	\
+					GLOB_MODPAR_NAME = "gs_tolerance_right"	|	\
+					GLOB_MODPAR_NAME = "gs_tolerance_upper"	|	\
+					GLOB_MODPAR_NAME = "gs_tolerance_lower"	|	\
+					GLOB_MODPAR_NAME = "gs_reveal_left"	|	\
+					GLOB_MODPAR_NAME = "gs_reveal_right"	|	\
+					GLOB_MODPAR_NAME = "gs_reveal_top"		|	\
+					GLOB_MODPAR_NAME = "gs_reveal_bottom")
+
+
+! -------------------------------------------------- [ GS: Gap under Door Panel - non-negative VALUES! ]
+
+IF -gapHeightUnderPanel > tlr THEN
+	gapHeightUnderPanel = 0
+	PARAMETERS gapHeightUnderPanel = gapHeightUnderPanel
+	ENDIF
+
+
+! -------------------------------------------------- [ GS+: Bestimmung von Abmessungen und Einzügen ]
+
+! #### Egress Size -> Leaf (Oversize) Dimensions
+GOSUB "LeafSizeDiff"
+
+! #### Egress Size -> Unit Size difference
+GOSUB "unitSizeDiff"
+
+! #### Ist das Wandöffnungsmaß oder das lichte Öffnungsmaß für die Türöffnung relevant?
+!      Ermittlung der Zargenstärke (Wandstärke und/oder Anschlagstärke)
+! signRevealDiff	= 0
+! GOSUB "CHeckRevealSideRelevance"
+
+! #### Einzüge von Nominalmaßen setzen
+GOSUB "WallholeRevealSizeDiff"
+
+! #### Abgleich Dimensionen
+GOSUB "calcSizeLimitations"
+GOSUB "CheckBasicSizeSettings"
+GOSUB "setValuesRanges"
+
+
+! =============================================================================
+! Extenable components - Custom Libraries
+! =============================================================================
+
+! #### frame value lists
+
+CALL frame_macro PARAMETERS ALL, 
+	dk_frametype = dk_frametype, 
+	dk_LOD=100,
+	bs_door_electrified = bs_door_electrified,
+	macro_runtype=64, 
+	RETURNED_PARAMETERS offsetFrameSurfaceBGS,
+		facingLintelBS, facingLintelBGS,
+		frame2wallSurfaceBS, frame2wallSurfaceBGS,
+		bs_door_electrified
+
+
+! #### hinge value lists
+
+CALL hinge_macro PARAMETERS ALL macro_runtype=64, dk_frametype=dk_frametype
+
+
+! #### panel value lists
+
+CALL panel_macro PARAMETERS ALL,
+	bs_door_electrified = bs_door_electrified,
+	macro_runtype=64,
+ 	RETURNED_PARAMETERS bs_door_electrified
+
+
+! #### access_control value lists
+
+CALL access_control_macro PARAMETERS ALL,
+	dk_LOD=100,
+	bs_door_electrified = bs_door_electrified,
+	macro_runtype=64,
+ 	RETURNED_PARAMETERS bs_door_electrified, bs_acs_handles
+
+
+! #### handle value lists
+
+CALL handle_macro PARAMETERS ALL,
+	bs_acs_handles = bs_acs_handles,
+	dk_LOD=100, 
+	macro_runtype=64
+
+
+! #### door automation value lists
+
+CALL automation_macro PARAMETERS ALL,
+	! dk_frametype=dk_frametype,
+	HingePanelGap = HingePanelGap,
+	HingeEgressDistance = HingeEgressDistance,
+	offsetHingePanelSurfaceBS  = offsetHingePanelSurfaceBS,
+	offsetFrameSurfaceBGS = offsetFrameSurfaceBGS,
+	facingLintelBS  = facingLintelBS,
+	facingLintelBGS = facingLintelBGS,
+	frame2wallSurfaceBS  = frame2wallSurfaceBS,
+	frame2wallSurfaceBGS = frame2wallSurfaceBGS,
+	bs_door_electrified = bs_door_electrified,
+	macro_runtype=64,
+	RETURNED_PARAMETERS bs_door_electrified, bs_door_external_button
+
+
+! #### closer value lists
+
+CALL closer_macro PARAMETERS ALL,
+	dk_frametype=dk_frametype,
+	HingePanelGap = HingePanelGap,
+	HingeEgressDistance = HingeEgressDistance,
+	offsetHingePanelSurfaceBS  = offsetHingePanelSurfaceBS,
+	offsetFrameSurfaceBGS = offsetFrameSurfaceBGS,
+	facingLintelBS  = facingLintelBS,
+	facingLintelBGS = facingLintelBGS,
+	frame2wallSurfaceBS  = frame2wallSurfaceBS,
+	frame2wallSurfaceBGS = frame2wallSurfaceBGS,
+	bs_door_electrified = bs_door_electrified,
+	macro_runtype=64, 
+	RETURNED_PARAMETERS bs_door_electrified, bs_door_external_button
+
+! #### case value lists
+
+CALL case_macro PARAMETERS ALL,
+	dk_LOD=100,
+	bs_door_electrified = bs_door_electrified,
+	macro_runtype=64, 
+	RETURNED_PARAMETERS bs_door_electrified, bs_door_external_button
+
+
+! #### grip value lists
+
+CALL grip_macro PARAMETERS ALL dk_LOD=100, macro_runtype=64
+
+
+! -------------------------------------------------- ELT nötig, wenn Sensor gefordert
+
+IF	bs_ctrl_leaf_position = 1 OR \
+	bs_ctrl_locking = 1 OR \
+	bs_ctrl_handle_actuation = 1 OR \
+	bs_ctrl_key_actuation = 1 OR \
+	bs_ctrl_distance_actuation = 1 OR \
+	bs_ctrl_time_opened = 1 OR \
+	bs_ctrl_emergency_opened = 1 OR \
+	bs_ctrl_breakthrough = 1 OR \
+	bs_ctrl_burst = 1 OR \
+	bs_ctrl_sabotage = 1 THEN
+
+	bs_door_electrified = BITSET(bs_door_electrified,6)
+	PARAMETERS bs_door_electrified = bs_door_electrified
+	
+	ENDIF
+
+! =============================================================================
+! Ende
+! =============================================================================
+
+IF versionStamp < version THEN
+	IF GLOB_MODPAR_NAME # "" THEN PARAMETERS versionStamp = version
+	ENDIF
+
+! -------------------------------------------------- [ UI Support ]
+
+	! VALUES "gs_ui_sub_tabpage" 1,2,3
+
+	IF GLOB_UI_BUTTON_ID < 0 THEN
+		PARAMETERS gs_ui_current_page = -GLOB_UI_BUTTON_ID
+		ENDIF
+
+	! PARAMETERS gs_GLOB_MODPAR_NAME = GLOB_MODPAR_NAME
+
+END
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+
+! =============================================================================
+! Methoden
+! =============================================================================
+
+"equalizeYesNo":
+	IF equalize="ja" OR equalize="Ja" OR equalize ="JA" OR \
+	   equalize="an" OR equalize="An" OR equalize ="AN" THEN equalize = yesKey
+	IF equalize="nein" OR equalize="Nein" OR equalize ="NEIN" OR \
+	   equalize="AUS" OR equalize="Aus" OR equalize ="AUS" OR \
+	   equalize="-" OR equalize ="" THEN equalize = noKey
+	RETURN
+
+
+! =============================================================================
+! Anforderungen normalisieren und ggf. Grundeigenschaften setzen und sperren
+! =============================================================================
+
+"CheckQualityDemand":
+
+	! #### GRUNDANFORDERUNGEN
+
+	IF GLOB_MODPAR_NAME = "bs_quality_FireResistanceRating" THEN
+		equalize = bs_quality_FireResistanceRating : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_FireResistanceRating THEN
+			bs_quality_FireResistanceRating = equalize
+			PARAMETERS bs_quality_FireResistanceRating = equalize
+			ENDIF
+		IF bs_quality_FireResistanceRating = naKey  THEN
+			bs_demand_FireResistance = 2 : PARAMETERS bs_demand_FireResistance = bs_demand_FireResistance
+			ELSE
+			IF bs_quality_FireResistanceRating = noKey  THEN
+				bs_demand_FireResistance = 0 : PARAMETERS bs_demand_FireResistance = bs_demand_FireResistance
+				ELSE
+				bs_demand_FireResistance = 1 : PARAMETERS bs_demand_FireResistance = bs_demand_FireResistance
+				ENDIF
+			ENDIF
+		ENDIF
+
+		IF bs_quality_FireResistanceRating # naKey THEN LOCK "bs_demand_FireResistance"
+
+	IF GLOB_MODPAR_NAME = "bs_quality_SmokeResistance" THEN
+		equalize = bs_quality_SmokeResistance : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_SmokeResistance THEN
+			bs_quality_SmokeResistance = equalize
+			PARAMETERS bs_quality_SmokeResistance = equalize
+			ENDIF
+		IF bs_quality_SmokeResistance = naKey  THEN
+			bs_demand_SmokeResistance = 2 : PARAMETERS bs_demand_SmokeResistance = bs_demand_SmokeResistance
+			ELSE
+			IF bs_quality_SmokeResistance = noKey  THEN
+				bs_demand_SmokeResistance = 0 : PARAMETERS bs_demand_SmokeResistance = bs_demand_SmokeResistance
+				ELSE
+				bs_demand_SmokeResistance = 1 : PARAMETERS bs_demand_SmokeResistance = bs_demand_SmokeResistance
+				ENDIF
+			ENDIF
+		ENDIF
+
+		IF bs_quality_SmokeResistance # naKey THEN LOCK "bs_demand_SmokeResistance"
+		  
+	IF GLOB_MODPAR_NAME = "bs_quality_NoiseInsulaion" THEN
+		equalize = bs_quality_NoiseInsulaion : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_NoiseInsulaion THEN
+			bs_quality_NoiseInsulaion = equalize
+			PARAMETERS bs_quality_NoiseInsulaion = equalize
+			ENDIF
+		IF bs_quality_NoiseInsulaion = naKey  THEN
+			bs_demand_NoiseInsulaion = 2 : PARAMETERS bs_demand_NoiseInsulaion = bs_demand_NoiseInsulaion
+			ELSE
+			IF bs_quality_NoiseInsulaion = noKey  THEN
+				bs_demand_NoiseInsulaion = 0 : PARAMETERS bs_demand_NoiseInsulaion = bs_demand_NoiseInsulaion
+				ELSE
+				bs_demand_NoiseInsulaion = 1 : PARAMETERS bs_demand_NoiseInsulaion = bs_demand_NoiseInsulaion
+				ENDIF
+			ENDIF
+		ENDIF
+
+		IF bs_quality_NoiseInsulaion # naKey THEN LOCK "bs_demand_NoiseInsulaion"
+		  
+	IF GLOB_MODPAR_NAME = "bs_quality_Accessibility" THEN
+		equalize = bs_quality_Accessibility : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_Accessibility THEN
+			bs_quality_Accessibility = equalize
+			PARAMETERS bs_quality_Accessibility = equalize
+			ENDIF
+		IF bs_quality_Accessibility = naKey  THEN
+			bs_demand_Accessibility = 2 : PARAMETERS bs_demand_Accessibility = bs_demand_Accessibility
+			ELSE
+			IF bs_quality_Accessibility = noKey  THEN
+				bs_demand_Accessibility = 0 : PARAMETERS bs_demand_Accessibility = bs_demand_Accessibility
+				ELSE
+				bs_demand_Accessibility = 1 : PARAMETERS bs_demand_Accessibility = bs_demand_Accessibility
+				ENDIF
+			ENDIF
+		ENDIF
+
+		IF bs_quality_Accessibility # naKey THEN LOCK "bs_demand_Accessibility"
+
+	IF GLOB_MODPAR_NAME = "bs_quality_BurglaryProtection" THEN
+		equalize = bs_quality_BurglaryProtection : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_BurglaryProtection THEN
+			bs_quality_BurglaryProtection = equalize
+			PARAMETERS bs_quality_BurglaryProtection = equalize
+			ENDIF
+		IF bs_quality_BurglaryProtection = naKey  THEN
+			bs_demand_AdmissionControl = 2 : PARAMETERS bs_demand_AdmissionControl = bs_demand_AdmissionControl
+			ELSE
+			IF bs_quality_BurglaryProtection = noKey  THEN
+				bs_demand_AdmissionControl = 0 : PARAMETERS bs_demand_AdmissionControl = bs_demand_AdmissionControl
+				ELSE
+				bs_demand_AdmissionControl = 1 : PARAMETERS bs_demand_AdmissionControl = bs_demand_AdmissionControl
+				ENDIF
+			ENDIF
+		ENDIF
+
+		IF bs_quality_BurglaryProtection # naKey THEN LOCK "bs_demand_AdmissionControl"
+
+	IF GLOB_MODPAR_NAME = "bs_quality_WetRoom" THEN
+		equalize = bs_quality_WetRoom : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_WetRoom THEN
+			bs_quality_WetRoom = equalize
+			PARAMETERS bs_quality_WetRoom = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_DampArea" THEN
+		equalize = bs_quality_DampArea : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_DampArea THEN
+			bs_quality_DampArea = equalize
+			PARAMETERS bs_quality_DampArea = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_ClimateClass" THEN
+		equalize = bs_quality_ClimateClass : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_ClimateClass THEN
+			bs_quality_ClimateClass = equalize
+			PARAMETERS bs_quality_ClimateClass = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_ClimateClass" OR GLOB_MODPAR_NAME = "bs_quality_DampArea" OR GLOB_MODPAR_NAME = "bs_quality_WetRoom" THEN
+		IF bs_quality_ClimateClass = yesKey OR bs_quality_DampArea = yesKey OR bs_quality_WetRoom = yesKey THEN
+			bs_demand_MoistureProofing = 1 : PARAMETERS bs_demand_MoistureProofing = bs_demand_MoistureProofing
+			ELSE
+			IF bs_quality_ClimateClass = naKey OR bs_quality_DampArea = naKey OR bs_quality_WetRoom = naKey THEN
+				bs_demand_MoistureProofing = 2 : PARAMETERS bs_demand_MoistureProofing = bs_demand_MoistureProofing
+				ELSE
+				bs_demand_MoistureProofing = 0 : PARAMETERS bs_demand_MoistureProofing = bs_demand_MoistureProofing
+				ENDIF
+			ENDIF
+		ENDIF
+
+		IF (bs_quality_ClimateClass = yesKey OR bs_quality_DampArea = yesKey OR bs_quality_WetRoom = yesKey) OR \
+			(bs_quality_ClimateClass = noKey AND bs_quality_DampArea = noKey AND bs_quality_WetRoom = noKey) THEN LOCK "bs_demand_MoistureProofing"
+
+	IF GLOB_MODPAR_NAME = "bs_quality_EscapeRoute" THEN
+		equalize = bs_quality_EscapeRoute : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_EscapeRoute THEN
+			bs_quality_EscapeRoute = equalize
+			PARAMETERS bs_quality_EscapeRoute = equalize
+			ENDIF
+		IF bs_quality_EscapeRoute = naKey  THEN
+			bs_demand_EscapeRoute = 2 : PARAMETERS bs_demand_EscapeRoute = bs_demand_EscapeRoute
+			ELSE
+			IF bs_quality_EscapeRoute = noKey  THEN
+				bs_demand_EscapeRoute = 0 : PARAMETERS bs_demand_EscapeRoute = bs_demand_EscapeRoute
+				ELSE
+				bs_demand_EscapeRoute = 1 : PARAMETERS bs_demand_EscapeRoute = bs_demand_EscapeRoute
+				ENDIF
+			ENDIF
+		ENDIF
+
+		IF bs_quality_EscapeRoute # naKey THEN LOCK "bs_demand_EscapeRoute"
+		  
+	! #### SONSTIGE ANFORDERUNGEN
+
+	IF GLOB_MODPAR_NAME = "bs_quality_ThermalInsulaion" THEN
+		equalize = bs_quality_ThermalInsulaion : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_ThermalInsulaion THEN
+			bs_quality_ThermalInsulaion = equalize
+			PARAMETERS bs_quality_ThermalInsulaion = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_StrafingProtection" THEN
+		equalize = bs_quality_StrafingProtection : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_StrafingProtection THEN
+			bs_quality_StrafingProtection = equalize
+			PARAMETERS bs_quality_StrafingProtection = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_DetonationProtection" THEN
+		equalize = bs_quality_DetonationProtection : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_DetonationProtection THEN
+			bs_quality_DetonationProtection = equalize
+			PARAMETERS bs_quality_DetonationProtection = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_RadiationProtection" THEN
+		equalize = bs_quality_RadiationProtection : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_RadiationProtection THEN
+			bs_quality_RadiationProtection = equalize
+			PARAMETERS bs_quality_RadiationProtection = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_LaserProtection" THEN
+		equalize = bs_quality_LaserProtection : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_LaserProtection THEN
+			bs_quality_LaserProtection = equalize
+			PARAMETERS bs_quality_LaserProtection = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_FloodProtection" THEN
+		equalize = bs_quality_FloodProtection : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_FloodProtection THEN
+			bs_quality_FloodProtection = equalize
+			PARAMETERS bs_quality_FloodProtection = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_VandalismProtection" THEN
+		equalize = bs_quality_VandalismProtection : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_VandalismProtection THEN
+			bs_quality_VandalismProtection = equalize
+			PARAMETERS bs_quality_VandalismProtection = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_GasDefense" THEN
+		equalize = bs_quality_GasDefense : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_GasDefense THEN
+			bs_quality_GasDefense = equalize
+			PARAMETERS bs_quality_GasDefense = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_SHE" THEN
+		equalize = bs_quality_SHE : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_SHE THEN
+			bs_quality_SHE = equalize
+			PARAMETERS bs_quality_SHE = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_SelfClosing" THEN
+		equalize = bs_quality_SelfClosing : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_SelfClosing THEN
+			bs_quality_SelfClosing = equalize
+			PARAMETERS bs_quality_SelfClosing = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_Automation" THEN
+		equalize = bs_quality_Automation : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_Automation THEN
+			bs_quality_Automation = equalize
+			PARAMETERS bs_quality_Automation = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_AntiTrapProtection" THEN
+		equalize = bs_quality_AntiTrapProtection : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_AntiTrapProtection THEN
+			bs_quality_AntiTrapProtection = equalize
+			PARAMETERS bs_quality_AntiTrapProtection = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_Tightness" THEN
+		equalize = bs_quality_Tightness : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_Tightness THEN
+			bs_quality_Tightness = equalize
+			PARAMETERS bs_quality_Tightness = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_Hygiene" THEN
+		equalize = bs_quality_Hygiene : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_Hygiene THEN
+			bs_quality_Hygiene = equalize
+			PARAMETERS bs_quality_Hygiene = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_ExplosionSafety" THEN
+		equalize = bs_quality_ExplosionSafety : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_ExplosionSafety THEN
+			bs_quality_ExplosionSafety = equalize
+			PARAMETERS bs_quality_ExplosionSafety = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_MechanicalLoad" THEN
+		equalize = bs_quality_MechanicalLoad : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_MechanicalLoad THEN
+			bs_quality_MechanicalLoad = equalize
+			PARAMETERS bs_quality_MechanicalLoad = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_CorrosionPrevention" THEN
+		equalize = bs_quality_CorrosionPrevention : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_CorrosionPrevention THEN
+			bs_quality_CorrosionPrevention = equalize
+			PARAMETERS bs_quality_CorrosionPrevention = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_UsefulLife" THEN
+		equalize = bs_quality_UsefulLife : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_UsefulLife THEN
+			bs_quality_UsefulLife = equalize
+			PARAMETERS bs_quality_UsefulLife = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_IntensityOfUse" THEN
+		equalize = bs_quality_IntensityOfUse : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_IntensityOfUse THEN
+			bs_quality_IntensityOfUse = equalize
+			PARAMETERS bs_quality_IntensityOfUse = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_EMShielding" THEN
+		equalize = bs_quality_EMShielding : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_EMShielding THEN
+			bs_quality_EMShielding = equalize
+			PARAMETERS bs_quality_EMShielding = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_BurglaryAlarmSystem" THEN
+		equalize = bs_quality_BurglaryAlarmSystem : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_BurglaryAlarmSystem THEN
+			bs_quality_BurglaryAlarmSystem = equalize
+			PARAMETERS bs_quality_BurglaryAlarmSystem = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_AccidentPrevention" THEN
+		equalize = bs_quality_AccidentPrevention : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_AccidentPrevention THEN
+			bs_quality_AccidentPrevention = equalize
+			PARAMETERS bs_quality_AccidentPrevention = equalize
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_ActuatingForce" THEN
+		equalize = bs_quality_ActuatingForce : GOSUB "equalizeYesNo"
+		IF equalize # bs_quality_ActuatingForce THEN
+			bs_quality_ActuatingForce = equalize
+			PARAMETERS bs_quality_ActuatingForce = equalize
+			ENDIF
+		ENDIF
+
+	! #### ABMESSUNGEN
+
+	IF GLOB_MODPAR_NAME = "bs_quality_OpeningAngle" THEN
+		IF bs_quality_OpeningAngle < 0 THEN 
+			bs_quality_OpeningAngle = 0
+			PARAMETERS bs_quality_OpeningAngle = bs_quality_OpeningAngle
+			ENDIF
+		IF bs_quality_OpeningAngle > 180 THEN 
+			bs_quality_OpeningAngle = 180
+			PARAMETERS bs_quality_OpeningAngle = bs_quality_OpeningAngle
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_UsableClearance" THEN
+		IF bs_quality_UsableClearance < 0 THEN 
+			bs_quality_UsableClearance = 0
+			PARAMETERS bs_quality_UsableClearance = bs_quality_UsableClearance
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_UsableHeight" THEN
+		IF bs_quality_UsableHeight < 0 THEN 
+			bs_quality_UsableHeight = 0
+			PARAMETERS bs_quality_UsableHeight = bs_quality_UsableHeight
+			ENDIF
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_quality_GuardrailHeight" THEN
+		IF bs_quality_GuardrailHeight < 0 THEN 
+			bs_quality_GuardrailHeight = 0
+			PARAMETERS bs_quality_GuardrailHeight = bs_quality_GuardrailHeight
+			ENDIF
+		IF bs_quality_GuardrailHeight > 1.25 THEN 
+			bs_quality_GuardrailHeight = 1.25
+			PARAMETERS bs_quality_GuardrailHeight = bs_quality_GuardrailHeight
+			ENDIF
+		ENDIF
+
+	RETURN
+
+
+! =============================================================================
+! Öffnungsmaße einstellen
+! =============================================================================
+
+! -------------------------------------------------- [ GS+: Gesamtmaße verändert? ]
+
+"CheckBasicSizeSettings":
+
+	bNominalSelectChanged = 0
+
+	! #### Nominal Size Radio Button: Nominalmaß - Einzelmaß - Richtung der Zuweisung
+
+	IF GLOB_MODPAR_NAME = "gs_nominal_size" THEN
+		bNominalSelectChanged = 128
+		ENDIF
+
+	! #### Nominal Size Chooser (Was wurde zuletzt geändert?)
+
+	IF GLOB_MODPAR_NAME = "gs_wallhole_nominal" THEN	! DACH Special: Window Mounting
+		gs_wallhole_nominal		= 1
+		gs_reveal_nominal		= 0
+		gs_unit_nominal		= 0
+		gs_egress_nominal		= 0
+		gs_leaf_nominal		= 0
+		gs_baurichtmass_nominal	= 0
+		dk_FrameRebate_nominal	= 0
+
+		bNominalSelectChanged = 1
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "gs_baurichtmass_nominal" THEN
+		gs_wallhole_nominal		= 0
+		gs_reveal_nominal		= 0
+		gs_unit_nominal		= 0
+		gs_egress_nominal		= 0
+		gs_leaf_nominal		= 0
+		gs_baurichtmass_nominal	= 1
+		dk_FrameRebate_nominal	= 0
+
+		bNominalSelectChanged = 64
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "gs_reveal_nominal" THEN
+		gs_wallhole_nominal		= 0
+		gs_reveal_nominal		= 1
+		gs_unit_nominal		= 0
+		gs_egress_nominal		= 0
+		gs_leaf_nominal		= 0
+		gs_baurichtmass_nominal	= 0
+		dk_FrameRebate_nominal	= 0
+
+		bNominalSelectChanged = 2
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "gs_unit_nominal" THEN
+		gs_wallhole_nominal		= 0
+		gs_reveal_nominal		= 0
+		gs_unit_nominal		= 1
+		gs_egress_nominal		= 0
+		gs_leaf_nominal		= 0
+		gs_baurichtmass_nominal	= 0
+		dk_FrameRebate_nominal	= 0
+
+		bNominalSelectChanged = 8
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "gs_egress_nominal" THEN
+		gs_wallhole_nominal		= 0
+		gs_reveal_nominal		= 0
+		gs_unit_nominal		= 0
+		gs_egress_nominal		= 1
+		gs_leaf_nominal		= 0
+		gs_baurichtmass_nominal	= 0
+		dk_FrameRebate_nominal	= 0
+
+		bNominalSelectChanged = 16
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "dk_FrameRebate_nominal" THEN
+		gs_wallhole_nominal		= 0
+		gs_reveal_nominal		= 0
+		gs_unit_nominal		= 0
+		gs_egress_nominal		= 0
+		gs_leaf_nominal		= 0
+		gs_baurichtmass_nominal	= 0
+		dk_FrameRebate_nominal	= 1
+
+		bNominalSelectChanged = 32
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "gs_leaf_nominal" THEN
+		gs_wallhole_nominal		= 0
+		gs_reveal_nominal		= 0
+		gs_unit_nominal		= 0
+		gs_egress_nominal		= 0
+		gs_leaf_nominal		= 1
+		gs_baurichtmass_nominal	= 0
+		dk_FrameRebate_nominal	= 0
+
+		bNominalSelectChanged = 64
+		ENDIF
+
+	! ... and Nominal parameter setting
+	IF bNominalSelectChanged AND bNominalSelectChanged < 128 THEN PARAMETERS gs_nominal_size = bNominalSelectChanged
+
+	IF bNominalSelectChanged THEN
+		PARAMETERS	gs_wallhole_nominal		= gs_wallhole_nominal,
+					gs_baurichtmass_nominal	= gs_baurichtmass_nominal,
+					gs_reveal_nominal		= gs_reveal_nominal,
+					gs_unit_nominal		= gs_unit_nominal,
+					gs_egress_nominal		= gs_egress_nominal,
+					dk_FrameRebate_nominal	= dk_FrameRebate_nominal,
+					gs_leaf_nominal		= gs_leaf_nominal
+		ENDIF
+
+
+	! #### Abmessungen prüfen
+
+	bSizeModified	= 0
+	GOSUB "RecalcOpeningDimensions"
+
+	! Nominalmaße setzen Objektgröße
+
+	IF bSizeModified | ( gs_retain_nominal_sizes AND bNominalSelectChanged ) THEN
+
+		TotalLeafWidth = ac_leaf_width + gs_SecondLeaf_w *(bs_door_leafs > 1)
+
+		IF gs_wallhole_nominal		then PARAMETERS A = ac_wallhole_width,		B = ac_wallhole_height !- thresholdExtraHole
+		IF gs_baurichtmass_nominal	then PARAMETERS A = ac_baurichtmass_width,	B = ac_baurichtmass_height
+		IF gs_reveal_nominal		then PARAMETERS A = ac_reveal_width,		B = ac_reveal_height   !- thresholdExtraHole
+		IF gs_unit_nominal			then PARAMETERS A = ac_unit_width,			B = ac_unit_height
+		IF gs_egress_nominal		then PARAMETERS A = ac_egress_width,		B = ac_egress_height
+		IF dk_FrameRebate_nominal	then PARAMETERS A = bs_FrameRebate_width,	B = bs_FrameRebate_height
+		IF gs_leaf_nominal			then PARAMETERS A = TotalLeafWidth,		B = ac_leaf_height
+
+		ENDIF
+
+	! Objektgröße setzt Nominalmaße
+
+	IF ( GLOB_MODPAR_NAME = "A" | GLOB_MODPAR_NAME = "B" ) | ( NOT(gs_retain_nominal_sizes) AND bNominalSelectChanged=128 ) THEN
+
+		iSizeByNominal = 0
+
+		IF gs_wallhole_nominal THEN
+			minSize = minUnitWidth  + wallholeDLeft  + wallholeDRight : IF A < minSize THEN : A = minSize : PARAMETERS A = A : ENDIF
+			minSize = minUnitHeight + wallholeDUpper + wallholeDLower : IF B < minSize THEN : B = minSize : PARAMETERS B = B : ENDIF
+			ac_wallhole_width	= A
+			ac_wallhole_height	= B !+ thresholdExtraHole
+			PARAMETERS ac_wallhole_width = A, ac_wallhole_height = B !+ thresholdExtraHole
+			iSizeByNominal = 1
+			ENDIF
+
+		IF gs_baurichtmass_nominal THEN
+			minSize = minUnitWidth  + wallholeDLeft  + wallholeDRight - baurichtmassLeft  - baurichtmassRight : IF A < minSize THEN : A = minSize : PARAMETERS A = A : ENDIF
+			minSize = minUnitHeight + wallholeDUpper + wallholeDLower - baurichtmassUpper - baurichtmassLower : IF B < minSize THEN : B = minSize : PARAMETERS B = B : ENDIF
+			ac_baurichtmass_width  = A
+			ac_baurichtmass_height = B
+			PARAMETERS ac_baurichtmass_width = A, ac_baurichtmass_height = B
+			iSizeByNominal = 2
+			ENDIF
+
+		IF gs_reveal_nominal THEN
+			minSize = minUnitWidth  + wallholeDLeft  + wallholeDRight - revealDLeft  - revealDRight : IF A < minSize THEN : A = minSize : PARAMETERS A = A : ENDIF
+			minSize = minUnitHeight + wallholeDUpper + wallholeDLower - revealDUpper - revealDLower : IF B < minSize THEN : B = minSize : PARAMETERS B = B : ENDIF
+			ac_reveal_width  = A
+			ac_reveal_height = B !+ thresholdExtraHole
+			PARAMETERS ac_reveal_width = A, ac_reveal_height = B !+ thresholdExtraHole
+			iSizeByNominal = 4
+			ENDIF
+
+		IF gs_unit_nominal THEN
+			IF A < minUnitWidth  THEN : A = minUnitWidth  : PARAMETERS A = A : ENDIF
+			IF B < minUnitHeight THEN : B = minUnitHeight : PARAMETERS B = B : ENDIF
+			ac_unit_width	= A
+			ac_unit_height	= B
+			PARAMETERS ac_unit_width = A, ac_unit_height = B
+			iSizeByNominal = 8
+			ENDIF
+
+		IF gs_egress_nominal THEN
+			IF A < minEgressWidth  THEN : A = minEgressWidth  : PARAMETERS A = A : ENDIF
+			IF B < minEgressHeight THEN : B = minEgressHeight : PARAMETERS B = B : ENDIF
+			ac_egress_width  = A
+			ac_egress_height = B
+			PARAMETERS ac_egress_width = A, ac_egress_height = B
+			iSizeByNominal = 16
+			ENDIF
+
+		IF dk_FrameRebate_nominal THEN
+			IF A < minRebateWidth  THEN : A = minRebateWidth  : PARAMETERS A = A : ENDIF
+			IF B < minEgressHeight THEN : B = minEgressHeight : PARAMETERS B = B : ENDIF
+			bs_FrameRebate_width  = A
+			bs_FrameRebate_height = B
+			PARAMETERS bs_FrameRebate_width = A, bs_FrameRebate_height = B
+			iSizeByNominal = 32
+			ENDIF
+
+		IF gs_leaf_nominal THEN
+
+			IF bs_door_leafs < 2 THEN
+
+				! Einflügelig oder kein Flügel
+				IF A < minDoorLeafWidth THEN : A = minDoorLeafWidth : PARAMETERS A = A : ENDIF
+				ac_leaf_width		= A
+				gs_SecondLeaf_w	= 0
+
+				ELSE
+
+				! Stand- und Gangflügel
+				IF symm THEN
+
+					! symetrisch
+					IF A < minDoorLeafWidth * 2 THEN : A = minDoorLeafWidth * 2 : PARAMETERS A = A : ENDIF
+					ac_leaf_width   = A / 2
+					gs_SecondLeaf_w = A / 2
+
+					ELSE
+
+					! asymetrisch
+					IF A < minDoorLeafWidth + minDoorLeafWidth2 THEN : A = minDoorLeafWidth + minDoorLeafWidth2 : PARAMETERS A = A : ENDIF
+						gs_SecondLeaf_w	= MAX( A - ac_leaf_width, minDoorLeafWidth2 )
+						ac_leaf_width		= MAX( A - gs_SecondLeaf_w, minDoorLeafWidth )
+					ENDIF
+
+				ENDIF
+			TotalLeafWidth = A
+
+			IF B < minDoorLeafHeight THEN : B = minDoorLeafHeight : PARAMETERS B = B : ENDIF
+			ac_leaf_height	= B
+			PARAMETERS ac_leaf_width = ac_leaf_width, gs_SecondLeaf_w = gs_SecondLeaf_w, ac_leaf_height = B
+			iSizeByNominal = 64
+			ENDIF
+
+		ENDIF
+
+	GOSUB "RecalcOpeningDimensions"
+
+	RETURN
+
+
+! -------------------------------------------------- [ GS+: Gesamtmaße verändert? ]
+
+"RecalcOpeningDimensions":
+
+	! #### BREITEN
+
+	IF GLOB_MODPAR_NAME = "ac_wallhole_width" | (gs_wallhole_nominal & bRecalculate) | iSizeByNominal = 1 THEN
+		ac_baurichtmass_width 	= ac_wallhole_width	- baurichtmassDLeft	- baurichtmassDRight
+		ac_reveal_width		= ac_wallhole_width	- revealDLeft		- revealDRight
+		ac_unit_width			= ac_wallhole_width	- wallholeDLeft	- wallholeDRight
+		GOSUB "calcOuterFrame"
+		GOSUB "RecalcSidelightSize"
+		GOSUB "RecalcLeafSize"
+		bs_FrameRebate_width	= ac_egress_width		+ 2 * gs_vb
+
+		PARAMETERS	ac_baurichtmass_width 	= ac_baurichtmass_width,
+					ac_reveal_width		= ac_reveal_width,
+					ac_unit_width			= ac_unit_width,
+					bs_OuterFrame_width		= bs_OuterFrame_width,
+					bs_OuterFrame_width2	= bs_OuterFrame_width2,
+					ac_egress_width		= ac_egress_width,
+					ac_leaf_width			= ac_leaf_width,
+					gs_SecondLeaf_w		= gs_SecondLeaf_w,
+					bs_FrameRebate_width	= bs_FrameRebate_width
+
+		bSizeModified = 1
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "ac_baurichtmass_width" | (gs_baurichtmass_nominal & bRecalculate) | iSizeByNominal = 2 THEN
+		ac_wallhole_width		= ac_baurichtmass_width	+ baurichtmassDLeft	+ baurichtmassDRight
+		ac_reveal_width		= ac_wallhole_width		- revealDLeft		- revealDRight
+		ac_unit_width			= ac_wallhole_width		- wallholeDLeft	- wallholeDRight
+		GOSUB "calcOuterFrame"
+		GOSUB "RecalcSidelightSize"
+		GOSUB "RecalcLeafSize"
+		bs_FrameRebate_width	= ac_egress_width + 2 * gs_vb
+
+		PARAMETERS	ac_wallhole_width	= ac_wallhole_width,
+					ac_reveal_width	= ac_reveal_width,
+					ac_unit_width		= ac_unit_width,
+					bs_OuterFrame_width		= bs_OuterFrame_width,
+					bs_OuterFrame_width2	= bs_OuterFrame_width2,
+					ac_egress_width	= ac_egress_width,
+					ac_leaf_width		= ac_leaf_width,
+					gs_SecondLeaf_w		= gs_SecondLeaf_w,
+					bs_FrameRebate_width	= bs_FrameRebate_width
+
+		bSizeModified = 2
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "ac_reveal_width" | (gs_reveal_nominal & bRecalculate) | iSizeByNominal = 4 THEN
+		ac_wallhole_width		= ac_reveal_width	+ revealDLeft		+ revealDRight
+		ac_baurichtmass_width 	= ac_wallhole_width	- baurichtmassDLeft	- baurichtmassDRight
+		ac_unit_width			= ac_wallhole_width	- wallholeDLeft	- wallholeDRight
+		GOSUB "calcOuterFrame"
+		GOSUB "RecalcSidelightSize"
+		GOSUB "RecalcLeafSize"
+		bs_FrameRebate_width	= ac_egress_width + 2 * gs_vb
+
+		PARAMETERS	ac_wallhole_width		= ac_wallhole_width,
+					ac_baurichtmass_width 	= ac_baurichtmass_width,
+					ac_unit_width			= ac_unit_width,
+					bs_OuterFrame_width		= bs_OuterFrame_width,
+					bs_OuterFrame_width2	= bs_OuterFrame_width2,
+					ac_egress_width		= ac_egress_width,
+					ac_leaf_width			= ac_leaf_width,
+					gs_SecondLeaf_w		= gs_SecondLeaf_w,
+					bs_FrameRebate_width	= bs_FrameRebate_width
+
+		bSizeModified = 4
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "ac_unit_width" | (gs_unit_nominal & bRecalculate) | iSizeByNominal = 8 THEN
+		ac_wallhole_width		= ac_unit_width	+ wallholeDLeft	+ wallholeDRight
+		ac_baurichtmass_width 	= ac_wallhole_width	- baurichtmassDLeft	- baurichtmassDRight
+		ac_reveal_width		= ac_wallhole_width	- revealDLeft		- revealDRight
+		GOSUB "calcOuterFrame"
+		GOSUB "RecalcSidelightSize"
+		GOSUB "RecalcLeafSize"
+		bs_FrameRebate_width	= ac_egress_width + 2 * gs_vb
+
+		PARAMETERS	ac_wallhole_width		= ac_wallhole_width,
+					ac_baurichtmass_width 	= ac_baurichtmass_width,
+					ac_reveal_width		= ac_reveal_width,
+					bs_OuterFrame_width		= bs_OuterFrame_width,
+					bs_OuterFrame_width2	= bs_OuterFrame_width2,
+					ac_egress_width		= ac_egress_width,
+					ac_leaf_width			= ac_leaf_width,
+					gs_SecondLeaf_w		= gs_SecondLeaf_w,
+					bs_FrameRebate_width	= bs_FrameRebate_width
+
+		bSizeModified = 8
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "ac_egress_width" | bChangedSidelight | (gs_egress_nominal & bRecalculate) | iSizeByNominal = 16 THEN
+		GOSUB "RecalcSidelightSize"
+		GOSUB "RecalcLeafSize"
+		ac_unit_width			= ac_egress_width	+ unitDLeft		+ unitDRight
+		GOSUB "calcOuterFrame"
+		ac_wallhole_width		= ac_unit_width	+ wallholeDLeft	+ wallholeDRight
+		ac_baurichtmass_width 	= ac_wallhole_width	- baurichtmassDLeft	- baurichtmassDRight
+		ac_reveal_width		= ac_wallhole_width	- revealDLeft		- revealDRight
+		bs_FrameRebate_width	= ac_egress_width + 2 * gs_vb
+
+		PARAMETERS	ac_wallhole_width		= ac_wallhole_width,
+					ac_baurichtmass_width 	= ac_baurichtmass_width,
+					ac_reveal_width		= ac_reveal_width,
+					ac_unit_width			= ac_unit_width,
+					bs_OuterFrame_width		= bs_OuterFrame_width,
+					bs_OuterFrame_width2	= bs_OuterFrame_width2,
+					ac_leaf_width			= ac_leaf_width,
+					gs_SecondLeaf_w		= gs_SecondLeaf_w,
+					bs_FrameRebate_width	= bs_FrameRebate_width
+
+		bSizeModified = 16
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_FrameRebate_width" | (dk_FrameRebate_nominal & bRecalculate) | iSizeByNominal = 32 THEN
+		
+		ac_egress_width		= bs_FrameRebate_width - 2 * gs_vb
+		GOSUB "RecalcSidelightSize"
+		GOSUB "RecalcLeafSize"
+		ac_unit_width			= ac_egress_width	+ unitDLeft		+ unitDRight
+		GOSUB "calcOuterFrame"
+		ac_wallhole_width		= ac_unit_width	+ wallholeDLeft	+ wallholeDRight
+		ac_baurichtmass_width 	= ac_wallhole_width	- baurichtmassDLeft	- baurichtmassDRight
+		ac_reveal_width		= ac_wallhole_width	- revealDLeft		- revealDRight
+
+		PARAMETERS	ac_wallhole_width		= ac_wallhole_width,
+					ac_baurichtmass_width 	= ac_baurichtmass_width,
+					ac_reveal_width		= ac_reveal_width,
+					ac_unit_width			= ac_unit_width,
+					bs_OuterFrame_width		= bs_OuterFrame_width,
+					bs_OuterFrame_width2	= bs_OuterFrame_width2,
+					ac_egress_width		= ac_egress_width,
+					ac_leaf_width			= ac_leaf_width,
+					gs_SecondLeaf_w		= gs_SecondLeaf_w
+
+		bSizeModified = 32
+		ENDIF
+
+	IF ( GLOB_MODPAR_NAME = "ac_leaf_width" | GLOB_MODPAR_NAME = "gs_SecondLeaf_w" ) | (gs_leaf_nominal & bRecalculate) | iSizeByNominal = 64 THEN
+		GOSUB "RecalcLeafSize"
+		ac_unit_width			= ac_egress_width	+ unitDLeft		+ unitDRight
+		GOSUB "calcOuterFrame"
+		ac_wallhole_width		= ac_unit_width	+ wallholeDLeft	+ wallholeDRight
+		ac_baurichtmass_width 	= ac_wallhole_width	- baurichtmassDLeft	- baurichtmassDRight
+		ac_reveal_width		= ac_wallhole_width	- revealDLeft		- revealDRight
+		bs_FrameRebate_width	= ac_egress_width + 2 * gs_vb
+
+		PARAMETERS	ac_wallhole_width		= ac_wallhole_width,
+					ac_baurichtmass_width 	= ac_baurichtmass_width,
+					ac_reveal_width		= ac_reveal_width,
+					ac_unit_width			= ac_unit_width,
+					bs_OuterFrame_width		= bs_OuterFrame_width,
+					bs_OuterFrame_width2	= bs_OuterFrame_width2,
+					ac_egress_width		= ac_egress_width,
+					bs_FrameRebate_width	= bs_FrameRebate_width
+
+		bSizeModified = 64
+		ENDIF
+
+	! #### HÖHEN
+
+	IF GLOB_MODPAR_NAME = "ac_wallhole_height" | (gs_wallhole_nominal & bRecalculate) | iSizeByNominal = 1 THEN
+		ac_baurichtmass_height 	= ac_wallhole_height - baurichtmassDUpper	- baurichtmassDLower
+		ac_reveal_height		= ac_wallhole_height - revealDUpper		- revealDLower
+		ac_unit_height			= ac_wallhole_height - wallholeDUpper		- wallholeDLower
+		GOSUB "calcOuterFrame"
+		ac_egress_height		= ac_unit_height	 - egressDUpper		- unitDLower
+		ac_leaf_height			= ac_egress_height	 + leafDUpper			+ leafDLower
+		bs_FrameRebate_height	= ac_unit_height	 - unitDUpper + gs_vb	- unitDLower
+
+		PARAMETERS	ac_baurichtmass_height 	= ac_baurichtmass_height,
+					ac_reveal_height		= ac_reveal_height,
+					ac_unit_height			= ac_unit_height,
+					bs_OuterFrame_height	= bs_OuterFrame_height,
+					bs_OuterFrame_height2	= bs_OuterFrame_height2,
+					ac_egress_height		= ac_egress_height,
+					ac_leaf_height			= ac_leaf_height,
+					bs_FrameRebate_height	= bs_FrameRebate_height
+
+		bSizeModified = 128 + 1
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "ac_baurichtmass_height" | (gs_baurichtmass_nominal & bRecalculate) | iSizeByNominal = 2 THEN
+		ac_wallhole_height		= ac_baurichtmass_height + baurichtmassDUpper	+ baurichtmassDLower
+		ac_reveal_height		= ac_wallhole_height 	 - revealDUpper		- revealDLower
+		ac_unit_height 		= ac_wallhole_height	 - wallholeDUpper		- wallholeDLower
+		GOSUB "calcOuterFrame"
+		ac_egress_height		= ac_unit_height	 	 - egressDUpper		- unitDLower
+		ac_leaf_height			= ac_egress_height		 + leafDUpper			+ leafDLower
+		bs_FrameRebate_height	= ac_unit_height		 - unitDUpper + gs_vb	- unitDLower
+
+		PARAMETERS	ac_wallhole_height		= ac_wallhole_height,
+					ac_reveal_height		= ac_reveal_height,
+					ac_unit_height			= ac_unit_height,
+					bs_OuterFrame_height	= bs_OuterFrame_height,
+					bs_OuterFrame_height2	= bs_OuterFrame_height2,
+					ac_egress_height		= ac_egress_height,
+					ac_leaf_height			= ac_leaf_height,
+					bs_FrameRebate_height	= bs_FrameRebate_height
+
+		bSizeModified = 128 + 2
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "ac_reveal_height" | (gs_reveal_nominal & bRecalculate) | iSizeByNominal = 4 THEN
+		ac_wallhole_height		= ac_reveal_height	 + revealDUpper		+ revealDLower
+		ac_baurichtmass_height 	= ac_wallhole_height - baurichtmassDUpper	- baurichtmassDLower
+		ac_unit_height			= ac_wallhole_height - wallholeDUpper		- wallholeDLower
+		GOSUB "calcOuterFrame"
+		ac_egress_height		= ac_unit_height	 - egressDUpper		- unitDLower
+		ac_leaf_height			= ac_egress_height	 + leafDUpper			+ leafDLower
+		bs_FrameRebate_height	= ac_unit_height	 - unitDUpper + gs_vb	- unitDLower
+
+		PARAMETERS	ac_wallhole_height		= ac_wallhole_height,
+					ac_baurichtmass_height 	= ac_baurichtmass_height,
+					ac_unit_height			= ac_unit_height,
+					bs_OuterFrame_height	= bs_OuterFrame_height,
+					bs_OuterFrame_height2	= bs_OuterFrame_height2,
+					ac_egress_height		= ac_egress_height,
+					ac_leaf_height			= ac_leaf_height,
+					bs_FrameRebate_height	= bs_FrameRebate_height
+
+		bSizeModified = 128 + 4
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "ac_unit_height" | (gs_unit_nominal & bRecalculate) | iSizeByNominal = 8 THEN
+		ac_wallhole_height		= ac_unit_height		+ wallholeDUpper 		+ wallholeDLower
+		ac_baurichtmass_height 	= ac_wallhole_height	- baurichtmassDUpper	- baurichtmassDLower
+		ac_reveal_height		= ac_wallhole_height	- revealDUpper			- revealDLower
+		ac_egress_height		= ac_unit_height		- egressDUpper	 		- unitDLower
+		ac_leaf_height			= ac_egress_height		+ leafDUpper	 		+ leafDLower
+		bs_FrameRebate_height	= ac_unit_height	 	- unitDUpper + gs_vb	- unitDLower
+		GOSUB "calcOuterFrame"
+
+		PARAMETERS	ac_wallhole_height		= ac_wallhole_height,
+					ac_baurichtmass_height 	= ac_baurichtmass_height,
+					ac_reveal_height		= ac_reveal_height,
+					ac_egress_height		= ac_egress_height,
+					bs_OuterFrame_height	= bs_OuterFrame_height,
+					bs_OuterFrame_height2	= bs_OuterFrame_height2,
+					ac_leaf_height			= ac_leaf_height,
+					bs_FrameRebate_height	= bs_FrameRebate_height
+
+		bSizeModified = 128 + 8
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "ac_egress_height" | (gs_egress_nominal & bRecalculate) | iSizeByNominal = 16 THEN
+		GOSUB "RecalcTransomForEgress"
+		ac_wallhole_height		= ac_unit_height		+ wallholeDUpper		+ wallholeDLower
+		ac_baurichtmass_height 	= ac_wallhole_height	- baurichtmassDUpper	- baurichtmassDLower
+		ac_reveal_height		= ac_wallhole_height	- revealDUpper			- revealDLower
+		ac_leaf_height			= ac_egress_height		+ leafDUpper			+ leafDLower
+		bs_FrameRebate_height	= ac_unit_height		- unitDUpper + gs_vb	- unitDLower
+		GOSUB "calcOuterFrame"
+
+		PARAMETERS	ac_wallhole_height		= ac_wallhole_height,
+					ac_reveal_height		= ac_reveal_height,
+					ac_unit_height			= ac_unit_height,
+					bs_OuterFrame_height	= bs_OuterFrame_height,
+					bs_OuterFrame_height2	= bs_OuterFrame_height2,
+					ac_leaf_height			= ac_leaf_height,
+					ac_baurichtmass_height 	= ac_baurichtmass_height,
+					bs_FrameRebate_height	= bs_FrameRebate_height
+
+		bSizeModified = 128 + 16
+		ENDIF
+
+	IF GLOB_MODPAR_NAME = "bs_FrameRebate_height" | (dk_FrameRebate_nominal & bRecalculate) | iSizeByNominal = 32 THEN
+		ac_unit_height			= bs_FrameRebate_height	+ unitDUpper - gs_vb	+ unitDLower
+		GOSUB "calcOuterFrame"
+		ac_egress_height		= ac_unit_height		- egressDUpper			- unitDLower
+		ac_wallhole_height		= ac_unit_height		+ wallholeDUpper		+ wallholeDLower
+		ac_baurichtmass_height 	= ac_wallhole_height	- baurichtmassDUpper	- baurichtmassDLower
+		ac_reveal_height		= ac_wallhole_height	- revealDUpper			- revealDLower
+		ac_leaf_height			= ac_egress_height		+ leafDUpper			+ leafDLower
+
+		PARAMETERS	ac_wallhole_height		= ac_wallhole_height,
+					ac_baurichtmass_height 	= ac_baurichtmass_height,
+					ac_reveal_height		= ac_reveal_height,
+					ac_unit_height			= ac_unit_height,
+					bs_OuterFrame_height	= bs_OuterFrame_height,
+					bs_OuterFrame_height2	= bs_OuterFrame_height2,
+					ac_egress_height		= ac_egress_height,
+					ac_leaf_height			= ac_leaf_height
+
+		bSizeModified = 128 + 32
+		ENDIF
+
+	IF bChangedFanlight | (gs_leaf_nominal & bRecalculate) | iSizeByNominal = 64 THEN
+		GOSUB "RecalcTransomForLeafSize"
+		ac_wallhole_height		= ac_unit_height		+ wallholeDUpper		+ wallholeDLower
+		ac_reveal_height		= ac_wallhole_height	- revealDUpper		- revealDLower
+		ac_baurichtmass_height 	= ac_wallhole_height	- baurichtmassDUpper	- baurichtmassDLower
+		bs_FrameRebate_height	= ac_unit_height		- unitDUpper + gs_vb	- unitDLower
+		GOSUB "calcOuterFrame"
+
+		PARAMETERS	ac_wallhole_height		= ac_wallhole_height,
+					ac_baurichtmass_height	= ac_baurichtmass_height,
+					ac_reveal_height		= ac_reveal_height,
+					ac_unit_height			= ac_unit_height,
+					bs_OuterFrame_height	= bs_OuterFrame_height,
+					bs_OuterFrame_height2	= bs_OuterFrame_height2,
+					ac_egress_height		= ac_egress_height,
+					bs_FrameRebate_height	= bs_FrameRebate_height
+
+		bSizeModified = 128 + 64
+		ENDIF
+
+	! "bs_UsableClearance"
+	! "bs_UsableHeight"
+	! "ac_leaf_height"
+	! "gs_transom_height"
+
+	RETURN
+
+
+! =============================================================================
+! Definitionen der Kopplungselemente
+! =============================================================================
+
+! -------------------------------------------------- [ GS+: settings for allowed ranges]
+
+"setValuesRanges":
+
+	! #### Profiles
+
+	! -> should be done in Frames Makro!
+
+	! #### Sidelight
+
+	IF bDiffSidelightWidth AND (gs_sidelight_left AND gs_sidelight_right) THEN
+
+		! #### Sidelight - Left
+
+		IF gs_sidelight_left THEN
+			VALUES "gs_sidelight_width_left" RANGE [ minSidelightWidthLeft, ac_unit_width - minEgressWidth - minSidelightWidthRight - noSidelightWidthRight]
+			ELSE
+			LOCK "gs_sidelight_width_left"
+			HIDEPARAMETER "gs_sidelight_width_left"
+			ENDIF
+
+		! #### Sidelight - Right
+
+		IF gs_sidelight_right THEN
+			VALUES "gs_sidelight_width_right" RANGE [ minSidelightWidthRight, ac_unit_width - minEgressWidth - minSidelightWidthLeft - noSidelightWidthLeft]
+			ELSE
+			LOCK "gs_sidelight_width_right"
+			HIDEPARAMETER "gs_sidelight_width_right"
+			ENDIF
+
+		ELSE
+
+		LOCK "gs_sidelight_width_left", "gs_sidelight_width_right"
+
+		ENDIF
+
+	! #### Transom
+
+	IF gs_door_transom THEN
+		VALUES "gs_transom_height" RANGE [ minTransomHeight, ac_unit_height - minEgressHeight]
+		ELSE
+		LOCK "gs_transom_height"
+		HIDEPARAMETER "gs_transom_height"
+		ENDIF
+
+	! #### Leaf / Panel
+
+	IF bs_door_leafs < 1 THEN
+		! kein Flügel
+		LOCK "gs_SecondLeaf_w", "ac_leaf_width"
+		ELSE
+		IF NOT(symm) AND bs_door_leafs = 2 THEN
+			! Zwei variable Flügel
+			VALUES "ac_leaf_width"   RANGE [ minDoorLeafWidth, maxLeafTotalWidth - minDoorLeafWidth2 ]
+			VALUES "gs_SecondLeaf_w" RANGE [ minDoorLeafWidth2, maxLeafTotalWidth - minDoorLeafWidth ]
+			ELSE
+			! symetrisch oder nur ein Fügel
+			VALUES "ac_leaf_width" RANGE [ minDoorLeafWidth, maxLeafTotalWidth ]
+			LOCK "gs_SecondLeaf_w"
+			ENDIF
+		VALUES "ac_leaf_height" RANGE [ minDoorLeafHeight, ac_unit_height - (minTransomHeight + noTransomHeight) + leafDUpper]
+	
+		ENDIF
+
+	RETURN
+
+
+! -------------------------------------------------- [ GS+: Minimalabmessungen ]
+
+"calcSizeLimitations":
+
+	! minimale Profilabmessungen
+
+	! "gs_different_framewidth"
+	! "gs_frame_width"
+	! "gs_frame_width_left"
+	! "gs_frame_width_right"
+	! "gs_frame_width_left_2"
+	! "gs_frame_width_right_2"
+	! "gs_frame_width_upper"
+	! "gs_frame_width_transom"
+	! "gs_frame_width_bottom_sl"
+	! "gs_frame_width_transom_sl"
+	! "gs_frame_width_upper_sl"
+
+	! minimale Seitenfeld- und Oberlichtabmessungen
+
+	IF gs_sidelight_right THEN
+		minSidelightWidthRight	= gs_frame_width_right + gs_frame_width_right_2 + 0.01   !- gs_vb
+		noSidelightWidthRight	= 0
+		ELSE
+		minSidelightWidthRight	= 0  !gs_frame_width_right
+		noSidelightWidthRight	= gs_frame_width_right
+		ENDIF
+
+	IF gs_sidelight_left THEN
+		minSidelightWidthLeft	= gs_frame_width_left + gs_frame_width_left_2 + 0.01   !- gs_vb
+		noSidelightWidthLeft	= 0
+		ELSE
+		minSidelightWidthLeft	= 0  !gs_frame_width_left
+		noSidelightWidthLeft	= gs_frame_width_left
+		ENDIF
+
+	IF gs_door_transom THEN
+		minTransomHeight	= gs_frame_width_upper + gs_frame_width_transom * (oberLichtBlende = 1) + 0.01
+		noTransomHeight	= 0
+		ELSE
+		minTransomHeight	= 0
+		noTransomHeight	= gs_frame_width_upper
+		ENDIF
+
+	! minimale Türabmessungen
+
+	IF (bs_door_leafs > 1) THEN
+		minDoorLeafWidth	= MAX(0.25, leafDLeft  + 0.02 + dk_panel_folding_dimensions[1][1] / 2) ! Minimale Gangflügelbreite
+		minDoorLeafWidth2	= MAX(0.05, leafDRight + 0.02 + dk_panel_folding_dimensions[1][1] / 2) ! Minimale Standflügelbreite
+		ELSE
+		minDoorLeafWidth	= MAX(0.25, leafDLeft  + 0.02 + leafDRight) ! Minimale Gangflügelbreite
+		minDoorLeafWidth2	= 0 ! Minimale Standflügelbreite
+		ENDIF
+	minEgressWidth		= minDoorLeafWidth + minDoorLeafWidth2 - leafDLeft - leafDRight
+	minRebateWidth		= minEgressWidth + gs_vb * 2
+	minUnitWidth		= minEgressWidth + minSidelightWidthLeft + minSidelightWidthRight + noSidelightWidthRight + noSidelightWidthLeft
+
+	minEgressHeight	= 0.5
+	minUnitHeight		= minEgressHeight + minTransomHeight + gs_frame_width_upper * (oberLichtBlende = 0)
+	minDoorLeafHeight	= minEgressHeight + leafDUpper
+
+	! maximale Abmessungen
+
+	maxEgressWidth = ac_unit_width - minSidelightWidthLeft - minSidelightWidthRight - noSidelightWidthRight - noSidelightWidthLeft
+	maxLeafTotalWidth = maxEgressWidth + leafDLeft + leafDRight
+
+	RETURN
+
+
+! -------------------------------------------------- [ GS+: Distanzen Lichter Durchgang zu Bezugsöffnungsmaß (?) bzw. Rahmenaußenmaß ]
+
+"WallholeRevealSizeDiff":
+
+	! Unit Size -> Wallhole Size difference
+	wallholeDLeft	= gs_tolerance_left	 !+ signRevealDiff * gs_reveal_left
+	wallholeDRight	= gs_tolerance_right !+ signRevealDiff * gs_reveal_right
+	wallholeDUpper	= gs_tolerance_upper !+ signRevealDiff * gs_reveal_top
+	wallholeDLower	= gs_tolerance_lower !+ thresholdExtraHole
+	
+	! Reveal Size -> Wallhole Size difference
+	revealDLeft		= gs_reveal_left	!+ gs_trim_outside * gs_trim_width_out
+	revealDRight	= gs_reveal_right	!+ gs_trim_outside * gs_trim_width_out
+	revealDUpper	= gs_reveal_top	 !+ windowMountingUpperOffsetRW
+	revealDLower	= gs_reveal_bottom	 !+ windowMountingLowerOffsetRW
+	
+	! Building Code Size -> Wallhole Size difference
+	baurichtmassDLeft	= gs_baurichtmass_outer_left   !gs_tolerance_left
+	baurichtmassDRight	= gs_baurichtmass_outer_right  !gs_tolerance_right
+	baurichtmassDUpper	= gs_baurichtmass_outer_upper  !gs_tolerance_upper
+	baurichtmassDLower	= gs_baurichtmass_outer_lower
+
+	RETURN
+
+
+! =============================================================================
+! Neukalkulation der abhängigen Parameter
+! =============================================================================
+
+
+! -------------------------------------------------- [ GS+: Seitenfelder, Oberlicht und lichten Durchgang neu bemessen ]
+
+"RecalcSidelightSize":
+
+	egressWidth = MAX( MIN( ac_egress_width, maxEgressWidth ) , minEgressWidth )
+
+	IF gs_sidelight_left THEN
+
+		IF gs_sidelight_right THEN
+
+			! sidelights on both sides
+
+			sidelightsTotalWidth = ac_unit_width - egressWidth  ! - gs_frame_width_left_2 - gs_frame_width_right_2
+
+			IF bDiffSidelightWidth THEN
+
+				! asymetric
+
+				IF GLOB_MODPAR_NAME = "gs_sidelight_width_left" THEN
+					IF sidelightWidthLeft > sidelightsTotalWidth - minSidelightWidthRight THEN sidelightWidthLeft = sidelightsTotalWidth - minSidelightWidthRight
+					sidelightWidthLeft  = MAX( sidelightWidthLeft, minSidelightWidthLeft )
+					sidelightWidthRight = MAX( sidelightsTotalWidth - sidelightWidthLeft, minSidelightWidthRight )
+
+					ELSE
+						
+					IF GLOB_MODPAR_NAME = "gs_sidelight_width_right" THEN
+						IF sidelightWidthRight > sidelightsTotalWidth - minSidelightWidthLeft THEN sidelightWidthRight = sidelightsTotalWidth - minSidelightWidthLeft
+						sidelightWidthRight = MAX( sidelightWidthRight, minSidelightWidthRight )
+						sidelightWidthLeft  = MAX( sidelightsTotalWidth - sidelightWidthRight, minSidelightWidthLeft )
+
+						ELSE
+
+						IF GLOB_MODPAR_NAME = "bDiffSidelightWidth" THEN sideRatio = 0.5 ELSE sideRatio = sidelightWidthLeft / MAX(tlr,sidelightWidthLeft + sidelightWidthRight)
+						sidelightWidthLeft  = MAX( minSidelightWidthLeft  , sidelightsTotalWidth * sideRatio )
+						sidelightWidthRight = MAX( minSidelightWidthRight , sidelightsTotalWidth - sidelightWidthLeft )
+
+						ENDIF
+
+					ENDIF
+
+				ELSE
+
+				! symetric / equal
+
+				IF GLOB_MODPAR_NAME = "gs_sidelight_width_right" THEN
+					sidelightWidthRight = MAX( sidelightWidthRight, minSidelightWidthRight )
+					sidelightWidthLeft  = sidelightWidthRight
+					ELSE
+					IF GLOB_MODPAR_NAME = "gs_sidelight_width_left" THEN
+						sidelightWidthLeft  = MAX( sidelightWidthLeft, minSidelightWidthLeft )
+						sidelightWidthRight = sidelightWidthLeft
+						ELSE
+						sideRatio = 0.5
+						sidelightWidthRight = MAX(minSidelightWidthRight , sideRatio * sidelightsTotalWidth)
+						sidelightWidthLeft  = sidelightWidthRight
+						ENDIF
+					ENDIF
+				ENDIF
+
+			PARAMETERS gs_sidelight_width_left = sidelightWidthLeft, gs_sidelight_width_right = sidelightWidthRight
+			egressWidth = ac_unit_width - sidelightWidthLeft - sidelightWidthRight   ! - gs_frame_width_left_2 - gs_frame_width_right_2
+
+			ELSE
+
+			! sidelight only on the left
+
+			IF GLOB_MODPAR_NAME <> "gs_sidelight_width_left" THEN sidelightWidthLeft = ac_unit_width - unitDRight - egressWidth  ! - gs_frame_width_left_2
+			IF sidelightWidthLeft < minSidelightWidthLeft THEN sidelightWidthLeft = minSidelightWidthLeft
+
+			PARAMETERS gs_sidelight_width_left = sidelightWidthLeft
+			egressWidth = ac_unit_width - sidelightWidthLeft - unitDRight   ! - gs_frame_width_left_2
+
+			ENDIF
+
+		ELSE
+
+		IF gs_sidelight_right THEN
+
+			! sidelight only on the right
+
+			IF GLOB_MODPAR_NAME <> "gs_sidelight_width_right" THEN  sidelightWidthRight = ac_unit_width - unitDLeft - egressWidth   ! - gs_frame_width_right_2
+			sidelightWidthRight = MAX(sidelightWidthRight, minSidelightWidthRight)
+
+			PARAMETERS gs_sidelight_width_right = sidelightWidthRight
+			egressWidth = ac_unit_width - sidelightWidthRight - unitDLeft   ! - gs_frame_width_right_2
+
+			ELSE
+
+			! no sidelight at all
+
+			egressWidth = ac_unit_width - unitDLeft - unitDRight
+
+			ENDIF
+
+		ENDIF
+
+	IF ABS(ac_egress_width - egressWidth) > tlr THEN
+		ac_egress_width = egressWidth
+		IF GLOB_MODPAR_NAME = "ac_egress_width" 	THEN PARAMETERS ac_egress_width = egressWidth
+		IF GLOB_MODPAR_NAME = "bs_FrameRebate_width" THEN PARAMETERS bs_FrameRebate_width = egressWidth + 2 * gs_vb
+		ENDIF
+
+	! IF NOT (GLOB_MODPAR_NAME = "ac_leaf_width" | GLOB_MODPAR_NAME = "gs_SecondLeaf_w" ) THEN ac_egress_width = egressWidth
+
+	GOSUB "unitSizeDiff"
+
+	RETURN
+
+
+! -------------------------------------------------- [ Türblattabmessung neu berechnen ]
+
+"RecalcLeafSize":
+
+	! Flügelanzahl geändert
+	IF GLOB_MODPAR_NAME = "bs_door_leafs" AND bs_door_leafs < 2 THEN
+		ac_leaf_width = ac_leaf_width + gs_SecondLeaf_w
+		gs_SecondLeaf_w = 0
+		ENDIF
+
+	IF bs_door_leafs < 2 THEN
+
+		! Einflügelig oder kein Flügel
+
+		IF GLOB_MODPAR_NAME = "ac_leaf_width" OR iSizeByNominal = 64 THEN
+			egressWidth = MAX( MIN( maxLeafTotalWidth, ac_leaf_width ), minDoorLeafWidth ) - leafDLeft - leafDRight
+			ELSE
+			egressWidth = ac_egress_width
+			ENDIF
+
+		ac_leaf_width = egressWidth + leafDLeft + leafDRight
+		gs_SecondLeaf_w = 0
+
+		ELSE
+
+		! Stand- und Gangflügel
+
+		IF symm OR GLOB_MODPAR_NAME = "bs_door_leafs" THEN
+
+			! symetrisch oder gerade erst umgestellt
+
+			IF ( GLOB_MODPAR_NAME = "ac_leaf_width" ) OR iSizeByNominal = 64 THEN 	!  | GLOB_MODPAR_NAME = "bs_door_leafs" | GLOB_MODPAR_NAME = "symm"
+				egressWidth = MAX( MIN( MAX( ac_leaf_width, minDoorLeafWidth ) * 2 - leafDLeft - leafDRight, maxEgressWidth ), minEgressWidth )
+				ELSE
+				egressWidth = ac_egress_width
+				ENDIF
+
+			ac_leaf_width   = egressWidth / 2 + leafDLeft
+			gs_SecondLeaf_w = egressWidth / 2 + leafDRight
+
+			ELSE
+
+			! asymetrisch
+
+			IF GLOB_MODPAR_NAME = "ac_leaf_width" OR iSizeByNominal = 64 OR bChangedLeaf THEN
+
+				IF ac_leaf_width + minDoorLeafWidth2 > maxLeafTotalWidth THEN egressWidth = maxEgressWidth ELSE egressWidth = ac_egress_width 
+				ac_leaf_width		= MAX( MIN( maxLeafTotalWidth - minDoorLeafWidth2, ac_leaf_width ), minDoorLeafWidth )
+				gs_SecondLeaf_w	= MAX( egressWidth + leafDLeft + leafDRight - ac_leaf_width, minDoorLeafWidth2 )
+				egressWidth		= MAX( ac_leaf_width + gs_SecondLeaf_w  - leafDLeft - leafDRight, minEgressWidth )
+
+				ELSE
+
+				IF GLOB_MODPAR_NAME = "gs_SecondLeaf_w" THEN
+
+					IF gs_SecondLeaf_w + minDoorLeafWidth > maxLeafTotalWidth THEN egressWidth = maxEgressWidth ELSE egressWidth = ac_egress_width 
+					gs_SecondLeaf_w	= MAX( MIN( maxLeafTotalWidth - minDoorLeafWidth, gs_SecondLeaf_w ), minDoorLeafWidth2 )
+					ac_leaf_width		= MAX( egressWidth - gs_SecondLeaf_w, minDoorLeafWidth )
+					egressWidth		= MAX( ac_leaf_width + gs_SecondLeaf_w  - leafDLeft - leafDRight, minEgressWidth )
+
+					ELSE
+
+					egressWidth = ac_egress_width
+
+					ENDIF
+
+				ENDIF
+			
+			ac_leaf_width   = MIN( ac_leaf_width - leafDLeft, egressWidth - (minDoorLeafWidth2 - leafDRight)) + leafDLeft
+			gs_SecondLeaf_w = (egressWidth - (ac_leaf_width - leafDLeft)) + leafDRight
+
+			ENDIF
+
+		ENDIF
+
+	! IF bChangedLeaf THEN
+		PARAMETERS ac_leaf_width = ac_leaf_width, gs_SecondLeaf_w = gs_SecondLeaf_w
+	! 	ENDIF
+	
+	IF ABS (ac_egress_width - egressWidth)< tlr THEN
+		ac_egress_width = egressWidth
+		ELSE
+		ac_egress_width = egressWidth
+		GOSUB "RecalcSidelightSize"
+		ENDIF
+
+	RETURN
+
+
+! -------------------------------------------------- [ Oberlichtmaß neu berechnen ]
+
+"RecalcTransomForLeafSize":
+
+	ac_egress_height = ac_leaf_height - leafDUpper - leafDLower
+
+"RecalcTransomForEgress":
+
+	IF ac_unit_height - ac_egress_height < minTransomHeight AND oberLichtBlende > 0 THEN
+
+		! Oberichthöhe auf Minimalhöhe.
+		gs_transom_height = minTransomHeight
+		ac_unit_height = ac_egress_height + gs_transom_height
+		PARAMETERS gs_transom_height = gs_transom_height
+		GOSUB "unitSizeDiff"
+
+		ELSE
+
+		IF ABS( ac_egress_height - (ac_unit_height - gs_transom_height) ) > tlr AND oberLichtBlende > 0 THEN
+
+			! Oberichthöhe verändert sich.
+			gs_transom_height = ac_unit_height - ac_egress_height
+			PARAMETERS gs_transom_height = gs_transom_height
+			GOSUB "unitSizeDiff"
+
+			ELSE
+
+			! Rahmengröße verändert sich
+			ac_unit_height = ac_egress_height + egressDUpper + unitDLower
+			
+			ENDIF
+
+		ENDIF
+
+	RETURN
+
+"calcOuterFrame":
+	IF dk_frametype = "UZ" OR dk_frametype = "EZ"  THEN
+		bs_OuterFrame_width   = ac_unit_width  - gs_frame_width_left  - gs_frame_width_right + 2 * (gs_vb + bs_spiegel_br_bs)
+		bs_OuterFrame_height  = ac_unit_height - gs_frame_width_upper + (gs_vb + bs_spiegel_br_ob_bs)
+		ELSE
+		bs_OuterFrame_width   = ac_unit_width
+		bs_OuterFrame_height  = ac_unit_height
+		ENDIF
+	IF dk_frametype = "UZ" THEN
+		bs_OuterFrame_width2  = ac_unit_width  - gs_frame_width_left  - gs_frame_width_right + 2 * (bs_spiegel_br_bgs)
+		bs_OuterFrame_height2 = ac_unit_height - gs_frame_width_upper + (bs_spiegel_br_ob_bgs)
+		ELSE
+		bs_OuterFrame_width2  = ac_unit_width
+		bs_OuterFrame_height2 = ac_unit_height
+		ENDIF
+	RETURN

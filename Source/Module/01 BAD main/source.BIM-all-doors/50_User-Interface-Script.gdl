@@ -1,0 +1,3053 @@
+
+! =============================================================================
+! GLOBAL SETTINGS
+! =============================================================================
+
+DIM uiPAGET[]
+
+format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für UI-Outfield -Längenwerte	
+
+!------------------------------------------------------------------ [ Sprache ]
+
+! DIM sprachauswahl[]
+
+	! IF sprache=1 THEN
+	! 	i=0
+	! 	i=i+1 : sprachauswahl[i]="Deutsch"
+	! 	i=i+1 : sprachauswahl[i]="Österreich"
+	! 	i=i+1 : sprachauswahl[i]="Schweiz"
+	! 	i=i+1 : sprachauswahl[i]="Englisch"
+	! 	i=i+1 : sprachauswahl[i]="USA"
+	! 	i=i+1 : sprachauswahl[i]="Australien"
+	! 	i=i+1 : sprachauswahl[i]="Neuseeland"
+	! 	i=i+1 : sprachauswahl[i]="Frankreich"
+	! 	ENDIF
+
+	! IF sprache=4 THEN
+	! 	i=0
+	! 	i=i+1 : sprachauswahl[i]="German"
+	! 	i=i+1 : sprachauswahl[i]="Austria"
+	! 	i=i+1 : sprachauswahl[i]="Switzerland"
+	! 	i=i+1 : sprachauswahl[i]="English"
+	! 	i=i+1 : sprachauswahl[i]="USA"
+	! 	i=i+1 : sprachauswahl[i]="Australia"
+	! 	i=i+1 : sprachauswahl[i]="New Zealand"
+	! 	i=i+1 : sprachauswahl[i]="France"
+	! 	ENDIF
+
+
+! ----------------------------------- MULTILINGUAL TEXT [BIM-all-doors] (start)
+
+! --------- RESET array variables
+	DIM babel[]
+	DIM uiTXT[]
+	DIM bubble[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF sprache = 1 THEN
+		babel[1] = "PLANUNGSPHASE  /\nKOMPLEXITÄT DER KONFIGURATION:"
+		babel[2] = "BIM-all-doors - Die erweiterbare Komponententür"
+		babel[3] = "GRUNDLEGENDE ANFORDERUNGEN AN ..."
+		babel[4] = "Türflügel:"
+		babel[5] = "Ausrichtung:"
+		babel[6] = "Id.Nummer:"
+		babel[7] = "Hersteller:"
+		babel[8] = "Türmodell:"
+		babel[9] = "Bezugsraum:"
+		babel[10] = "Reduzierte Abfrage der Parameter. Volle Kontrolle über Einstellung 'Werkplanung'."
+		babel[11] = "DETAILLIERTE ANFORDERUNGEN"
+		babel[12] = "TÜRFUNKTIONEN"
+		babel[13] = "( ANFORDERUNGEN / SOLL )"
+		babel[14] = "ÜBERWACHUNG TÜRZUSTAND"
+		babel[15] = "MINIMALABMESSUNGEN"
+		babel[16] = "Besuchen sie uns im Internet unter www.bim-all-doors.de\nHier finden sie Anleitungen, die jeweils neueste Version\nund hilfreiches Bonusmaterial:"
+		babel[17] = "DORMAKABA - www.bim-all-doors.de"
+		babel[18] = "Die funktionalen und Schutzziele dürfen von den Eigenschaften der gewählten Türkomponenten abweichen, wenn die Komponente die Anforderung erfüllt."
+		babel[19] = "Die Schutzziele dürfen von den Eigenschaften der gewählten Türkomponenten abweichen, wenn die Komponente die Anforderung erfüllt."
+		babel[20] = "Brandschutz:"
+		babel[21] = "Rauchschutz:"
+		babel[22] = "Schallschutz:"
+		babel[23] = "Wärmeschutz:"
+		babel[24] = "Einbruchschutz:"
+		babel[25] = "Strahlenschutz:"
+		babel[26] = "Vandalismusschutz:"
+		babel[27] = "Beschußsicherheit:"
+		babel[28] = "Sprengwirkungsschutz:"
+		babel[29] = "Laserschutz:"
+		babel[30] = "Hochwasserschutz:"
+		babel[31] = "Gasschutz:"
+		babel[32] = "Korrosionsschutz:"
+		babel[33] = "Abschirmung:"
+		babel[34] = "Barrierefreiheit:"
+		babel[35] = "Klemmschutz:"
+		babel[36] = "Unfallverhütung:"
+		babel[37] = "Klimaklasse:"
+		babel[38] = "Beanspruchung:"
+		babel[39] = "Feuchtraum:"
+		babel[40] = "Nassraum:"
+		babel[41] = "Nutzungsdauer:"
+		babel[42] = "Dichtigkeit:"
+		babel[43] = "RWA Relevanz:"
+		babel[44] = "Sabotage:"
+		babel[45] = "Aufbruch:"
+		babel[46] = "Durchbruch:"
+		babel[47] = "Notöffnung:"
+		babel[48] = "Offenzeit:"
+		babel[49] = "Fernentriegelung:"
+		babel[50] = "Schlüssel:"
+		babel[51] = "Drücker:"
+		babel[52] = "Verriegelung:"
+		babel[53] = "Flügelposition:"
+		babel[54] = "Einbruchmeldeanlage:"
+		babel[55] = "Bedienkraft:"
+		babel[56] = "Flucht-/Rettungsweg:"
+		babel[57] = "Nachhaltigkeit:"
+		babel[58] = "Selbstschließend:"
+		babel[59] = "Automatisierung:"
+		babel[60] = "Hygiene:"
+		babel[61] = "Nutzungsintensität:"
+		babel[62] = "lichte Durchgangshöhe:"
+		babel[63] = "lichte Durchgangsbreite:"
+		babel[64] = "Mindestöffnungswinkel:"
+		babel[65] = "Min. Absturzsicherung:"
+		babel[66] = "Zugang von der BGS:"
+		babel[67] = "Zugang von der BS:"
+		babel[68] = "Öffnen von der BGS:"
+		babel[69] = "Öffnen von der BS:"
+		babel[70] = "Flügelposition:"
+		babel[71] = "Schließverhalten:"
+		babel[72] = "SCHLOSS:"
+		babel[73] = "STOSSGRIFF:"
+		babel[74] = "BÄNDER:"
+		babel[75] = "TÜRBLATT:"
+		babel[76] = "AUTOMATIK:"
+		babel[77] = "ZARGE:"
+		babel[78] = "BESCHLÄGE:"
+		babel[79] = "SCHLIESSER:"
+		babel[80] = "GRUNDEINSTELLUNGEN"
+		babel[81] = " ... Schutzanforderungen"
+		babel[82] = " ... Minimalabmessungen + Türfunktionen"
+		babel[83] = " ... Geforderte Türeigenschaften"
+		babel[84] = "TÜRKOMPONENTEN"
+		babel[85] = " ... Grundlegende Anforderungen"
+		babel[86] = "GESAMTABMESSUNGEN + TOLERANZEN"
+		babel[87] = "DARSTELLUNG"
+		babel[88] = " ... Öffnungslinien"
+		babel[89] = " ... Wandöffnung + Wandkontur"
+		babel[90] = " ... minimaler Platzbedarf"
+		babel[91] = "HINWEIS"
+		babel[92] = "KURZINFORMATION"
+		babel[94] = "4. Bekleidungs-\n    außenmaß"
+		babel[95] = "1. Rohbauöffnung"
+		babel[96] = "2. Baurichtmaß"
+		babel[97] = "3. Rahmenaußenmaß"
+		babel[98] = "5. Durchgangslichte"
+		babel[99] = "6. Zargenfalzmaß"
+		babel[100] = "7. Türblattmaß"
+		babel[101] = "Gangflügel:"
+		babel[102] = "Standflügel:"
+		babel[103] = "BS:"
+		babel[104] = "BGS:"
+		babel[105] = "BREITE"
+		babel[106] = "HÖHE"
+		babel[107] = "Lichter Durchgang:"
+		babel[108] = "Nominalmaß ist ..."
+		babel[109] = "(*) Bautoleranz:"
+		babel[110] = "Bautoler."
+		babel[111] = "Detaillierte Maße ab Planungsphase 'Entwurf'."
+		babel[112] = "Aufsicht Profile Zarge/Türblatt:"
+		babel[113] = "DARSTELLUNG GRUNDIRSS:"
+		babel[114] = "AUSGABEGENAUIGKEIT \nLEVEL OF DETAIL (LOD):"
+		babel[115] = "GRUNDRISS"
+		babel[116] = "3D"
+		babel[117] = "SCHNITT\n+ ANSICHT"
+		babel[118] = "SCHNITT+ANSICHT"
+		babel[119] = "SCHNITT+ANSICHT+3D"
+		babel[120] = "SYMBOLIK:"
+		babel[121] = "LEIBUNGSLINIEN:"
+		babel[122] = "STURZLINIEN:"
+		babel[123] = "WANDÖFFNUNG:"
+		babel[124] = "PLATZBEDARF:"
+		babel[125] = "Verdeckte Elemente:"
+		babel[126] = "Level of Detail:"
+		babel[127] = "Öffnung erzeugen\nin 2D / 3D:"
+		babel[128] = "Stil 1 | 2 :"
+		babel[129] = "... ist eine generische Tür. Sie deckt eine Maximalzahl an Türvarianten ab."
+		babel[131] = "Auf der Seite 'TÜRKOMPONENTEN' werden die verfügbaren Module, aus denen die Tür zusammengesetzt werden kann, ausgewählt."
+		babel[132] = "Favoriten (voreingestellte Beispieltüren), Türlisten (als interaktive Auswertungen)\nund zusätzliche Türeigenschaften (XML Import-Datei)."
+		babel[133] = "Die Abfrage der einstellbaren Parameter lässt sich abhängig von der Planungs-\nstadium auf der Seite 'GRUNDEINSTELLUNGEN' eingrenzen. Die Einstellung ist auf jeder Dialogseite links oben dargestellt:"
+		babel[134] = "Die Ausgabegenauigkeit wird auf der Einstellungsseite 'DARSTELLUNG' für Grundriss, Schnitt + Ansicht und 3D differenziert eingestellt."
+		babel[135] = "Die Vielzahl an Parametern kann nicht mit jeder Tür komplett von den Grundeinstellungen aus neu eingestellt werden. Arbeiten sie daher mit Favoriten."
+		babel[136] = "Eine Grundauswahl aus vorkonfigurierten Standardtüren findet sich in der Datei \n'BIM-all-doors - Favoriten.prf' und kann in jedem Projekt über das Favoritenfenster \nimportiert werden."
+		babel[137] = "Die Einstellungen werden in jedem Modul auf Plausibilität grob geprüft. \nUnter 'INFORMATIONEN' werden die Warnmeldungen angezeigt."
+		babel[138] = "ZUGANGSKONTROLLE:"
+		uiTXT[1] = "BIM-all-doors "
+		uiTXT[2] = "INFORMATIONEN + MELDUNGEN"
+		uiTXT[3] = "maximale Eingabe (Werk- und Detailplanung)"
+		uiTXT[4] = "genaue Eingabe (Ausführungsplanung)"
+		uiTXT[5] = "einfache Eingabe (Entwurfsplanung)"
+		uiTXT[6] = "minimale Eingabe (Vorplanung)"
+		uiTXT[10] = "Spiegelung der Bandseite im Objekt nicht zulässig. Unter 'Vorschau und Positionierung' deaktivieren!"
+		uiTXT[11] = "... allgemeiner Fehler"
+		uiTXT[12] = "Hier werden alle Meldungen der Plausibilitätsprüfung aus den Modulen aufgelistet. Dies dient nur einer ersten Prüfung und kann so automatisiert nicht vollständig sein."
+		uiTXT[13] = "Es wurden keine Fehler erkannt."
+		uiTXT[14] = "Vorplanung"
+		uiTXT[15] = "Entwurfsplanung"
+		uiTXT[16] = "Ausführungsplanung"
+		uiTXT[17] = "Werk- und Detailplanung"
+		uiTXT[18] = "global definiert (MVO)"
+		uiTXT[19] = "symbolisch"
+		uiTXT[20] = "einfach"
+		uiTXT[21] = "repräsentativ (1)"
+		uiTXT[22] = "repräsentativ (2)"
+		uiTXT[23] = "exakt"
+		uiTXT[24] = "abgestimmt"
+		uiTXT[25] = "nach Maßstab"
+		uiTXT[40] = "Es wird keine Öffnung in der Wand erzeugt."
+		uiTXT[41] = "Die Öffnung kann mit einem anderen Türobjekt erstellt werden, das nur Durchgänge, aber auch mit anderen Leibungsformen erzeugt. Z.B. mit dem beiliegenden Objekt »Türöffnung 21 plus«."
+		uiTXT[42] = "Diese »BIM-all-doors« Tür kann dann darüber platziert werden."
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF sprache = 4 THEN
+		babel[1] = "PLANNING PHASE  /\n COMPLEXITY OF CONFIGURATION:"
+		babel[2] = "BIM-all-doors - The extendable components door"
+		babel[3] = "FUNDAMENTAL REQUIREMENTS TO ..."
+		babel[4] = "Door leaves:"
+		babel[5] = "Orientation:"
+		babel[6] = "Id.number:"
+		babel[7] = "Manufacturer:"
+		babel[8] = "Door model:"
+		babel[9] = "Referenced room:"
+		babel[10] = "Reduced parameter selection. Complete configuration with 'Implementation planning'."
+		babel[11] = "DETAILED REQUIREMENTS"
+		babel[12] = "FUNCTIONALITY"
+		babel[13] = "( DEMANDS / LIMITS )"
+		babel[14] = "MONITORING DOOR STATE"
+		babel[15] = "MINIMAL DIMENSIONS"
+		babel[16] = "Besuchen sie uns im Internet unter www.bim-all-doors.de\nHier finden sie Anleitungen, die jeweils neueste Version\nund hilfreiches Bonusmaterial:"
+		babel[17] = "DORMAKABA - www.bim-all-doors.de"
+		babel[18] = "The functional requirements may differ from properties of the component, if the component fullfills at least the requierements."
+		babel[19] = "The protection requirements can differ from the qualities of the components, if the component fullfills at least the requierements."
+		babel[20] = "Fire protection:"
+		babel[21] = "Smoke pretection:"
+		babel[22] = "Noise insulation:"
+		babel[23] = "Thermal insulation:"
+		babel[24] = "Burglary protection:"
+		babel[25] = "Radiation protection:"
+		babel[26] = "Vandalism protection:"
+		babel[27] = "Strafing protection:"
+		babel[28] = "Detonation protection:"
+		babel[29] = "Laser protection:"
+		babel[30] = "Flood protection:"
+		babel[31] = "Gas defense:"
+		babel[32] = "Corrosion prevention:"
+		babel[33] = "Shielding:"
+		babel[34] = "Accessibility:"
+		babel[35] = "Klemmschutz:"
+		babel[36] = "Accident prevention:"
+		babel[37] = "Climate class:"
+		babel[38] = "Beanspruchung:"
+		babel[39] = "Damp area:"
+		babel[40] = "Wet room:"
+		babel[41] = "Useful life:"
+		babel[42] = "Tightness:"
+		babel[43] = "SHE:"
+		babel[44] = "Sabotage:"
+		babel[45] = "Burst:"
+		babel[46] = "Breakthrough:"
+		babel[47] = "Emergency opening:"
+		babel[48] = "Time opened:"
+		babel[49] = "Distance actuation:"
+		babel[50] = "Key:"
+		babel[51] = "Handle:"
+		babel[52] = "Locking:"
+		babel[53] = "Leaf position:"
+		babel[54] = "Burglary alarm system:"
+		babel[55] = "Actuating force:"
+		babel[56] = "Escape / rescue route:"
+		babel[57] = "Sustainability:"
+		babel[58] = "Self closing:"
+		babel[59] = "Automation:"
+		babel[60] = "Hygiene:"
+		babel[61] = "Intensity of use:"
+		babel[62] = "Usable clearance height:"
+		babel[63] = "Usable clearance width:"
+		babel[64] = "Minimal opening angle:"
+		babel[65] = "Guardrail height:"
+		babel[66] = "Access from oSwS:"
+		babel[67] = "Access from SwS:"
+		babel[68] = "Open from oSwS:"
+		babel[69] = "Open from SwS:"
+		babel[70] = "Leaf position:"
+		babel[71] = "Schließverhalten:"
+		babel[72] = "LOCK CASE:"
+		babel[73] = "PUSHER:"
+		babel[74] = "HINGE:"
+		babel[75] = "DOOR LEAF:"
+		babel[76] = "AUTOMATION:"
+		babel[77] = "FRAME:"
+		babel[78] = "HANDLES:"
+		babel[79] = "DOOR CLOSER:"
+		babel[80] = "BASIC SETTINGS"
+		babel[81] = " ... protection requierments"
+		babel[82] = " ... minimal dimensions + functionality"
+		babel[83] = " ... Requested door properties"
+		babel[84] = "DOOR COMPONENTS"
+		babel[85] = " ... basic demands"
+		babel[86] = "TOTAL DIMENSIONS + TOLERANCE"
+		babel[87] = "REPRESENTATION"
+		babel[88] = " ... opening lines"
+		babel[89] = " ... Wall opening + wall contour"
+		babel[90] = " ... Minimal space"
+		babel[91] = "ANNOTATION"
+		babel[92] = "QUICK INFORMATION"
+		babel[94] = "5. Bekleidungs-\n    außenmaß"
+		babel[95] = "2. Rohbauöffnung"
+		babel[96] = "3. Baurichtmaß"
+		babel[97] = "4. Rahmenaußenmaß"
+		babel[98] = "6. Durchgangslichte"
+		babel[99] = "7. Zargenfalzmaß"
+		babel[100] = "8. Türblattmaß"
+		babel[101] = "Gangflügel:"
+		babel[102] = "Standflügel:"
+		babel[103] = "BS:"
+		babel[104] = "BGS:"
+		babel[105] = "BREITE"
+		babel[106] = "HÖHE"
+		babel[107] = "Lichter Durchgang:"
+		babel[108] = "Nominalmaß ist ..."
+		babel[109] = "(*) Bautoleranz:"
+		babel[110] = "Bautoler."
+		babel[111] = "Detaillierte Maße ab Planungsphase 'Entwurf'."
+		babel[112] = "Aufsicht Profile Zarge/Türblatt:"
+		babel[113] = "DARSTELLUNG GRUNDIRSS:"
+		babel[114] = "AUSGABEGENAUIGKEIT \nLEVEL OF DETAIL (LOD):"
+		babel[115] = "GRUNDRISS"
+		babel[116] = "3D"
+		babel[117] = "SCHNITT\n+ ANSICHT"
+		babel[118] = "SCHNITT+ANSICHT"
+		babel[119] = "SCHNITT+ANSICHT+3D"
+		babel[120] = "SYMBOLIK:"
+		babel[121] = "LEIBUNGSLINIEN:"
+		babel[122] = "STURZLINIEN:"
+		babel[123] = "WANDÖFFNUNG:"
+		babel[124] = "PLATZBEDARF:"
+		babel[125] = "Verdeckte Elemente:"
+		babel[126] = "Level of Detail:"
+		babel[127] = "Öffnung erzeugen\nin 2D / 3D:"
+		babel[128] = "Stil 1 | 2 :"
+		babel[129] = "... ist eine generische Tür. Sie deckt eine Maximalzahl an Türvarianten ab."
+		babel[131] = "Auf der Seite 'TÜRKOMPONENTEN' werden die verfügbaren Module, aus denen die Tür zusammengesetzt werden kann, ausgewählt."
+		babel[132] = "Favoriten (voreingestellte Beispieltüren), Türlisten (als interaktive Auswertungen)\nund zusätzliche Türeigenschaften (XML Import-Datei)."
+		babel[133] = "Die Abfrage der einstellbaren Parameter lässt sich abhängig von der Planungs-\nstadium auf der Seite 'GRUNDEINSTELLUNGEN' eingrenzen. Die Einstellung ist auf jeder Dialogseite links oben dargestellt:"
+		babel[134] = "Die Ausgabegenauigkeit wird auf der Einstellungsseite 'DARSTELLUNG' für Grundriss, Schnitt + Ansicht und 3D differenziert eingestellt."
+		babel[135] = "Die Vielzahl an Parametern kann nicht mit jeder Tür komplett von den Grundeinstellungen aus neu eingestellt werden. Arbeiten sie daher mit Favoriten."
+		babel[136] = "Eine Grundauswahl aus vorkonfigurierten Standardtüren findet sich in der Datei \n'BIM-all-doors - Favoriten.prf' und kann in jedem Projekt über das Favoritenfenster \nimportiert werden."
+		babel[137] = "Die Einstellungen werden in jedem Modul auf Plausibilität grob geprüft. \nUnter 'INFORMATIONEN' werden die Warnmeldungen angezeigt."
+		babel[138] = "ACCESS CONTROL:"
+		uiTXT[1] = "BIM-all-doors "
+		uiTXT[2] = "INFORMATIONS + REPORTS"
+		uiTXT[3] = "maximum input (construction phase)"
+		uiTXT[4] = "detailed input (construction phase)"
+		uiTXT[5] = "simple input (design phase)"
+		uiTXT[6] = "basic input (design phase)"
+		uiTXT[10] = "Mirroring the reveal side is not allowed. Please change in section preview and position."
+		uiTXT[11] = "… common error"
+		uiTXT[12] = "Here are listed all reports of all BIM-all-doors modules. This is a basic view on the configuration and can not subset a fundamental door planing by an expert."
+		uiTXT[13] = "No faults have been detected."
+		uiTXT[14] = "preliminary design phase"
+		uiTXT[15] = "final design phase"
+		uiTXT[16] = "construction phase"
+		uiTXT[17] = "detailing planing phase"
+		uiTXT[18] = "global defined (MVO)"
+		uiTXT[19] = "symbolic"
+		uiTXT[20] = "simple"
+		uiTXT[21] = "normal"
+		uiTXT[22] = "representative"
+		uiTXT[23] = "detailed"
+		uiTXT[24] = "as built"
+		uiTXT[25] = "by scale"
+		uiTXT[40] = "It will not be created an opening in the associated wall!"
+		uiTXT[41] = "The opening can be created by another door object, which creates plain breakthroughs, but with customized sills. For example by the object »Türöffnung 21 plus«."
+		uiTXT[42] = "This »BIM-all-doors« can be moved above this plain opening."
+		ENDIF
+
+! --------- User Interface - Tooltip text (Deutsch)
+	IF sprache = 1 THEN
+		bubble[1] = "Hersteller des Türsystems"
+		bubble[2] = "Modell der konfigurierten Tür"
+		bubble[3] = "Anzahl Türflügel"
+		bubble[4] = "Bezeichnung der Aufschlagrichtung von BS"
+		bubble[5] = "Ermittlung der Aufschlagrichtung"
+		bubble[6] = "Identifikationsnummer"
+		bubble[7] = "Präfix der ID"
+		bubble[8] = "Suffix der ID"
+		bubble[9] = "Automatisierbare Identifikationsnummer"
+		bubble[10] = "Level of Input"
+		bubble[11] = "Wird immer immer im Dialogfeld links oben angezeigt"
+		bubble[14] = "Bezugsraum Richtung …"
+		bubble[15] = "Zuordnung Raum-ID zu Tür-ID"
+		bubble[16] = "Tür gehört zu Raum auf …"
+		bubble[17] = "Symbolik des Türtyps"
+		bubble[21] = "Brandschutzanforderung"
+		bubble[22] = "Rauchschutzanforderung"
+		bubble[23] = "Schallschutzanforderung"
+		bubble[24] = "Anforderung Barrierefreiheit"
+		bubble[25] = "Anforderung Zugangskontrolle"
+		bubble[26] = "Klimaschutzanforderung"
+		bubble[27] = "Anforderung als Flucht- und Rettungsweg"
+		bubble[28] = "Tür benötigt Elektrozuleitung"
+		bubble[29] = "erforderlicher max. Wärmedurchgangskoeffizient"
+		bubble[30] = "Strahlenschutzanforderung"
+		bubble[31] = "Anforderung an Einbruchschutz"
+		bubble[32] = "Anforderung an Beschußsicherheit"
+		bubble[33] = "Anforderung an Sprengwirkungsschutz"
+		bubble[34] = "Anforderung an Laserschutz"
+		bubble[35] = "Anforderung an Hochwasserschutz"
+		bubble[36] = "Anforderung an Vandalismusschutz"
+		bubble[37] = "Anforderung an Gasschutz"
+		bubble[38] = "Anforderungen Korrosionschutz"
+		bubble[39] = "Anforderungen Einbruchschutz"
+		bubble[40] = "Anforderung Nutzungsdauer"
+		bubble[41] = "Anforderung an Bedienkraft"
+		bubble[42] = "Anforderung Nutzungsintensität"
+		bubble[43] = "erforderliche elektromagnetische Abschirmung"
+		bubble[44] = "Hygienische Anforderung"
+		bubble[45] = "Anforderung an Klemmschutz"
+		bubble[46] = "Anforderung an Unfallverhütung"
+		bubble[47] = "erforderliche mechanische Beanspruchung"
+		bubble[48] = "Anforderung an Dichtigkeit"
+		bubble[49] = "erforderliche Klimaklasse"
+		bubble[50] = "Anforderung an Einbruchmeldeanlage"
+		bubble[51] = "Anforderung Nassraum"
+		bubble[52] = "Anforderung Feuchtraum"
+		bubble[53] = "Mindestdurchgangsbreite"
+		bubble[54] = "Mindestdurchgangshöhe"
+		bubble[55] = "Mindestöffnungswinkel"
+		bubble[56] = "Mindesturchgangsbreite beide Flügel"
+		bubble[57] = "Mindesturchgangsbreite Gangflügel"
+		bubble[58] = "Zugang von der Bandgegenseite"
+		bubble[59] = "Zugang von der  Bandseite"
+		bubble[60] = "Öffnen von der Bandgegenseite"
+		bubble[61] = "Öffnen von der Bandseite"
+		bubble[62] = "Schließverhalten"
+		bubble[63] = "Automatisiert"
+		bubble[64] = "Selbstschließend"
+		bubble[65] = "RWA - Zu- und Fortluft"
+		bubble[66] = "Absturzsicherung"
+		bubble[67] = "Nachhaltigkeit"
+		bubble[68] = "Sensor Türflügelposition"
+		bubble[69] = "Sensor Verriegelung"
+		bubble[70] = "Sensor Drückerbetätigung"
+		bubble[71] = "Sensor Schlüsselbetätigung"
+		bubble[72] = "Sensor Fernentriegelung"
+		bubble[73] = "Sensor Türoffenzeit"
+		bubble[74] = "Sensor Notöffnung"
+		bubble[75] = "Sensor Durchbruch"
+		bubble[76] = "Sensor Aufbruch"
+		bubble[77] = "Sensor Sabotage"
+		bubble[78] = "Verfügbare Türschlosssysteme"
+		bubble[79] = "Verfügbare Türbandsysteme"
+		bubble[80] = "Verfügbare Türgriffsysteme"
+		bubble[81] = "Verfügbare Türschließsysteme"
+		bubble[82] = "Verfügbare Autamatisierungssysteme"
+		bubble[83] = "Verfügbare Türblattsysteme"
+		bubble[84] = "Verfügbare Zargensysteme"
+		bubble[85] = "Verfügbare Stossgriffsysteme"
+		bubble[86] = "Auswahl der Komponentenmakros für diese Tür."
+		bubble[87] = "Flügelposition im Betrieb"
+		bubble[88] = "Homepage »BIM-all-doors«"
+		bubble[89] = "Baurichtmaß (BRM) ist Nominalmaß"
+		bubble[90] = "Lichtes Zargenmaß (LD) / Zargendurchgangsmaß (ZDM) ist Nominalmaß"
+		bubble[91] = "Rohbauöffnung ist Nominalmaß"
+		bubble[92] = "Türblattmaß (TB/TBAM) ist Nominalmaß"
+		bubble[93] = "Zargenfalzmaß (ZFM) ist Nominalmaß"
+		bubble[93] = "Zargenaußenmaß /ZAM) ist Nominalmaß"
+		bubble[94] = "Rahmen/Zarge Breite"
+		bubble[95] = "Rahmen/Zarge Höhe"
+		bubble[96] = "Rohbauöffnung (WÖ) Breite"
+		bubble[97] = "Rohbauöffnung (WÖ) Höhe"
+		bubble[98] = "Rohbauöffnung (WÖ) ist Nominalmaß"
+		bubble[99] = "Rohbauöffnung Höhe"
+		bubble[99] = "Rohbauöffnung Breite"
+		bubble[100] = "Schraffur Aufsicht/Grundriss"
+		bubble[101] = "Spalt unter Türblatt"
+		bubble[102] = "Türblatt Breite (Flügelmaß)"
+		bubble[103] = "Türblatt Höhe (Flügelmaß)"
+		bubble[104] = "Türblattbreite Gangflügel"
+		bubble[105] = "Türblattbreite Standflügel"
+		bubble[106] = "Vordergrundstift"
+		bubble[107] = "Wandöffnung unter Schwelle"
+		bubble[108] = "Zargenfalzmaß (ZFM) Breite"
+		bubble[109] = "Zargenfalzmaß (ZFM) Höhe"
+		bubble[110] = "Stil der Wandleibungslinien"
+		bubble[111] = "Wandöffnung erzeugen / darstellen"
+		bubble[113] = "Level of Detail - 3D"
+		bubble[114] = "Level of Detail - Grundriss"
+		bubble[115] = "Level of Detail - Schnitt+Ansicht"
+		bubble[116] = "Detaillierungsgrad im Grundriss"
+		bubble[117] = "Detaillierungsgrad in 3D"
+		bubble[118] = "Detaillierungsgrad in Schnitten + Ansichten"
+		bubble[119] = "Grundrissdarstellung der Maße"
+		bubble[120] = "Öffnungslinien Grundriss"
+		bubble[121] = "Öffnungslinien in 3D"
+		bubble[122] = "Öffnungslinien in Schnitten+Ansichten"
+		bubble[123] = "Schnittdarstellung der Maße"
+		bubble[124] = "seitliche Wandkontur"
+		bubble[125] = "Symbol an Öffnungslinie Gangflügel"
+		bubble[125] = "Symbol an Öffnungslinie Standflügel"
+		bubble[127] = "Sturzlinien / Wandkontur längs"
+		bubble[129] = "Baurichtmaß (BRM) Breite"
+		bubble[130] = "Baurichtmaß (BRM) Höhe"
+		bubble[131] = "Bekleidungs-/Zargenaußenmaß Breite"
+		bubble[132] = "Bekleidungs-/Zargenaußenmaß Höhe"
+		bubble[133] = "Bezug der Bautoleranz"
+		bubble[134] = "Bezug für die Berechnung 'Lichter Durchgang'"
+		bubble[135] = "Darstellung der Maße"
+		bubble[136] = "Darstellung minimale Flächen"
+		bubble[137] = "Durchgangslichte Breite"
+		bubble[138] = "Durchgangslichte Höhe"
+		bubble[139] = "Eigene Wandöffnung Übergröße"
+		bubble[140] = "Einbautoleranz links"
+		bubble[141] = "Einbautoleranz oben"
+		bubble[142] = "Einbautoleranz rechts"
+		bubble[143] = "Hintergrundstift"
+		bubble[144] = "Hinweis ausblenden."
+		bubble[145] = "Konturstift für verdeckte Elemente"
+		bubble[146] = "Konturstift Grundriss"
+		bubble[147] = "Konturstift Wandleibungen einheitlich"
+		bubble[148] = "Kurzinfo zeigen."
+		bubble[149] = "Linientyp für verdeckte Elemente"
+		bubble[150] = "Linientyp Gangflügel (Grundriss)"
+		bubble[151] = "Linientyp Standflügel (Grundriss)"
+		bubble[152] = "Öffnungslinienstift Grundriss"
+		bubble[153] = "Öffnungslinienstift Schnitt+Ansicht"
+		bubble[154] = "Öffnungslinienstift´3D"
+		bubble[155] = "Öffnungslinien-Typ Bandgegenseite"
+		bubble[156] = "Öffnungslinien-Typ Bandseite"
+		bubble[157] = "Öffnungslinien-Typ Standflügel"
+		bubble[158] = "Öffnungswinkel für Durchgangsflügel in 2D"
+		bubble[159] = "Öffnungswinkel für Standflügel in 2D"
+		bubble[160] = "Platzbedarf Bandgegenseite am Band"
+		bubble[161] = "Platzbedarf Bandgegenseite am Gangflügel"
+		bubble[162] = "Platzbedarf Bandgegenseite am Schloss"
+		bubble[163] = "Platzbedarf Bandgegenseite am Standflügel"
+		bubble[164] = "Platzbedarf Bandgegenseite in der Tiefe"
+		bubble[165] = "Platzbedarf Bandseite am Band"
+		bubble[166] = "Platzbedarf Bandseite am Gangflügel"
+		bubble[167] = "Platzbedarf Bandseite am Schloss"
+		bubble[168] = "Platzbedarf Bandseite am Standflügel"
+		bubble[169] = "Platzbedarf Bandseite in der Tiefe"
+		bubble[170] = "Verfügbare Zugangskontrollsysteme"
+		ENDIF
+! --------- User Interface - Tooltip text (Englisch)
+	IF sprache = 4 THEN
+		bubble[1] = "Manufacturer of door system"
+		bubble[2] = "Modell of configured door"
+		bubble[3] = "Number of door leaves"
+		bubble[4] = "Designation door opening direktion from hinge side"
+		bubble[5] = "Determination of door opening direction"
+		bubble[6] = "Identification number"
+		bubble[7] = "Präfix of ID"
+		bubble[8] = "Suffix of ID"
+		bubble[9] = "Automatable identification number"
+		bubble[10] = "Level of Input"
+		bubble[11] = "Always dispayed in the dialog box on top left"
+		bubble[14] = "Direction of referenced room …"
+		bubble[15] = "Mapping room-ID to door-ID"
+		bubble[16] = "Door is related to room …"
+		bubble[17] = "Door type symbol"
+		bubble[21] = "Fire protection requirement"
+		bubble[22] = "Smoke protection requirement"
+		bubble[23] = "Sound insulation requirement"
+		bubble[24] = "Requirements of accessibility"
+		bubble[25] = "Demand of access control"
+		bubble[26] = "Climate protection requirement"
+		bubble[27] = "Requirement of escape and rescue route"
+		bubble[28] = "Needs electrical equipment"
+		bubble[29] = "erforderlicher max. Wärmedurchgangskoeffizient"
+		bubble[30] = "Strahlenschutzanforderung"
+		bubble[31] = "Anforderung an Einbruchschutz"
+		bubble[32] = "Anforderung an Beschußsicherheit"
+		bubble[33] = "Anforderung an Sprengwirkungsschutz"
+		bubble[34] = "Anforderung an Laserschutz"
+		bubble[35] = "Anforderung an Hochwasserschutz"
+		bubble[36] = "Anforderung an Vandalismusschutz"
+		bubble[37] = "Anforderung an Gasschutz"
+		bubble[38] = "Anforderungen Korrosionschutz"
+		bubble[39] = "Anforderungen Einbruchschutz"
+		bubble[40] = "Anforderung Nutzungsdauer"
+		bubble[41] = "Anforderung an Bedienkraft"
+		bubble[42] = "Anforderung Nutzungsintensität"
+		bubble[43] = "erforderliche elektromagnetische Abschirmung"
+		bubble[44] = "Hygienische Anforderung"
+		bubble[45] = "Anforderung an Klemmschutz"
+		bubble[46] = "Anforderung an Unfallverhütung"
+		bubble[47] = "erforderliche mechanische Beanspruchung"
+		bubble[48] = "Anforderung an Dichtigkeit"
+		bubble[49] = "erforderliche Klimaklasse"
+		bubble[50] = "Anforderung an Einbruchmeldeanlage"
+		bubble[51] = "Anforderung Nassraum"
+		bubble[52] = "Anforderung Feuchtraum"
+		bubble[53] = "Mindestdurchgangsbreite"
+		bubble[54] = "Mindestdurchgangshöhe"
+		bubble[55] = "Mindestöffnungswinkel"
+		bubble[56] = "Mindesturchgangsbreite beide Flügel"
+		bubble[57] = "Mindesturchgangsbreite Gangflügel"
+		bubble[58] = "Zugang von der Bandgegenseite"
+		bubble[59] = "Zugang von der  Bandseite"
+		bubble[60] = "Öffnen von der Bandgegenseite"
+		bubble[61] = "Öffnen von der Bandseite"
+		bubble[62] = "Schließverhalten"
+		bubble[63] = "Automatisiert"
+		bubble[64] = "Selbstschließend"
+		bubble[65] = "SHE"
+		bubble[66] = "Absturzsicherung"
+		bubble[67] = "Nachhaltigkeit"
+		bubble[68] = "Sensor leaf position"
+		bubble[69] = "Sensor locking"
+		bubble[70] = "Sensor handle actuation"
+		bubble[71] = "Sensor key actuation"
+		bubble[72] = "Sensor distance actuation"
+		bubble[73] = "Sensor time opened"
+		bubble[74] = "Sensor emergency opened"
+		bubble[75] = "Sensor breakthrough"
+		bubble[76] = "Sensor burst"
+		bubble[77] = "Sensor sabotage"
+		bubble[78] = "Verfügbare Türschlosssysteme"
+		bubble[79] = "Verfügbare Türbandsysteme"
+		bubble[80] = "Verfügbare Türgriffsysteme"
+		bubble[81] = "Verfügbare Türschließsysteme"
+		bubble[82] = "Verfügbare Autamatisierungssysteme"
+		bubble[83] = "Verfügbare Türblattsysteme"
+		bubble[84] = "Verfügbare Zargensysteme"
+		bubble[85] = "Verfügbare Stossgriffsysteme"
+		bubble[86] = "Auswahl der Komponentenmakros für diese Tür."
+		bubble[87] = "Flügelposition im Betrieb"
+		bubble[88] = "Homepage »BIM-all-doors«"
+		bubble[89] = "Baurichtmaß (BRM) ist Nominalmaß"
+		bubble[90] = "Lichtes Zargenmaß (LD) / Zargendurchgangsmaß (ZDM) ist Nominalmaß"
+		bubble[91] = "Rohbauöffnung ist Nominalmaß"
+		bubble[92] = "Türblattmaß (TB/TBAM) ist Nominalmaß"
+		bubble[93] = "Zargenfalzmaß (ZFM) ist Nominalmaß"
+		bubble[93] = "Zargenaußenmaß /ZAM) ist Nominalmaß"
+		bubble[94] = "Rahmen/Zarge Breite"
+		bubble[95] = "Rahmen/Zarge Höhe"
+		bubble[96] = "Rohbauöffnung (WÖ) Breite"
+		bubble[97] = "Rohbauöffnung (WÖ) Höhe"
+		bubble[98] = "Rohbauöffnung (WÖ) ist Nominalmaß"
+		bubble[99] = "Rohbauöffnung Höhe"
+		bubble[99] = "Rohbauöffnung Breite"
+		bubble[100] = "Schraffur Aufsicht/Grundriss"
+		bubble[101] = "Spalt unter Türblatt"
+		bubble[102] = "Türblatt Breite (Flügelmaß)"
+		bubble[103] = "Türblatt Höhe (Flügelmaß)"
+		bubble[104] = "Türblattbreite Gangflügel"
+		bubble[105] = "Türblattbreite Standflügel"
+		bubble[106] = "Vordergrundstift"
+		bubble[107] = "Wandöffnung unter Schwelle"
+		bubble[108] = "Zargenfalzmaß (ZFM) Breite"
+		bubble[109] = "Zargenfalzmaß (ZFM) Höhe"
+		bubble[110] = "Stil der Wandleibungslinien"
+		bubble[111] = "Wandöffnung erzeugen / darstellen"
+		bubble[113] = "Level of Detail - 3D"
+		bubble[114] = "Level of Detail - Grundriss"
+		bubble[115] = "Level of Detail - Schnitt+Ansicht"
+		bubble[116] = "Detaillierungsgrad im Grundriss"
+		bubble[117] = "Detaillierungsgrad in 3D"
+		bubble[118] = "Detaillierungsgrad in Schnitten + Ansichten"
+		bubble[119] = "Grundrissdarstellung der Maße"
+		bubble[120] = "Öffnungslinien Grundriss"
+		bubble[121] = "Öffnungslinien in 3D"
+		bubble[122] = "Öffnungslinien in Schnitten+Ansichten"
+		bubble[123] = "Schnittdarstellung der Maße"
+		bubble[124] = "seitliche Wandkontur"
+		bubble[125] = "Symbol an Öffnungslinie Gangflügel"
+		bubble[125] = "Symbol an Öffnungslinie Standflügel"
+		bubble[127] = "Sturzlinien / Wandkontur längs"
+		bubble[129] = "Baurichtmaß (BRM) Breite"
+		bubble[130] = "Baurichtmaß (BRM) Höhe"
+		bubble[131] = "Bekleidungs-/Zargenaußenmaß Breite"
+		bubble[132] = "Bekleidungs-/Zargenaußenmaß Höhe"
+		bubble[133] = "Bezug der Bautoleranz"
+		bubble[134] = "Bezug für die Berechnung 'Lichter Durchgang'"
+		bubble[135] = "Darstellung der Maße"
+		bubble[136] = "Darstellung minimale Flächen"
+		bubble[137] = "Durchgangslichte Breite"
+		bubble[138] = "Durchgangslichte Höhe"
+		bubble[139] = "Eigene Wandöffnung Übergröße"
+		bubble[140] = "Einbautoleranz links"
+		bubble[141] = "Einbautoleranz oben"
+		bubble[142] = "Einbautoleranz rechts"
+		bubble[143] = "Hintergrundstift"
+		bubble[144] = "Hinweis ausblenden."
+		bubble[145] = "Konturstift für verdeckte Elemente"
+		bubble[146] = "Konturstift Grundriss"
+		bubble[147] = "Konturstift Wandleibungen einheitlich"
+		bubble[148] = "Kurzinfo zeigen."
+		bubble[149] = "Linientyp für verdeckte Elemente"
+		bubble[150] = "Linientyp Gangflügel (Grundriss)"
+		bubble[151] = "Linientyp Standflügel (Grundriss)"
+		bubble[152] = "Öffnungslinienstift Grundriss"
+		bubble[153] = "Öffnungslinienstift Schnitt+Ansicht"
+		bubble[154] = "Öffnungslinienstift´3D"
+		bubble[155] = "Öffnungslinien-Typ Bandgegenseite"
+		bubble[156] = "Öffnungslinien-Typ Bandseite"
+		bubble[157] = "Öffnungslinien-Typ Standflügel"
+		bubble[158] = "Öffnungswinkel für Durchgangsflügel in 2D"
+		bubble[159] = "Öffnungswinkel für Standflügel in 2D"
+		bubble[160] = "Platzbedarf Bandgegenseite am Band"
+		bubble[161] = "Platzbedarf Bandgegenseite am Gangflügel"
+		bubble[162] = "Platzbedarf Bandgegenseite am Schloss"
+		bubble[163] = "Platzbedarf Bandgegenseite am Standflügel"
+		bubble[164] = "Platzbedarf Bandgegenseite in der Tiefe"
+		bubble[165] = "Platzbedarf Bandseite am Band"
+		bubble[166] = "Platzbedarf Bandseite am Gangflügel"
+		bubble[167] = "Platzbedarf Bandseite am Schloss"
+		bubble[168] = "Platzbedarf Bandseite am Standflügel"
+		bubble[169] = "Platzbedarf Bandseite in der Tiefe"
+		bubble[170] = "Verfügbare Zugangskontrollsysteme"
+		ENDIF
+
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+
+!------------------------------------------------------------------- [ Einstellungen / settings ]
+
+!»» Abmessungen / dimensions
+	maxX=444    ! max. Breite/max. width
+	maxY=265    ! Maximalhöhe /max. height
+	LM=0        ! Linker Rand/Left margin
+	RM=maxX-LM  ! Rechter Rand / right margin position
+	uiTH=15     ! Texthöhe / height of text
+	uiFH=20     ! Eingabefeldhöhe / height of input fields
+	uiZH=uiFH+10! Zeilenhöhe / line height
+	ys=4	    ! Versatz Text zu EIngabefeld
+	uiY=0       ! vertical starting position
+
+!»» Teilungen
+	uiL=110         ! Breite Zeilenbeschriftung
+	uiB=RM-LM       ! Breite Darstellungsfeld
+	uiR=uiB-uiL     ! Breite Parameterfeld
+	uiF=5           ! Eingabefeldabstand
+	uiS=(uiR+uiF)/3 !Spaltenbreite der Eingabefelder nebeneinander
+
+!»» Standardeinstellungen Zeile
+	uiTH=16 : uiFH=20          ! Text- und Feldhöhe
+	uiZH=uiFH+5 : uiZH2=uiTH+2 ! Zeilenhöhen
+	ys=INT((uiFH-uiTH)/2)+1    ! Versatz SChriftlinie
+	uiBB=16 : uiBH=16 : yb=(uiFH-uiBH)/2
+
+!»» Standardeinstellungen Aufteilungen
+	LM=0 : RM=maxX-LM  ! Linker/Rechter Rand / left/right margin position
+	uiL=0 : uiF=5 : uiB=RM-LM : uiR=uiB-uiL : uiS=(uiR+uiF)/1
+
+
+!------------------------------------------------------------------ [ Conditionale Voreinstellungen ]
+
+FOR i=1 TO 3   !»» Level of Detail  ...
+	IF i=1 THEN dki_LOD = 1
+	IF i=2 THEN dki_LOD = 3
+	IF i=3 THEN dki_LOD = 2
+	IF dk_LOD[dki_LOD] = -1 THEN  !»» ... maßstabsabhängig
+		IF GLOB_SCALE < 10 THEN
+			dk_LOD[dki_LOD] = 500
+			ELSE
+			IF GLOB_SCALE < 26 THEN
+				dk_LOD[dki_LOD] = 400
+				ELSE
+				IF GLOB_SCALE < 51 THEN
+					dk_LOD[dki_LOD] = 350
+					ELSE
+					IF GLOB_SCALE < 101 THEN
+						dk_LOD[dki_LOD] = 300
+						ELSE
+						IF GLOB_SCALE < 500 THEN
+							dk_LOD[dki_LOD] = 200
+							ELSE
+							dk_LOD[dki_LOD] = 100
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+	IF dk_LoD[dki_LOD] > 0 THEN dk_LoDtxt = dk_LoDtxt + STR(dk_LoD[dki_LOD],1,0) ELSE dk_LoDtxt = dk_LoDtxt + "[???]"
+	IF i<3 THEN dk_LoDtxt = dk_LoDtxt + " | "
+	NEXT i
+
+
+!-------------------------------------------- [ Standardelemente aller Seiten ]
+
+! #### Standardwerte
+
+DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[] ! Arrays für diskrete Auswahlen UI_INFIELD{4}
+DIM UI_page_type[], UI_page_names[], UI_page_icons[]
+
+UIpage = 0
+UIpage_masterparent = -1
+
+
+! #### Dialoginitialisierung
+
+IF ABS(version - versionStamp) < tlr THEN txt = "" ELSE txt = " / v"+str("%^.2",versionStamp)
+UI_DIALOG uiTXT[1] + " (v"+str("%^.2",version) + txt + ")"
+UI_CURRENT_PAGE gs_ui_current_page
+
+
+! =============================================================================
+! Dialogaufrufe
+! =============================================================================
+
+IF show_start_screen > 0 THEN
+
+	! Türobjekt wird gerade neu abgesetzt
+
+	IF show_start_screen = 1 THEN GOSUB 9700 ELSE GOSUB 9800 ! Start screen / Splash
+
+	ELSE
+
+	! Regel-Dialoge
+
+	GOSUB 1000 ! Common, basic settings
+	if dk_LOI=4 then
+		UIpage_masterparent = UIpage
+		GOSUB 1400 ! demands
+		UIpage_masterparent = -1
+		ENDIF
+	if dk_LOI>4 then
+		UIpage_masterparent = UIpage
+		GOSUB 1100 ! protection demands
+		GOSUB 1200 ! dimension demands
+		GOSUB 1300 ! functional demands
+		UIpage_masterparent = -1
+		ENDIF
+
+	GOSUB 1600 ! Loaded components
+
+	if dk_LOI>3 then ! Basic settings
+		GOSUB 2000
+		ELSE
+		GOSUB 2100
+		ENDIF
+
+	GOSUB 500 ! Frame
+
+	IF bs_door_leafs > 0 THEN
+		GOSUB 550 ! Panels
+		GOSUB 600 ! Hinges
+		GOSUB 650 ! Door Automation
+		GOSUB 700 ! Closer
+		GOSUB 750 ! Case
+		GOSUB 800 ! Access control
+		GOSUB 850 ! Handles
+		GOSUB 900 ! Grips / Pushbar
+		ENDIF
+
+	GOSUB 3000 ! representation
+	UIpage_masterparent = UIpage
+
+	GOSUB 3200 ! wallhole
+
+	IF bs_door_leafs > 0 THEN
+		GOSUB 3100 ! opening lines
+		GOSUB 3300 ! minimal (usable) space
+		ENDIF
+
+	UIpage_masterparent = -1
+
+	GOSUB 999  ! Infoseite
+
+	ENDIF
+
+
+! =============================================================================
+! Dialogende
+! =============================================================================
+
+END
+
+
+! =============================================================================
+! =============================================================================
+! SUBROUTINES
+! =============================================================================
+! =============================================================================
+
+"SELECT_dk_LOI":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = 5 : UItextArray[j] = uiTXT[14] : UIvaluesArray[j] = 2  ! Vorplanung
+	j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = uiTXT[15] : UIvaluesArray[j] = 4  ! Entwurfsplanung
+	j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = uiTXT[16] : UIvaluesArray[j] = 5  ! Ausführungsplanung
+	j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = uiTXT[17] : UIvaluesArray[j] = 6  ! Werk- und Detailplanung
+	IF versionStamp < 1.53 THEN
+		sts = LIBRARYGLOBAL("OpenLibraryGlobals", "ef_LoI", ef_LoI)
+		ELSE
+		sts = LIBRARYGLOBAL("BIM-all-doors_mvo", "dk_LOI", ef_LoI)
+		ENDIF
+	IF sts>0 THEN
+		j=j+1 : UIpicIdxArray[j] = 6 : UItextArray[j] = uiTXT[18] : UIvaluesArray[j] = -2  ! global definiert (MVO)
+		ENDIF
+	RETURN
+
+"SELECT_dk_LOD":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = uiTXT[19] : UIvaluesArray[j] = 100  ! symbolisch
+	j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = uiTXT[20] : UIvaluesArray[j] = 200  ! einfach
+	j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = uiTXT[21] : UIvaluesArray[j] = 300  ! repräsentativ (1)
+	j=j+1 : UIpicIdxArray[j] = 5 : UItextArray[j] = uiTXT[22] : UIvaluesArray[j] = 350  ! repräsentativ (2)
+	j=j+1 : UIpicIdxArray[j] = 6 : UItextArray[j] = uiTXT[23] : UIvaluesArray[j] = 400  ! exakt
+	j=j+1 : UIpicIdxArray[j] = 7 : UItextArray[j] = uiTXT[24] : UIvaluesArray[j] = 500  ! abgestimmt
+	IF versionStamp < 1.53 THEN
+		sts = LIBRARYGLOBAL("OpenLibraryGlobals", "ef_LoD", k)
+		ELSE
+		sts = LIBRARYGLOBAL("BIM-all-doors_mvo", "dk_LoD_3D", k)
+		ENDIF
+	IF sts > 0 THEN
+		j=j+1 : UIpicIdxArray[j] = 9 : UItextArray[j] = uiTXT[18] : UIvaluesArray[j] = -2  ! global definiert (MVO)
+		ENDIF
+	RETURN
+
+"SELECT_dk_LOD_2D":
+	GOSUB "SELECT_dk_LOD"
+	j=j+1 : UIpicIdxArray[j] = 8 : UItextArray[j] = uiTXT[25] : UIvaluesArray[j] = -1  ! nach Maßstab
+	RETURN
+
+"SELECT_dk_LOD_3D":
+	GOSUB "SELECT_dk_LOD"
+	j=j+1 : UIpicIdxArray[j] = 10 : UItextArray[j] = uiTXT[26] : UIvaluesArray[j] = -3  ! wie Grundriss
+	RETURN
+
+"SELECT_dk_LOD_SA":
+	GOSUB "SELECT_dk_LOD"
+	j=j+1 : UIpicIdxArray[j] = 8 : UItextArray[j] = uiTXT[25] : UIvaluesArray[j] = -1  ! nach Maßstab
+	j=j+1 : UIpicIdxArray[j] = 10 : UItextArray[j] = uiTXT[26] : UIvaluesArray[j] = -3  ! wie Grundriss
+	RETURN
+
+"SELECT_gs_retain_nominal_sizes":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = "Maße der Auswahl überschreiben Nominalmaße" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = 1 : UItextArray[j] = "Nominalmaße werden auf Maße der Auswahl übertragen"  : UIvaluesArray[j] = 1
+	IF gs_retain_nominal_sizes = 0 THEN txt = "Nominalmaße werden auf Auswahl übertragen"
+	IF gs_retain_nominal_sizes = 1 THEN txt = "Maße der Auswahl überschreiben Nominalmaße"
+	! txt=txt+str(gs_retain_nominal_sizes,1,0)
+	RETURN
+
+"SELECT_dk_UCrelation":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	IF bs_door_leafs = 1 THEN
+		j=j+1 : UIpicIdxArray[j] = 1 : UIvaluesArray[j] = 3  : UItextArray[j] = "Zarge <-> Beschlag bei ... 90°"
+		j=j+1 : UIpicIdxArray[j] = 1 : UIvaluesArray[j] = 5  : UItextArray[j] = "... " + STR(MAX(UCminimalAngleGB, UCminimalAngleGS, UCminimalAngleGT),3,1) + "° = max. Durchgang"
+		j=j+1 : UIpicIdxArray[j] = 1 : UIvaluesArray[j] = 9  : UItextArray[j] = "... " + STR(dk_open_leaf[dka_leaf_angle2D],1,0) + "° gemäß 2D"	
+		j=j+1 : UIpicIdxArray[j] = 1 : UIvaluesArray[j] = 17 : UItextArray[j] = "... " + STR(dk_open_leaf[dka_leaf_angle3D],1,0) + "° gemäß 3D"	
+		ENDIF
+	IF bs_door_leafs = 2 THEN
+		j=j+1 : UIpicIdxArray[j] = 5 : UIvaluesArray[j] = 3  : UItextArray[j] = "Beschlag <-> Beschlag je bei ... 90°"
+		j=j+1 : UIpicIdxArray[j] = 5 : UIvaluesArray[j] = 5  : UItextArray[j] = "... " + STR(MAX(UCminimalAngleSB, UCminimalAngleST),3,1) + "° (SF) / " + STR(MAX(UCminimalAngleGB, UCminimalAngleGS, UCminimalAngleGT),3,1) + "° (GF) = max. Durchgang"
+		j=j+1 : UIpicIdxArray[j] = 5 : UIvaluesArray[j] = 9  : UItextArray[j] = "... " + STR(dk_open_leaf[dka_leaf2_angle2D],1,0) + "° (SF) / " + STR(dk_open_leaf[dka_leaf_angle2D],1,0) + "° (GF) gemäß 2D"	
+		j=j+1 : UIpicIdxArray[j] = 5 : UIvaluesArray[j] = 17 : UItextArray[j] = "... " + STR(dk_open_leaf[dka_leaf2_angle3D],1,0) + "° (SF) / " + STR(dk_open_leaf[dka_leaf_angle3D],1,0) + "° (GF) gemäß 3D"	
+		ENDIF
+	IF bs_door_leafs = 2 THEN
+		j=j+1 : UIpicIdxArray[j] = 3 : UIvaluesArray[j] = 35 : UItextArray[j] = "Standflügel 0° <-> Beschlag bei ... 90°"
+		j=j+1 : UIpicIdxArray[j] = 3 : UIvaluesArray[j] = 37 : UItextArray[j] = "... " + STR(MAX(UCminimalAngleGB, UCminimalAngleGS, UCminimalAngleGT),3,1) + "° (GF) = max. Durchgang"
+		j=j+1 : UIpicIdxArray[j] = 3 : UIvaluesArray[j] = 41 : UItextArray[j] = "... " + STR(dk_open_leaf[dka_leaf_angle2D],1,0) + "° (GF) gemäß 2D"	
+		j=j+1 : UIpicIdxArray[j] = 3 : UIvaluesArray[j] = 49 : UItextArray[j] = "... " + STR(dk_open_leaf[dka_leaf_angle3D],1,0) + "° (GF) gemäß 3D"	
+		ENDIF
+
+	IF bs_door_leafs = 1 AND bs_demand_Accessibility # 1 AND bs_demand_EscapeRoute # 1 THEN
+		j=j+1 : UIpicIdxArray[j] = 2 : UIvaluesArray[j] = 2  : UItextArray[j] = "Zarge <-> Türblatt bei ... 90°"
+		j=j+1 : UIpicIdxArray[j] = 2 : UIvaluesArray[j] = 4  : UItextArray[j] = "... " + STR(UCminimalAngleGT,3,1) + "° max. Durchgang"
+		j=j+1 : UIpicIdxArray[j] = 2 : UIvaluesArray[j] = 8  : UItextArray[j] = "... " + STR(dk_open_leaf[dka_leaf_angle2D],1,0) + "° gemäß 2D"
+		j=j+1 : UIpicIdxArray[j] = 2 : UIvaluesArray[j] = 16 : UItextArray[j] = "... " + STR(dk_open_leaf[dka_leaf_angle3D],1,0) + "° gemäß 3D"
+		ENDIF
+	IF bs_door_leafs = 2 AND bs_demand_Accessibility # 1 AND bs_demand_EscapeRoute # 1 THEN
+		j=j+1 : UIpicIdxArray[j] = 6 : UIvaluesArray[j] = 2  : UItextArray[j] = "Türblatt <-> Türblatt je bei ... 90°"
+		j=j+1 : UIpicIdxArray[j] = 6 : UIvaluesArray[j] = 4  : UItextArray[j] = "... " + STR(UCminimalAngleGT,3,1) + "° (SF/GF) = max. Durchgang"
+		j=j+1 : UIpicIdxArray[j] = 6 : UIvaluesArray[j] = 8  : UItextArray[j] = "... " + STR(dk_open_leaf[dka_leaf2_angle2D],1,0) + "° (SF) / " + STR(dk_open_leaf[dka_leaf_angle2D],1,0) + "° (GF) gemäß 2D"
+		j=j+1 : UIpicIdxArray[j] = 6 : UIvaluesArray[j] = 16 : UItextArray[j] = "... " + STR(dk_open_leaf[dka_leaf2_angle3D],1,0) + "° (SF) / " + STR(dk_open_leaf[dka_leaf_angle3D],1,0) + "° (GF) gemäß 3D"
+		ENDIF
+	IF bs_door_leafs = 2 AND bs_demand_Accessibility # 1 AND bs_demand_EscapeRoute # 1 THEN
+		j=j+1 : UIpicIdxArray[j] = 4 : UIvaluesArray[j] = 34 : UItextArray[j] = "Standflügel 0° <-> Türblatt bei ... 90°"
+		j=j+1 : UIpicIdxArray[j] = 4 : UIvaluesArray[j] = 36 : UItextArray[j] = "... " + STR(UCminimalAngleGT,3,1) + "° max. Durchgang"
+		j=j+1 : UIpicIdxArray[j] = 4 : UIvaluesArray[j] = 40 : UItextArray[j] = "... " + STR(dk_open_leaf[dka_leaf_angle2D],1,0) + "° gemäß 2D"
+		j=j+1 : UIpicIdxArray[j] = 4 : UIvaluesArray[j] = 48 : UItextArray[j] = "... " + STR(dk_open_leaf[dka_leaf_angle3D],1,0) + "° gemäß 3D"
+		ENDIF
+	RETURN
+
+"SELECT_ac_OpeningSide":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	IF bs_door_leafs > 0 THEN
+		j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Links" : UIvaluesArray[j] = "L"
+		j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rechts" : UIvaluesArray[j] = "R"
+		ELSE
+		j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ohne Türblatt" : UIvaluesArray[j] = "-"
+		ENDIF
+	RETURN
+
+! ----------------------------------- PARAMETER / INFIELD VALUE LIST [Extendable Component Door] (start)
+
+"VALUES_language":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Deutsch" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "English" : UIvaluesArray[j] = 4
+	RETURN
+
+"VALUES_gs_nominal_size":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohbauöffnung ist Nominalmaß" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohbaulichte ist Nominalmaß" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rahmen-Außenmaß ist Nominalmaß" : UIvaluesArray[j] = 4
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lichtes Zargenmaß ist Nominalmaß" : UIvaluesArray[j] = 8
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Türblattmaß ist Nominalmaß" : UIvaluesArray[j] = 16
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Baurichtmaß ist Nominalmaß" : UIvaluesArray[j] = 32
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Freies Durchgangsmaß ist Nominalmaß" : UIvaluesArray[j] = 64
+	RETURN
+
+"VALUES_dk_tolerance":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Keine Bautoleranzen" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "wie Baurichtmaß" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "individuell" : UIvaluesArray[j] = 2
+	RETURN
+
+"VALUES_dk_UCrelation":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "90° (auf Beschlag)" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "maximal (auf Beschlag)" : UIvaluesArray[j] = 4
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nach 2D (auf Beschlag)" : UIvaluesArray[j] = 8
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nach 3D (auf Beschlag)" : UIvaluesArray[j] = 16
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "90° (auf Türblatt)" : UIvaluesArray[j] = 3
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "maximal (auf Türblatt)" : UIvaluesArray[j] = 5
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nach 2D (auf Türblatt)" : UIvaluesArray[j] = 9
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nach 3D (auf Türblatt)" : UIvaluesArray[j] = 17
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "90° (auf Beschlag) - GF fest" : UIvaluesArray[j] = 34
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "maximal (auf Beschlag) - GF fest" : UIvaluesArray[j] = 36
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nach 2D (auf Beschlag) - GF fest" : UIvaluesArray[j] = 40
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nach 3D (auf Beschlag) - GF fest" : UIvaluesArray[j] = 48
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "90° (auf Türblatt) - GF fest" : UIvaluesArray[j] = 35
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "maximal (auf Türblatt) - GF fest" : UIvaluesArray[j] = 37
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nach 2D (auf Türblatt) - GF fest" : UIvaluesArray[j] = 41
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nach 3D (auf Türblatt) - GF fest" : UIvaluesArray[j] = 49
+	RETURN
+
+"VALUES_msType":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Bewegungsflächen" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lichter Durchgang" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Bewegungsflächen (Modelldarstellung)" : UIvaluesArray[j] = 5
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lichter Durchgang (Modelldarstellung)" : UIvaluesArray[j] = 6
+	RETURN
+
+"VALUES_AC_WallContours":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Keine Linien" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Leibungslinien und Wandaußenseitenkanten" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Nur die seitlichen Leibungslinien" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Wandaußenseitenkanten" : UIvaluesArray[j] = 3
+	RETURN
+
+"VALUES_AC_Hole_Hotspot_Control":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "keine" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "in 2D" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "in 3D" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "alle" : UIvaluesArray[j] = 3
+	RETURN
+
+"VALUES_iHoleUnderThreshold":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Wandöffnung wie Rohbauöffnung" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Wandöffnung zum aktuellen Geschoss" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Wandöffnung zu Wandunterkante" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Wandöffnung individuelle Höhe" : UIvaluesArray[j] = 3
+	RETURN
+
+"VALUES_AC_Hole_Display_Option":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Projeziert" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Projeziert mit Untersicht" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Symbolhafte Darstellung (2D)" : UIvaluesArray[j] = 3
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Nur Umrißlinie/Symbolisch" : UIvaluesArray[j] = 4
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Komplette Untersicht" : UIvaluesArray[j] = 5
+	RETURN
+
+"VALUES_gs_wallcontour_id":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "links" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "rechts" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "beide Seiten" : UIvaluesArray[j] = 3
+	RETURN
+
+"VALUES_dk_lintelcontour_id":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = "Aus" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = "Bandseite" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = "Bandgegenseite" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = 5 : UItextArray[j] = "beide Seiten" : UIvaluesArray[j] = 3
+	j=j+1 : UIpicIdxArray[j] = 1 : UItextArray[j] = "Nach Modelleinstellung" : UIvaluesArray[j] = 4
+	RETURN
+
+"VALUES_AC_WallType":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Polygonalwand" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "gerade Wand" : UIvaluesArray[j] = 2
+	RETURN
+
+"VALUES_AC_Wall_Direction_Type":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rechts" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Links" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Mitte-rechts" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Mitte-links" : UIvaluesArray[j] = 3
+	RETURN
+
+"VALUES_ac_revealAnchorPos":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "an Außenseite" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "an Kern" : UIvaluesArray[j] = 2
+	RETURN
+
+"VALUES_ac_vertAnchorPos":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "an Schwelle" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "an Sturz" : UIvaluesArray[j] = 2
+	RETURN
+
+"VALUES_ac_wido_hide_options":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "keine" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Brüstungstiefe" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Anschlagtiefe" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "beide" : UIvaluesArray[j] = 3
+	RETURN
+
+"VALUES_ac_zone_on_reveal_side":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "gespiegelt" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "normal" : UIvaluesArray[j] = 1
+	RETURN
+
+"VALUES_pwi":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "keine" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Niesche aus" : UIvaluesArray[j] = -1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Anschlagtiefe" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Leibungstiefe innen" : UIvaluesArray[j] = 3
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Netto-Wandstärke" : UIvaluesArray[j] = 4
+	RETURN
+
+"VALUES_bs_demand_FireResistance":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_demand_SmokeResistance":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_demand_NoiseInsulaion":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_demand_Accessibility":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_demand_AdmissionControl":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_demand_MoistureProofing":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_demand_EscapeRoute":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_quality_EscapeRoute":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = "[-]"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Fluchtweg" : UIvaluesArray[j] = "FW"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rettungsweg" : UIvaluesArray[j] = "RW"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Flucht- + Rettungsweg" : UIvaluesArray[j] = "FW+RW"
+	RETURN
+
+"VALUES_bs_ac_identify1":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = "[-]"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Jeder" : UIvaluesArray[j] = "J"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Identifikation" : UIvaluesArray[j] = "ID"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Zeitweise Identifikation" : UIvaluesArray[j] = "ZID"
+	RETURN
+
+"VALUES_bs_ac_identify2":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = "[-]"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Jeder" : UIvaluesArray[j] = "J"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Identifikation" : UIvaluesArray[j] = "ID"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Zeitweise Identifikation" : UIvaluesArray[j] = "ZID"
+	RETURN
+
+"VALUES_bs_ac_opening1":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = "[-]"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "manuell" : UIvaluesArray[j] = "MÖ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unterstützt" : UIvaluesArray[j] = "UÖ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "automatisch" : UIvaluesArray[j] = "AÖ"
+	RETURN
+
+"VALUES_bs_ac_opening2":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = "[-]"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "manuell" : UIvaluesArray[j] = "MÖ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unterstützt" : UIvaluesArray[j] = "UÖ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "automatisch" : UIvaluesArray[j] = "AÖ"
+	RETURN
+
+"VALUES_bs_ac_closing":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = "[-]"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "manuell schließend" : UIvaluesArray[j] = "MS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "permanent selbstschließend" : UIvaluesArray[j] = "PS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "gesteuert selbsschließend" : UIvaluesArray[j] = "GS"
+	RETURN
+
+"VALUES_bs_ac_status":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = "[-]"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "geschlossen" : UIvaluesArray[j] = "G"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "zeitweise offen" : UIvaluesArray[j] = "ZO"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "im Betrieb offen" : UIvaluesArray[j] = "IBO"
+	RETURN
+
+"VALUES_bs_ctrl_leaf_position":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_ctrl_locking":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_ctrl_handle_actuation":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_ctrl_key_actuation":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_ctrl_distance_actuation":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_ctrl_time_opened":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_ctrl_emergency_opened":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_ctrl_breakthrough":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_ctrl_burst":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_bs_ctrl_sabotage":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvaluesArray[j] = 0
+	RETURN
+
+"VALUES_dk_id_zoneOrientation":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Raumnummer BS" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Raumnummer BGS" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Geschoss + Raumnummer BS" : UIvaluesArray[j] = 5
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Geschoss + Raumnummer BGS" : UIvaluesArray[j] = 6
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Bezugsraumnummer" : UIvaluesArray[j] = 8
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Geschoss + Bezugsraumnummer" : UIvaluesArray[j] = 12
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Objekt-ID" : UIvaluesArray[j] = 16
+	RETURN
+
+"VALUES_gs_frame_type":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Eckzarge" : UIvaluesArray[j] = "EZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Umfassungszarge" : UIvaluesArray[j] = "UZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Futter+Bekleidung" : UIvaluesArray[j] = "FB"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmenzarge" : UIvaluesArray[j] = "RR"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Blockzarge" : UIvaluesArray[j] = "BZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Stockrahmen" : UIvaluesArray[j] = "SR"
+	RETURN
+
+"VALUES_gs_list_orientationDef_m":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "individuell" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Automatisch" : UIvaluesArray[j] = 1
+	RETURN
+
+"VALUES_ac_OpeningSide":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Links" : UIvaluesArray[j] = "L"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rechts" : UIvaluesArray[j] = "R"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ohne Türblatt" : UIvaluesArray[j] = "-"
+	RETURN
+
+"VALUES_dk_opening2D":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = 1 : UItextArray[j] = " Aus" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = " Bogen" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = " Gerade" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = " nach Modelldarstellung" : UIvaluesArray[j] = 4
+	RETURN
+
+"VALUES_dk_openingSA":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = 1 : UItextArray[j] = " Aus" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = 5 : UItextArray[j] = "zu Griff" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = 6 : UItextArray[j] = "zu Band" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = " nach Modelldarstellung" : UIvaluesArray[j] = 4
+	RETURN
+
+"VALUES_dk_opening3D":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = 1 : UItextArray[j] = " Aus" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = 5 : UItextArray[j] = "zu Griff" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = 6 : UItextArray[j] = "zu Band" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = " nach Modelldarstellung" : UIvaluesArray[j] = 4
+	RETURN
+
+"VALUES_dk_openLineType_BS":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vollinie" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Strichlinie" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Punktiert" : UIvaluesArray[j] = 3
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Strichpunkt-Linie" : UIvaluesArray[j] = 4
+	RETURN
+
+"VALUES_dk_openLineType_BGS":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vollinie" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Strichlinie" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Punktiert" : UIvaluesArray[j] = 3
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Strichpunkt-Linie" : UIvaluesArray[j] = 4
+	RETURN
+
+"VALUES_dk_openLineType_SF":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vollinie" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Strichlinie" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Punktiert" : UIvaluesArray[j] = 3
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Strichpunkt-Linie" : UIvaluesArray[j] = 4
+	RETURN
+
+"VALUES_dk_openingLineSymbol":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Kreis" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Quadrat" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Raute" : UIvaluesArray[j] = 3
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Kreuz" : UIvaluesArray[j] = 4
+	RETURN
+
+"VALUES_dk_openingLineSymbol2":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Kreis" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Quadrat" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Raute" : UIvaluesArray[j] = 3
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Kreuz" : UIvaluesArray[j] = 4
+	RETURN
+
+"VALUES_dk_LOI":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vorplanung" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Entwurfsplanung" : UIvaluesArray[j] = 4
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Ausführungsplanung" : UIvaluesArray[j] = 5
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Werk- und Detailplanung" : UIvaluesArray[j] = 6
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "global definiert (MVO)" : UIvaluesArray[j] = -2
+	RETURN
+
+"VALUES_dk_LOD":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "symbolisch (100)" : UIvaluesArray[j] = 100
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "einfach (200)" : UIvaluesArray[j] = 200
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "repräsentativ (300)" : UIvaluesArray[j] = 300
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "repräsentativ (350)" : UIvaluesArray[j] = 350
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "exakt (400)" : UIvaluesArray[j] = 400
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "as built (500)" : UIvaluesArray[j] = 500
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "global definiert (MVO)" : UIvaluesArray[j] = -2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nach Maßstab" : UIvaluesArray[j] = -1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "einheitlich" : UIvaluesArray[j] = -3
+	RETURN
+
+! --------------------------------------------------------------- PARAMETER / INFIELD VALUE LIST (end)
+
+"SELECT_dk_id_zoneOrientation":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = 1 : UItextArray[j] = "Aus" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = "Raumnummer BS" : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = "Raumnummer BGS" : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = "Geschoss + Raumnummer BS" : UIvaluesArray[j] = 5
+	j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = "Geschoss + Raumnummer BGS" : UIvaluesArray[j] = 6
+	j=j+1 : UIpicIdxArray[j] = 4+(dk_refRoom_orientation="BGS") : UItextArray[j] = "Bezugsraumnummer" : UIvaluesArray[j] = 8
+	j=j+1 : UIpicIdxArray[j] = 4+(dk_refRoom_orientation="BGS") : UItextArray[j] = "Geschoss + Bezugsraumnummer" : UIvaluesArray[j] = 12
+	j=j+1 : UIpicIdxArray[j] = 6 : UItextArray[j] = "Objekt-ID" : UIvaluesArray[j] = 16
+	RETURN
+
+"VALUES_bs_door_sidelight":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "keine" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "links" : UIvaluesArray[j] = "L"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "rechts" : UIvaluesArray[j] = "R"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "beidseitig" : UIvaluesArray[j] = "LR"
+	RETURN
+
+"DYNVALUES_basic_dimension":   !»» Bitmaps für Gesamtabmessung bestimmen
+
+	ui_pict_AbmessungH = "dk_dims"
+	ui_pict_AbmessungV = "dk_dims"
+
+	txt = "SR"
+	IF gs_frame_type = "BZ" THEN txt="BZ"
+	IF gs_frame_type = "UZ" THEN txt="UZ"
+	IF gs_frame_type = "EZ" THEN txt="EZ"
+	IF gs_frame_type = "RR" THEN
+		txt="SR"
+		ui_pict_AbmessungVU = "dk_dims_VR 170x12.png"
+		ELSE
+		ui_pict_AbmessungVU = "dk_dims_VZ 170x12.png"
+		ENDIF
+	ui_pict_AbmessungH = ui_pict_AbmessungH + "_"+txt
+	ui_pict_AbmessungV = ui_pict_AbmessungV + "_"+txt
+
+	IF gs_sidelight_left  THEN txt="L" ELSE txt = ""
+	IF gs_sidelight_right THEN txt=txt+"R"
+	ui_pict_AbmessungH = ui_pict_AbmessungH + "_H"+txt
+
+	IF oberLichtBlende THEN txt="O" ELSE txt = ""
+	IF oberLichtBlende = 2 THEN txt="B"
+	ui_pict_AbmessungV = ui_pict_AbmessungV + "_V"+txt
+
+	
+	IF stumpf THEN txt = "S" ELSE txt="F"
+	ui_pict_AbmessungH = ui_pict_AbmessungH+"_" + txt
+	ui_pict_AbmessungV = ui_pict_AbmessungV+"_" + txt
+
+	ui_pict_AbmessungH = ui_pict_AbmessungH+" 173x94.png"
+	ui_pict_AbmessungV = ui_pict_AbmessungV+" 90x98.png"
+	RETURN
+
+"explainUsableClearance":
+	txt = "" !  "Lichter Durchgang:\n"
+	IF bs_door_leafs < 1 THEN
+
+		txt = txt + "Keine Tür definiert. Lichter Durchgang wie Rohbaulichte"
+
+		ELSE
+
+		txt = txt + "Zwischen "
+
+		IF bittest(dk_UCrelation, 0) THEN 
+			IF bs_door_leafs = 1 THEN
+				txt = txt + "Türgriffen und Zargeninnenkante "
+				ELSE
+				IF BITTEST(dk_UCrelation, 5) THEN
+					txt = txt + "geschlossenem Standflügel und dem Türgriff (GF) "
+					ELSE
+					txt = txt + "den Türgriffen beider Flügel "
+					ENDIF
+				ENDIF
+			ELSE 
+			IF bs_door_leafs = 1 THEN
+				txt = txt + "Türblatt (BGS) und Zargeninnenkante "
+				ELSE
+				txt = txt + "den Türblättern (BGS) beider Flügel "
+				ENDIF
+			ENDIF
+
+		IF bs_door_leafs = 1 THEN
+
+			IF BITTEST(dk_UCrelation, 1) THEN
+				txt = txt + " bei 90°."
+				ELSE
+				IF BITTEST(dk_UCrelation, 2) THEN
+					IF BITTEST(dk_UCrelation, 0) THEN
+						txt = txt + "bei " + STR(UCminimalAngleGT,1,0) + "°."
+						ELSE
+						txt = txt + "bei " + STR(MAX(UCminimalAngleGB, UCminimalAngleGT),1,0) + "°."
+						ENDIF
+					ELSE
+					IF BITTEST(dk_UCrelation, 3) THEN
+						txt = txt + "bei " + STR(dk_open_leaf[dka_leaf_angle2D],1,0) + "°."
+						ELSE
+						IF BITTEST(dk_UCrelation, 4) THEN
+							txt = txt + "bei " + STR(dk_open_leaf[dka_leaf_angle3D],1,0) + "°."
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+
+			ELSE
+
+			txt = txt + "bei "
+
+			! bs_door_leafs = 2 (Standflügel)
+			IF BITTEST(dk_UCrelation, 5) THEN
+				ELSE
+				IF BITTEST(dk_UCrelation, 1) THEN
+					txt = txt + "90° (SF) / "
+					ELSE
+					IF BITTEST(dk_UCrelation, 2) THEN
+						IF BITTEST(dk_UCrelation, 0) THEN
+							! txt = txt + STR(UCminimalAngleST,1,0) + "|"
+							! txt = txt + STR(UCminimalAngleSB,1,0) + " "
+							txt = txt + STR(MAX(UCminimalAngleSB, UCminimalAngleST),1,0) + "° (SF) / "
+							ELSE
+							! txt = txt + STR(UCminimalAngleST,1,0) + "|"
+							! txt = txt + STR(UCminimalAngleSB,1,0) + " "
+							txt = txt + STR(UCminimalAngleST,1,0) + "° (SF) / "
+							ENDIF
+						ELSE
+						IF BITTEST(dk_UCrelation, 3) THEN
+							txt = txt + STR(dk_open_leaf[dka_leaf2_angle2D],1,0) + "° (SF) / "
+							ELSE
+							IF BITTEST(dk_UCrelation, 4) THEN
+								txt = txt + STR(dk_open_leaf[dka_leaf2_angle3D],1,0) + "° (SF) / "
+								ENDIF
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+
+			! bs_door_leafs = 2 (Gangflügel)
+			IF BITTEST(dk_UCrelation, 1) THEN
+				txt = txt + "90"
+				ELSE
+				IF BITTEST(dk_UCrelation, 2) THEN
+					IF BITTEST(dk_UCrelation, 0) THEN
+						txt = txt + STR(MAX(UCminimalAngleGB, UCminimalAngleGT),1,0)
+						ELSE
+						txt = txt + STR(UCminimalAngleGT,1,0)
+						ENDIF
+					ELSE
+					IF BITTEST(dk_UCrelation, 3) THEN
+						txt = txt + STR(dk_open_leaf[dka_leaf_angle2D],1,0)
+						ELSE
+						IF BITTEST(dk_UCrelation, 4) THEN
+							txt = txt + STR(dk_open_leaf[dka_leaf_angle3D],1,0)
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			IF BITTEST(dk_UCrelation, 5) THEN
+				txt = txt + "°. (Standflügel geschlossen)"
+				ELSE
+				txt = txt + "° (GF)."
+				ENDIF
+			ENDIF
+
+		ENDIF
+
+	RETURN
+
+! ------------------------------------------------------------- BASIC SETTINGS / GRUNDEINSTELLUNGEN [ 1000 ]
+	1000:   ! #### SEITE 1 - Allgemeine Einstellungen
+	UIpage = UIpage + 1
+	UI_PAGE UIpage, -1, babel[80], "dk_title_door 18x18.png"
+	GOSUB 9950
+	UI_OUTFIELD babel[7], 0,43 , 70,15, 0+0 UI_TOOLTIP bubble[1]
+	UI_OUTFIELD babel[8], 0,67 , 70,15, 0+0 UI_TOOLTIP bubble[2]
+	UI_OUTFIELD babel[9], 0,94 , 70,15, 0+0 UI_TOOLTIP bubble[16]
+	UI_OUTFIELD babel[5], 104,94 , 73,15, 1+0 UI_TOOLTIP bubble[4]
+	UI_OUTFIELD babel[4], 0,121 , 70,15, 0+0 UI_TOOLTIP bubble[3]
+	UI_OUTFIELD babel[6], 104,118 , 73,15, 1+0 UI_TOOLTIP bubble[6]
+	UI_STYLE 0,1
+	UI_OUTFIELD "+", 212,119 , 12,15, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD "+", 258,119 , 12,15, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 0,2
+	UI_OUTFIELD "= » " + BS_ID + " «", 179,137 , 124,15, 0+0 UI_TOOLTIP bubble[9]
+	UI_STYLE 0,0
+	UI_INFIELD{3} "bs_door_manufacturer", 71,41 , 232,19 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} "bs_door_model", 71,65 , 232,19 UI_TOOLTIP bubble[2]
+	UI_INFIELD{3} "dk_refRoom_orientation", 70,88 , 33,24, 2, 61, 6, 1, 18, 18, 18, 18, 4,"BS","BS", 5,"BGS","BGS" UI_TOOLTIP bubble[14]
+	UI_INFIELD{3} "bs_door_leafs", 70,114 , 33,24, 9, "dk_DoorNumber 72x18.png", 4, 1, 18, 18, 18, 18, 1, "0",0, 2,"1",1, 4-symm,"2",2 UI_TOOLTIP bubble[3]
+	UI_INFIELD{3} "gs_list_orientationDef_m", 178,88 , 34,24, 6, "dk_lock 32x16.png", 2, 1, 16, 16, 16, 16, 1,"automatisch",1, 2,"fixiertl",0 UI_TOOLTIP bubble[5]
+	IF NOT(gs_list_orientationDef_m) THEN
+		GOSUB "SELECT_ac_OpeningSide"
+		UI_INFIELD{3} "ac_OpeningSide", 225,88 , 79,24, 2, "", 3, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[4]
+		ENDIF
+	UI_INFIELD{3} dk_id_PrefixSuffix[1], 179,116 , 32,19 UI_TOOLTIP bubble[7]
+	GOSUB "SELECT_dk_id_zoneOrientation"
+	UI_INFIELD{3} "dk_id_zoneOrientation", 225,115 , 32,21, 2, 61, 6, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[15]
+	UI_INFIELD{3} dk_id_PrefixSuffix[2], 271,116 , 32,19 UI_TOOLTIP bubble[8]
+	UI_STYLE 2,1
+	UI_OUTFIELD babel[3], 100,156 , 260,15, 2+0
+	UI_STYLE 0,0
+	UI_PICT "dk_ui_demands_fire 36x36.png", 3,174 , 20,20, 1 UI_TOOLTIP bubble[21]
+	UI_PICT "dk_ui_demands_smoke 36x36.png", 69,174 , 20,20, 1 UI_TOOLTIP bubble[22]
+	UI_PICT "dk_ui_demands_noise 36x36.png", 132,174 , 20,20, 1 UI_TOOLTIP bubble[23]
+	UI_PICT "dk_ui_demands_accessability 36x36.png", 196,174 , 20,20, 1 UI_TOOLTIP bubble[24]
+	UI_PICT "dk_ui_demands_admission 36x36.png", 259,174 , 20,20, 1 UI_TOOLTIP bubble[25]
+	UI_PICT "dk_ui_demands_moisture 36x36.png", 323,174 , 20,20, 1 UI_TOOLTIP bubble[26]
+	UI_PICT "dk_ui_demands_escape 36x36.png", 386,174 , 20,20, 1 UI_TOOLTIP bubble[27]
+	UI_INFIELD{3} "bs_demand_FireResistance", 29,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[21]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_demand_SmokeResistance", 95,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[22]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_demand_NoiseInsulaion", 158,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[23]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_demand_Accessibility", 222,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[24]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_demand_AdmissionControl", 285,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[25]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_demand_MoistureProofing", 349,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[26]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_demand_EscapeRoute", 412,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[27]   !»» "dk_yes_no_na 72x18.png"
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[1], 0,219 , 221,28, 2+0 UI_TOOLTIP bubble[11]
+	UI_STYLE 0,0
+	UI_STYLE 1,2
+	IF dk_LoI > -1 AND dk_LoI < 6 THEN
+		UI_OUTFIELD babel[10], 0,202 , 444,15, 2+0
+		ENDIF
+	UI_STYLE 0,0
+	UI_STYLE 1,2
+	IF ef_LoI < 0 THEN
+		UI_OUTFIELD dk_LoItxt, 206,251 , 200,15, 2+0
+		ENDIF
+	UI_STYLE 0,0
+	GOSUB "SELECT_dk_LOI"
+	UI_INFIELD{3} "dk_LOI", 221,218 , 164,33, 2, 60, 7, 7, 34, 25, 34, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[10]
+	GOSUB "DYNVALUES_ICON"
+	IF iconLeft > 4 THEN
+		UI_PICT 21 + iconLeft, 397,41 , 20,80, 1 UI_TOOLTIP bubble[17]
+		ELSE
+		UI_PICT 21 + iconLeft, 397,41 , 7,80, 1 UI_TOOLTIP bubble[17]
+		ENDIF
+	IF iconRight > 4 THEN
+		UI_PICT 21 + iconRight, 337,41 , 20,80, 1 UI_TOOLTIP bubble[17]
+		ELSE
+		UI_PICT 21 + iconRight, 350,41 , 7,80, 1 UI_TOOLTIP bubble[17]
+		ENDIF
+	UI_PICT 17 + iconTop, 355,41 , 44,7, 1 UI_TOOLTIP bubble[17]
+	IF iconDoor > 0 THEN UI_PICT 29 + iconDoor, 355,46 , 44,75, 1 UI_TOOLTIP bubble[17]
+	IF iconTransom > 0 AND iconTransom < 10 THEN UI_PICT 8 + iconTransom, 355,48 , 44,12, 1 UI_TOOLTIP bubble[17]
+	IF bs_door_electrified > 0 THEN UI_PICT "dk_electric 16x16.png", 422,41 , 16,16, 1 UI_TOOLTIP bubble[28]
+	UI_STYLE 0,0
+	UI_OUTFIELD txt, 307,121 , 137,30, 2+0 UI_TOOLTIP txt + " (" + bs_door_ConstructionType + ")"
+	UI_STYLE 0,0
+	UI_SEPARATOR 0,152, 445,152
+	UI_SEPARATOR 0,199, 445,199
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[2], 12,20 , 420,15, 2+0
+	UI_STYLE 0,0
+	RETURN
+! ------------------------------------------------------------- PROTECTION DEMANDS / SCHUTZANFORDERUNGEN [ 1100 ]
+	1100:   ! #### SEITE 3 - Schutzanforderungen
+	UIpage = UIpage + 1
+	UI_PAGE UIpage, UIpage_masterparent, babel[81], "dk_title_protectionaims 18x18.png"
+	GOSUB 9900
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[11], 36,18 , 392,15, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[20], 9,42 , 125,15, 1+0
+	UI_STYLE 0,0
+	UI_INFIELD{3} "bs_quality_FireResistanceRating", 139,39 , 74,19 UI_TOOLTIP bubble[21]
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[21], 9,76 , 125,15, 1+0
+	UI_STYLE 0,0
+	UI_INFIELD{3} "bs_quality_SmokeResistance", 139,73 , 74,19 UI_TOOLTIP bubble[22]
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[22], 9,110 , 125,15, 1+0
+	UI_STYLE 0,0
+	UI_INFIELD{3} "bs_quality_NoiseInsulaion", 139,107 , 74,19 UI_TOOLTIP bubble[23]
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[23], 9,144 , 125,15, 1+0
+	UI_STYLE 0,0
+	UI_INFIELD{3} "bs_quality_ThermalInsulaion", 139,141 , 74,19 UI_TOOLTIP bubble[29]
+	UI_OUTFIELD babel[25], 231,76 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_GasDefense", 361,39 , 74,19 UI_TOOLTIP bubble[37]
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[24], 231,178 , 125,15, 1+0
+	UI_STYLE 0,0
+	UI_INFIELD{3} "bs_quality_BurglaryProtection", 361,175 , 74,19 UI_TOOLTIP bubble[31]
+	UI_OUTFIELD babel[27], 9,178 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_StrafingProtection", 139,175 , 74,19 UI_TOOLTIP bubble[32]
+	UI_OUTFIELD babel[28], 9,212 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_DetonationProtection", 139,209 , 74,19 UI_TOOLTIP bubble[33]
+	UI_OUTFIELD babel[29], 231,110 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_LaserProtection", 361,107 , 74,19 UI_TOOLTIP bubble[34]
+	UI_OUTFIELD babel[30], 231,144 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_FloodProtection", 361,141 , 74,19 UI_TOOLTIP bubble[35]
+	UI_OUTFIELD babel[31], 231,42 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_RadiationProtection", 361,73 , 74,19 UI_TOOLTIP bubble[30]
+	UI_OUTFIELD babel[26], 231,212 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_VandalismProtection", 361,209 , 74,19 UI_TOOLTIP bubble[36]
+	UI_STYLE 0,2
+	UI_OUTFIELD babel[19], 25,236 , 400,30, 2+4
+	RETURN
+! ------------------------------------------------------------- MINIMAL DEMANDS [ 1200 ]
+	1200:   ! #### SEITE 4 - Anforderungen Abmessung und Zugangskontrolle
+	UIpage = UIpage + 1
+	UI_PAGE UIpage, UIpage_masterparent, babel[82], "dk_title_functional_props2 18x18.png"
+	GOSUB 9900
+	UI_SEPARATOR 0,185, 445,185
+	UI_SEPARATOR 0,84, 445,84
+	UI_STYLE 1,2
+	UI_OUTFIELD babel[13], 244,20 , 133,12, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[15], 81,20 , 160,15, 1+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[12], 0,88 , 444,15, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[14], 0,189 , 444,15, 2+0
+	UI_STYLE 0,0
+	UI_OUTFIELD babel[63], 0,43 , 135,15, 1+0
+	UI_OUTFIELD babel[65], 0,64 , 135,15, 1+0
+	UI_OUTFIELD babel[62], 222,43 , 135,15, 1+0
+	UI_OUTFIELD babel[64], 222,64 , 135,15, 1+0
+	UI_OUTFIELD babel[67], 0,110 , 118,15, 1+0
+	UI_OUTFIELD babel[69], 0,136 , 118,15, 1+0
+	UI_OUTFIELD babel[68], 222,136 , 118,15, 1+0
+	UI_OUTFIELD babel[71], 0,162 , 118,15, 1+0
+	UI_OUTFIELD babel[66], 222,110 , 118,15, 1+0
+	UI_OUTFIELD babel[53], 222,162 , 118,15, 1+0
+	UI_OUTFIELD babel[53], 0,207 , 99,15, 1+0
+	UI_OUTFIELD babel[52], 0,228 , 99,15, 1+0
+	UI_OUTFIELD babel[51], 134,239 , 65,15, 1+0
+	UI_OUTFIELD babel[50], 134,218 , 65,15, 1+0
+	UI_OUTFIELD babel[49], 0,249 , 99,15, 1+0
+	UI_OUTFIELD babel[48], 242,218 , 65,15, 1+0
+	UI_OUTFIELD babel[47], 242,239 , 65,15, 1+0
+	UI_OUTFIELD babel[46], 349,207 , 65,15, 1+0
+	UI_OUTFIELD babel[45], 349,228 , 65,15, 1+0
+	UI_OUTFIELD babel[44], 349,249 , 65,15, 1+0
+	IF bs_door_leafs = 1 THEN
+		UI_INFIELD{3} "bs_quality_UsableClearance", 142,40 , 80,19 UI_TOOLTIP bubble[53]
+		ELSE
+		
+		UI_INFIELD{3} "bs_quality_UsableClearance", 142,40 , 38,19 UI_TOOLTIP bubble[57]
+		UI_INFIELD{3} "bs_quality_TotalClearance", 184,40 , 38,19 UI_TOOLTIP bubble[56]
+		ENDIF
+	UI_INFIELD{3} "bs_quality_UsableHeight", 364,40 , 80,19 UI_TOOLTIP bubble[54]
+	UI_INFIELD{3} "bs_quality_GuardrailHeight", 142,61 , 80,19 UI_TOOLTIP bubble[66]
+	UI_INFIELD{3} "bs_quality_OpeningAngle", 364,61 , 80,19 UI_TOOLTIP bubble[55]
+	GOSUB "VALUES_bs_ac_identify1"
+	UI_INFIELD{3} "bs_ac_identify1", 122,104 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[59]
+	GOSUB "VALUES_bs_ac_identify2"
+	UI_INFIELD{3} "bs_ac_identify2", 344,104 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[58]
+	GOSUB "VALUES_bs_ac_opening1"
+	UI_INFIELD{3} "bs_ac_opening1", 122,130 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[61]
+	GOSUB "VALUES_bs_ac_opening2"
+	UI_INFIELD{3} "bs_ac_opening2", 344,130 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[60]
+	GOSUB "VALUES_bs_ac_closing"
+	UI_INFIELD{3} "bs_ac_closing", 122,156 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[62]
+	GOSUB "VALUES_bs_ac_status"
+	UI_INFIELD{3} "bs_ac_status", 344,156 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[87]
+	UI_INFIELD{3} "bs_ctrl_leaf_position", 102,205 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[68]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_locking", 102,226 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[69]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_handle_actuation", 202,237 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[70]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_key_actuation", 202,216 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[71]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_distance_actuation", 102,247 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[72]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_time_opened", 310,216 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[73]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_emergency_opened", 310,237 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[74]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_breakthrough", 417,205 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[75]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_burst", 417,226 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[76]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_sabotage", 417,247 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[77]   !»» "dk_yes_no_na 72x18.png"
+	RETURN
+! ------------------------------------------------------------- PROPERTIES DEMAND [ 1300 ]
+	1300:   ! #### SEITE 4 - Funktionsanforderungen
+	UIpage = UIpage + 1
+	UI_PAGE UIpage, UIpage_masterparent, babel[83], "dk_title_functional_props 18x18.png"
+	GOSUB 9900
+	UI_SEPARATOR 0,98, 445,98
+	UI_OUTFIELD babel[56], 0,28 , 125,15, 1+0
+	GOSUB "VALUES_bs_quality_EscapeRoute"
+	UI_INFIELD{3} "bs_quality_EscapeRoute", 128,24 , 76,21, 2, "", 6, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[27]
+	UI_OUTFIELD babel[58], 0,52 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_SelfClosing", 129,49 , 93,19 UI_TOOLTIP bubble[64]
+	UI_OUTFIELD babel[59], 0,76 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_Automation", 129,73 , 93,19 UI_TOOLTIP bubble[63]
+	UI_OUTFIELD babel[60], 0,108 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_Hygiene", 129,105 , 93,19 UI_TOOLTIP bubble[44]
+	UI_OUTFIELD babel[37], 0,131 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_ClimateClass", 129,129 , 93,19 UI_TOOLTIP bubble[49]
+	UI_OUTFIELD babel[40], 0,154 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_WetRoom", 129,152 , 93,19 UI_TOOLTIP bubble[51]
+	UI_OUTFIELD babel[39], 0,178 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_DampArea", 129,175 , 93,19 UI_TOOLTIP bubble[52]
+	UI_OUTFIELD babel[42], 0,202 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_Tightness", 129,200 , 93,19 UI_TOOLTIP bubble[48]
+	UI_OUTFIELD babel[33], 0,226 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_EMShielding", 129,223 , 93,19 UI_TOOLTIP bubble[43]
+	UI_OUTFIELD babel[54], 0,250 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_BurglaryAlarmSystem", 129,246 , 93,19 UI_TOOLTIP bubble[50]
+	UI_OUTFIELD babel[34], 222,28 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_Accessibility", 351,25 , 93,19 UI_TOOLTIP bubble[24]
+	UI_OUTFIELD babel[55], 222,52 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_ActuatingForce", 351,49 , 93,19 UI_TOOLTIP bubble[41]
+	UI_OUTFIELD babel[43], 222,76 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_SHE", 351,73 , 93,19 UI_TOOLTIP bubble[65]
+	UI_OUTFIELD babel[35], 222,108 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_AntiTrapProtection", 351,105 , 93,19 UI_TOOLTIP bubble[45]
+	UI_OUTFIELD babel[36], 222,131 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_AccidentPrevention", 351,129 , 93,19 UI_TOOLTIP bubble[46]
+	UI_OUTFIELD babel[32], 222,154 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_CorrosionPrevention", 351,152 , 93,19 UI_TOOLTIP bubble[38]
+	UI_OUTFIELD babel[38], 222,178 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_MechanicalLoad", 351,175 , 93,19 UI_TOOLTIP bubble[47]
+	UI_OUTFIELD babel[61], 222,202 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_IntensityOfUse", 351,200 , 93,19 UI_TOOLTIP bubble[42]
+	UI_OUTFIELD babel[41], 222,226 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_UsefulLife", 351,223 , 93,19 UI_TOOLTIP bubble[40]
+	UI_OUTFIELD babel[57], 222,250 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_Sustainability", 351,246 , 93,19 UI_TOOLTIP bubble[67]
+	RETURN
+! ------------------------------------------------------------- BASIC DEMANDS / GRUNDANFORDERUNGEN [ 1400 ]
+	1400:   ! #### SEITE 5 - Grundlegende Anforderungen
+	UIpage = UIpage + 1
+	UI_PAGE UIpage, UIpage_masterparent, babel[85], "dk_title_requests 18x18.png"
+	GOSUB 9900
+	UI_OUTFIELD babel[20], 0,26 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_FireResistanceRating", 148,23 , 74,19 UI_TOOLTIP bubble[21]
+	UI_OUTFIELD babel[21], 0,53 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_SmokeResistance", 148,50 , 74,19 UI_TOOLTIP bubble[22]
+	UI_OUTFIELD babel[22], 222,26 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_NoiseInsulaion", 370,23 , 74,19 UI_TOOLTIP bubble[23]
+	UI_OUTFIELD babel[23], 222,53 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_ThermalInsulaion", 370,50 , 74,19 UI_TOOLTIP bubble[29]
+	UI_OUTFIELD babel[24], 0,95 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_BurglaryProtection", 148,92 , 74,19 UI_TOOLTIP bubble[39]
+	UI_OUTFIELD babel[56], 0,122 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_EscapeRoute", 148,119 , 74,19 UI_TOOLTIP bubble[27]
+	UI_OUTFIELD babel[58], 0,149 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_SelfClosing", 148,146 , 74,19 UI_TOOLTIP bubble[64]
+	UI_OUTFIELD babel[59], 222,149 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_Automation", 370,146 , 74,19 UI_TOOLTIP bubble[63]
+	UI_OUTFIELD babel[60], 0,188 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_Hygiene", 148,185 , 74,19 UI_TOOLTIP bubble[44]
+	UI_OUTFIELD babel[37], 0,214 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_ClimateClass", 148,211 , 74,19 UI_TOOLTIP bubble[49]
+	UI_OUTFIELD babel[40], 222,188 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_WetRoom", 370,184 , 74,19 UI_TOOLTIP bubble[51]
+	UI_OUTFIELD babel[39], 222,214 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_DampArea", 370,211 , 74,19 UI_TOOLTIP bubble[52]
+	UI_OUTFIELD babel[54], 222,95 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_BurglaryAlarmSystem", 370,92 , 74,19 UI_TOOLTIP bubble[50]
+	UI_OUTFIELD babel[34], 222,122 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_Accessibility", 370,119 , 74,19 UI_TOOLTIP bubble[24]
+	UI_STYLE 0,2
+	UI_OUTFIELD babel[18], 25,236 , 400,30, 2+4
+	RETURN
+! ------------------------------------------------------------- COMPONENTS / KOMPONENTEN [ 1600 ]
+	1600:   ! #### SEITE 6 - Türkomponenten
+	UIpage = UIpage + 1
+	UI_PAGE UIpage, UIpage_masterparent, babel[84], "dk_title_components 18x18.png"
+	GOSUB 9900
+	UI_PICT 63, 127,23 , 190,237, 1 UI_TOOLTIP bubble[86]
+	UI_INFIELD{3} "frame_system", 0,31 , 125,19 UI_TOOLTIP bubble[84]
+	UI_INFIELD{3} "panel_system", 319,125 , 125,19 UI_TOOLTIP bubble[83]
+	UI_INFIELD{3} "closer_system", 319,31 , 125,19 UI_TOOLTIP bubble[81]
+	UI_INFIELD{3} "hinge_system", 319,225 , 125,19 UI_TOOLTIP bubble[79]
+	UI_INFIELD{3} "automation_system", 319,66 , 125,19 UI_TOOLTIP bubble[82]
+	UI_INFIELD{3} "case_system", 0,150 , 125,19 UI_TOOLTIP bubble[78]
+	UI_INFIELD{3} "access_control_system", 0,185 , 125,19 UI_TOOLTIP bubble[170]
+	UI_INFIELD{3} "handle_system", 0,115 , 125,19 UI_TOOLTIP bubble[80]
+	UI_INFIELD{3} "grip_system", 0,225 , 125,19 UI_TOOLTIP bubble[85]
+	UI_STYLE 1,2
+	UI_OUTFIELD babel[77], 4,18 , 102,12, 0+0
+	UI_OUTFIELD babel[78], 4,102 , 102,12, 0+0
+	UI_OUTFIELD babel[72], 4,137 , 102,12, 0+0
+	UI_OUTFIELD babel[138], 4,172 , 102,12, 0+0
+	UI_OUTFIELD babel[73], 4,212 , 102,12, 0+0
+	UI_OUTFIELD babel[79], 323,18 , 102,12, 0+0
+	UI_OUTFIELD babel[76], 323,53 , 102,12, 0+0
+	UI_OUTFIELD babel[75], 323,112 , 102,12, 0+0
+	UI_OUTFIELD babel[74], 323,212 , 102,12, 0+0
+	UI_STYLE 0,0
+	RETURN
+! ------------------------------------------------------------- BASIC DIMENSIONS 5+ / HAUPTABMESSUNGEN 5+ [ 2000 ]
+	2000:   ! #### LoD>3 - Abmessungen
+	UIpage = UIpage + 1
+	UI_PAGE UIpage, UIpage_masterparent, babel[86], "dk_title_dimensions.png"
+	GOSUB "DYNVALUES_basic_dimension"   !»» Titel + Bitmaps für Gesamtabmessung bestimmen
+	UI_SEPARATOR 273,224, 445,224
+	UI_SEPARATOR 265,19, 265,267
+	GOSUB "checkUsableClearance"
+	GOSUB 9900
+	GOSUB "SELECT_gs_retain_nominal_sizes"
+	UI_INFIELD{3} "gs_retain_nominal_sizes", 0,18 , 26,24, 6, 70, 2, 1, 20, 20, 20, 20, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP txt
+	UI_STYLE 1,0
+	UI_OUTFIELD babel[108], 30,31 , 102,14, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 1,1
+	UI_OUTFIELD babel[105], 134,31 , 45,14, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,1
+	UI_OUTFIELD babel[106], 201,31 , 43,14, 2+0 UI_TOOLTIP bubble[99]
+	UI_STYLE 0,0
+	IF gs_nominal_size = 1 THEN UI_STYLE 0,1
+		UI_RADIOBUTTON{2} "gs_nominal_size", 1, babel[95], 0,53 , 132,18 UI_TOOLTIP bubble[98]
+	UI_INFIELD{3} "ac_wallhole_width", 134,53 , 60,19 UI_TOOLTIP bubble[96]
+	UI_INFIELD{3} "ac_wallhole_height", 200,53 , 60,19 UI_TOOLTIP bubble[97]
+	UI_STYLE 0,0
+	IF gs_nominal_size = 2 THEN UI_STYLE 0,1
+		UI_RADIOBUTTON{2} "gs_nominal_size", 2, babel[96], 0,82 , 132,18 UI_TOOLTIP bubble[89]
+	UI_INFIELD{3} "ac_baurichtmass_width", 134,80 , 60,19 UI_TOOLTIP bubble[129]
+	UI_INFIELD{3} "ac_baurichtmass_height", 200,80 , 60,19 UI_TOOLTIP bubble[130]
+	UI_STYLE 0,0
+	IF gs_nominal_size = 8 THEN UI_STYLE 0,1
+		UI_RADIOBUTTON{2} "gs_nominal_size", 8, babel[97], 0,107 , 136,18 UI_TOOLTIP bubble[93]
+	UI_INFIELD{3} "ac_unit_width", 134,107 , 60,19 UI_TOOLTIP bubble[94]
+	UI_INFIELD{3} "ac_unit_height", 200,107 , 60,19 UI_TOOLTIP bubble[95]
+	UI_STYLE 0,0
+	twosidefacing = (dk_frametype = "UZ" OR dk_frametype = "FB")
+	UI_OUTFIELD babel[94], 16,131 , 91,28, 0+0 UI_TOOLTIP "Bekleidungsaußenmaß (ZFM + Spiegelbreiten)"
+	IF NOT(twosidefacing) THEN
+		UI_INFIELD{3} "bs_OuterFrame_width", 134,136 , 60,19 UI_TOOLTIP bubble[131]
+		
+		UI_INFIELD{3} "bs_OuterFrame_height", 200,136 , 60,19 UI_TOOLTIP bubble[132]
+		ENDIF
+	IF twosidefacing THEN
+		UI_STYLE 1,2
+		UI_OUTFIELD babel[103], 105,131 , 25,14, 1+0
+		
+		UI_OUTFIELD babel[104], 105,146 , 25,14, 1+0
+		UI_STYLE 0,0
+		UI_OUTFIELD str(format, bs_OuterFrame_width) + "m", 138,131 , 47,14, 0+0 UI_TOOLTIP "Bekleidungs-/Zargenaußenmaß Breite Bandseite"
+		UI_OUTFIELD str(format, bs_OuterFrame_height) + "m", 204,131 , 47,14, 0+0 UI_TOOLTIP "Bekleidungs-/Zargenaußenmaß Höhe Bandseite"
+		UI_OUTFIELD str(format, bs_OuterFrame_width2) + "m", 138,146 , 47,14, 0+0 UI_TOOLTIP "Bekleidungs-/Zargenaußenmaß Breite Bandgegenseite"
+		UI_OUTFIELD str(format, bs_OuterFrame_height2) + "m", 204,146 , 47,14, 0+0 UI_TOOLTIP "Bekleidungs-/Zargenaußenmaß Höhe Bandgegenseite"
+		ENDIF
+	IF gs_nominal_size =16 THEN UI_STYLE 0,1
+		UI_RADIOBUTTON{2} "gs_nominal_size", 16, babel[98], 0,165 , 132,18 UI_TOOLTIP bubble[90]
+	UI_INFIELD{3} "ac_egress_width", 134,165 , 60,19 UI_TOOLTIP bubble[137]
+	UI_INFIELD{3} "ac_egress_height", 200,165 , 60,19 UI_TOOLTIP bubble[138]
+	UI_STYLE 0,0
+	IF gs_nominal_size = 32 THEN UI_STYLE 0,1
+		UI_RADIOBUTTON{2} "gs_nominal_size", 32, babel[99], 0,192 , 132,18 UI_TOOLTIP bubble[93]
+	UI_INFIELD{3} "bs_FrameRebate_width", 134,192 , 60,19 UI_TOOLTIP bubble[108]
+	UI_INFIELD{3} "bs_FrameRebate_height", 200,192 , 60,19 UI_TOOLTIP bubble[109]
+	UI_STYLE 0,0
+	IF gs_nominal_size = 64 THEN
+		UI_STYLE 0,1
+		ENDIF
+	IF bs_door_leafs > 0 THEN
+		UI_RADIOBUTTON{2} "gs_nominal_size", 64, babel[100], 0,233 , 132,18 UI_TOOLTIP bubble[92]
+		ENDIF
+	IF bs_door_leafs = 2 THEN
+		UI_STYLE 1,2
+		UI_OUTFIELD babel[101], 70,219 , 60,14, 1+0
+		UI_STYLE 0,0
+		UI_INFIELD{3} "ac_leaf_width", 134,219 , 60,19 UI_TOOLTIP bubble[104]
+		UI_INFIELD{3} "gs_SecondLeaf_w", 134,246 , 60,19 UI_TOOLTIP bubble[105]
+		UI_STYLE 1,2
+		UI_OUTFIELD babel[102], 70,251 , 60,14, 1+0
+		UI_STYLE 0,0
+		ENDIF
+	IF bs_door_leafs = 1 THEN UI_INFIELD{3} "ac_leaf_width", 134,235 , 60,19 UI_TOOLTIP bubble[102]
+	IF bs_door_leafs > 0 THEN
+		UI_INFIELD{3} "ac_leaf_height", 200,233 , 60,19 UI_TOOLTIP bubble[103]
+		ENDIF
+	UI_STYLE 0,0
+	GOSUB "initialize"
+	GOSUB "calcUsableClearance"
+	GOSUB "explainUsableClearance"
+	UI_OUTFIELD babel[107], 336,231 , 108,14, 2+0 UI_TOOLTIP txt
+	IF bs_door_leafs > 0 THEN UI_OUTFIELD str(format, bs_UsableClearance) + "m x " + str(format, bs_UsableHeight) + "m", 336,248 , 108,14, 2+0 UI_TOOLTIP txt
+	IF bs_door_leafs > 0 THEN
+		GOSUB "SELECT_dk_UCrelation"
+		UI_INFIELD{3} "dk_UCrelation", 273,228 , 61,37, 2, 62, 6, 1, 50, 32, 50, 32, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[134]
+		ENDIF
+	UI_STYLE 1,0
+	UI_OUTFIELD babel[109], 286,200 , 76,14, 1+0
+	UI_STYLE 0,0
+	GOSUB "VALUES_dk_tolerance"
+	UI_INFIELD{3} "dk_tolerance", 365,194 , 32,24, 2, 4, 3, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[133]   !»» "dk_tolerance 54x18.png"
+	UI_INFIELD{3} "gs_ui_sub_tabpage", 314,47 , 102,19 UI_TOOLTIP bubble[135]
+	IF gs_ui_sub_tabpage THEN GOSUB "dimensionV" ELSE GOSUB "dimensionH"
+	RETURN
+	"dimensionH":
+	IF dk_tolerance > 0 THEN UI_INFIELD{3} "gs_tolerance_right", 272,73 , 40,19 UI_TOOLTIP bubble[142]
+	IF dk_tolerance > 0 THEN UI_INFIELD{3} "gs_tolerance_left", 404,73 , 40,19 UI_TOOLTIP bubble[140]
+	UI_STYLE 1,0
+	UI_OUTFIELD "(*)", 385,76 , 18,12, 1+0
+	UI_STYLE 0,0
+	UI_STYLE 1,0
+	UI_OUTFIELD "(*)", 313,76 , 18,12, 0+0
+	UI_STYLE 0,0
+	IF dk_tolerance = 0 THEN UI_OUTFIELD "0,00", 271,79 , 42,12, 2+0
+	IF dk_tolerance = 0 THEN UI_OUTFIELD "0,00", 403,79 , 42,12, 2+0
+	UI_PICT ui_pict_AbmessungH, 271,92 , 173,94, 3 UI_TOOLTIP bubble[119]
+	RETURN
+	"dimensionV":
+	UI_STYLE 1,0
+	UI_OUTFIELD "(*)", 292,81 , 18,12, 2+0
+	UI_STYLE 0,0
+	IF dk_tolerance = 0 THEN UI_OUTFIELD "0,00", 270,97 , 42,12, 2+0
+	IF dk_tolerance > 0 THEN UI_INFIELD{3} "gs_tolerance_upper", 271,94 , 40,19 UI_TOOLTIP bubble[141]
+	UI_PICT ui_pict_AbmessungV, 314,76 , 90,98, 1 UI_TOOLTIP bubble[123]
+	UI_PICT ui_pict_AbmessungVU, 273,174 , 170,12, 1 UI_TOOLTIP bubble[123]
+	RETURN
+! ------------------------------------------------------------- BASIC DIMENSIONS 4- / HAUPTABMESSUNGEN 4- [ 2100 ]
+	2100:   ! #### LoD<4  Abmessungen
+	UIpage = UIpage + 1
+	UI_PAGE UIpage, UIpage_masterparent, babel[86], "dk_title_dimensions.png"
+	GOSUB "DYNVALUES_basic_dimension"   !»» Titel + Bitmaps für Gesamtabmessung bestimmen
+	UI_SEPARATOR 0,136, 445,136
+	UI_SEPARATOR 246,141, 246,265
+	GOSUB "checkUsableClearance"
+	GOSUB 9900
+	UI_PICT ui_pict_AbmessungH, 29,172 , 173,94, 3 UI_TOOLTIP bubble[119]
+	UI_PICT ui_pict_AbmessungV, 314,150 , 90,98, 1 UI_TOOLTIP bubble[123]
+	UI_PICT ui_pict_AbmessungVU, 273,248 , 170,12, 1 UI_TOOLTIP bubble[123]
+	UI_STYLE 1,0
+	UI_OUTFIELD babel[108], 58,25 , 107,11, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 1,0
+	UI_OUTFIELD babel[110], 166,140 , 45,12, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,1
+	UI_OUTFIELD babel[105], 215,25 , 50,11, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,1
+	UI_OUTFIELD babel[106], 314,25 , 50,11, 2+0 UI_TOOLTIP bubble[99]
+	UI_STYLE 0,0
+	UI_STYLE 1,0
+	UI_OUTFIELD babel[110], 11,140 , 45,12, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,0
+	UI_OUTFIELD babel[110], 263,140 , 45,12, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,2
+	UI_OUTFIELD babel[111], 180,124 , 223,12, 2+0
+	UI_STYLE 0,0
+	IF gs_nominal_size = 1 THEN UI_STYLE 0,1
+		UI_RADIOBUTTON{2} "gs_nominal_size", 1, babel[95], 58,39 , 140,18 UI_TOOLTIP bubble[91]
+	UI_INFIELD{3} "ac_wallhole_width", 215,39 , 70,19 UI_TOOLTIP bubble[99]
+	UI_INFIELD{3} "ac_wallhole_height", 314,39 , 70,19 UI_TOOLTIP bubble[99]
+	UI_STYLE 0,0
+	IF gs_nominal_size = 16 THEN UI_STYLE 0,1
+		UI_RADIOBUTTON{2} "gs_nominal_size", 16, babel[98], 58,61 , 140,18 UI_TOOLTIP bubble[90]
+	UI_INFIELD{3} "ac_egress_width", 215,61 , 70,19 UI_TOOLTIP bubble[137]
+	UI_INFIELD{3} "ac_egress_height", 314,61 , 70,19 UI_TOOLTIP bubble[138]
+	UI_STYLE 0,0
+	IF gs_nominal_size = 64 THEN
+		UI_STYLE 0,1
+		ENDIF
+	IF bs_door_leafs > 0 THEN
+		UI_RADIOBUTTON{2} "gs_nominal_size", 64, babel[100], 58,93 , 101,18 UI_TOOLTIP bubble[92]
+		ENDIF
+	IF bs_door_leafs = 2 THEN
+		UI_STYLE 1,2
+		UI_OUTFIELD babel[101], 153,85 , 60,14, 1+0
+		UI_STYLE 0,0
+		UI_INFIELD{3} "ac_leaf_width", 215,83 , 70,19 UI_TOOLTIP bubble[104]
+		UI_INFIELD{3} "gs_SecondLeaf_w", 215,103 , 70,19 UI_TOOLTIP bubble[105]
+		UI_STYLE 1,2
+		UI_OUTFIELD babel[102], 153,106 , 60,14, 1+0
+		UI_STYLE 0,0
+		ENDIF
+	IF bs_door_leafs = 1 THEN UI_INFIELD{3} "ac_leaf_width", 215,93 , 70,19 UI_TOOLTIP bubble[102]
+	IF bs_door_leafs > 0 THEN
+		UI_INFIELD{3} "ac_leaf_height", 314,93 , 70,19 UI_TOOLTIP bubble[103]
+		ENDIF
+	UI_STYLE 0,0
+	UI_INFIELD{3} "gs_tolerance_left", 11,153 , 45,19 UI_TOOLTIP bubble[140]
+	UI_INFIELD{3} "gs_tolerance_right", 166,153 , 45,19 UI_TOOLTIP bubble[142]
+	UI_INFIELD{3} "gs_tolerance_upper", 263,153 , 45,19 UI_TOOLTIP bubble[141]
+	GOSUB "SELECT_gs_retain_nominal_sizes"
+	UI_INFIELD{3} "gs_retain_nominal_sizes", 28,19 , 24,24, 6, "dk_transferVAL 40x20.png", 2, 1, 20, 20, 20, 20, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP txt
+	RETURN
+! ------------------------------------------------------------- REPRESENTATION [ 3000 ]
+	3000:   ! #### LOI 1+ - Grundlegende Darstellungseinstellungen
+	UIpage = UIpage + 1
+	UI_PAGE UIpage, UIpage_masterparent, babel[87], "dk_title_representation 18x18.png"
+	GOSUB 9900
+	UI_SEPARATOR 0,137, 445,137
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[114], 0,33 , 165,27, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[113], 0,146 , 165,15, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 1,1
+	UI_OUTFIELD babel[115], 198,31 , 50,12, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,1
+	UI_OUTFIELD babel[117], 249,31 , 52,25, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,1
+	UI_OUTFIELD babel[116], 302,31 , 50,12, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,2
+	IF ef_LoD < 0 THEN
+		UI_OUTFIELD dk_LoDtxt, 156,110 , 221,15, 2+0
+		ENDIF
+	UI_STYLE 0,0
+	GOSUB "SELECT_dk_LOD_2D"
+	UI_INFIELD{3} dk_LOD[1], 206,86 , 40,24, 2, 93, 10, 10, 26, 16, 26, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[114]
+	GOSUB "SELECT_dk_LOD_SA"
+	UI_INFIELD{3} dk_LOD[3], 256,86 , 40,24, 2, 93, 10, 10, 26, 16, 26, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[115]
+	GOSUB "SELECT_dk_LOD_3D"
+	UI_INFIELD{3} dk_LOD[2], 306,86 , 40,24, 2, 93, 10, 10, 26, 16, 26, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[113]
+	UI_STYLE 1,2
+	UI_OUTFIELD babel[112], 209,155 , 146,11, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,2
+	UI_OUTFIELD babel[125], 209,229 , 146,11, 2+0
+	UI_STYLE 0,0
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 142,202 , 32,15, 1
+	UI_PICT "ui_fill_type_flat 20x20.png", 143,172 , 20,20, 1
+	UI_PICT "ui_fill_pen_flat 29x16.png", 227,202 , 29,16, 1
+	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 310,202 , 29,16, 1
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 142,248 , 32,15, 1
+	UI_PICT "ui_list_contLineType_flat 32x15.png", 225,249 , 32,15, 1
+	UI_PICT 67, 214,59 , 21,21, 1 UI_TOOLTIP bubble[116]   !»» "DORMA_LoD_2D 21x21.png"
+	UI_PICT 68, 264,59 , 21,21, 1 UI_TOOLTIP bubble[118]   !»» "DORMA_LoD_SE 21x21.png"
+	UI_PICT 69, 314,59 , 21,21, 1 UI_TOOLTIP bubble[117]   !»» "DORMA_LoD_3D 21x21.png"
+	UI_INFIELD{3} dk_cont_pens[dka_topview_penC2], 175,199 , 50,21 UI_TOOLTIP bubble[146]
+	UI_INFIELD{3} dk_fills[dka_topview_fill], 175,171 , 215,21 UI_TOOLTIP bubble[100]
+	UI_INFIELD{3} dk_fill_pens[dka_topview_penF], 257,199 , 50,21 UI_TOOLTIP bubble[106]
+	UI_INFIELD{3} dk_bkg_pens[dka_topview_penB], 340,199 , 50,21 UI_TOOLTIP bubble[143]
+	UI_INFIELD{3} dk_cont_pens[dka_penInvisible], 175,245 , 50,21 UI_TOOLTIP bubble[145]
+	UI_INFIELD{3} dk_linetype[dka_invisible], 257,245 , 133,21 UI_TOOLTIP bubble[149]
+	RETURN
+! ------------------------------------------------------------- OPENING LINES [ 3100 ]
+	3100:   ! #### Öffnungsflügel
+	UIpage = UIpage + 1
+	UI_PAGE UIpage, UIpage_masterparent, babel[88], "dk_title_opening_lines 18x18.png"
+	GOSUB 9900
+	UI_SEPARATOR 334,26, 334,103
+	UI_SEPARATOR 221,26, 221,173
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[120], 0,50 , 74,15, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 1,1
+	UI_OUTFIELD babel[115], 112,26 , 105,12, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,1
+	UI_OUTFIELD babel[118], 226,26 , 105,12, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,1
+	UI_OUTFIELD babel[116], 339,26 , 105,12, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,1
+	UI_OUTFIELD babel[119], 282,105 , 105,12, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,2
+	UI_OUTFIELD babel[103], 228,125 , 18,12, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,2
+	UI_OUTFIELD babel[104], 228,152 , 18,12, 2+0
+	UI_STYLE 0,0
+	GOSUB "VALUES_dk_opening2D"
+	UI_INFIELD{3} "dk_opening2D", 112,45 , 105,24, 2, 92, 6, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[120]
+	GOSUB "VALUES_dk_openingSA"
+	UI_INFIELD{3} "dk_openingSA", 225,45 , 106,24, 2, 92, 6, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[122]
+	GOSUB "VALUES_dk_opening3D"
+	UI_INFIELD{3} "dk_opening3D", 338,45 , 106,24, 2, 92, 6, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[121]
+	UI_PICT "ui_pen_flat 23x17.png", 85,78 , 23,17, 1
+	UI_PICT "ui_angle 20x17.png", 88,149 , 20,17, 1
+	UI_PICT "ui_list_contLineType_flat 32x15.png", 76,124 , 32,15, 1
+	UI_INFIELD{3} dk_cont_pens[dka_opline2D], 112,76 , 105,21 UI_TOOLTIP bubble[152]
+	UI_INFIELD{3} dk_cont_pens[dka_oplineSA], 225,76 , 106,21 UI_TOOLTIP bubble[153]
+	UI_INFIELD{3} dk_cont_pens[dka_opline3D], 338,76 , 106,21 UI_TOOLTIP bubble[154]
+	UI_INFIELD{3} "gs_open_2D", 113,148 , 105,19 UI_TOOLTIP bubble[158]
+	UI_INFIELD{3} "or_swingLineType", 112,121 , 72,21 UI_TOOLTIP bubble[150]
+	GOSUB "VALUES_dk_openingLineSymbol"
+	UI_INFIELD{3} "dk_openingLineSymbol", 188,121 , 29,21, 2, 71, 6, 1, 15, 15, 15, 15, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[125]
+	UI_INFIELD{3} "dk_openLineType_BS", 254,122 , 190,19 UI_TOOLTIP bubble[156]
+	UI_INFIELD{3} "dk_openLineType_BGS", 254,148 , 190,19 UI_TOOLTIP bubble[155]
+	UI_STYLE 1,2
+	UI_OUTFIELD babel[101], 0,109 , 58,12, 0+0
+	UI_STYLE 0,0
+	IF bs_door_leafs > 1 THEN
+		UI_SEPARATOR 221,172, 221,243
+		UI_STYLE 1,2
+		UI_OUTFIELD babel[102], 0,179 , 58,12, 0+0
+		UI_STYLE 0,0
+		UI_PICT "ui_angle 20x17.png", 88,219 , 20,17, 1
+		UI_PICT "ui_list_contLineType_flat 32x15.png", 76,194 , 32,15, 1
+		UI_INFIELD{3} "gs_open_2D_s", 113,218 , 105,19 UI_TOOLTIP bubble[159]
+		UI_INFIELD{3} "or_swingLineType2", 112,191 , 72,21 UI_TOOLTIP bubble[151]
+		GOSUB "VALUES_dk_openingLineSymbol2"
+		UI_INFIELD{3} "dk_openingLineSymbol2", 188,191 , 29,21, 2, 71, 6, 1, 15, 15, 15, 15, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[125]
+		UI_INFIELD{3} "dk_openLineType_SF", 226,192 , 218,19 UI_TOOLTIP bubble[157]
+		ENDIF
+	txt = "automatische Einstellungen und Attribute über Modelldarstellungen, Abschnitt 'Weitere Einstellungen der Bibliothekselemente (ARCHICAD Bibliothek)'"
+	IF dk_openingSA = 4 OR dk_opening3D = 4 THEN
+		UI_STYLE 1,2
+		UI_OUTFIELD txt, 113,241 , 331,22, 0+0
+		UI_STYLE 0,0
+		ENDIF
+	RETURN
+! ------------------------------------------------------------- ENVIRONMENT [ 3200 ]
+	3200:   ! #### Wandöffnung
+	UIpage = UIpage + 1
+	UI_PAGE UIpage, UIpage_masterparent, babel[89], "uiTab_DWWallContour_flat 18x18.png"
+	GOSUB 9900
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[123], 0,22 , 107,15, 0+0
+	UI_STYLE 0,0
+	UI_INFIELD{3} "dk_wallhole_control", 138,51 , 35,35, 6, 74, 2, 1, 25, 25, 25, 25, 2,"keine Öffnung",0, 1,"wie Rohbauöffnung",1 UI_TOOLTIP bubble[111]
+	UI_INFIELD{3} "dk_wallhole_control", 103,51 , 35,35, 6, 73, 2, 1, 25, 10, 25, 10, 2,"keine Öffnung",0, 1,"wie Rohbauöffnung",1 UI_TOOLTIP bubble[111]
+	UI_STYLE 0,2
+	UI_OUTFIELD babel[127], 0,53 , 99,32, 0+0
+	UI_STYLE 0,0
+	IF dk_wallhole_control = 0 THEN
+		UI_STYLE 0,2
+		UI_OUTFIELD uiTXT[40], 24,108 , 400,15, 2+0
+		UI_OUTFIELD uiTXT[41], 24,138 , 400,48, 2+0
+		UI_OUTFIELD uiTXT[42], 24,193 , 400,36, 2+0
+		UI_STYLE 0,0
+		RETURN
+		ENDIF
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[121], 0,125 , 108,16, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[122], 0,181 , 93,16, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 1,2
+	UI_OUTFIELD babel[126], 26,162 , 78,11, 1+4
+	UI_OUTFIELD babel[128], 26,237 , 78,11, 1+4
+	UI_STYLE 0,0
+	GOSUB "VALUES_gs_wallcontour_id"
+	UI_INFIELD{3} "gs_wallcontour_id", 230,123 , 214,20, 4, 77, 4, 1, 25, 10, 25, 10, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[124]
+	UI_INFIELD{3} "dk_wallcontour_unique", 122,119 , 27,27, 6, 72, 2, 1, 18, 18, 18, 18, 2,"Durgehende Linie",1, 1,"Wandkontur wie Wandende",0 UI_TOOLTIP bubble[110]
+	IF dk_wallcontour_unique THEN
+		UI_PICT "ui_list_contourPen_flat 32x15.png", 153,125 , 32,15, 1
+		
+		UI_INFIELD{3} dk_cont_pens[dka_wallhole_side2D], 186,122 , 31,21 UI_TOOLTIP bubble[147]
+		ENDIF
+	UI_STYLE 1,2
+	UI_OUTFIELD "100", 118,162 , 31,11, 2+0
+	UI_OUTFIELD "200", 175,162 , 31,11, 2+0
+	UI_OUTFIELD "300", 232,162 , 31,11, 2+0
+	UI_OUTFIELD "350", 289,162 , 31,11, 2+0
+	UI_OUTFIELD "400", 346,162 , 31,11, 2+0
+	UI_OUTFIELD "500", 403,162 , 31,11, 2+0
+	UI_STYLE 0,0
+	GOSUB "VALUES_dk_lintelcontour_id"
+	UI_INFIELD{3} dk_lintelcontour_id[1], 107,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
+	UI_INFIELD{3} dk_lintelcontour_id[2], 164,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
+	UI_INFIELD{3} dk_lintelcontour_id[3], 221,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
+	UI_INFIELD{3} dk_lintelcontour_id[4], 278,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
+	UI_INFIELD{3} dk_lintelcontour_id[5], 335,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
+	UI_INFIELD{3} dk_lintelcontour_id[6], 392,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
+	txt = STRSUB("100200300350400500",1+3*(dk_wallcontourstyle_LoD-2),3)
+	UI_INFIELD{3} dk_cont_pens[dka_wallhole_lintel2D1], 142,233 , 31,21 UI_TOOLTIP "Konturstift Sturz-/Wanöffnungslinien (LoD 100-"+txt+")"
+	UI_INFIELD{3} dk_linetype[dka_wallhole_lintelBS1], 221,222 , 52,21 UI_TOOLTIP "Linientyp Sturz-/Wandöffnungslinie Bandseite (LoD 100-" + txt+")"
+	UI_INFIELD{3} dk_linetype[dka_wallhole_lintelBGS1], 221,245 , 52,21 UI_TOOLTIP "Linientyp Sturz-/Wandöffnungslinie Bandgegenseite (LoD 100-" + txt+")"
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 106,236 , 32,15, 1
+	UI_PICT "ui_list_contLineType_flat 32x15.png", 185,236 , 32,15, 1
+	txt = STRSUB("100200300350400500",1+3*(dk_wallcontourstyle_LoD-1),3)
+	UI_INFIELD{3} dk_cont_pens[dka_wallhole_lintel2D2], 313,233 , 31,21 UI_TOOLTIP "Konturstift Sturz-/Wanöffnungslinien (LoD "+txt+"-500)"
+	UI_INFIELD{3} dk_linetype[dka_wallhole_lintelBS2], 392,222 , 52,21 UI_TOOLTIP "Linientyp Sturz-/Wandöffnungslinie Bandseite (LoD "+txt+"-500)"
+	UI_INFIELD{3} dk_linetype[dka_wallhole_lintelBGS2], 392,245 , 52,21 UI_TOOLTIP "Linientyp Sturz-/Wandöffnungslinie Bandgegenseite (LoD "+txt+"-500)"
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 277,236 , 32,15, 1
+	UI_PICT "ui_list_contLineType_flat 32x15.png", 356,236 , 32,15, 1
+	txt = "Sturzliniendarstellung: Grenze des Stils (1 oder 2)"
+	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 145,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=2),"-",dk_wallcontourstyle_LoD, 1,"- 200 -",2 UI_TOOLTIP txt
+	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 202,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=3),"-",dk_wallcontourstyle_LoD, 1,"- 300 -",3 UI_TOOLTIP txt
+	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 259,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=4),"-",dk_wallcontourstyle_LoD, 1,"- 350 -",4 UI_TOOLTIP txt
+	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 316,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=5),"-",dk_wallcontourstyle_LoD, 1,"- 400 -",5 UI_TOOLTIP txt
+	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 373,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=6),"-",dk_wallcontourstyle_LoD, 1,"- 400 -",6 UI_TOOLTIP txt
+	UI_PICT 65, 271,59 , 11,9, 1
+	IF iHoleUnderThreshold=1 THEN UI_PICT 66, 390,64 , 59,25, 1
+	GOSUB "VALUES_iHoleUnderThreshold"
+	UI_INFIELD{3} "iHoleUnderThreshold", 282,23 , 108,76, 2, 64, 4, 1, 94, 70, 94, 70, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[107]
+	UI_INFIELD{3} "gapHeightUnderPanel", 207,54 , 62,19 UI_TOOLTIP bubble[101]
+	IF iHoleUnderThreshold=3 THEN UI_INFIELD{3} "thresholdBottomOversize", 400,63 , 44,19 UI_TOOLTIP bubble[139]
+	UI_SEPARATOR 0,107, 445,107
+	UI_SEPARATOR 0,157, 445,157
+	UI_SEPARATOR 275,222, 275,267
+	RETURN
+! ------------------------------------------------------------- MINIMAL SPACE [ 3300 ]
+	3300:   ! #### Bewegungsflächen
+	UIpage = UIpage + 1
+	UI_PAGE UIpage, UIpage_masterparent, babel[90], "dk_title_space 18x18.png"
+	GOSUB 9900
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[124], 0,28 , 113,15, 0+0
+	UI_STYLE 0,0
+	GOSUB "VALUES_msType"
+	UI_INFIELD{3} "msType", 0,45 , 141,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[136]
+	IF NOT(msType) THEN RETURN
+	IF BITTEST(msType,1) THEN 3500
+	IF bs_door_leafs = 2 THEN 3400
+	IF ac_OpeningSide = "L" THEN UI_PICT 79, 210,50 , 55,186, 1
+	IF ac_OpeningSide = "R" THEN UI_PICT 78, 210,50 , 55,186, 1
+	UI_PICT "minSpace_top_smallL 51x95.tiff", 159,50 , 51,95, 1
+	UI_PICT "minSpace_top_smallR 51x95.tiff", 265,50 , 51,95, 1
+	UI_PICT "minSpace_arrow_largeV 13x83.tiff", 316,62 , 13,83, 1
+	UI_PICT "minSpace_arrow_middleV 11x61.tiff", 316,162 , 11,61, 1
+	UI_PICT "minSpace_arrow_smallH 20x13.tiff", 190,223 , 20,13, 1
+	UI_PICT "minSpace_arrow_tinyH 8x13.tiff", 265,223 , 8,13, 1
+	IF NOT(gs_sidelight_right) THEN UI_PICT "minSpace_middleL 51x78.tiff", 159,145 , 51,78, 1
+	IF gs_sidelight_right THEN UI_PICT "minSpace_middleL_side 51x78.tiff", 159,145 , 51,78, 1
+	IF NOT(gs_sidelight_left) THEN UI_PICT "minSpace_middleR 51x78.tiff", 265,145 , 51,78, 1
+	IF gs_sidelight_left THEN UI_PICT "minSpace_middleR_side 51x78.tiff", 265,145 , 51,78, 1
+	IF ac_OpeningSide = "L" THEN
+		UI_INFIELD{3} "msOpeningSideWidth1", 168,28 , 65,19 UI_TOOLTIP bubble[167]
+		UI_INFIELD{3} "msOpeningSideWidth2", 259,28 , 65,19 UI_TOOLTIP bubble[165]
+		UI_INFIELD{3} "msOppositeSideWidth1", 168,239 , 65,19 UI_TOOLTIP bubble[162]
+		UI_INFIELD{3} "msOppositeSideWidth2", 259,239 , 65,19 UI_TOOLTIP bubble[160]
+		ENDIF
+	IF ac_OpeningSide = "R" THEN
+		UI_INFIELD{3} "msOpeningSideWidth2", 168,28 , 65,19 UI_TOOLTIP bubble[165]
+		UI_INFIELD{3} "msOpeningSideWidth1", 259,28 , 65,19 UI_TOOLTIP bubble[167]
+		UI_INFIELD{3} "msOppositeSideWidth2", 168,239 , 65,19 UI_TOOLTIP bubble[160]
+		UI_INFIELD{3} "msOppositeSideWidth1", 259,239 , 65,19 UI_TOOLTIP bubble[162]
+		ENDIF
+	UI_INFIELD{3} "ms_openingSDepth", 330,93 , 65,19 UI_TOOLTIP bubble[169]
+	UI_INFIELD{3} "ms_oppositeSDepth", 330,181 , 65,19 UI_TOOLTIP bubble[164]
+	RETURN
+! ------------------------------------------------------------- MINIMAL SPACE [ 3400 ]
+	3400:   ! #### Bewegungsflächen Doppelflügel
+	IF ac_OpeningSide = "L" THEN UI_PICT 81, 196,50 , 103,186, 1
+	IF ac_OpeningSide = "R" THEN UI_PICT 80, 196,50 , 103,186, 1
+	UI_PICT "minSpace_top_smallL 51x95.tiff", 145,50 , 51,95, 1
+	UI_PICT "minSpace_top_smallR 51x95.tiff", 299,50 , 51,95, 1
+	UI_PICT "minSpace_arrow_largeV 13x83.tiff", 350,62 , 13,83, 1
+	UI_PICT "minSpace_arrow_middleV 11x61.tiff", 350,162 , 11,61, 1
+	UI_PICT "minSpace_arrow_smallH 20x13.tiff", 176,223 , 20,13, 1
+	UI_PICT "minSpace_arrow_tinyH 8x13.tiff", 299,223 , 8,13, 1
+	IF NOT(gs_sidelight_right) THEN UI_PICT "minSpace_middleL 51x78.tiff", 145,145 , 51,78, 1
+	IF gs_sidelight_right THEN UI_PICT "minSpace_middleL_side 51x78.tiff", 145,145 , 51,78, 1
+	IF NOT(gs_sidelight_left) THEN UI_PICT "minSpace_middleR 51x78.tiff", 299,145 , 51,78, 1
+	IF gs_sidelight_left THEN UI_PICT "minSpace_middleR_side 51x78.tiff", 299,145 , 51,78, 1
+	IF ac_OpeningSide = "L" THEN
+		UI_INFIELD{3} "msOpeningSideWidth1", 154,28 , 65,19 UI_TOOLTIP bubble[168]
+		UI_INFIELD{3} "msOpeningSideWidth2", 293,28 , 65,19 UI_TOOLTIP bubble[166]
+		UI_INFIELD{3} "msOppositeSideWidth1", 154,239 , 65,19 UI_TOOLTIP bubble[163]
+		UI_INFIELD{3} "msOppositeSideWidth2", 293,239 , 65,19 UI_TOOLTIP bubble[161]
+		ENDIF
+	IF ac_OpeningSide = "R" THEN
+		UI_INFIELD{3} "msOpeningSideWidth2", 154,28 , 65,19 UI_TOOLTIP bubble[166]
+		UI_INFIELD{3} "msOpeningSideWidth1", 293,28 , 65,19 UI_TOOLTIP bubble[168]
+		UI_INFIELD{3} "msOppositeSideWidth2", 154,239 , 65,19 UI_TOOLTIP bubble[161]
+		UI_INFIELD{3} "msOppositeSideWidth1", 293,239 , 65,19 UI_TOOLTIP bubble[163]
+		ENDIF
+	UI_INFIELD{3} "ms_openingSDepth", 364,93 , 65,19 UI_TOOLTIP bubble[169]
+	UI_INFIELD{3} "ms_oppositeSDepth", 364,181 , 65,19 UI_TOOLTIP bubble[164]
+	RETURN
+! ------------------------------------------------------------- USABLE CLEARANCE [ 3500 ]
+	3500:   ! #### Lichter Durchgang
+	IF bs_door_leafs = 1 THEN
+		IF ac_OpeningSide = "R" THEN UI_PICT 87, 205,166 , 55,78, 1   !»» "usableClearance_right 55x78.png"
+		IF ac_OpeningSide = "L" THEN UI_PICT 86, 205,166 , 55,78, 1   !»» "usableClearance_left 55x78.png"
+		IF NOT(gs_sidelight_right) THEN UI_PICT 89, 154,222 , 51,18, 1   !»» "usableClearance_wallR 51x18.png"
+		IF gs_sidelight_right THEN UI_PICT 91, 154,222 , 51,18, 1   !»» "usableClearance_sideR 51x18.png"
+		IF gs_sidelight_left THEN UI_PICT 90, 260,222 , 51,18, 1   !»» "usableClearance_sideL 51x18.png"
+		ENDIF
+	IF NOT(gs_sidelight_left) THEN UI_PICT 88, 260,222 , 51,18, 1   !»» "usableClearance_wallL 51x18.png"
+	IF bs_door_leafs = 2 THEN
+		IF BITTEST(dk_UCrelation, 5) THEN
+			IF ac_OpeningSide = "L" THEN UI_PICT 82, 181,166 , 103,78, 1   !»» "usableClearance_double_left1 103x78.png"
+			IF ac_OpeningSide = "R" THEN UI_PICT 83, 181,166 , 103,72, 1   !»» "usableClearance_double_right1 103x78.png"
+			ELSE
+			IF ac_OpeningSide = "L" THEN UI_PICT 84, 181,166 , 103,78, 1   !»» "usableClearance_double_left2 103x78.png"
+			IF ac_OpeningSide = "R" THEN UI_PICT 85, 181,166 , 103,78, 1   !»» "usableClearance_double_right2 103x78.png"
+			ENDIF
+		IF gs_sidelight_right THEN UI_PICT 91, 130,222 , 51,18, 1   !»» "usableClearance_sideR 51x18.png"
+		IF NOT(gs_sidelight_right) THEN UI_PICT 89, 130,222 , 51,18, 1   !»» "usableClearance_wallR 51x18.png"
+		IF gs_sidelight_left THEN UI_PICT 90, 284,222 , 51,18, 1   !»» "usableClearance_sideL 51x18.png"
+		IF NOT(gs_sidelight_left) THEN UI_PICT 88, 284,222 , 51,18, 1   !»» "usableClearance_wallL 51x18.png"
+		ENDIF
+	UI_OUTFIELD babel[107], 178,123 , 108,14, 2+0 UI_TOOLTIP txt
+	IF bs_door_leafs > 0 THEN UI_OUTFIELD str(format, bs_UsableClearance) + "m x " + str(format, bs_UsableHeight) + "m", 178,140 , 108,14, 2+0 UI_TOOLTIP txt
+	IF bs_door_leafs > 0 THEN
+		GOSUB "SELECT_dk_UCrelation"
+		UI_INFIELD{3} "dk_UCrelation", 145,79 , 175,37, 2, 62, 6, 1, 50, 32, 50, 32, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[134]
+		ENDIF
+	RETURN
+! ------------------------------------------------------------- START SCREEN [ 6000 ]
+	9700:   ! #### START SCREEN
+	UIpage = UIpage + 1
+	UI_PAGE UIpage, -1, babel[91], "uiTab_Info.png"
+	UI_STYLE 0,0
+	UI_PICT 1, 305,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 445,15
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[2], 11,39 , 420,15, 2+0
+	UI_STYLE 0,0
+	UI_OUTFIELD babel[129], 0,62 , 444,16, 2+0
+	UI_OUTFIELD babel[16], 0,86 , 444,50, 2+0
+	UI_BUTTON UI_LINK, babel[17], 123,193 , 211,20, 0, "http://www.bim-all-doors.de" UI_TOOLTIP bubble[88]
+	UI_OUTFIELD babel[132], 0,139 , 444,50, 2+0
+	UI_INFIELD{3} "show_start_screen", 358,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"zur Eingabe",0, 1,"zur Eingabe",1 UI_TOOLTIP bubble[144]
+	UI_INFIELD{3} "show_start_screen", 265,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"Kurzinfo",2, 1,"Kurzinfo",1 UI_TOOLTIP bubble[148]
+	RETURN
+! ------------------------------------------------------------- SHORT INFO [ 9800]
+	9800:   ! #### SHORT INFORMATION
+	UIpage = UIpage + 1
+	UI_PAGE UIpage, -1, babel[92], "uiTab_Info.png"
+	UI_STYLE 0,0
+	UI_PICT 1, 305,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 445,15
+	UI_OUTFIELD babel[131], 0,26 , 444,28, 0+0
+	UI_OUTFIELD babel[133], 0,56 , 444,42, 0+0
+	UI_OUTFIELD babel[134], 0,100 , 444,28, 0+0
+	UI_OUTFIELD babel[135], 0,130 , 444,28, 0+0
+	UI_OUTFIELD babel[136], 0,160 , 444,42, 0+0
+	UI_OUTFIELD babel[137], 0,204 , 444,28, 0+0
+	UI_INFIELD{3} "show_start_screen", 358,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"zur Eingabe",0, 1,"zur Eingabe",2 UI_TOOLTIP bubble[144]
+	UI_PICT 6, 410,87 , 34,7, 1
+	UI_PICT "dk_attention 16x16.png", 428,214 , 16,16, 1
+	RETURN
+! ------------------------------------------------------------- TITLE [ 9900 ]
+	9900:   ! #### TITEL on all pages
+	IF develop THEN GOSUB "devshow" ELSE GOSUB "allshow"
+	UI_STYLE 0,0
+	UI_PICT 2, 305,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 445,15
+	IF errorI>0 THEN
+		txt = ""
+		FOR i=1 TO errorI
+		txt = txt + errorQ[i]
+		NEXT i
+		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
+		ENDIF
+	RETURN
+! ------------------------------------------------------------- INFOTITLE [ 9950 ]
+	9950:   ! #### TITEL on info page
+	IF develop THEN GOSUB "devshow" ELSE GOSUB "allshow"
+	UI_PICT 2, 280,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 420,15
+	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 422,-5 , 22,22, 0, "http://www.bim-all-doors.de" UI_TOOLTIP "Homepage »BIM-all-doors«"
+	RETURN
+
+
+! ------------------------------------------------------------- Plausibilitätschecks
+"checkUsableClearance":
+
+	IF  ((bs_UsableClearance - bs_quality_UsableClearance) < -tlr AND bs_door_leafs > 0 AND BITTEST(dk_UCrelation, 5)) OR \
+		((bs_UsableClearance - bs_quality_TotalClearance)  < -tlr AND bs_door_leafs = 2 AND NOT(BITTEST(dk_UCrelation, 5))) OR \
+		((ac_egress_width - bs_quality_TotalClearance)     < -tlr AND bs_door_leafs = 0) THEN
+		errorI = errorI+1 : errorQ[errorI] = "Erforderliche lichte Durchgangsbreite zu gering." : errorT[errorI] = "... allgemeiner Fehler"
+		ENDIF
+
+	IF  ((bs_UsableHeight - bs_quality_UsableHeight)  < -tlr AND bs_door_leafs > 0) OR \
+		((ac_egress_height - bs_quality_UsableHeight) < -tlr AND bs_door_leafs = 0) THEN
+		errorI = errorI+1 : errorQ[errorI] = "Erforderliche lichte Durchgangshöhe zu gering." : errorT[errorI] = "... allgemeiner Fehler"
+		ENDIF
+
+	RETURN
+
+
+! ------------------------------------------------------------- Anzeige LoI
+"devshow":
+	IF develop THEN
+		n = -1 : devY = 20
+		n = n+1 :	UI_INFIELD{3} "gs_frame_thk",		475,n*devY, 50,19 UI_TOOLTIP "gs_frame_thk"
+		n = n+1 :	UI_INFIELD{3} "bs_panel_material",	475,n*devY, 50,19 UI_TOOLTIP "Material (Zarge)"
+		n = n+1 :	UI_INFIELD{3} "bs_frame_material",	475,n*devY, 50,19 UI_TOOLTIP "Material (Türblatt)"
+		ENDIF
+
+"allshow":
+	IF develop THEN
+		UI_SEPARATOR maxX+10,1, maxX+10,maxY
+		UI_SEPARATOR maxX+13,1, maxX+13,maxY
+		n = 0 : devY = 20
+		n = n+1 :	UI_INFIELD{3} "develop",			475,maxY-n*devY, 45,19 UI_TOOLTIP "Entwicklereinstellung"
+					UI_INFIELD{3} "language",			525,maxY-n*devY, 45,19 UI_TOOLTIP "Sprache des UI (language)"
+		n = n+1 :	UI_INFIELD{3} "bs_door_leafs",		475,maxY-n*devY, 45,19 UI_TOOLTIP "Türblätter"
+					UI_INFIELD{3} "ac_OpeningSide",		525,maxY-n*devY, 45,19 UI_TOOLTIP "Anschlagseite (ac_OpeningSide)"
+		n = n+1 :	UI_INFIELD{3} "bs_door_sidelight",	475,maxY-n*devY, 45,19 UI_TOOLTIP "Seitenfelder (bs_door_sidelight)"
+					UI_INFIELD{3} "bs_inner_frame",		525,maxY-n*devY, 45,19 UI_TOOLTIP "bs_inner_frame"
+					UI_OUTFIELD bs_door_sidelight+"|"+strsub("-L",1+gs_sidelight_left,1)+"|"+strsub("-R",1+gs_sidelight_right,1), 575,maxY-n*devY , 60,19 \
+					UI_TOOLTIP "bs_door_sidelight|left|right"
+		ENDIF
+
+	! IF gs_ui_current_page > 1 THEN
+		j = 0
+		IF dk_LoI > 5 THEN
+			j = 5   ! uiBitmap = "dk_UI_LoI-6 34x7.png"
+			txt = uiTXT[3]
+			ELSE
+			IF dk_LoI > 4 THEN
+				j = 6   ! uiBitmap = "dk_UI_LoI-5 34x7.png"
+				txt = uiTXT[4]
+				ELSE
+				IF dk_LoI > 2 THEN
+					j = 7   ! uiBitmap = "dk_UI_LoI-4 34x7.png"
+					txt = uiTXT[5]
+					ELSE
+					j = 8   ! uiBitmap = "dk_UI_LoI-2 34x7.png"
+					txt = uiTXT[6]
+					ENDIF
+				ENDIF
+			ENDIF
+
+		IF j THEN UI_PICT j, 0,3 , 34,7, 1 UI_TOOLTIP txt
+
+		! ENDIF
+
+	RETURN
+
+
+! ------------------------------------------------------------- FRAME [500]
+500:
+
+	CALL frame_macro PARAMETERS ALL dk_frametype = dk_frametype, macro_runtype = 1, RETURNED_PARAMETERS UI_page_type
+	CALL frame_macro PARAMETERS ALL dk_frametype = dk_frametype, macro_runtype = 2, RETURNED_PARAMETERS UI_page_names
+	CALL frame_macro PARAMETERS ALL dk_frametype = dk_frametype, macro_runtype = 4, RETURNED_PARAMETERS UI_page_icons
+
+	ui_seiten = VARDIM1(UI_page_type)    !»» Anzahl der UI-Seiten im Makro
+	UIpage_subparent = UIpage_masterparent  !»» default: dirct under sub-root
+
+	FOR i=1 TO ui_seiten
+
+		IF UI_page_type[i] # 0 THEN
+
+			UIpage = UIpage + 1
+			
+			IF UI_page_type[i] = -2 THEN  !»» direct under root
+				UIpage_parent = -1
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] = -1 THEN  !»» direct under sub-root
+				UIpage_parent = UIpage_masterparent
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] =  1 THEN UIpage_parent = UIpage_subparent
+
+			UI_PAGE UIpage, UIpage_parent, UI_page_names[i], UI_page_icons[i]
+			GOSUB "allshow"
+
+			IF gs_ui_current_page = UIpage THEN
+				CALL frame_macro PARAMETERS ALL,
+					dk_frametype = dk_frametype, 
+					macro_runtype = 128,
+					UIpage_number = i,
+					UIpage = UIpage,
+					UIpage_parent = UIpage_parent,
+					RETURNED_PARAMETERS offsetFrameSurfaceBGS,
+						facingLintelBS, facingLintelBGS,
+						frame2wallSurfaceBS, frame2wallSurfaceBGS
+				ELSE
+				UI_OUTFIELD " ", 424,250, 20,15  !»» Dummy
+				ENDIF
+
+			ENDIF
+
+		NEXT i
+
+	IF gs_ui_current_page > UIpage OR gs_ui_current_page < UIpage - ui_seiten + 1 THEN
+		CALL frame_macro PARAMETERS ALL dk_frametype = dk_frametype, macro_runtype = 512, 
+			RETURNED_PARAMETERS offsetFrameSurfaceBGS,
+				facingLintelBS, facingLintelBGS,
+				frame2wallSurfaceBS, frame2wallSurfaceBGS
+		ENDIF
+
+	RETURN
+
+
+! ------------------------------------------------------------- LEAFS [550]
+550:
+
+	CALL panel_macro PARAMETERS ALL macro_runtype = 1, RETURNED_PARAMETERS UI_page_type
+	CALL panel_macro PARAMETERS ALL macro_runtype = 2, RETURNED_PARAMETERS UI_page_names
+	CALL panel_macro PARAMETERS ALL macro_runtype = 4, RETURNED_PARAMETERS UI_page_icons
+
+	ui_seiten = VARDIM1(UI_page_type)    !»» Anzahl der UI-Seiten im Makro
+	UIpage_subparent = UIpage_masterparent  !»» default: dirct under sub-root
+
+	FOR i=1 TO ui_seiten
+
+		IF UI_page_type[i] # 0 THEN
+
+			UIpage = UIpage + 1
+			
+			IF UI_page_type[i] = -2 THEN  !»» direct under root
+				UIpage_parent = -1
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] = -1 THEN  !»» direct under sub-root
+				UIpage_parent = UIpage_masterparent
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] =  1 THEN UIpage_parent = UIpage_subparent
+
+			UI_PAGE UIpage, UIpage_parent, UI_page_names[i], UI_page_icons[i]
+			GOSUB "allshow"
+
+			IF gs_ui_current_page = UIpage THEN
+				CALL panel_macro PARAMETERS ALL,
+					macro_runtype=128,
+					UIpage_number=i,
+					UIpage=UIpage,
+					UIpage_parent=UIpage_parent
+				ELSE
+				UI_OUTFIELD " ", 424,250, 20,15  !»» Dummy
+				ENDIF
+
+			ENDIF
+
+		NEXT i
+		
+	RETURN
+
+
+! ------------------------------------------------------------- HINGES [600]
+600:
+
+	DIM UI_page_type[] : UI_page_names[1] = "noPages" !»» Vorherige Settings löschen
+	CALL hinge_macro PARAMETERS ALL macro_runtype = 1, RETURNED_PARAMETERS UI_page_type
+	CALL hinge_macro PARAMETERS ALL macro_runtype = 2, RETURNED_PARAMETERS UI_page_names
+	CALL hinge_macro PARAMETERS ALL macro_runtype = 4, RETURNED_PARAMETERS UI_page_icons
+
+	ui_seiten = VARDIM1(UI_page_type) * (UI_page_names[1] # "noPages" & UI_page_names[1] # "" )    !»» Anzahl der UI-Seiten im Makro
+	UIpage_subparent = UIpage_masterparent  !»» default: dirct under sub-root
+
+	FOR i=1 TO ui_seiten
+
+		IF UI_page_type[i] # 0 THEN
+
+			UIpage = UIpage + 1
+			
+			IF UI_page_type[i] = -2 THEN  !»» direct under root
+				UIpage_parent = -1
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] = -1 THEN  !»» direct under sub-root
+				UIpage_parent = UIpage_masterparent
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] =  1 THEN UIpage_parent = UIpage_subparent
+
+			UI_PAGE UIpage, UIpage_parent, UI_page_names[i], UI_page_icons[i]
+			GOSUB "allshow"
+
+			IF gs_ui_current_page = UIpage THEN
+				CALL hinge_macro PARAMETERS ALL,
+					dk_frametype=dk_frametype,
+					macro_runtype=128,
+					UIpage_number=i,
+					UIpage=UIpage,
+					UIpage_parent=UIpage_parent
+				ELSE
+				UI_OUTFIELD " ", 424,250, 20,15  !»» Dummy
+				ENDIF
+
+			ENDIF
+
+		NEXT i
+
+	! Fehlende UI-Seite bei Dormabändern überspringen
+	UIpage = UIpage + ABS(2-ui_seiten)
+
+	RETURN
+
+
+! ------------------------------------------------------------- AUTOMATION [650]
+650:
+
+	DIM UI_page_type[] : UI_page_names[1] = "noPages" !»» Vorherige Settings löschen
+	CALL automation_macro PARAMETERS ALL macro_runtype=1, RETURNED_PARAMETERS UI_page_type
+	CALL automation_macro PARAMETERS ALL macro_runtype=2, RETURNED_PARAMETERS UI_page_names
+	CALL automation_macro PARAMETERS ALL macro_runtype=4, RETURNED_PARAMETERS UI_page_icons
+
+	ui_seiten = VARDIM1(UI_page_type) * (UI_page_names[1] # "noPages" & UI_page_names[1] # "" )    !»» Anzahl der UI-Seiten im Makro
+	UIpage_subparent = UIpage_masterparent  !»» default: dirct under sub-root
+
+	FOR i=1 TO ui_seiten
+
+		IF UI_page_type[i] # 0 THEN
+
+			UIpage = UIpage + 1
+			
+			IF UI_page_type[i] = -2 THEN  !»» direct under root
+				UIpage_parent = -1
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] = -1 THEN  !»» direct under sub-root
+				UIpage_parent = UIpage_masterparent
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] =  1 THEN UIpage_parent = UIpage_subparent
+
+			UI_PAGE UIpage, UIpage_parent, UI_page_names[i], UI_page_icons[i]
+			GOSUB "allshow"
+
+			IF gs_ui_current_page = UIpage THEN
+				CALL automation_macro PARAMETERS ALL,
+					macro_runtype=128,
+					dk_frametype=dk_frametype,
+					HingePanelGap = HingePanelGap,
+					HingeEgressDistance = HingeEgressDistance,
+					offsetHingePanelSurfaceBS  = offsetHingePanelSurfaceBS,
+					offsetFrameSurfaceBGS = offsetFrameSurfaceBGS,
+					facingLintelBS  = facingLintelBS,
+					facingLintelBGS = facingLintelBGS,
+					frame2wallSurfaceBS  = frame2wallSurfaceBS,
+					frame2wallSurfaceBGS = frame2wallSurfaceBGS,
+					UIpage_number=i,
+					UIpage=UIpage,
+					UIpage_parent=UIpage_parent
+				ELSE
+				UI_OUTFIELD " ", 424,250, 20,15  !»» Dummy
+				ENDIF
+
+			ENDIF
+
+		NEXT i
+
+	RETURN
+
+
+! ------------------------------------------------------------- CLOSER [700]
+700:
+
+	DIM UI_page_type[] : UI_page_names[1] = "noPages" !»» Vorherige Settings löschen
+	CALL closer_macro PARAMETERS ALL macro_runtype=1, RETURNED_PARAMETERS UI_page_type
+	CALL closer_macro PARAMETERS ALL macro_runtype=2, RETURNED_PARAMETERS UI_page_names
+	CALL closer_macro PARAMETERS ALL macro_runtype=4, RETURNED_PARAMETERS UI_page_icons
+
+	ui_seiten = VARDIM1(UI_page_type) * (UI_page_names[1] # "noPages" & UI_page_names[1] # "" )    !»» Anzahl der UI-Seiten im Makro
+	UIpage_subparent = UIpage_masterparent  !»» default: dirct under sub-root
+
+	FOR i=1 TO ui_seiten
+
+		IF UI_page_type[i] # 0 THEN
+
+			UIpage = UIpage + 1
+			
+			IF UI_page_type[i] = -2 THEN  !»» direct under root
+				UIpage_parent = -1
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] = -1 THEN  !»» direct under sub-root
+				UIpage_parent = UIpage_masterparent
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] =  1 THEN UIpage_parent = UIpage_subparent
+
+			UI_PAGE UIpage, UIpage_parent, UI_page_names[i], UI_page_icons[i]
+			GOSUB "allshow"
+
+			IF gs_ui_current_page = UIpage THEN
+				GOSUB "initialize"
+				CALL closer_macro PARAMETERS ALL,
+					macro_runtype=128,
+					dk_frametype=dk_frametype,
+					HingePanelGap = HingePanelGap,
+					HingeEgressDistance = HingeEgressDistance,
+					offsetHingePanelSurfaceBS  = offsetHingePanelSurfaceBS,
+					offsetFrameSurfaceBGS = offsetFrameSurfaceBGS,
+					facingLintelBS  = facingLintelBS,
+					facingLintelBGS = facingLintelBGS,
+					frame2wallSurfaceBS  = frame2wallSurfaceBS,
+					frame2wallSurfaceBGS = frame2wallSurfaceBGS,
+					UIpage_number=i,
+					UIpage=UIpage,
+					UIpage_parent=UIpage_parent
+				ELSE
+				UI_OUTFIELD " ", 424,250, 20,15  !»» Dummy
+				ENDIF
+
+			ENDIF
+
+		NEXT i
+
+	RETURN
+
+
+! ------------------------------------------------------------- CASE [750]
+750:
+
+	DIM UI_page_type[] : UI_page_names[1] = "noPages" !»» Vorherige Settings löschen
+	CALL case_macro PARAMETERS ALL macro_runtype=1, RETURNED_PARAMETERS UI_page_type
+	CALL case_macro PARAMETERS ALL macro_runtype=2, RETURNED_PARAMETERS UI_page_names
+	CALL case_macro PARAMETERS ALL macro_runtype=4, RETURNED_PARAMETERS UI_page_icons
+
+	ui_seiten = VARDIM1(UI_page_type) * (UI_page_names[1] # "noPages" & UI_page_names[1] # "" )    !»» Anzahl der UI-Seiten im Makro
+	UIpage_subparent = UIpage_masterparent  !»» default: dirct under sub-root
+
+	FOR i=1 TO ui_seiten
+
+		IF UI_page_type[i] # 0 THEN
+
+			UIpage = UIpage + 1
+			
+			IF UI_page_type[i] = -2 THEN  !»» direct under root
+				UIpage_parent = -1
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] = -1 THEN  !»» direct under sub-root
+				UIpage_parent = UIpage_masterparent
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] =  1 THEN UIpage_parent = UIpage_subparent
+
+			UI_PAGE UIpage, UIpage_parent, UI_page_names[i], UI_page_icons[i]
+			GOSUB "allshow"
+
+			IF gs_ui_current_page = UIpage THEN
+				CALL case_macro PARAMETERS ALL,
+					dk_LOD=100,
+					macro_runtype=128,
+					UIpage_number=i,
+					UIpage=UIpage,
+					UIpage_parent=UIpage_parent
+				ELSE
+				UI_OUTFIELD " ", 424,250, 20,15  !»» Dummy
+				ENDIF
+
+			ENDIF
+
+		NEXT i
+
+	RETURN
+
+
+! ------------------------------------------------------------- ACCESS CONTROL [800]
+800:
+
+	DIM UI_page_type[] : UI_page_names[1] = "noPages" !»» Vorherige Settings löschen
+	CALL access_control_macro PARAMETERS ALL macro_runtype=1 , RETURNED_PARAMETERS UI_page_type
+	CALL access_control_macro PARAMETERS ALL macro_runtype=2 , RETURNED_PARAMETERS UI_page_names
+	CALL access_control_macro PARAMETERS ALL macro_runtype=4 , RETURNED_PARAMETERS UI_page_icons
+
+	ui_seiten = VARDIM1(UI_page_type) * (UI_page_names[1] # "noPages" & UI_page_names[1] # "" )    !»» Anzahl der UI-Seiten im Makro
+	UIpage_subparent = UIpage_masterparent  !»» default: dirct under sub-root
+
+	! ui_seiten=1 : UI_page_names[ui_seiten]="Test" : UI_page_icons[ui_seiten]="" : UI_page_type[ui_seiten]=-2
+
+	FOR i=1 TO ui_seiten
+
+		IF UI_page_type[i] # 0 THEN
+
+			UIpage = UIpage + 1
+			
+			IF UI_page_type[i] = -2 THEN  !»» direct under root
+				UIpage_parent = -1
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] = -1 THEN  !»» direct under sub-root
+				UIpage_parent = UIpage_masterparent
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] =  1 THEN UIpage_parent = UIpage_subparent
+
+			UI_PAGE UIpage, UIpage_parent, UI_page_names[i], UI_page_icons[i]
+			GOSUB "allshow"
+
+			IF gs_ui_current_page = UIpage THEN
+				CALL access_control_macro PARAMETERS ALL,
+					dk_LOD=100,
+					macro_runtype=128,
+					UIpage_number=i,
+					UIpage=UIpage,
+					UIpage_parent=UIpage_parent
+				ELSE
+				UI_OUTFIELD " ", 424,250, 20,15  !»» Dummy
+				ENDIF
+
+			ENDIF
+
+		NEXT i
+
+	RETURN
+
+
+! ------------------------------------------------------------- HANDLES [850]
+850:
+	DIM UI_page_type[] : UI_page_names[1] = "noPages" !»» Vorherige Settings löschen
+	CALL handle_macro PARAMETERS ALL dk_LOD=500, macro_runtype=1, RETURNED_PARAMETERS UI_page_type
+	CALL handle_macro PARAMETERS ALL dk_LOD=500, macro_runtype=2, RETURNED_PARAMETERS UI_page_names
+	CALL handle_macro PARAMETERS ALL dk_LOD=500, macro_runtype=4, RETURNED_PARAMETERS UI_page_icons
+	ui_seiten = VARDIM1(UI_page_type)    !»» Anzahl der UI-Seiten im Makro
+	UIpage_subparent = UIpage_masterparent  !»» default: dirct under sub-root
+
+	FOR i=1 TO ui_seiten
+
+		IF UI_page_type[i] # 0 THEN
+
+			UIpage = UIpage + 1
+			
+			IF UI_page_type[i] = -2 THEN  !»» direct under root
+				UIpage_parent = -1
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] = -1 THEN  !»» direct under sub-root
+				UIpage_parent = UIpage_masterparent
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] =  1 THEN UIpage_parent = UIpage_subparent
+
+			UI_PAGE UIpage, UIpage_parent, UI_page_names[i], UI_page_icons[i]
+			GOSUB "allshow"
+
+			IF gs_ui_current_page = UIpage THEN
+				CALL handle_macro PARAMETERS ALL,
+					dk_LOD=100,
+					macro_runtype=128,
+					UIpage_number=i,
+					UIpage=UIpage,
+					UIpage_parent=UIpage_parent
+				ELSE
+				UI_OUTFIELD " ", 424,250, 20,15  !»» Dummy
+				ENDIF
+
+			ENDIF
+
+		NEXT i
+
+	RETURN
+
+
+! ------------------------------------------------------------- GRIPS [900]
+900:
+
+	DIM UI_page_type[] : UI_page_names[1] = "noPages" !»» Vorherige Settings löschen
+	CALL grip_macro PARAMETERS ALL macro_runtype=1, RETURNED_PARAMETERS UI_page_type
+	CALL grip_macro PARAMETERS ALL macro_runtype=2, RETURNED_PARAMETERS UI_page_names
+	CALL grip_macro PARAMETERS ALL macro_runtype=4, RETURNED_PARAMETERS UI_page_icons
+
+	ui_seiten = VARDIM1(UI_page_type) * (UI_page_names[1] # "noPages" & UI_page_names[1] # "" )    !»» Anzahl der UI-Seiten im Makro
+	UIpage_subparent = UIpage_masterparent  !»» default: dirct under sub-root
+
+	FOR i=1 TO ui_seiten
+
+		IF UI_page_type[i] # 0 THEN
+
+			UIpage = UIpage + 1
+			
+			IF UI_page_type[i] = -2 THEN  !»» direct under root
+				UIpage_parent = -1
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] = -1 THEN  !»» direct under sub-root
+				UIpage_parent = UIpage_masterparent
+				UIpage_subparent = UIpage
+				ENDIF
+			IF UI_page_type[i] =  1 THEN UIpage_parent = UIpage_subparent
+
+			UI_PAGE UIpage, UIpage_parent, UI_page_names[i], UI_page_icons[i]
+			GOSUB "allshow"
+
+			IF gs_ui_current_page = UIpage THEN
+				CALL grip_macro PARAMETERS ALL,
+					dk_LOD=100,
+					macro_runtype=128,
+					UIpage_number=i,
+					UIpage=UIpage,
+					UIpage_parent=UIpage_parent
+				ELSE
+				UI_OUTFIELD " ", 424,250, 20,15  !»» Dummy
+				ENDIF
+
+			ENDIF
+
+		NEXT i
+
+	RETURN
+
+
+! ------------------------------------------------------------- INFOSEITE / WARNUNGEN [999]
+
+999:
+
+	! #### LOI 1+ - Warnmeldungsseite
+
+	errorI = 0
+
+	!»» Fehler aus Hauptobjekt ermitteln
+	GOSUB "checkUsableClearance"
+
+	! Spiegelung der Bandseite erzeugt Fehler in Raumzuordnung. BS/BGS nicht mehr klar zu ermitteln.
+	IF  WIDO_REVEAL_SIDE THEN
+		errorI = errorI+1 : errorQ[errorI] = uiTXT[10] : errorT[errorI] = uiTXT[11]
+		ENDIF
+
+	!»» Fehlermeldungen aus Makros abfragen
+	GOSUB "checkErrorMessages"
+
+	!»» Seite anlegen
+	IF errorI < 1 THEN btmp = "uiTab_Info.png" ELSE btmp = "dk_attention 16x16.png"
+	UIpage = UIpage + 1 : UI_PAGE UIpage, UIpage_masterparent, uiTXT[2], btmp
+
+	GOSUB 9950
+
+	UI_OUTFIELD uiTXT[12], 0,16 , 444,28, 2+0
+
+	IF errorI<1 THEN
+		UI_OUTFIELD uiTXT[13], 0,60 , 444,28, 2+0							
+		ENDIF
+
+	IF errorI<9 THEN
+		s=27 : UI_STYLE 0,0
+		ELSE
+		s=24 : UI_STYLE 1,0
+		ENDIF
+
+	FOR i= 1 TO MIN(errorI,VARDIM1(errorQ))
+		IF STRLEN(errorQ[i])<75 THEN t=s/2 ELSE t=s
+		UI_PICT "dk_attention 16x16.png", 0,48+(i-1)*s, 16,16, 1
+		UI_OUTFIELD errorQ[i], 20,46+(i-1)*s+(s-t)*0.3, 424,t, 0+0  UI_TOOLTIP errorT[i]
+		NEXT i
+	RETURN									
+

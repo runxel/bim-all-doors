@@ -1,0 +1,116 @@
+<AllPictures>
+  <Picture MIME="image/png" path="icon bim-all-doors 150x150.png" SubIdent="0" SectVersion="19" SectionFlags="0"></Picture>
+  <GDLPict MIME="image/png" path="logo bim-all-doors 139x15.png"  SubIdent="1" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="logo bim-all-doors 139x15.png"  SubIdent="2" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_yes_no_na 72x18.png" SubIdent="3" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_tolerance 54x18.png" SubIdent="4" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_UI_LoI-6 34x7.png" SubIdent="5" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_UI_LoI-5 34x7.png" SubIdent="6" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_UI_LoI-4 34x7.png" SubIdent="7" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_UI_LoI-2 34x7.png" SubIdent="8" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="ECD-OL-AL.png"  SubIdent="9" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-OL-HO.png"  SubIdent="10" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-OL-KU.png"  SubIdent="11" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-OL-ST.png"  SubIdent="12" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="ECD-OB-AL.png"  SubIdent="13" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-OB-HO.png"  SubIdent="14" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-OB-KU.png"  SubIdent="15" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-OB-ST.png"  SubIdent="16" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-OB-GL.png"  SubIdent="17" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="ECD-ST-AL.png"  SubIdent="18" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-ST-HO.png"  SubIdent="19" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-ST-KU.png"  SubIdent="20" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-ST-ST.png"  SubIdent="21" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="ECD-SP-AL.png"  SubIdent="22" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-SP-HO.png"  SubIdent="23" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-SP-KU.png"  SubIdent="24" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-SP-ST.png"  SubIdent="25" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="ECD-SF-AL.png"  SubIdent="26" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-SF-HO.png"  SubIdent="27" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-SF-KU.png"  SubIdent="28" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-SF-ST.png"  SubIdent="29" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="ECD-VB1-AL.png" SubIdent="30" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-VB1-HO.png" SubIdent="31" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-VB1-KU.png" SubIdent="32" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-VB1-ST.png" SubIdent="33" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-VB1-GL.png" SubIdent="34" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="ECD-VB2-AL.png" SubIdent="35" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-VB2-HO.png" SubIdent="36" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-VB2-KU.png" SubIdent="37" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-VB2-ST.png" SubIdent="38" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-VB2-GL.png" SubIdent="39" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="ECD-RP1-AL.png" SubIdent="40" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP1-HO.png" SubIdent="41" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP1-KU.png" SubIdent="42" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP1-ST.png" SubIdent="43" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP1-GL.png" SubIdent="44" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="ECD-RP2-AL.png" SubIdent="45" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP2-HO.png" SubIdent="46" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP2-KU.png" SubIdent="47" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP2-ST.png" SubIdent="48" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP2-GL.png" SubIdent="49" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="ECD-RP1O-AL.png" SubIdent="50" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP1O-HO.png" SubIdent="51" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP1O-KU.png" SubIdent="52" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP1O-ST.png" SubIdent="53" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP1O-GL.png" SubIdent="54" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="ECD-RP2O-AL.png" SubIdent="55" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP2O-HO.png" SubIdent="56" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP2O-KU.png" SubIdent="57" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP2O-ST.png" SubIdent="58" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="ECD-RP2O-GL.png" SubIdent="59" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="dk_LoI 34x175.png"                SubIdent="60" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_id_zoneOrientation 108x18.png" SubIdent="61" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_uiUsableClearance 300x32.png"  SubIdent="62" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="DORMA_Komponenten 190x237.png"    SubIdent="63" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="WallholeLowerExtension 376x70.png" SubIdent="64" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="th_arrow_gap 11x9.png"  SubIdent="65" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="storySign 59x25.png"    SubIdent="66" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="DORMA_LoD_2D 21x21.png"  SubIdent="67" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="DORMA_LoD_SE 21x21.png"  SubIdent="68" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="DORMA_LoD_3D 21x21.png"  SubIdent="69" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="dk_transferVAL 40x20.png"  SubIdent="70" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="dk_openingLineSymbol 90x15.png"    SubIdent="71" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="dk_sideline2D 36x18.png"           SubIdent="72" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_wallhole_2D 50x10.png"          SubIdent="73" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_wallhole_3D 50x25.png"          SubIdent="74" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_wallholelines_style 60x9.png"   SubIdent="75" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_wallholelines2D 125x16.png"     SubIdent="76" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_wallholesidelines2D 100x10.png" SubIdent="77" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="minSpace_middle_right 55x186.png" SubIdent="78" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="minSpace_middle_left 55x186.png"  SubIdent="79" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="minSpace_middle_double_right 103x186.png" SubIdent="80" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="minSpace_middle_double_left 103x186.png"  SubIdent="81" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="usableClearance_double_left1 103x78.png"  SubIdent="82" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="usableClearance_double_right1 103x78.png" SubIdent="83" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="usableClearance_double_left2 103x78.png"  SubIdent="84" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="usableClearance_double_right2 103x78.png" SubIdent="85" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="usableClearance_left 55x78.png"  SubIdent="86" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="usableClearance_right 55x78.png" SubIdent="87" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="usableClearance_wallL 51x18.png" SubIdent="88" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="usableClearance_wallR 51x18.png" SubIdent="89" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="usableClearance_sideL 51x18.png" SubIdent="90" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="usableClearance_sideR 51x18.png" SubIdent="91" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="dk_ui_panel_opening 108x18.png" SubIdent="92" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="DORMA_LoD 26x160.png"           SubIdent="93" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+</AllPictures>
