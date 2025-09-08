@@ -1,0 +1,97 @@
+
+IF NOT( BITTEST(macro_runtype,5) ) THEN END
+
+
+! PROJECT2 4,270,2
+
+! ----------------------------------------------------------------- [ Grunddefinition der Variablen ]
+
+
+! =============================================================================
+! Ausgabe Bänder
+! =============================================================================
+
+! IF dk_LOD < 101 THEN GOSUB "LoD100"
+! IF dk_LOD > 100 AND dk_LOD < 201 THEN GOSUB "LoD200"
+! IF dk_LOD > 200 AND dk_LOD < 301 THEN GOSUB "LoD300"
+! IF dk_LOD > 300 AND dk_LOD < 351 THEN GOSUB "LoD350"
+! IF dk_LOD > 350 AND dk_LOD < 401 THEN GOSUB "LoD400"
+IF dk_LOD > 400 THEN GOSUB "LoD500"
+
+IF dk_LOD > 350 THEN GOSUB "Fangpunkte"
+
+! ------------------------------------------------------------------------- [ ENDE ]
+
+"ende":
+END htspt
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"LoD100":
+"LoD200":
+"LoD300":
+"LoD350":
+"LoD400":
+	! Keine Darstellung
+	RETURN
+
+
+"LoD500":
+
+	IF rolle THEN GOSUB "Rollenband"
+
+	RETURN
+
+
+"Rollenband":
+
+	MATERIAL dk_materials[dka_hinge_mat]
+	ADDz ac_leaf_height - (1-stumpf)*bs_leaf_oversize
+
+	ADDZ -hinge_pos1 : GOSUB "Rolle"
+	IF bs_hinge_nmbr > 2 THEN
+		ADDZ -bs_hinge_pos3 : GOSUB "Rolle" : DEL 1
+		ENDIF
+
+	ADDZ -hinge_pos2 : GOSUB "Rolle"
+	IF bs_hinge_nmbr = 4 THEN
+		ADDZ bs_hinge_pos4 : GOSUB "Rolle" : DEL 1
+		ENDIF
+
+	DEL 3
+	RETURN
+
+
+"Rolle":
+
+	IF strsub( bs_hinge_type, strlen(bs_hinge_type), 1) = "3" THEN
+
+		ADDz -bs_hinge_height/2
+		CYLIND bs_hinge_height/4-tlr, bs_hinge_reel_diameter/2
+		ADDz bs_hinge_height/4
+		CYLIND bs_hinge_height/2-tlr, bs_hinge_reel_diameter/2
+		ADDz bs_hinge_height/2
+		CYLIND bs_hinge_height/4, bs_hinge_reel_diameter/2
+		DEL 3
+
+		ELSE
+
+		ADDz -bs_hinge_height/2
+		CYLIND bs_hinge_height/2-tlr, bs_hinge_reel_diameter/2
+		DEL 1
+		CYLIND bs_hinge_height/2, bs_hinge_reel_diameter/2
+
+		ENDIF
+	RETURN
+
+
+"Fangpunkte":
+	! Keine Fangpunkte nötig
+	RETURN

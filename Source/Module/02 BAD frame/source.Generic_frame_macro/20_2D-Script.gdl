@@ -1,0 +1,1569 @@
+
+IF NOT( BITTEST(macro_runtype,4) ) THEN END
+
+DRAWINDEX 20
+
+! ---------------------------------------------------------------------- !
+
+IF macro_runtype = 0 THEN		 ! N U R    S T A N D A L O N E
+
+	ADD2 0.0, -0.1
+	MUL2 1, - 1
+	!PROJECT2 3,270,1
+	
+	DEL 2
+	
+	TEXT2 0,1, 1*(dk_sidelight_transom1 = 0 AND dk_sidelight_transom2 = 1 AND bs_fanlight_division = 0 )
+	!TEXT2 0, 0, bs_spiegel_br_ob_bs
+	!TEXT2 0, - 0.5, dk_frame_thk_upper
+
+	xa = ac_unit_width
+	LINE2 xa/2, 0, xa, 0
+	LINE2 -xa/2, 0, -xa, 0
+	LINE2 xa/2, 0, xa/2, C_
+	LINE2 -xa/2, 0,-xa/2, C_
+	LINE2 xa/2, C_, xa, C_
+	LINE2 -xa/2, C_, -xa, C_
+
+ENDIF
+
+IF develop = 9 THEN
+	circle2 0 ,					WALL_THICKNESS+0.05,0.001
+	circle2 clearingFrameCenter,	WALL_THICKNESS+0.05,0.002
+	circle2 offsetEgressCenter,	WALL_THICKNESS+0.05,0.003
+
+	line2 0,	WALL_THICKNESS+0.05,   frame_out_dims_x/2,	WALL_THICKNESS+0.025
+	line2 -frame_out_dims_x/2,	WALL_THICKNESS+0.025,   0,	WALL_THICKNESS+0.05
+
+	! TEXT2 0,0, "dk_sidelight_transom2 = " 	+ STR(dk_sidelight_transom2,1,0)
+	! TEXT2 0,0.1, "bs_door_sidelight = " 	+	bs_door_sidelight
+	! TEXT2 0,0.2, "dk_sidelight_transom1 = " 	+ STR(dk_sidelight_transom1,1,0)
+	! TEXT2 0,0.3, "bs_fanlight_division = " 	+ STR(bs_fanlight_division,1,0)
+
+	ENDIF
+
+
+! ---------------------------------------------------------------------- !
+! -------- 2 D  -  S c r i p t ----------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+
+LOD_2D = dk_LOD						! wird vom Hauptobjekt übergeben
+
+MUL2 -1,-1
+ADD2 offsetFrameCenter, offsetFrameSurfaceBS
+
+GOSUB "LOD_" + STR(LOD_2D, 1, 0)
+
+DEL 2
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+WHILE NSP DO			! Buffer leeren, weil letzte Zeile nicht genutzt wird
+	www_sub = GET(1)
+	ENDWHILE
+
+END  offsetFrameSurfaceBGS,
+		facingLintelBS, facingLintelBGS,
+		frame2wallSurfaceBS, frame2wallSurfaceBGS, htspt
+
+
+! ---------------------------- E N D ----------------------------------- !
+! ---------------------------------------------------------------------- !
+! ---------------------------- SUBS ------------------------------------ !
+
+1: ! D U M M Y   C I R C L E
+
+	CIRCLE2 0, 0, 0.01
+	HOTSPOT2 0, 0, htspt : htspt = htspt + 1
+
+RETURN
+
+2: ! S I N G L E   H O T S P O T
+
+	HOTSPOT2 0, 0, htspt : htspt = htspt + 1
+
+RETURN
+
+
+! ---------------------------------------------------------------------- !
+! ----------------------  L  O  D  - 1  0  0  -------------------------- !
+! ---------------------------------------------------------------------- !
+
+"LOD_100":
+
+	! H I E R    G I B T     E S     K E I N E     E L E M E N T E
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ----------------------  L  O  D  - 2  0  0  -------------------------- !
+! ---------------------------------------------------------------------- !
+
+"LOD_200":
+
+	GOSUB "LOD_300"		! Wie LOD 300
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ----------------------  L  O  D    3  0  0  -------------------------- !
+! ---------------------------------------------------------------------- !
+
+"LOD_300":
+
+	_tt_plus = 0 : GOSUB "Fangpunkte"
+
+	ADD2 -clearingFrameCenter, 0
+
+	IF gs_sidelight_left THEN 
+		_sidelight_width = gs_sidelight_width_left + gs_tolerance_left
+		_framewidth = _framewidth_left
+		poly_x = _framewidth_post_left
+		ADD2 - frame_out_dims_x/2 + _sidelight_width , 0
+		gosub 2
+		GOSUB "LOD_300_sidepost"
+		DEL 1
+	ENDIF
+
+	IF gs_sidelight_right THEN 
+		_sidelight_width = gs_sidelight_width_right + gs_tolerance_right
+		_framewidth = _framewidth_right
+		poly_x = _framewidth_post_right
+		ADD2 + frame_out_dims_x/2 - _sidelight_width, 0
+		MUL2 -1, 1
+		gosub 2
+		GOSUB "LOD_300_sidepost"
+		DEL 2
+	ENDIF
+
+	DEL 1
+
+RETURN
+
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_300_sidepost":
+
+	PEN dk_cont_pens[dka_topview_penC2]
+	LINE2 0, 0,   -_sidelight_width, 0 
+
+RETURN
+
+
+! ---------------------------------------------------------------------- !
+! ----------------------  L  O  D    3  5  0  -------------------------- !
+! ---------------------------------------------------------------------- !
+
+"LOD_350":
+
+	bs_folding_nmbr = 0
+
+	_tt_plus = 0 : GOSUB "Fangpunkte"
+
+	ADD2 -clearingFrameCenter, 0
+
+	kont_typ 		= 7
+	poly_cont 		= dk_cont_pens[dka_frame_penC2]
+	poly_fill 		= dk_fills[dka_frame_fill] 
+	poly_fill_pen 	= dk_fill_pens[dka_frame_penF] 
+	poly_bg_pen 	= dk_bkg_pens[dka_frame_penB] 
+
+	poly_x 			= _framewidth_left
+	poly_y 			= frame_out_dims_y
+
+	ADD2 - frame_out_dims_x/2, 0
+	GOSUB "LOD_350_frame"
+	DEL 1
+
+	poly_x 			= _framewidth_right
+	ADD2 + frame_out_dims_x/2, 0
+	MUL2 -1, 1
+	GOSUB "LOD_350_frame"
+	DEL 2
+
+
+	poly_y = _frame_thk_post
+	IF gs_sidelight_left THEN 
+		_sidelight_width = gs_sidelight_width_left + gs_tolerance_left
+		_framewidth = _framewidth_left
+		poly_x = _framewidth_post_left
+		ADD2 - frame_out_dims_x/2 + _sidelight_width - poly_x , 0
+		gosub 2
+		GOSUB "LOD_400_sidepost"
+		DEL 1
+	ENDIF
+
+	IF gs_sidelight_right THEN 
+		_sidelight_width = gs_sidelight_width_right + gs_tolerance_right
+		_framewidth = _framewidth_right
+		poly_x = _framewidth_post_right
+		ADD2 + frame_out_dims_x/2 - _sidelight_width + poly_x, 0
+		MUL2 -1, 1
+		gosub 2
+		GOSUB "LOD_400_sidepost"
+		DEL 2
+	ENDIF
+
+	DEL 1
+
+RETURN
+
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_350_frame":
+
+	GOSUB "LOD_350_frame_PUT"
+	GOSUB "POLY2_B"
+
+	! ......................... !
+
+	GOSUB "LOD_350_frame_PUT"
+	GOSUB "HOTSPOTS_2D"
+
+RETURN
+
+! -------------------------------------------------------------- !
+
+"LOD_350_frame_PUT":
+
+	PUT	0, 			0, 		1,
+		poly_x, 	0, 		1,
+		poly_x,   	poly_y, 1,
+		0,   		poly_y, 1,
+		0, 			0, 		-1
+
+RETURN
+
+
+
+! ---------------------------------------------------------------------- !
+! ----------------------  L  O  D    4  0  0  -------------------------- !
+! ---------------------------------------------------------------------- !
+
+"LOD_400":
+
+	bs_folding_nmbr = (bs_folding_nmbr > 0)
+
+	GOSUB "Fangpunkte"
+
+	kont_typ 		= 7
+	poly_cont 		= dk_cont_pens[dka_frame_penC2]
+	poly_fill 		= dk_fills[dka_frame_fill] 
+	poly_fill_pen 	= dk_fill_pens[dka_frame_penF] 
+	poly_bg_pen 	= dk_bkg_pens[dka_frame_penB] 
+
+	poly_x 			= _framewidth_left		! Zargenbreite
+	poly_x1 		= gs_ub_st1				! seitlicher Überstand X
+	poly_x3 		= bs_spiegel_br_bs	+ gs_vb	! Spiegelbreite BS X
+	poly_x4 		= gs_vb					! Falzbreite X
+	poly_x5 		= bs_spiegel_br_bgs		! Spiegelbreite BGS X
+
+	poly_y 			= frame_out_dims_y 		! Zargentiefe (z.B. Wandstärke) das kann auch "bz_tiefe" sein ### TODO prüfen
+	poly_y1 		= gs_ub_st2				! seitlicher Überstand Y 
+	poly_y4 		= gs_vt					! Falztiefe Y
+	poly_yz 		= _frame_thk_EZ - gs_ub_st2			! Zargentiefe bei EZ
+
+	! ---------- Z A R G E
+
+	ADD2 clearingFrameCenter - frame_out_dims_x/2, 0
+	falz = NOT(gs_sidelight_left) : GOSUB "LOD_400_frame_" + dk_frametype
+	DEL 1
+
+	poly_x 			= _framewidth_right		! Zargenbreite
+	ADD2 clearingFrameCenter + frame_out_dims_x/2, 0
+	MUL2 -1, 1
+	falz = NOT(gs_sidelight_right) : GOSUB "LOD_400_frame_" + dk_frametype
+	DEL 2
+
+	! ---------- P F O S T E N
+
+	poly_y = _frame_thk_post
+
+	IF gs_sidelight_left THEN 
+		poly_x = _framewidth_post_left
+		_framewidth = _framewidth_left
+		_sidelight_width = gs_sidelight_width_left
+		ADD2 clearingFrameCenter - frame_out_dims_x/2 + _sidelight_width - poly_x, 0
+		GOSUB "LOD_400_sidepost"
+		DEL 1
+	ENDIF
+
+	IF gs_sidelight_right THEN 
+		poly_x = _framewidth_post_right
+		_framewidth = _framewidth_right
+		_sidelight_width = gs_sidelight_width_right
+		ADD2 clearingFrameCenter + frame_out_dims_x/2 - _sidelight_width + poly_x, 0
+		MUL2 -1, 1
+		GOSUB "LOD_400_sidepost"
+		DEL 2
+	ENDIF
+
+	! ---------- F Ü L L U N G    S E I T E N F E L D E R
+
+	kont_typ 		= 7
+	poly_cont 		= dk_cont_pens[dka_frame_penC2]
+
+	poly_x4 		= 0					! Falzbreite X
+	poly_y4 		= gs_vt					! Falztiefe Y
+	glis 			= 1						! Grundeingestellte Anzahl der Anzahl Seitenfeld-Lagen
+
+	IF gs_sidelight_left THEN 
+
+		poly_x 			= _framewidth_left										! Zargenbreite
+		poly_ys			= bs_sidelight_filling_thk2								! Stärke der Seitenteilfüllung links
+		poly_xa			= gs_sidelight_width_left - _framewidth_post_left
+		poly_fill		= dk_fills[dka_side2_fill]
+		poly_fill_pen   = dk_fill_pens[dka_side2_penF]
+		poly_bg_pen		=  dk_bkg_pens[dka_side2_penB]
+		_framewidth_post = _framewidth_post_left
+
+		ADD2 clearingFrameCenter - frame_out_dims_x/2, 0
+		GOSUB "LOD_400_sidefield"
+		DEL 1
+
+		GOSUB "dka_topview_fill_left"
+
+	ENDIF
+	
+	IF gs_sidelight_right THEN 
+
+		poly_x 			= _framewidth_right										! Zargenbreite
+		poly_ys			= bs_sidelight_filling_thk1								! Stärke der Seitenteilfüllung rechts
+		poly_xa			= gs_sidelight_width_right - _framewidth_post_right
+		poly_fill		= dk_fills[dka_side1_fill]
+		poly_fill_pen   = dk_fill_pens[dka_side1_penF]
+		poly_bg_pen		=  dk_bkg_pens[dka_side1_penB]
+		_framewidth_post = _framewidth_post_right
+
+		ADD2 clearingFrameCenter + frame_out_dims_x/2 , 0
+		MUL2 -1, 1
+		GOSUB "LOD_400_sidefield"
+		DEL 2
+
+		GOSUB "dka_topview_fill_right"
+
+	ENDIF
+
+	! ---------------------------------------------------------------------- !
+
+RETURN
+
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_400_sidepost":
+
+	GOSUB "LOD_400_sidepost_PUT"	
+	GOSUB "POLY2_B"
+	! ......................... !
+
+	GOSUB "LOD_400_sidepost_PUT_HOTSPOT"	
+	GOSUB "HOTSPOTS_2D"
+
+	PEN dk_cont_pens[dka_topview_penC2]
+	LINE2 0, 0,   -_sidelight_width + poly_x + _framewidth, 0
+
+RETURN
+
+! -------------------------------------------------------------- !
+
+"LOD_400_sidepost_PUT":	
+
+	PUT	0, - poly_y1, 		1
+
+	IF bs_folding_nmbr THEN
+		PUT poly_x - poly_x4, - poly_y1,	1,
+			poly_x - poly_x4, - poly_y1 + poly_y4,	1,
+			poly_x 			, - poly_y1 + poly_y4,	1
+	ELSE
+		PUT	poly_x, - poly_y1, 			1
+	ENDIF
+
+	PUT	poly_x, 	- poly_y1 + poly_y, 1,
+		0,   		- poly_y1 + poly_y, 1,
+		0, 			- poly_y1, 		-1	
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+
+"LOD_400_sidepost_PUT_HOTSPOT":	
+
+	PUT	0, - poly_y1, 		1
+	PUT	poly_x, 	- poly_y1 + poly_y, 1,
+		0,   		- poly_y1 + poly_y, 1,
+		0, 			- poly_y1, 		-1	
+
+	PUT poly_x - poly_x4, - poly_y1,	1
+	PUT	poly_x - poly_x4, - poly_y1 + poly_y4,	1
+
+RETURN
+
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_400_frame_EZ":
+
+	show_detailed_ponts = 1
+	GOSUB "LOD_400_frame_EZ_PUT"	
+	GOSUB "POLY2_B"
+
+	! ......................... !
+	show_detailed_ponts = 0
+	GOSUB "LOD_400_frame_EZ_PUT"	
+	GOSUB "HOTSPOTS_2D"
+
+RETURN
+
+! -------------------------------------------------------------- !
+
+"LOD_400_frame_EZ_PUT":
+
+	PUT	0, 			0, 					1,
+		poly_x - poly_x3,	0,					1,
+		poly_x - poly_x3,	-poly_y1,			1
+
+	IF bs_folding_nmbr and falz THEN
+		PUT poly_x - poly_x4, -poly_y1,	1
+		IF show_detailed_ponts = 1 THEN PUT	poly_x - poly_x4, -poly_y1 + poly_y4,	1
+		PUT	poly_x 			, -poly_y1 + poly_y4,	1
+	ELSE
+		PUT	poly_x, 	-poly_y1, 			1
+	ENDIF
+
+	PUT	poly_x,   	poly_yz, 			1,
+		0,  		poly_yz, 			1,
+		0, 			0, 					-1
+
+RETURN
+
+
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_400_frame_BZ":
+
+	show_detailed_ponts = 1
+	GOSUB "LOD_400_frame_BZ_PUT"	
+	GOSUB "POLY2_B"
+
+	! ......................... !
+	show_detailed_ponts = 0
+	GOSUB "LOD_400_frame_BZ_PUT"	
+	GOSUB "HOTSPOTS_2D"
+
+RETURN
+
+! -------------------------------------------------------------- !
+
+"LOD_400_frame_BZ_PUT":
+
+
+
+	PUT	0, 			0, 					1,
+		0, 			-poly_y1,			1
+
+
+		IF bs_folding_nmbr and falz THEN
+			PUT poly_x - poly_x4, -poly_y1,	1
+			IF show_detailed_ponts = 1 THEN PUT	poly_x - poly_x4, -poly_y1 + poly_y4,	1
+			PUT	poly_x 			, -poly_y1 + poly_y4,	1
+		ELSE
+			PUT	poly_x, 	-poly_y1, 			1
+		ENDIF
+
+
+		PUT	poly_x,   	poly_y + poly_y1, 	1,
+			0,   		poly_y + poly_y1, 	1,
+			0,   		poly_y, 			1,
+			0, 			0, 		-1
+
+
+
+RETURN
+	
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_400_frame_UZ":
+
+	show_detailed_ponts = 1
+	GOSUB "LOD_400_frame_UZ_PUT"	
+	GOSUB "POLY2_B"
+
+	! ......................... !
+	show_detailed_ponts = 0
+	GOSUB "LOD_400_frame_UZ_PUT"	
+	GOSUB "HOTSPOTS_2D"
+
+RETURN
+	
+! -------------------------------------------------------------- !
+
+"LOD_400_frame_UZ_PUT":
+
+	PUT	0, 					0, 					1,
+		poly_x - poly_x3,	0,					1,
+		poly_x - poly_x3,	-poly_y1,			1
+
+	IF bs_folding_nmbr and falz THEN
+		PUT poly_x - poly_x4, -poly_y1,	1
+		IF show_detailed_ponts = 1 THEN PUT	poly_x - poly_x4, -poly_y1 + poly_y4,	1
+		PUT	poly_x 			, -poly_y1 + poly_y4,	1
+	ELSE
+		PUT	poly_x, 	-poly_y1, 			1
+	ENDIF
+
+	PUT	poly_x,   			poly_y  + poly_y1, 	1,
+		poly_x - poly_x5,   poly_y  + poly_y1, 	1,
+		poly_x - poly_x5,   poly_y, 			1,
+		0,   				poly_y, 			1,
+		0, 					0, 					-1
+
+RETURN
+	
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_400_frame_RR":
+
+	show_detailed_ponts = 1
+	GOSUB "LOD_400_frame_RR_PUT"	
+	GOSUB "POLY2_B"
+
+	! ......................... !
+	show_detailed_ponts = 0
+	GOSUB "LOD_400_frame_RR_PUT"	
+	GOSUB "HOTSPOTS_2D"
+
+RETURN
+
+		! -------------------------------------------------------------- !
+	
+"LOD_400_frame_RR_PUT":
+
+	PUT	0, 	0, 1
+
+	IF bs_folding_nmbr and falz THEN
+		PUT poly_x - poly_x4, 0,	1
+		IF show_detailed_ponts = 1 THEN PUT	poly_x - poly_x4, poly_y4,	1
+		PUT	poly_x 			, poly_y4,	1
+	ELSE
+		PUT	poly_x, 0, 1
+	ENDIF
+
+	PUT	poly_x, poly_yz, 1,
+		0,   	poly_yz, 1,
+		0, 		0, 		-1
+
+	RETURN
+
+
+
+! ---------------------------------------------------------------------- !
+! ----------------------  L  O  D    5  0  0  -------------------------- !
+! ---------------------------------------------------------------------- !
+
+"LOD_500":
+
+	GOSUB "Fangpunkte"
+
+	kont_typ 		= 7
+	poly_cont 		= dk_cont_pens[dka_frame_penC2]
+	poly_fill 		= dk_fills[dka_frame_fill] 
+	poly_fill_pen 	= dk_fill_pens[dka_frame_penF] 
+	poly_bg_pen 	= dk_bkg_pens[dka_frame_penB] 
+
+	poly_x 			= _framewidth_left		! Zargenbreite
+	poly_x1 		= gs_ub_st1				! seitlicher Überstand X
+	poly_x2 		= gs_fuge				! Luft Zarge zu Wand X
+	poly_x3 		= bs_spiegel_br_bs + gs_vb		! Spiegelbreite BS X
+	poly_x4 		= gs_vb					! Falzbreite X
+	poly_x5 		= bs_spiegel_br_bgs		! Spiegelbreite BGS X
+
+	poly_y 			= frame_out_dims_y 		! Zargentiefe (z.B. Wandstärke) das kann auch "bz_tiefe" sein ### TODO prüfen
+	poly_y1 		= gs_ub_st2				! seitlicher Überstand Y 
+	poly_y4 		= gs_vt					! Falztiefe Y
+
+	poly_yt 		= 0.009					! Stärke der seitlichen Blockzargen-Nippel (Hard-Codiert)
+	poly_yt 		= gs_ub_st2				! Stärke der seitlichen Blockzargen-Nippel
+	poly_yz 		= _frame_thk_EZ	 - gs_ub_st2		! Zargentiefe bei EZ
+
+	! ......................... !
+
+	! Mehrfachfalze
+	poly_x8 		= dk_folding_dimensions[1][2]	! Breite doppelter Falz
+	poly_y8 		= dk_folding_dimensions[1][1]	! Tiefe doppeleter Falz
+	poly_x9 		= dk_folding_dimensions[2][2]	! Breite Falz 2 dreifacher Falz
+	poly_y9 		= dk_folding_dimensions[2][1]	! Tiefe Falz 2 dreifacher Falz
+
+	! ---------- Z A R G E
+
+	ADD2 clearingFrameCenter-frame_out_dims_x/2, 0
+	poly_ys			= bs_sidelight_filling_thk2								! Stärke der Seitenteilfüllung links
+	IF gs_sidelight_left = 0 THEN GOSUB "LOD_500_frame_" + dk_frametype
+	IF gs_sidelight_left = 1 THEN GOSUB "LOD_500_frame_SL_" + dk_frametype
+	DEL 1
+
+	ADD2 clearingFrameCenter + frame_out_dims_x/2, 0
+	poly_x 			= _framewidth_right										! Zargenbreite
+	poly_ys			= bs_sidelight_filling_thk1								! Stärke der Seitenteilfüllung rechts
+	MUL2 -1, 1
+	IF gs_sidelight_right = 0 THEN GOSUB "LOD_500_frame_" + dk_frametype
+	IF gs_sidelight_right = 1 THEN GOSUB "LOD_500_frame_SL_" + dk_frametype
+	DEL 2
+
+	!LINE2 -frame_out_dims_x/2 + poly_x, 0,  frame_out_dims_x/2 - poly_x, 0 
+
+	! ---------- P F O S T E N
+
+	poly_y = _frame_thk_post													! Stärke Pfosten
+
+	IF gs_sidelight_left THEN 
+		poly_x = _framewidth_post_left											! Breite Pfosten Links
+		poly_ys			= bs_sidelight_filling_thk2								! Stärke der Seitenteilfüllung links
+		ADD2 clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_width_left - poly_x, 0
+		GOSUB "LOD_500_sidepost"
+		DEL 1
+	ENDIF
+
+	IF gs_sidelight_right THEN 
+		poly_x = _framewidth_post_right
+		poly_ys			= bs_sidelight_filling_thk1						! Stärke der Seitenteilfüllung rechts
+		ADD2 clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right + poly_x, 0
+		MUL2 -1, 1
+		GOSUB "LOD_500_sidepost"
+		DEL 2
+	ENDIF
+
+	! ---------- F Ü L L U N G    S E I T E N F E L D E R
+
+	kont_typ 		= 7
+	poly_cont 		= dk_cont_pens[dka_frame_penC2]
+
+	poly_x4 		= gs_vb					! Falzbreite X
+	poly_y4 		= gs_vt					! Falztiefe Y
+	glis 			= 1						! Grundeingestellte Anzahl der Anzahl Seitenfeld-Lagen
+
+	IF gs_sidelight_left THEN 
+
+		IF dk_sidelight_filling[2] = "G1" OR  dk_sidelight_filling[2] = "PL" THEN glis = 1
+		IF dk_sidelight_filling[2] = "G2" THEN glis = 2
+		IF dk_sidelight_filling[2] = "G3" THEN glis = 3
+
+		poly_x 			= _framewidth_left										! Zargenbreite
+		poly_ys			= bs_sidelight_filling_thk2								! Stärke der Seitenteilfüllung links
+		poly_xa			= gs_sidelight_width_left - _framewidth_post_left
+		poly_fill		= dk_fills[dka_side2_fill]
+		poly_fill_pen  	= dk_fill_pens[dka_side2_penF]
+		poly_bg_pen		= dk_bkg_pens[dka_side2_penB]
+		_framewidth_post = _framewidth_post_left
+		ADD2 clearingFrameCenter - frame_out_dims_x/2, 0
+		GOSUB "LOD_" +STR(LOD_2D , 1, 0) + "_sidefield"
+		DEL 1
+
+		GOSUB "dka_topview_fill_left"
+
+	ENDIF
+	IF gs_sidelight_right THEN 
+
+		IF dk_sidelight_filling[1] = "G1" OR  dk_sidelight_filling[1] = "PL" THEN glis = 1
+		IF dk_sidelight_filling[1] = "G2" THEN glis = 2
+		IF dk_sidelight_filling[1] = "G3" THEN glis = 3
+
+		poly_x 			= _framewidth_right										! Zargenbreite
+		poly_ys			= bs_sidelight_filling_thk1								! Stärke der Seitenteilfüllung rechts
+		poly_xa			= gs_sidelight_width_right - _framewidth_post_right
+		poly_fill		= dk_fills[dka_side1_fill]
+		poly_fill_pen  = dk_fill_pens[dka_side1_penF]
+		poly_bg_pen		= dk_bkg_pens[dka_side1_penB]
+		_framewidth_post = _framewidth_post_right
+		ADD2 clearingFrameCenter + frame_out_dims_x/2 , 0
+		MUL2 -1, 1
+		GOSUB "LOD_" +STR(LOD_2D , 1, 0) + "_sidefield"
+		DEL 2
+
+		GOSUB "dka_topview_fill_right"
+
+	ENDIF
+	! ---------------------------------------------------------------------- !
+
+RETURN
+
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_400_sidefield":
+
+	GOSUB "LOD_400_sidefield_PUT"	
+	GOSUB "POLY2_B"
+	! ......................... !
+	! IF LOD_2D = 500 THEN
+	! 	IF glis = 2 THEN LINE2 poly_x - poly_x4, -poly_y1 + poly_y4 - poly_ys/2, poly_xa + poly_x4, -poly_y1 + poly_y4 - poly_ys/2
+	! 	IF glis = 3 THEN 
+	! 		LINE2 poly_x - poly_x4, -poly_y1 + poly_y4 - poly_ys/3, poly_xa + poly_x4, -poly_y1 + poly_y4 - poly_ys/3
+	! 		LINE2 poly_x - poly_x4, -poly_y1 + poly_y4 - 2 * poly_ys/3, poly_xa + poly_x4, -poly_y1 + poly_y4 - 2 * poly_ys/3
+	! 	ENDIF
+	! ENDIF
+	! ......................... !
+
+	GOSUB "LOD_400_500_Lines_Sidelight"
+
+	!GOSUB "LOD_400_sidefield_PUT"	
+	!GOSUB "HOTSPOTS_2D"
+
+RETURN
+
+! -------------------------------------------------------------- !
+
+"LOD_400_sidefield_PUT":
+
+	PUT	poly_x - poly_x4,		-poly_y1 + poly_y4 - poly_ys,	1,
+		poly_x - poly_x4,		-poly_y1 + poly_y4,				1,
+		poly_xa + poly_x4,		- poly_y1 + poly_y4,			1,
+		poly_xa + poly_x4,		- poly_y1 + poly_y4 - poly_ys,	1
+
+RETURN
+
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_500_sidefield":
+
+	IF glis = 1 THEN 
+		polydicke = poly_ys
+		zwischenraum = 0
+		GOSUB "LOD_500_sidefield_PUT"	
+		GOSUB "POLY2_B"
+	ENDIF
+
+	IF glis = 2 THEN 
+		! poly_ys_sub = poly_ys/3
+		! FOR i_sub = 0 TO 1
+		! 	ADD2 0, -i_sub * 2  * poly_ys_sub
+		! 	GOSUB "LOD_500_sidefield_PUT"	
+		! 	GOSUB "POLY2_B"
+		! 	DEL 1
+		! NEXT i_sub
+		polydicke = MIN(0.006, poly_ys/3)
+		zwischenraum = poly_ys - 2 * polydicke
+
+		GOSUB "LOD_500_sidefield_PUT"	
+		GOSUB "POLY2_B"
+
+		ADD2 0, -zwischenraum - polydicke
+		GOSUB "LOD_500_sidefield_PUT"	
+		GOSUB "POLY2_B"
+		DEL 1
+	ENDIF
+
+	IF glis = 3 THEN 
+		! poly_ys_sub = poly_ys/5
+		! FOR i_sub = 0 TO 2
+		! 	ADD2 0, -i_sub * 2 * poly_ys_sub
+		! 	GOSUB "LOD_500_sidefield_PUT"	
+		! 	GOSUB "POLY2_B"
+		! 	DEL 1
+		! NEXT i_sub
+
+		polydicke = MIN(0.006, poly_ys/5)
+		zwischenraum = (poly_ys - 3*polydicke)/2
+
+		GOSUB "LOD_500_sidefield_PUT"	
+		GOSUB "POLY2_B"
+
+		ADD2 0, -1 *(zwischenraum + polydicke)
+		GOSUB "LOD_500_sidefield_PUT"	
+		GOSUB "POLY2_B"
+
+		ADD2 0, -1 *(zwischenraum + polydicke)
+		GOSUB "LOD_500_sidefield_PUT"	
+		GOSUB "POLY2_B"
+		DEL 2
+	ENDIF
+
+	! ......................... !
+
+	! HG-Schraffur der Aufsichten der LZRs
+	poly_fill 		= dk_fills[dka_topview_fill]
+	poly_fill_pen 	= dk_fill_pens[dka_topview_penF]
+	poly_bg_pen		= dk_bkg_pens[dka_topview_penB]
+	kont_typ = 7
+	DRAWINDEX 10
+	! ### -> fix FB
+	! ADD2 0,  bz_einzug * (dk_frametype = "RR")
+
+	scheibendicke = polydicke
+	polydicke = zwischenraum
+
+	IF glis = 2 THEN 
+		! poly_ys_sub = poly_ys/3
+		! ! ### -> fix FB
+		! ADD2 0, -1 * poly_ys_sub 
+		! GOSUB "LOD_500_sidefield_PUT"	
+		! GOSUB "POLY2_B"
+		! DEL 1
+		! ### -> fix FB
+		ADD2 0, -1 * scheibendicke 
+		GOSUB "LOD_500_sidefield_PUT"	
+		GOSUB "POLY2_B"
+		DEL 1
+	ENDIF
+
+	IF glis = 3 THEN 
+		! poly_ys_sub = poly_ys/5
+		! ! ### -> fix FB
+		! ! GOSUB "LOD_500_sidefield_PUT"	
+		! ! GOSUB "POLY2_B"
+		! FOR i_sub = 0 TO 1
+		! 	! ### -> fix FB
+		! 	ADD2 0, -(i_sub * 2 + 1) * poly_ys_sub
+		! 	GOSUB "LOD_500_sidefield_PUT"	
+		! 	GOSUB "POLY2_B"
+		! 	DEL 1
+		! NEXT i_sub
+		ADD2 0, -1 * scheibendicke 
+		GOSUB "LOD_500_sidefield_PUT"	
+		GOSUB "POLY2_B"
+		ADD2 0, -1 *(zwischenraum + scheibendicke)
+		GOSUB "LOD_500_sidefield_PUT"	
+		GOSUB "POLY2_B"
+		DEL 2
+	ENDIF
+
+	DRAWINDEX 20
+	kont_typ = 7
+
+	! ### -> fix FB
+	! DEL 1
+
+	! ......................... !
+
+	GOSUB "LOD_400_500_Lines_Sidelight"
+
+	! ......................... !
+
+
+RETURN
+
+! -------------------------------------------------------------- !
+
+"LOD_500_sidefield_PUT":
+
+	PUT	poly_x - poly_x4,		-poly_y1 + poly_y4 - polydicke,	1,
+		poly_x - poly_x4,		-poly_y1 + poly_y4,				1,
+		poly_xa + poly_x4,		- poly_y1 + poly_y4,			1,
+		poly_xa + poly_x4,		- poly_y1 + poly_y4 - polydicke,	1
+
+RETURN
+
+	
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_400_500_Lines_Sidelight":
+
+
+	PEN dk_cont_pens[dka_topview_penC2]
+
+	LINE2 poly_x,	- poly_y1, poly_xa, - poly_y1
+
+	IF dk_different_frame_thk THEN
+		IF _frame_thk_bottom > _frame_thk_post THEN
+			LINE2 poly_x,	- poly_y1 + _frame_thk_bottom, poly_xa , - poly_y1+ _frame_thk_bottom
+			LINE2 poly_xa , - poly_y1+ _frame_thk_bottom, poly_xa , - poly_y1 + _frame_thk_post
+		ELSE
+			LINE2 poly_x,	- poly_y1 + _frame_thk_bottom, poly_xa, - poly_y1+ _frame_thk_bottom
+		ENDIF
+	ELSE
+		LINE2 poly_x,	- poly_y1 + _frame_thk_bottom, poly_xa, - poly_y1+ _frame_thk_bottom
+	ENDIF
+
+
+RETURN
+
+
+
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"Mehrfachfalz":
+
+	IF bs_folding_nmbr = 2 THEN															! Doppelfalz
+		PUT poly_x - poly_x4, 	- poly_y99 + poly_y4  - poly_y8, 	1,
+			poly_x - poly_x8, 	- poly_y99 + poly_y4  - poly_y8, 	1,
+			poly_x - poly_x8, 	- poly_y99 + poly_y4, 				1
+	ENDIF
+
+	IF bs_folding_nmbr = 3 THEN															! Dreifachfalz
+		PUT poly_x - poly_x4, 					- poly_y99 + poly_y4  - poly_y8 - poly_y9, 	1,
+			poly_x - poly_x8 - poly_x9, 		- poly_y99 + poly_y4  - poly_y8 - poly_y9, 	1,
+			poly_x - poly_x8 - poly_x9, 		- poly_y99 + poly_y4  - poly_y8, 			1,
+			poly_x - poly_x8, 					- poly_y99 + poly_y4  - poly_y8, 			1,
+			poly_x - poly_x8, 					- poly_y99 + poly_y4, 						1
+	ENDIF
+
+RETURN
+
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_500_sidepost":
+
+	show_detailed_ponts = 1
+	GOSUB "LOD_500_sidepost_PUT"	
+	GOSUB "POLY2_B"
+	! ......................... !
+
+	show_detailed_ponts = 0
+	GOSUB "LOD_500_sidepost_PUT_HOTSPOT"
+	GOSUB "HOTSPOTS_2D"
+
+RETURN
+
+! -------------------------------------------------------------- !
+
+"LOD_500_sidepost_PUT":
+
+	PUT	0, 					- poly_y1, 				1,
+		poly_x - poly_x4, 	- poly_y1, 				1
+
+	poly_y99 = poly_y1
+	IF show_detailed_ponts  THEN GOSUB "Mehrfachfalz"
+
+	IF bs_folding_nmbr = 1 THEN
+		PUT	poly_x - poly_x4, 	- poly_y1 + poly_y4, 	1
+	ENDIF
+
+
+	PUT	poly_x, 			- poly_y1 + poly_y4, 	1,
+		poly_x,   			- poly_y1 + poly_y, 	1,
+		0,   				- poly_y1 + poly_y, 	1,
+		0,					- poly_y1 + poly_y4,	1
+
+	IF show_detailed_ponts THEN
+		PUT poly_x4,			- poly_y1 + poly_y4,	1
+		PUT poly_x4,			- poly_y1 + poly_y4 - poly_ys,	1
+	ENDIF
+
+	PUT		0,					- poly_y1 + poly_y4 - poly_ys,	1,
+			0, 					- poly_y1,				-1
+
+RETURN
+
+! -------------------------------------------------------------- !
+
+"LOD_500_sidepost_PUT_HOTSPOT":
+
+	PUT	0, 					- poly_y1, 				1,
+		poly_x - poly_x4, 	- poly_y1, 				1,
+		poly_x,   			- poly_y1 + poly_y, 	1,
+		0,   				- poly_y1 + poly_y, 	1,
+		0,					- poly_y1 + poly_y4 - poly_ys,	1
+
+RETURN
+
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_500_frame_EZ":
+
+	show_detailed_ponts = 1
+	GOSUB "LOD_500_frame_EZ_PUT"	
+	GOSUB "POLY2_B"
+
+	! ......................... !
+
+	show_detailed_ponts = 0
+	GOSUB "LOD_500_frame_EZ_PUT"	
+	GOSUB "HOTSPOTS_2D"
+
+RETURN
+
+! -------------------------------------------------------------- !
+
+"LOD_500_frame_EZ_PUT":
+
+	PUT	0,						0, 					1,
+		poly_x - poly_x3,		0,					1,
+		poly_x - poly_x3,		-poly_y1,			1,
+		poly_x - poly_x4,		-poly_y1,			1
+
+	poly_y99 = poly_y1
+	IF show_detailed_ponts = 1 THEN GOSUB "Mehrfachfalz"
+
+	IF bs_folding_nmbr = 1 THEN
+		IF show_detailed_ponts = 1 THEN PUT poly_x - poly_x4,	-poly_y1 + poly_y4,	1
+	ENDIF
+
+	PUT	poly_x,	-poly_y1 + poly_y4,	1
+
+		IF ABS(dk_design_folding_depth - 0) < tlr THEN PUT poly_x, poly_yz, 	1
+
+		IF dk_design_folding_depth THEN
+			PUT poly_x, 			poly_yz - dk_design_folding_depth, 	1,
+				poly_x - poly_x4, 	poly_yz - dk_design_folding_depth, 	1,	
+				poly_x - poly_x4, 	poly_yz, 								1
+		ENDIF
+
+	PUT	0,   						poly_yz, 	1,
+		0, 						0, 					-1
+
+RETURN
+
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_500_frame_SL_EZ":
+
+	show_detailed_ponts = 1
+	GOSUB "LOD_500_frame_SL_EZ_PUT"	
+	GOSUB "POLY2_B"
+
+	! ......................... !
+
+	show_detailed_ponts = 0
+	GOSUB "LOD_500_frame_SL_EZ_PUT"	
+	GOSUB "HOTSPOTS_2D"
+
+RETURN
+
+! -------------------------------------------------------------- !
+
+"LOD_500_frame_SL_EZ_PUT":
+
+	PUT	0,						0, 					1,
+		poly_x - poly_x3,		0,					1,
+		poly_x - poly_x3,		-poly_y1,			1,
+		poly_x,					-poly_y1,			1
+
+
+	IF show_detailed_ponts THEN
+		PUT poly_x,							-poly_y1 + poly_y4 - poly_ys,	1
+		PUT poly_x - poly_x4,				-poly_y1 + poly_y4 - poly_ys,	1
+		PUT poly_x - poly_x4,				-poly_y1 + poly_y4,	1
+		PUT	poly_x,							-poly_y1 + poly_y4,	1
+	ENDIF
+
+		IF ABS(dk_design_folding_depth - 0) < tlr THEN PUT poly_x, poly_yz, 	1
+
+		IF dk_design_folding_depth THEN
+			PUT poly_x, 			poly_yz - dk_design_folding_depth, 	1,
+				poly_x - poly_x4, 	poly_yz - dk_design_folding_depth, 	1,	
+				poly_x - poly_x4, 	poly_yz, 								1
+		ENDIF
+
+	PUT	0,   						poly_yz, 	1,
+		0, 						0, 					-1
+
+
+RETURN
+
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_500_frame_BZ":
+
+	show_detailed_ponts = 1
+	GOSUB "LOD_500_frame_BZ_PUT"	
+	GOSUB "POLY2_B"
+
+	! ......................... !
+
+	show_detailed_ponts = 0
+	GOSUB "LOD_500_frame_BZ_PUT"	
+	GOSUB "HOTSPOTS_2D"
+
+RETURN
+
+! -------------------------------------------------------------- !
+
+"LOD_500_frame_BZ_PUT":
+
+	PUT	0,								-poly_y1 + poly_yt, 		1,
+		poly_x2,						-poly_y1 + poly_yt,			1,
+		poly_x2,						-poly_y1,					1,
+		poly_x - poly_x4,				-poly_y1,					1
+
+	! CIRCLE2 poly_x - poly_x4, -poly_y1, 0.01
+
+	poly_y99 = poly_y1
+	IF show_detailed_ponts = 1 THEN GOSUB "Mehrfachfalz"
+
+	IF bs_folding_nmbr = 1 THEN
+		IF show_detailed_ponts = 1 THEN PUT poly_x - poly_x4,				-poly_y1 + poly_y4,			1
+	ENDIF
+
+	PUT	poly_x,							-poly_y1 + poly_y4,			1
+	
+	! Innenkante BGS
+	IF dk_design_folding_depth THEN
+		PUT poly_x, 			poly_y  + poly_y1 - dk_design_folding_depth, 	1,
+			poly_x - poly_x4, 	poly_y  + poly_y1 - dk_design_folding_depth, 	1,	
+			poly_x - poly_x4, 	poly_y  + poly_y1, 								1
+	ENDIF
+
+	IF ABS(dk_design_folding_depth - 0) < tlr THEN PUT poly_x, poly_y  + poly_y1, 	1
+
+	! Außenkante
+	PUT poly_x2,	 poly_y  + poly_y1, 			1,
+		poly_x2,	 poly_y  + poly_y1 - poly_yt,	1,
+		0,   		 poly_y  + poly_y1 - poly_yt,	1,
+		0, 			-poly_y1 + poly_yt, 		-1
+
+RETURN
+	
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_500_frame_SL_BZ":
+
+	show_detailed_ponts = 1
+	GOSUB "LOD_500_frame_SL_BZ_PUT"	
+	GOSUB "POLY2_B"
+
+	! ......................... !
+
+	show_detailed_ponts = 0
+	GOSUB "LOD_500_frame_SL_BZ_PUT"	
+	GOSUB "HOTSPOTS_2D"
+
+RETURN
+
+! -------------------------------------------------------------- !
+
+"LOD_500_frame_SL_BZ_PUT":
+
+	IF dk_design_folding_depth THEN
+		!poly_y4 		= gs_vt	
+
+	ENDIF
+
+	PUT	0,								-poly_y1 + poly_yt, 			1
+	IF show_detailed_ponts THEN 
+		PUT poly_x2,					-poly_y1 + poly_yt,				1
+	ENDIF
+	PUT	poly_x2,						-poly_y1,						1,
+		poly_x,							-poly_y1,						1
+
+
+	IF show_detailed_ponts THEN
+		PUT poly_x,							-poly_y1 + poly_y4 - poly_ys,	1
+		PUT poly_x - poly_x4,			-poly_y1 + poly_y4 - poly_ys,	1,
+		poly_x - poly_x4,				-poly_y1 + poly_y4,				1
+		PUT	poly_x,							-poly_y1 + poly_y4,				1
+	ENDIF
+
+
+
+		IF dk_design_folding_depth THEN			! Mit Zierfalz auf BGS
+			PUT poly_x, 			poly_y  + poly_y1 - dk_design_folding_depth, 	1,
+				poly_x - poly_x4, 	poly_y  + poly_y1 - dk_design_folding_depth, 	1,	
+				poly_x - poly_x4, 	poly_y  + poly_y1, 								1
+		ENDIF
+
+		IF ABS(dk_design_folding_depth - 0) < tlr THEN PUT poly_x, poly_y  + poly_y1, 	1
+
+	PUT poly_x2,   						poly_y  + poly_y1, 	1
+	IF show_detailed_ponts THEN 
+		PUT poly_x2,  					poly_y + poly_y1 - poly_yt, 			1
+	ENDIF
+		PUT	0,   						poly_y + poly_y1 - poly_yt, 			1,
+		0, 								-poly_y1 + poly_yt, 					-1
+
+RETURN
+	
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_500_frame_UZ":
+
+	show_detailed_ponts = 1
+	GOSUB "LOD_500_frame_UZ_PUT"	
+	GOSUB "POLY2_B"
+
+	! ......................... !
+
+	show_detailed_ponts = 0
+	GOSUB "LOD_500_frame_UZ_PUT"	
+	GOSUB "HOTSPOTS_2D"
+
+RETURN
+	
+! -------------------------------------------------------------- !
+
+"LOD_500_frame_UZ_PUT":
+
+	PUT	0,						0, 					1,
+		poly_x - poly_x3,		0,					1,
+		poly_x - poly_x3,		-poly_y1,			1,
+		poly_x - poly_x4,		-poly_y1,			1
+
+	poly_y99 = poly_y1
+	IF show_detailed_ponts = 1 THEN GOSUB "Mehrfachfalz"
+
+	IF bs_folding_nmbr = 1 THEN
+		IF show_detailed_ponts = 1 THEN
+			PUT poly_x - poly_x4,	-poly_y1 + poly_y4,	1	
+		ENDIF
+	ENDIF
+
+	PUT	poly_x,					-poly_y1 + poly_y4,	1
+
+		IF ABS(dk_design_folding_depth - 0) < tlr THEN PUT poly_x,   poly_y  + poly_y1, 	1
+
+		IF dk_design_folding_depth THEN
+			PUT poly_x, 			poly_y  + poly_y1 - dk_design_folding_depth, 	1,
+				poly_x - poly_x4, 	poly_y  + poly_y1 - dk_design_folding_depth, 	1,	
+				poly_x - poly_x4, 	poly_y  + poly_y1, 								1
+		ENDIF
+
+	PUT	poly_x - poly_x5,   	poly_y  + poly_y1, 	1,
+		poly_x - poly_x5,  		poly_y, 			1,
+		0,   					poly_y, 			1,
+		0, 						0, 					-1
+
+
+RETURN
+	
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_500_frame_SL_UZ":
+
+	show_detailed_ponts = 1
+	GOSUB "LOD_500_frame_SL_UZ_PUT"	
+	GOSUB "POLY2_B"
+
+	! ......................... !
+
+	show_detailed_ponts = 0
+	GOSUB "LOD_500_frame_SL_UZ_PUT"	
+	GOSUB "HOTSPOTS_2D"
+
+RETURN
+	
+! -------------------------------------------------------------- !
+
+"LOD_500_frame_SL_UZ_PUT":
+
+	PUT	0,						0, 					1,
+		poly_x - poly_x3,		0,					1,
+		poly_x - poly_x3,		-poly_y1,			1,
+		poly_x,					-poly_y1,			1
+
+	IF show_detailed_ponts THEN
+		PUT poly_x,					-poly_y1 + poly_y4 - poly_ys,	1,
+			poly_x - poly_x4,	-poly_y1 + poly_y4 - poly_ys,	1,
+			poly_x - poly_x4,		-poly_y1 + poly_y4,	1,
+			poly_x,					-poly_y1 + poly_y4,	1
+	ENDIF
+
+		IF ABS(dk_design_folding_depth - 0) < tlr THEN PUT poly_x,   poly_y  + poly_y1, 	1
+
+		IF dk_design_folding_depth THEN
+			PUT poly_x, 			poly_y  + poly_y1 - dk_design_folding_depth, 	1,
+				poly_x - poly_x4, 	poly_y  + poly_y1 - dk_design_folding_depth, 	1,	
+				poly_x - poly_x4, 	poly_y  + poly_y1, 								1
+		ENDIF
+
+	PUT	poly_x - poly_x5,   		poly_y  + poly_y1, 	1,
+		poly_x - poly_x5,  			poly_y, 			1,
+		0,   						poly_y,				1,
+		0, 							0, 					-1
+
+RETURN
+
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_500_frame_RR":
+
+	show_detailed_ponts = 1
+	GOSUB "LOD_500_frame_RR_PUT"	
+	GOSUB "POLY2_B"
+
+	! ......................... !
+
+	show_detailed_ponts = 0
+	GOSUB "LOD_500_frame_RR_PUT"	
+	GOSUB "HOTSPOTS_2D"
+
+RETURN
+
+! -------------------------------------------------------------- !
+
+"LOD_500_frame_RR_PUT":
+
+	PUT	0, 					0, 	1,
+		poly_x - poly_x4, 	0, 	1
+
+	poly_y99 = 0
+	IF show_detailed_ponts = 1 THEN GOSUB "Mehrfachfalz"
+
+	IF bs_folding_nmbr = 1 THEN
+		IF show_detailed_ponts = 1 THEN PUT poly_x - poly_x4, poly_y4, 	1
+	ENDIF
+
+	PUT	poly_x,	poly_y4, 	1,
+		poly_x,	poly_yz, 	1,
+		0,   	poly_yz, 	1,
+		0, 		0, 			-1
+
+RETURN
+
+! ------------------------------------------------------------------ !
+! ------------------------------------------------------------------ !
+
+"LOD_500_frame_SL_RR":
+
+	show_detailed_ponts = 1
+	GOSUB "LOD_500_frame_SL_RR_PUT"	
+	GOSUB "POLY2_B"
+
+	! ......................... !
+
+	show_detailed_ponts = 0
+	GOSUB "LOD_500_frame_SL_RR_PUT"	
+	GOSUB "HOTSPOTS_2D"
+
+RETURN
+
+! -------------------------------------------------------------- !
+
+"LOD_500_frame_SL_RR_PUT":
+
+	PUT	0, 		0, 					1,
+		poly_x, 0, 					1
+
+	IF show_detailed_ponts THEN
+		PUT poly_x, poly_y4 - poly_ys, 	1,
+			poly_x - poly_x4,	poly_y4- poly_ys, 	1,
+			poly_x - poly_x4, 		poly_y4, 	1,
+			poly_x,	poly_y4, 	1
+	ENDIF
+
+
+	PUT	poly_x,	poly_yz, 	1,
+		0,		poly_yz, 	1,
+		0,		0, 			-1
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+
+
+
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+"dka_topview_fill_right":
+
+	! HG-Schraffur der Aufsichten der Seitenfeldfußhölzer
+	poly_fill 		= dk_fills[dka_topview_fill]
+	poly_fill_pen 	= dk_fill_pens[dka_topview_penF]
+	poly_bg_pen		= dk_bkg_pens[dka_topview_penB]
+	poly_x = - (gs_sidelight_width_right - _framewidth_post_right - _framewidth_right)
+	kont_typ = 6
+	DRAWINDEX 10
+
+	IF _frame_thk_bottom > gs_vt THEN	! Schraffur hinten
+		poly_y = _frame_thk_bottom - gs_vt
+		ADD2 clearingFrameCenter + frame_out_dims_x/2 - _framewidth_right , -poly_y1 + poly_y4
+		GOSUB "Simple_PUT"	
+		GOSUB "POLY2_B"
+		DEL 1
+	ENDIF
+
+	IF bs_sidelight_filling_thk1 < gs_vt THEN	! Schraffur hinten
+		poly_y = gs_vt - bs_sidelight_filling_thk1
+		ADD2 clearingFrameCenter + frame_out_dims_x/2 - _framewidth_right, -poly_y1
+		GOSUB "Simple_PUT"	
+		GOSUB "POLY2_B"
+		DEL 1
+	ENDIF
+
+	DRAWINDEX 20
+	kont_typ = 7
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+"dka_topview_fill_left":
+
+	! HG-Schraffur der Aufsichten der Seitenfeldfußhölzer
+	poly_fill 		= dk_fills[dka_topview_fill]
+	poly_fill_pen 	= dk_fill_pens[dka_topview_penF]
+	poly_bg_pen		= dk_bkg_pens[dka_topview_penB]
+	poly_x =  (gs_sidelight_width_left - _framewidth_post_left - _framewidth_left)
+	kont_typ = 6
+	DRAWINDEX 10
+
+	IF _frame_thk_bottom > gs_vt THEN	! Schraffur hinten
+		poly_y = _frame_thk_bottom - gs_vt
+		ADD2 clearingFrameCenter - frame_out_dims_x/2 + _framewidth_left , -poly_y1 + poly_y4
+		GOSUB "Simple_PUT"	
+		GOSUB "POLY2_B"
+		DEL 1
+	ENDIF
+
+	IF bs_sidelight_filling_thk2 < gs_vt THEN	! Schraffur hinten
+		poly_y = gs_vt - bs_sidelight_filling_thk2
+		ADD2 clearingFrameCenter - frame_out_dims_x/2 + _framewidth_left, -poly_y1
+		GOSUB "Simple_PUT"	
+		GOSUB "POLY2_B"
+		DEL 1
+	ENDIF
+
+	DRAWINDEX 20
+	kont_typ = 7
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+"Simple_PUT":
+
+	PUT 0, 			0,		1,
+		poly_x, 	0,		1,
+		poly_x, 	poly_y,	1,	
+		0,			poly_y,	1,
+		0,			0,		-1
+
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+"POLY2_B":
+
+	PEN poly_cont
+	FILL poly_fill
+	POLY2_B NSP/3, kont_typ, poly_fill_pen, poly_bg_pen, GET(NSP)
+
+	WHILE NSP DO			! Buffer leeren für alle Fälle
+		www_sub = GET(1)
+	ENDWHILE
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+! H O T S P O T S    2 D   E D I T A B L E
+
+"Fangpunkte":
+
+! ......................... !
+
+! Seitenfeld rechts
+
+	IF gs_sidelight_right AND gs_sidelight_left THEN
+		ADD2 offsetEgressCenter + ac_egress_width/2 + gs_sidelight_width_right, _frame_thk_post + _tt_plus
+		HOTSPOT2 0.1, 							0,	htspt, gs_sidelight_width_right, 3			: htspt = htspt + 1
+		HOTSPOT2 0, 							0,	htspt, gs_sidelight_width_right, 1 + 128	: htspt = htspt + 1
+		HOTSPOT2 -gs_sidelight_width_right,		0, 	htspt, gs_sidelight_width_right, 2			: htspt = htspt + 1		
+		DEL 1
+	ENDIF
+
+! ......................... !
+
+! Durchgangsbreite bei Seitenfelde links oder zweien
+
+	IF gs_sidelight_left THEN
+		! ADD2 clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right, _frame_thk_post - gs_ub_st2
+		ADD2 offsetEgressCenter + ac_egress_width/2, _frame_thk_post + _tt_plus
+		HOTSPOT2 0.1, 				0,	htspt, ac_egress_width, 3			: htspt = htspt + 1
+		HOTSPOT2 0, 				0,	htspt, ac_egress_width, 1 + 128		: htspt = htspt + 1
+		HOTSPOT2 -ac_egress_width,	0, 	htspt, ac_egress_width, 2			: htspt = htspt + 1	
+		DEL 1
+	ENDIF
+
+! ......................... !
+
+! Durchgangsbreite nur rechts
+
+	IF gs_sidelight_right  AND NOT(gs_sidelight_left) THEN
+		! ADD2 clearingFrameCenter - frame_out_dims_x/2 + _framewidth_left, _frame_thk_post - gs_ub_st2
+		ADD2 offsetEgressCenter - ac_egress_width/2, _frame_thk_post + _tt_plus
+		HOTSPOT2 -0.1, 				0,	htspt, ac_egress_width, 3			: htspt = htspt + 1
+		HOTSPOT2 0, 				0,	htspt, ac_egress_width, 1 + 128		: htspt = htspt + 1
+		HOTSPOT2 ac_egress_width,	0, 	htspt, ac_egress_width, 2			: htspt = htspt + 1		
+		DEL 1
+	ENDIF
+
+
+! ......................... !
+
+! Seitenfeld links
+
+	! IF gs_sidelight_right AND gs_sidelight_left THEN
+	! 	ADD2 clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right, _frame_thk_post - gs_ub_st2
+	! 	HOTSPOT2 0.1, 							0,	htspt, gs_sidelight_width_left, 3			: htspt = htspt + 1
+	! 	HOTSPOT2 0, 							0,	htspt, gs_sidelight_width_left, 1 + 128	: htspt = htspt + 1
+	! 	HOTSPOT2 -gs_sidelight_width_left,		0, 	htspt, gs_sidelight_width_left, 2			: htspt = htspt + 1		
+	! 	DEL 1
+	! ENDIF
+
+! ......................... !
+
+! Seitenfeld links
+
+	! IF gs_sidelight_right  AND NOT(gs_sidelight_left) THEN
+	! 	ADD2 clearingFrameCenter - frame_out_dims_x/2 + _framewidth_left, _frame_thk_post - gs_ub_st2
+	! 	HOTSPOT2 -0.1, 						0,	htspt, gs_sidelight_width_left, 3			: htspt = htspt + 1
+	! 	HOTSPOT2 0, 						0,	htspt, gs_sidelight_width_left, 1 + 128	: htspt = htspt + 1
+	! 	HOTSPOT2 gs_sidelight_width_left,	0, 	htspt, gs_sidelight_width_left, 2			: htspt = htspt + 1		
+	! 	DEL 1
+	! ENDIF
+
+! ......................... !
+
+! Seitenfeld links
+
+	! IF gs_sidelight_left AND NOT(gs_sidelight_right) THEN
+	! 	ADD2 clearingFrameCenter + frame_out_dims_x/2 - _framewidth_right, _frame_thk_post - gs_ub_st2
+	! 	HOTSPOT2 0.1, 						0,	htspt, gs_sidelight_width_left, 3			: htspt = htspt + 1
+	! 	HOTSPOT2 0, 						0,	htspt, gs_sidelight_width_left, 1 + 128	: htspt = htspt + 1
+	! 	HOTSPOT2 -gs_sidelight_width_left,	0, 	htspt, gs_sidelight_width_left, 2			: htspt = htspt + 1		
+	! 	DEL 1
+	! ENDIF
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+"HOTSPOTS_2D":
+
+	FOR i_sub = 1 TO NSP/3 - 1
+		HOTSPOT2 GET(1), GET(1), htspt + GET(1) - 1
+		htspt = htspt + 1
+	NEXT i_Sub	
+
+	WHILE NSP DO			! Buffer leeren, weil letzte Zeile nicht genutzt wird
+		www_sub = GET(1)
+	ENDWHILE
+		
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !

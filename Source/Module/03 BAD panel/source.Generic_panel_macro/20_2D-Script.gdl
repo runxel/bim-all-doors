@@ -1,0 +1,589 @@
+dk_visibleLeaf = 0
+
+IF NOT( BITTEST(macro_runtype,4) ) THEN GOTO "ende"
+ 
+! GOSUB "dev_showposition"
+
+
+! ----------------------------------------------------------------- [ Grunddefinition der Variablen ]
+
+GOSUB "initialize"
+
+
+! =============================================================================
+! Ausgabe Türblatt
+! =============================================================================
+
+sts = 0
+IF dk_LOD < 101 THEN GOSUB "LoD100"
+IF dk_LOD > 100 AND dk_LOD < 201 THEN GOSUB "LoD200"
+IF dk_LOD > 200 AND dk_LOD < 301 THEN GOSUB "LoD300"
+IF dk_LOD > 300 AND dk_LOD < 351 THEN GOSUB "LoD350"
+IF dk_LOD > 350 AND dk_LOD < 401 THEN GOSUB "LoD400"
+IF dk_LOD > 400 THEN GOSUB "LoD500"
+
+
+! ------------------------------------------------------------------------- [ ENDE ]
+
+"ende":
+END htspt, dk_visibleLeaf
+	 
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"dev_showposition":
+
+	FILL 64
+	PEN SYMB_VIEW_PEN
+
+	CIRCLE2 0,0,0.05
+	LINE2 0, 0, 0.1, 0
+	LINE2 0, 0, 0, 0.1
+
+	POLY2_B 2,2, dk_fill_pens[dka_panel_penF], dk_bkg_pens[dka_panel_penB],
+	    0,0,900,
+	    0.02,360,4000
+
+	RETURN
+
+
+! ----------------------------------------------------------------- [ Einfache Darstellung ]
+
+"LoD100":
+	RETURN
+
+! ----------------------------------------------------------------- [ Reduzierte Darstellung ]
+
+"LoD200":
+	RETURN
+
+"LoD300":
+	RETURN
+
+"LoD350":
+	RETURN
+
+! ----------------------------------------------------------------- [ Komplexe Darstellung ]
+
+"LoD400":
+
+	bs_folding_nmbr 		= (bs_folding_nmbr > 0)
+	dk_panel_folding_nmbr 	= (dk_panel_folding_nmbr > 0)
+
+
+"LoD500":
+
+	ADD2 LeafX-extendsizeR, -gs_leaf_thk
+	MUL2 -1,1
+
+	dk_visibleLeaf = 1
+
+	! »»» Auswahl Schnittebene / Füllung
+
+	s = 1.2  ! Grenzhöhe / Schnittebene ...
+	tFeld = 0
+	msk = 1
+	! ... ermitteln des Schnittfeldes
+	IF LPS = 3 THEN
+		IF (LPDT < s AND LeafY-LFWT > s) THEN
+			tFeld = 1
+			ELSE
+			IF (LPDB < s AND LPDT + tlr > s) THEN
+				tFeld = 3
+				ELSE
+				IF (LFWB < s AND LPDB + tlr > s) THEN
+					tFeld = 2
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+	IF LPS = 2 THEN
+		IF (LPDB < s AND LeafY-LFWT > s) THEN
+			tFeld = 1
+			ELSE
+			IF (LFWB < s AND LPDB > s) THEN
+				tFeld = 2
+				ENDIF
+			ENDIF
+		ENDIF
+	IF LPS = 1 THEN
+		IF (LFWB < s AND LeafY-LFWT > s) THEN
+			tFeld = 1
+			ENDIF
+		ENDIF
+
+	! »»» FÜLLUNGEN + TEILUNGEN + SPROSSEN
+
+	IF tFeld>0 THEN
+
+		! »»» Feldgrößen
+		IF  tFeld = 1 AND LPT[tFeld][1] < 1 AND (design = 64 OR design = 128) THEN LPT[tFeld][2] = 0 ! Bei gebogenem Hauptfeld keine Teilung möglich
+		GOSUB "posDivisions"
+
+		! »»» Attribute / Füllungsdicken Feldtyp-spezifisch
+		IF tFeld = 1 AND stand = 0 THEN  ! Hauptfeld Gangflügel
+			_penC = dk_cont_pens[dka_panel_penC2]
+			_penF = dk_fill_pens[dka_panelfill1_penF]
+			_penB = dk_bkg_pens[dka_panelfill1_penB]
+			_fill = dk_fills[dka_panelfill1_fill]
+			t = dk_panel_filling_thk[1] : s = t
+			aufbau = dk_panel_filling[1]
+			ENDIF
+		IF tFeld = 2 AND stand = 0 THEN  ! Brüstungsfeld Gangflügel
+			_penC = dk_cont_pens[dka_panel_penC2]
+			_penF = dk_fill_pens[dka_panelfill2_penF]
+			_penB = dk_bkg_pens[dka_panelfill2_penB]
+			_fill = dk_fills[dka_panelfill2_fill]
+			t = dk_panel_filling_thk[2] : s = t
+			aufbau = dk_panel_filling[2]
+			ENDIF
+		IF tFeld = 3 AND stand = 0 THEN  ! Mittelfeld Gangflügel
+			_penC = dk_cont_pens[dka_panel_penC2]
+			_penF = dk_fill_pens[dka_panelfill3_penF]
+			_penB = dk_bkg_pens[dka_panelfill3_penB]
+			_fill = dk_fills[dka_panelfill3_fill]
+			t = dk_panel_filling_thk[3] : s = t
+			aufbau = dk_panel_filling[3]
+			ENDIF
+		IF tFeld = 1 AND stand THEN  ! Hauptfeld Standflügel
+			_penC = dk_cont_pens[dka_panel_penC2]
+			_penF = dk_fill_pens[dka_panel2fill1_penF]
+			_penB = dk_bkg_pens[dka_panel2fill1_penB]
+			_fill = dk_fills[dka_panel2fill1_fill]
+			t = dk_panel_filling_thk2[1] : s = t
+			aufbau = dk_panel_filling2[1]
+			ENDIF
+		IF tFeld = 2 AND stand THEN  ! Brüstungsfeld Standflügel
+			_penC = dk_cont_pens[dka_panel_penC2]
+			_penF = dk_fill_pens[dka_panel2fill2_penF]
+			_penB = dk_bkg_pens[dka_panel2fill2_penB]
+			_fill = dk_fills[dka_panel2fill2_fill]
+			t = dk_panel_filling_thk2[2] : s = t
+			aufbau = dk_panel_filling2[2]
+			ENDIF
+		IF tFeld = 3 AND stand THEN  ! Mittelfeld Standflügel
+			_penC = dk_cont_pens[dka_panel_penC2]
+			_penF = dk_fill_pens[dka_panel2fill3_penF]
+			_penB = dk_bkg_pens[dka_panel2fill3_penB]
+			_fill = dk_fills[dka_panel2fill3_fill] 
+			t = dk_panel_filling_thk2[3] : s = t
+			aufbau = dk_panel_filling2[3]
+			ENDIF
+
+		! »»» Positionierung Füllung (quer), Mittig oder Abstand zu BGS
+		IF dk_filling_position = 0 THEN
+			FillingPosition = gs_leaf_thk / 2 + dk_panel_fill_offset
+			ELSE
+			FillingPosition = dk_panel_fill_offset + t/2
+			ENDIF
+
+		! »»» Füllung nach Formen...
+		XX = 0  ! Verbreiterung Randprofile
+		x  = MIN(dk_fill_frame_width, LPDD[tFeld][2]/4)  ! Randstreifen bei Kassetten
+		! ... Sonderformen
+		IF tFeld = 1 AND BITTEST(design,1) THEN  ! Kreis
+			XX = LPDD[tFeld][2]/2 - MIN(LPDD[tFeld][1]/2, LPDD[tFeld][2]/2)
+			x = MIN(dk_fill_frame_width, LPDD[tFeld][2]/4, LPDD[tFeld][1]/4)
+			ENDIF
+		IF tFeld = 1 AND BITTEST(design,2) THEN  ! Raute
+			r = SQR(LPDD[tFeld][1]^2 + LPDD[tFeld][2]^2)
+			x = MIN(dk_fill_frame_width*r/LPDD[tFeld][2], LPDD[tFeld][2]/2)
+			ENDIF
+
+		! »»» 1by1
+		FOR i=0 TO LPT[tFeld][2]
+			ADD2 LFWL + (LPDD[tFeld][2] + LFWV)*i,0
+
+			! Füllung ermitteln
+			n = 0
+			k = 1 ! Anzahl Schichten, Grundannahme einfach.  (bis LoD 400 1 Shicht)
+			IF aufbau = "G2" AND dk_LOD > 400 THEN ! doppelt
+				s = MIN(0.006, t/3) ! Dicke
+				k = 2
+				ENDIF
+			IF aufbau = "G3" AND dk_LOD > 400 THEN ! dreifach
+				s = MIN(0.006, t/5) ! Dicke
+				k = 3
+				ENDIF
+			IF aufbau = "G1" OR aufbau = "G2" OR aufbau = "G3" OR aufbau = "PL" THEN ! einfach
+				n=n+1 : PUT LPDD[tFeld][2]-XX + dk_notch_bar_width, -s/2, 0
+				n=n+1 : PUT LPDD[tFeld][2]-XX + dk_notch_bar_width,  s/2, msk
+				n=n+1 : PUT XX - dk_notch_bar_width, s/2, 0
+				n=n+1 : PUT XX - dk_notch_bar_width, -s/2, msk
+				dk_notch_bar_depth = t  !s * ((k-1) + k)
+				ELSE
+				! Dicke
+				s = t/3    ! = MIN( gs_leaf_thk, 3*t)
+				dk_notch_bar_depth = s
+				ENDIF
+			IF aufbau = "K1" THEN ! Kassette 1
+				n=n+1 : PUT LPDD[tFeld][2] - XX, -s/2, 0
+				IF dk_LOD > 400 THEN
+					n=n+1 : PUT LPDD[tFeld][2] - XX + dk_notch_bar_width, -s/2, 0
+					n=n+1 : PUT LPDD[tFeld][2] - XX + dk_notch_bar_width,  s/2, 0
+					ENDIF
+				n=n+1 : PUT LPDD[tFeld][2] - XX, s/2, msk
+				n=n+1 : PUT LPDD[tFeld][2] - XX - x, t/2, msk
+				n=n+1 : PUT XX + x, t/2, msk
+				n=n+1 : PUT XX,  s/2, 0
+				IF dk_LOD > 400 THEN
+					n=n+1 : PUT XX - dk_notch_bar_width,  s/2, 0
+					n=n+1 : PUT XX - dk_notch_bar_width, -s/2, 0
+					ENDIF
+				n=n+1 : PUT XX, -s/2, msk
+				n=n+1 : PUT XX + x, -t/2, msk
+				n=n+1 : PUT LPDD[tFeld][2] - XX - x, -t/2, msk
+				ENDIF
+			IF aufbau = "K2" THEN ! Kassette 2
+				n=n+1 : PUT LPDD[tFeld][2] - XX + dk_notch_bar_width, -s/2, 0
+				n=n+1 : PUT LPDD[tFeld][2] - XX + dk_notch_bar_width, s/2, msk
+				n=n+1 : PUT LPDD[tFeld][2] - XX - x, s/2, msk
+				n=n+1 : PUT LPDD[tFeld][2] - XX - x, t/2, msk
+				n=n+1 : PUT XX + x, t/2, msk
+				n=n+1 : PUT XX + x, s/2, msk
+				n=n+1 : PUT XX - dk_notch_bar_width, s/2, 0
+				n=n+1 : PUT XX - dk_notch_bar_width, -s/2, msk
+				n=n+1 : PUT XX + x, -s/2, msk
+				n=n+1 : PUT XX + x, -t/2, msk
+				n=n+1 : PUT LPDD[tFeld][2] - XX - x, -t/2, msk
+				n=n+1 : PUT LPDD[tFeld][2] - XX - x, -s/2, msk
+				ENDIF
+
+			! »»» Ausgabe Füllungen
+			DRAWINDEX 40
+			PEN dk_cont_pens[_penC]
+			FILL _fill
+			IF k = 1 THEN
+				ADD2 0, FillingPosition
+				ENDIF
+			IF k > 1  THEN
+				ADD2 0, FillingPosition + t/2 - s/2
+				POLY2_B n, 1+2+4, _penF, _penB, USE(n*3)
+				DEL 1
+				ADD2 0, FillingPosition - t/2 + s/2
+				ENDIF
+			IF k = 3 THEN
+				POLY2_B n, 1+2+4, _penF, _penB, USE(n*3)
+				DEL 1
+				ADD2 0, FillingPosition
+				ENDIF
+			POLY2_B n, 1+2+4, _penF, _penB, GET(n*3)
+			DEL 1
+
+			! »»» Teilungen
+			DRAWINDEX 50
+			FILL dk_fills[dka_panel_fill]
+			PEN dk_cont_pens[dka_panel_penC2]
+
+			IF i > 0 THEN
+				n = 0
+				n=n+1 : PUT -LFWV-XX, 0, msk
+				IF dk_LOD > 400 THEN
+					n=n+1 : PUT -LFWV - XX, FillingPosition - dk_notch_bar_depth / 2, msk
+					n=n+1 : PUT -LFWV - XX + dk_notch_bar_width, FillingPosition - dk_notch_bar_depth / 2, msk
+					n=n+1 : PUT -LFWV - XX + dk_notch_bar_width, FillingPosition + dk_notch_bar_depth / 2, msk
+					n=n+1 : PUT -LFWV - XX, FillingPosition + dk_notch_bar_depth / 2, msk
+					ENDIF
+				n=n+1 : PUT -LFWV-XX, gs_leaf_thk, msk
+
+				n=n+1 : PUT XX, gs_leaf_thk, msk
+				IF dk_LOD > 400 THEN
+					n=n+1 : PUT XX, FillingPosition + dk_notch_bar_depth / 2, msk
+					n=n+1 : PUT XX - dk_notch_bar_width, FillingPosition + dk_notch_bar_depth / 2, msk
+					n=n+1 : PUT XX - dk_notch_bar_width, FillingPosition - dk_notch_bar_depth / 2, msk
+					n=n+1 : PUT XX, FillingPosition - dk_notch_bar_depth / 2, msk
+					ENDIF
+				n=n+1 : PUT XX, 0, msk
+				POLY2_B n, 1+2+4, dk_fill_pens[dka_panel_penF], dk_bkg_pens[dka_panel_penB], GET(n*3)
+				ENDIF
+
+			! »»» Sprossen
+			DRAWINDEX 50
+			IF  NOT( aufbau = "K1" OR aufbau = "K2" ) AND \  ! Kasettenfüllung				
+				NOT( tFeld = 1 AND (design = 2 OR design = 4) ) AND \  ! Raute oder runder Ausschnitt
+				NOT( tFeld = 1 AND LPT[tFeld][1] < 1 AND (design = 64 OR design = 128) ) AND \  ! Bogen oben und keine Querteilung
+				PBN[tFeld][2] AND dk_LOD > 400 THEN
+
+				x = (LPDD[tFeld][2] + mullWidthX) / (1 + (PBN[tFeld][2]))
+				FOR j = 1 TO PBN[tFeld][2]
+					n = 0
+					n=n+1 : PUT -mullWidthX, 0, msk
+					n=n+1 : PUT -mullWidthX, mullThick, msk
+					n=n+1 : PUT 0, mullThick, msk
+					n=n+1 : PUT 0, 0, msk
+					ADD2 j*x, FillingPosition + t/2
+					POLY2_B n, 1+2+4, dk_fill_pens[dka_panel_penF], dk_bkg_pens[dka_panel_penB], USE(n*3)
+					DEL 1
+					ADD2 j*x, FillingPosition - t/2 : MUL2 1,-1
+					POLY2_B n, 1+2+4, dk_fill_pens[dka_panel_penF], dk_bkg_pens[dka_panel_penB], GET(n*3)
+					DEL 2
+					NEXT j
+
+				ENDIF
+
+			! »»» Hintergrund (über kompletten Ausschnitt)
+			DRAWINDEX 30
+			FILL dk_fills[dka_topview_fill]
+			PEN dk_cont_pens[dka_topview_penC2]
+
+			n = 0
+			! XXX-seite
+			n=n+1 : PUT LPDD[tFeld][2]-XX, 0, 0
+			IF dk_LOD > 400 THEN
+				n=n+1 : PUT LPDD[tFeld][2]-XX, FillingPosition - dk_notch_bar_depth / 2, 0
+				n=n+1 : PUT LPDD[tFeld][2]-XX + dk_notch_bar_width, FillingPosition - dk_notch_bar_depth / 2, 0
+				n=n+1 : PUT LPDD[tFeld][2]-XX + dk_notch_bar_width, FillingPosition + dk_notch_bar_depth / 2, 0
+				n=n+1 : PUT LPDD[tFeld][2]-XX, FillingPosition + dk_notch_bar_depth / 2, 0
+				ENDIF
+			n=n+1 : PUT LPDD[tFeld][2]-XX, gs_leaf_thk, msk
+			
+			! XXX-seite
+			n=n+1 : PUT XX, gs_leaf_thk, 0
+			IF dk_LOD > 400 THEN
+				n=n+1 : PUT XX, FillingPosition - dk_notch_bar_depth / 2, 0
+				n=n+1 : PUT XX-dk_notch_bar_width, FillingPosition - dk_notch_bar_depth / 2, 0
+				n=n+1 : PUT XX-dk_notch_bar_width, FillingPosition + dk_notch_bar_depth / 2, 0
+				n=n+1 : PUT XX, FillingPosition + dk_notch_bar_depth / 2, 0
+				ENDIF
+			n=n+1 : PUT XX, 0, msk
+
+			POLY2_B n, 1+2+4, dk_fill_pens[dka_topview_penF], dk_bkg_pens[dka_topview_penB], GET(n*3)
+
+			DEL 1
+			NEXT i
+
+		ENDIF
+
+	! »»» RAHMEN / VOLLBLATT
+
+	FILL dk_fills[dka_panel_fill]
+	PEN dk_cont_pens[dka_panel_penC2]
+
+	! »»» Bandseite Türblattkante
+
+	n = 0 : msk = 1
+	n=n+1 : PUT LeafX, gs_leaf_thk, msk  ! (node 0)
+
+	IF bs_folding_nmbr > 0 OR bs_leaf_oversize > tlr THEN   ! Koordinaten Zargenfalz
+		offsetX = LeafX : flipX = -1 : GOSUB "shapeSideFolding"
+		ELSE
+		n=n+1 : PUT LeafX, 0, msk  ! kein Falz
+		ENDIF
+
+	! »»» Anschlusspunkt Mitte
+	IF dk_LOD > 350 AND tFeld > 0 THEN
+		n=n+1 : PUT LeafX - LFWR, 0, msk
+		IF dk_notch_bar_width > tlr THEN
+			n=n+1 : PUT LeafX - LFWR, FillingPosition - dk_notch_bar_depth / 2, msk  ! Glaseinstand
+			n=n+1 : PUT LeafX - LFWR + dk_notch_bar_width, FillingPosition - dk_notch_bar_depth / 2, msk  ! Glaseinstand
+			n=n+1 : PUT LeafX - LFWR + dk_notch_bar_width, FillingPosition + dk_notch_bar_depth / 2, msk  ! Glaseinstand
+			n=n+1 : PUT LeafX - LFWR, FillingPosition + dk_notch_bar_depth / 2, msk  ! Glaseinstand
+			ENDIF
+		n=n+1 : PUT LeafX - LFWR, gs_leaf_thk, msk
+		ELSE
+		n=n+1 : PUT LeafX/2, 0, 0
+		n=n+1 : PUT LeafX/2, gs_leaf_thk, msk
+		ENDIF
+
+	! »»» Ausgabe
+	IF n>0 THEN POLY2_B n, 1+2+4, dk_fill_pens[dka_panel_penF], dk_bkg_pens[dka_panel_penB], GET(n*3)
+
+	! »»» Schlosseite Türblattkante
+
+	n = 0 : msk = 1
+
+	IF (bs_folding_nmbr > 0 OR bs_leaf_oversize > tlr) AND bs_door_leafs=1 THEN   ! Koordinaten Zargenfalz
+		n=n+1 : PUT 0, gs_leaf_thk, msk  ! (node 0)
+		offsetX = 0 : flipX = 1 : GOSUB "shapeSideFolding"
+		ENDIF
+
+	IF bs_door_leafs=2 THEN   ! Koordinaten Mittelfalz ...
+		IF dk_panel_folding_nmbr > 0 THEN   ! überfälz
+			IF stand=0 THEN   ! ... Gangflügel
+				n=n+1 : PUT 0, gs_leaf_thk, msk  ! (node 0)
+				offsetX = 0 : flipX = 1 : GOSUB "shapeMiddleFoldingGang"
+				n=n+1 : PUT dk_panel_folding_dimensions[1][1], 0, msk  ! last node
+				ENDIF
+			IF stand THEN   ! ... Standflügel
+				n=n+1 : PUT 0, 0, msk  ! (node 0)
+				n=n+1 : PUT 0, dk_panel_folding_dimensions[1][2] - dk_panel_gasket_thk, msk  ! node 02
+				offsetX = 0 : flipX = 1 : GOSUB "shapeMiddleFoldingStand"
+				n=n+1 : PUT dk_panel_folding_dimensions[1][1], gs_leaf_thk, msk  ! node 1T
+				ENDIF
+			ELSE
+			IF stand=0 THEN   ! ... Gangflügel
+				n=n+1 : PUT 0, gs_leaf_thk, msk  ! (node 0)
+				n=n+1 : PUT 0, 0, msk  ! last node
+				ENDIF
+			IF stand THEN   ! ... Standflügel
+				n=n+1 : PUT 0, 0, msk  ! (node 0)
+				n=n+1 : PUT 0, gs_leaf_thk, msk  ! node 1T
+				ENDIF
+			ENDIF
+		ENDIF
+
+	! »»» Anschlusspunkt Mitte
+	IF stand THEN
+		IF dk_LOD > 350 AND tFeld > 0 THEN
+			n=n+1 : PUT LFWL, gs_leaf_thk, msk
+			IF dk_notch_bar_width > tlr THEN
+				n=n+1 : PUT LFWL , FillingPosition + dk_notch_bar_depth / 2, msk  ! Glaseinstand
+				n=n+1 : PUT LFWL - dk_notch_bar_width, FillingPosition + dk_notch_bar_depth / 2, msk  ! Glaseinstand
+				n=n+1 : PUT LFWL - dk_notch_bar_width, FillingPosition - dk_notch_bar_depth / 2, msk  ! Glaseinstand
+				n=n+1 : PUT LFWL , FillingPosition - dk_notch_bar_depth / 2, msk  ! Glaseinstand
+				ENDIF
+			n=n+1 : PUT LFWL, 0, msk
+			ELSE
+			n=n+1 : PUT LeafX/2, gs_leaf_thk, 0
+			n=n+1 : PUT LeafX/2, 0, msk
+			ENDIF
+		ELSE
+		IF dk_LOD > 350 AND tFeld > 0 THEN
+			n=n+1 : PUT LFWL, 0, msk
+			IF dk_notch_bar_width > tlr THEN
+				n=n+1 : PUT LFWL , FillingPosition - dk_notch_bar_depth / 2, msk  ! Glaseinstand
+				n=n+1 : PUT LFWL - dk_notch_bar_width, FillingPosition - dk_notch_bar_depth / 2, msk  ! Glaseinstand
+				n=n+1 : PUT LFWL - dk_notch_bar_width, FillingPosition + dk_notch_bar_depth / 2, msk  ! Glaseinstand
+				n=n+1 : PUT LFWL , FillingPosition + dk_notch_bar_depth / 2, msk  ! Glaseinstand
+				ENDIF
+			n=n+1 : PUT LFWL, gs_leaf_thk, msk
+			ELSE
+			n=n+1 : PUT LeafX/2, 0, 0
+			n=n+1 : PUT LeafX/2, gs_leaf_thk, msk
+			ENDIF
+		ENDIF
+
+	! »»» Ausgabe
+	IF n>0 THEN POLY2_B n, 1+2+4, dk_fill_pens[dka_panel_penF], dk_bkg_pens[dka_panel_penB], GET(n*3)
+
+	ADD2 0, gs_leaf_thk
+	GOSUB "Fangpunkte"
+	DEL 3
+	RETURN
+
+! ----------------------------------------------------------------- [ Projizierte Darstellung ]
+
+"LoD500p":
+
+	! PROJECT2{3} 3, 270, 3+32, 1+2 + (4+8)*0,
+	! 	dk_fill_pens[dka_panel_penB],  !Hintergrundstift,
+	! 	0,0, 0,  !Schraffur - Ursprung+Richtung
+	! 	PARAMETERS macro_runtype = BITSET(macro_runtype,5), dk_LOD = 500
+
+	PROJECT2{4} 3,270,  ! projection_code, angle,
+		0, 0, 0,        ! useTransparency, statusParts, numCutplanes,  [cutplaneHeight]
+		3+32+512,1+2+4+8,   ! method1, parts1,
+		dk_fills[dka_panel_fill],         ! cutFillIndex1,
+		dk_fill_pens[dka_panel_penF],     ! cutFillFgPen1,
+		dk_bkg_pens[dka_panel_penB],      ! cutFillBgPen1,
+		0,0, 0,                           ! cutFillOrigoX1, cutFillOrigoY1, cutFillDirection1,
+		dk_cont_pens[dka_panel_penC2], 1, ! cutLinePen1, cutLineType1,
+		dk_fills[dka_topview_fill],       ! projectedFillIndex1,
+		dk_fill_pens[dka_topview_penF],   ! projectedFillFgPen1,  
+		dk_bkg_pens[dka_topview_penB],    ! projectedFillBgPen1,
+		0,0, 0,                           ! projectedFillOrigoX1, projectedFillOrigoY1, projectedFillDirection1,
+		dk_cont_pens[dka_topview_penC2], 1, ! projectedLinePen1, projectedLineType1
+		PARAMETERS macro_runtype = BITSET(macro_runtype,5), dk_LOD = 500
+
+
+	! PROJECT2{4} 3,270,  ! projection_code, angle,
+	! 	0, 0,           ! useTransparency, statusParts,
+	! 	1, 0,        ! numCutplanes,  [cutplaneHeight]
+
+	! 	3+32+512,1+2+4+8,   ! method1, parts1,
+	! 	dk_fills[dka_panel_fill],         ! cutFillIndex1,
+	! 	dk_fill_pens[dka_panel_penF],     ! cutFillFgPen1,
+	! 	dk_bkg_pens[dka_panel_penB],      ! cutFillBgPen1,
+	! 	0,0, 0,                           ! cutFillOrigoX1, cutFillOrigoY1, cutFillDirection1,
+	! 	dk_cont_pens[dka_panel_penC2], 1, ! cutLinePen1, cutLineType1,
+	! 	dk_fills[dka_topview_fill],       ! projectedFillIndex1,
+	! 	dk_fill_pens[dka_topview_penF],   ! projectedFillFgPen1,  
+	! 	dk_bkg_pens[dka_topview_penB],    ! projectedFillBgPen1,
+	! 	0,0, 0,                           ! projectedFillOrigoX1, projectedFillOrigoY1, projectedFillDirection1,
+	! 	dk_cont_pens[dka_topview_penC2], 1, ! projectedLinePen1, projectedLineType1
+
+	! 	3+32+512,0+0+0+0,   ! method1, parts1,
+	! 	dk_fills[dka_panel_fill],         ! cutFillIndex1,
+	! 	dk_fill_pens[dka_panel_penF],     ! cutFillFgPen1,
+	! 	dk_bkg_pens[dka_panel_penB],      ! cutFillBgPen1,
+	! 	0,0, 0,                           ! cutFillOrigoX1, cutFillOrigoY1, cutFillDirection1,
+	! 	dk_cont_pens[dka_panel_penC2], 1, ! cutLinePen1, cutLineType1,
+	! 	dk_fills[dka_panel_fill],         ! projectedFillIndex1,
+	! 	dk_fill_pens[dka_panel_penF],     ! projectedFillFgPen1,  
+	! 	dk_bkg_pens[dka_panel_penB],      ! projectedFillBgPen1,
+	! 	0,0, 0,                           ! projectedFillOrigoX1, projectedFillOrigoY1, projectedFillDirection1,
+	! 	dk_cont_pens[dka_panel_penC2], 1, ! projectedLinePen1, projectedLineType1
+	! 	PARAMETERS macro_runtype = BITSET(macro_runtype,5), dk_LOD = 500
+
+	ADD2 dk_panel_folding_gap - LeafOversize,0
+	GOSUB "Fangpunkte"
+	DEL 1
+	RETURN
+
+"Fangpunkte":
+	IF bs_door_leafs = 2 THEN
+
+		IF stand THEN
+
+			x = dk_panel_folding_dimensions[1][1] : y = 0
+			htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Schlosseite
+			x = LeafX : y = 0
+			htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Bandseite
+
+			x = 0 : y = -gs_leaf_thk
+			htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Schlosseite
+			x = falzX : y = -gs_leaf_thk+falzY
+			htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Bandseite
+
+			ELSE
+
+			x = 0 : y = 0
+			htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Schlosseite
+			x = LeafX : y = 0
+			htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Bandseite
+
+			x = dk_panel_folding_dimensions[1][1] : y = -gs_leaf_thk
+			htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Schlosseite
+			x = falzX : y = -gs_leaf_thk+falzY
+			htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Bandseite
+
+			ENDIF
+
+		IF bs_leaf_oversize > tlr THEN
+
+			x = LeafX-LeafOversize : y = -bs_leaf_overhang
+			htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Schlosseite
+
+			ENDIF
+
+		ELSE
+
+		x = 0 : y = 0
+		htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Schlosseite
+		x = LeafX : y = 0
+		htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Bandseite
+
+		x = falzX : y = -gs_leaf_thk+falzY
+		htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Schlosseite
+		x = LeafX-falzX : y = -gs_leaf_thk+falzY
+		htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Bandseite
+
+		IF bs_leaf_oversize > tlr THEN
+
+			x = LeafOversize : y = -bs_leaf_overhang
+			htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Schlosseite
+			x = LeafX-LeafOversize : y = -bs_leaf_overhang
+			htspt=htspt+1 : HOTSPOT2 x, y, htspt ! Bandseite
+
+			ENDIF
+
+		ENDIF
+
+	RETURN

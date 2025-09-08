@@ -1,0 +1,2081 @@
+dk_visibleLeaf = 0
+
+IF NOT( BITTEST(macro_runtype,5) ) THEN GOTO "ende"
+
+! =============================================================================
+! PLAUSIBILITY
+! =============================================================================
+
+! Damit Trennlinie zwischen den Flügeln sichtbar wird!
+! -> ToDo - mit LIN_ an SF Kante ersetzen
+IF dk_LOD < 401 THEN
+	IF stand THEN LeafWidthS = LeafWidthS - separateProfiles
+	IF oberlichtblende=2 AND NOT(oberblende) THEN LeafHeight = LeafHeight - separateProfiles
+	ENDIF
+
+! ----------------------------------------------------------------- [ Grunddefinition der Variablen ]
+
+DIM LFVX[][], LFVY[][], LFVm[][], LFVn[]
+DIM LFHX[][], LFHY[][], LFHm[][], LFHn[]
+DIM LDPX[][], LDPY[][], LDPm[][], LDPF[], LDPn[]
+
+GOSUB "initialize"
+
+ctpln = 0  ! Anzahl Schnittebenen und -körper
+
+! »»» Darstellung
+GOSUB "LoD_panel"
+msk1 = 1+2+4+8
+msk2 = 2+8   !+1+4
+msk3 = 1+4+8 !+2
+msk4 = 8     !1+2+4
+msk5 = 1+4+8+2+64
+
+! »»» Bei gleichen Materialien auf beiden Seiten kann Türblatt ein Geometriekörper sein
+monolith = (BITTEST(macro_runtype,4) OR dk_LOD < 301 OR (dk_materials[dka_panel2_mat_BS] = dk_materials[dka_panel_mat_BGS] AND dk_LOD < 401))
+
+! »»» Teilfeldgrößen / Oberblende immer Vollblatt ohne Füllung
+IF oberblende THEN bs_panel_type = "VB"
+GOSUB "posDivisions"
+
+
+! »»» Koordinaten der einzelnen Felder
+IF bs_panel_type # "-" AND dk_LOD > 301 AND NOT(oberblende) THEN GOSUB "segmentkoordinaten"
+
+! Kanten Rahmenprofile in LOD 500 sichtbar
+IF dk_LOD>400 THEN
+	msk1 = 15
+	msk2 = 15
+	msk3 = 15
+	msk4 = 15
+	ENDIF
+	
+! »»» Rahmenprofile einzeln (für Texturausrichtung)
+IF bs_panel_type = "RF" OR bs_panel_type = "RP" THEN GOSUB "rahmenkoordinaten"
+
+! »»» Teilung der beiden Seiten (BS/BGS) für saubere Leibungsdarstellung
+IF dk_filling_position = 0 THEN
+	FillingPosition = gs_leaf_thk / 2 + dk_panel_fill_offset
+	ELSE
+	s = 0
+	IF stand THEN
+		FOR i=1 TO dk_panel_segments2  !LPS
+			IF STRSUB(dk_panel_filling2[i],1,1) = "K" THEN s = MAX(s, dk_panel_filling_thk2[i])
+			NEXT i
+		ELSE
+		FOR i=1 TO dk_panel_segments  !LPS
+			IF STRSUB(dk_panel_filling[i],1,1) = "K" THEN s = MAX(s, dk_panel_filling_thk[i])
+			NEXT i
+		ENDIF
+	FillingPosition = MIN(dk_panel_fill_offset + s/3, gs_leaf_thk - bs_leaf_overhang)
+	ENDIF
+
+
+! =============================================================================
+! AUSGABE
+! =============================================================================
+
+BODY -1
+PEN dk_cont_pens[dka_panel_penC3]
+SECT_FILL dk_fills[dka_panel_fill], dk_bkg_pens[dka_panel_penB], dk_fill_pens[dka_panel_penF], dk_cont_pens[dka_panel_penC2]
+
+! Bei 3D-Projektion aus 2D-Skript cutplane setzen
+IF BITTEST(macro_runtype,4) THEN
+	IF LPS>0 THEN
+		! Gesichert im Hauptfeld schneiden
+		schnittebene2D = LeafY-LFWT-LPDD[1][1]/2
+		ELSE
+		! Über Türgriffen ist Pflicht
+		schnittebene2D = 1.3
+		ENDIF
+	rotx 90 !Aufrichten
+	ADDy schnittebene2D
+	CUTPLANE 1,0,1, 0, 1+0
+	ctpln = ctpln + 1 
+	DEL 1
+	ENDIF
+
+! Aufgebaut wird immer eine linke Tür. 
+! Spiegelung und Ausrichtung erfolgt im Hauptobjekt
+! Einsprung-Position auf linke (= an den Bändern) untere Ecke (Türblattaußenmaß)
+
+ADD LeafX-extendsizeR, gapHeightUnderPanel * NOT(oberblende) , offsetElevation
+MULx -1
+
+! Der Ursprung liet nun auf der Schlosseite, UK Türblatt bzw. Oberblende
+! Oberfläche Bandseite ist die XY-Ebene
+! Bandgegenseite ist in Richtung Z, positive Werte (= "oben")
+
+! Zunächst werden ein Schnittkörper für die Kantenformen erzeugt
+! Dann werden die Profile ausgegeben, Ggf auch ein Platte mit Löchern
+! Diese werden als Schichten von BS zu BGS übeeinandergestapelt
+! Trennfuge ist die Mitte oder die Ebene der Füllung
+! Dann werden nochmal die Koordinaten der Füllungs-Löcher ermittelt
+! und diese dann ggf. Schichtweise ausgegeben.
+
+! IF develop = 8 THEN GOSUB "showWhereWeAre"
+
+! ----------------------------------------------------------------- [ Kantenausbildung ]
+
+IF stand THEN matK = dk_materials[dka_panel2_bandings_mat] ELSE matK = dk_materials[dka_panel_bandings_mat]
+
+MATERIAL matK
+matKante = (dk_panel_bandings = "-")
+
+
+! ----------------------------------------------------------------- [ Türblattfalze - Zargenfalz ]
+
+n = 0
+msk = 1+2+4  !+16
+
+IF bs_folding_nmbr > 0 OR bs_leaf_oversize > tlr THEN   ! »»» Koordinaten Zargenfalz
+
+	! Falzabzug
+	offsetX = 0 : flipX = 1 : GOSUB "shapeSideFolding"
+
+	! Oberflächenabzug (Anleimer)
+	IF dk_panel_bandings = "A" THEN
+		bandings_thk = tlr  !0.001
+		FalzBreite = gs_vb + bs_leaf_oversize
+		! Polygonenden einrücken, damit sie schneiden
+		PUT GET(1)+bandings_thk : PUT GET(2)
+		PUT GET((n-2)*3)
+		PUT GET(1) : PUT GET(1)+bandings_thk : PUT GET(1)
+		! BGS Anleimer auf Oberfläche
+		n=n+1 : PUT FalzBreite+dk_leaf_bandings_width, bandings_thk, msk
+		n=n+1 : PUT FalzBreite+dk_leaf_bandings_width, -bandings_thk, msk
+		! Falz
+		n=n+1 : PUT -bandings_thk, -bandings_thk, msk
+		n=n+1 : PUT -bandings_thk, gs_leaf_thk+bandings_thk, msk
+		! BS Anleimer auf Oberfläche
+		n=n+1 : PUT  dk_leaf_bandings_width, gs_leaf_thk+bandings_thk, msk
+		n=n+1 : PUT  dk_leaf_bandings_width, gs_leaf_thk-bandings_thk, msk
+		n=n+1 : PUT  bandings_thk, gs_leaf_thk-bandings_thk, msk
+		ELSE
+		n=n+1 : PUT 0, 0, msk  ! node 0
+		ENDIF
+
+	ENDIF
+
+IF n > 2 THEN    ! »»» Schnittkörper Zargenfalz
+
+	! Schloßseite
+	IF bs_door_leafs=1 THEN
+		ADD 0, 0, gs_leaf_thk : ROTx 270 : MULx 1
+		IF develop = 8 THEN GOSUB "showWhereWeAre"
+		CUTPOLYA n, matKante+2, 0, use(n*3)
+		DEL 3
+		ctpln = ctpln + 1
+		ENDIF
+
+	! oben
+	IF bs_inner_frame > 2 OR oberblende THEN
+		ADD 0, LeafY, gs_leaf_thk : ROTy 90 : ROTz 270
+		CUTPOLYA n, matKante+2, 0, USE(n*3)
+		DEL 3
+		ctpln = ctpln + 1
+		ENDIF
+
+	! Bandseite
+	ADD LeafX, 0, gs_leaf_thk : ROTx 270 : MULx -1
+	CUTPOLYA n, matKante+2, 0, GET(n*3)
+	n = 0
+	DEL 3
+	ctpln = ctpln + 1
+
+	ELSE
+
+	! kein Falz
+	FOR i=1 TO nsp : x=GET(1) : NEXT i
+
+	ENDIF
+
+
+! ----------------------------------------------------------------- [ Türblattfalze - Mittelfalz ]
+
+n = 0
+msk = 1+2+4  !+16
+
+IF (dk_panel_folding_nmbr > 0 AND bs_door_leafs=2 AND stand=0) OR bs_inner_frame = 2 THEN   ! »»» Koordinaten Mittelfalz Gangflügel
+	! Falzabzug
+	offsetX = 0 : flipX = 1 : GOSUB "shapeMiddleFoldingGang"
+	n=n+1 : PUT dk_panel_folding_dimensions[1][1], 0, msk  ! last node
+
+	! Oberflächenabzug (Anleimer)
+	IF dk_panel_bandings = "A" THEN
+		bandings_thk = tlr  !0.001
+		FalzBreite = dk_panel_folding_dimensions[1][1]
+		! Polygonenden einrücken, damit sie schneiden
+		PUT GET(1)+bandings_thk : PUT GET(2)
+		PUT GET((n-2)*3)
+		PUT GET(1) : PUT GET(1)+bandings_thk : PUT GET(1)
+		! BGS Anleimer auf Oberfläche
+		n=n+1 : PUT FalzBreite+dk_leaf_bandings_width, bandings_thk, msk
+		n=n+1 : PUT FalzBreite+dk_leaf_bandings_width, -bandings_thk, msk
+		! Falz
+		n=n+1 : PUT -bandings_thk, -bandings_thk, msk
+		n=n+1 : PUT -bandings_thk, gs_leaf_thk+bandings_thk, msk
+		! BS Anleimer auf Oberfläche
+		n=n+1 : PUT  dk_leaf_bandings_width, gs_leaf_thk+bandings_thk, msk
+		n=n+1 : PUT  dk_leaf_bandings_width, gs_leaf_thk-bandings_thk, msk
+		n=n+1 : PUT  bandings_thk, gs_leaf_thk-bandings_thk, msk
+		ELSE
+		n=n+1 : PUT 0, 0, msk  ! node 0
+		ENDIF
+
+	ENDIF
+
+IF n > 2 AND not(oberblende) THEN    ! »»» Schnittkörper Mittelfalz / zu Oberblende
+
+	! Mitte (Schlossseite)
+	IF bs_door_leafs=2 THEN 
+		ADD 0, 0, gs_leaf_thk : ROTx 270 : MULx 1
+		IF develop = 8 THEN GOSUB "showWhereWeAre"
+		IF bs_inner_frame = 2 THEN CUTPOLYA n, matKante+2, 0, USE(n*3) ELSE CUTPOLYA n, matKante+2, 0, GET(n*3)
+		DEL 3
+		ctpln = ctpln + 1
+		ENDIF
+
+	! oben, bei Oberblende
+	IF bs_inner_frame = 2 THEN
+		ADD 0, LeafY, gs_leaf_thk : ROTy 90 : ROTz 270
+		CUTPOLYA n, matKante+2, 0, GET(n*3)
+		n = 0
+		DEL 3
+		ctpln = ctpln + 1
+		ENDIF
+
+	ELSE
+
+	! kein Falz
+	FOR i=1 TO nsp : x=GET(1) : NEXT i
+
+	ENDIF
+
+n = 0
+msk = 1+2+4  !+16
+
+IF dk_panel_folding_nmbr > 0 AND ((bs_door_leafs=2 AND stand) OR oberblende) THEN   ! »»» Koordinaten Mittelfalz  Standflügel / Oberblende (=Gegenstück)
+	! Falzabzug
+	n=n+1 : PUT 0, dk_panel_folding_dimensions[1][2] - dk_panel_gasket_thk, msk  ! node 02
+	offsetX = 0 : flipX = 1 : GOSUB "shapeMiddleFoldingStand"
+	n=n+1 : PUT dk_panel_folding_dimensions[1][1], gs_leaf_thk, msk  ! node 1T
+
+	! Oberflächenabzug (Anleimer)
+	IF dk_panel_bandings = "A" THEN
+		bandings_thk = tlr  !0.001
+		FalzBreite = dk_panel_folding_dimensions[1][1]
+		! Polygonenden einrücken, damit sie schneiden
+		PUT GET(1)+bandings_thk : PUT GET(2)
+		PUT GET((n-2)*3)
+		PUT GET(1) : PUT GET(1)-bandings_thk : PUT GET(1)
+		! BGS Anleimer auf Oberfläche
+		n=n+1 : PUT FalzBreite+dk_leaf_bandings_width, gs_leaf_thk-bandings_thk, msk
+		n=n+1 : PUT FalzBreite+dk_leaf_bandings_width, gs_leaf_thk+bandings_thk, msk
+		! ! Falz
+		n=n+1 : PUT -bandings_thk, gs_leaf_thk+bandings_thk, msk
+		n=n+1 : PUT -bandings_thk, -bandings_thk, msk
+		! ! BS Anleimer auf Oberfläche
+		n=n+1 : PUT  dk_leaf_bandings_width, -bandings_thk, msk
+		n=n+1 : PUT  dk_leaf_bandings_width, bandings_thk, msk
+		n=n+1 : PUT  bandings_thk, bandings_thk, msk
+		ELSE
+		n=n+1 : PUT 0, gs_leaf_thk, msk  ! last node 00
+		ENDIF
+		
+	ENDIF
+
+IF n > 2 THEN    ! »»» Schnittkörper Mittelfalz / Oberblende
+
+	IF oberblende  THEN
+
+		! unten, bei Oberblende
+		ADD 1, 0, gs_leaf_thk : ROTy 270 : ROTz 90 : MULz 1
+		IF develop = 8 THEN GOSUB "showWhereWeAre"
+		CUTPOLYA n, matKante+2, 0, GET(n*3)
+		DEL 4
+		ctpln = ctpln + 1
+			
+		ELSE
+
+		! Mitte (Schlossseite)
+		ADD 0, 0, gs_leaf_thk : ROTx 270 : MULx 1
+		CUTPOLYA n, matKante+2, 0, GET(n*3)
+		DEL 3
+		ctpln = ctpln + 1
+
+		ENDIF
+
+	ELSE
+
+	! kein Falz
+	FOR i=1 TO nsp : x=GET(1) : NEXT i
+
+	ENDIF
+
+
+! ----------------------------------------------------------------- [ Pfosten/Riegel Bandgegenseite (oben)]
+
+IF bs_panel_type = "RF" OR bs_panel_type = "RP" THEN
+
+	IF stand THEN matP = dk_materials[dka_panel2_mat_BGS] ELSE matP = dk_materials[dka_panel_mat_BGS]
+	MATERIAL matP
+	
+	! Nicht als Sandwich?
+	IF monolith THEN
+		ADDz 0
+		t = gs_leaf_thk
+		ra = 0
+		ELSE
+		ADDz gs_leaf_thk - FillingPosition
+		t = FillingPosition
+		ENDIF
+
+	! Horizontal
+	FOR j=1 TO LFHi
+		FOR i=1 TO LFHn[j]
+			IF monolith THEN msk = LFHm[j][i] ELSE msk = BITSET(LFHm[j][i],0,0)
+			PUT LFHX[j][i], LFHY[j][i], msk
+			NEXT i
+		IF ra > tlr THEN
+			HPRISM_	matP, matP, matP, matP,
+				LFHn[j], t, 45, ra, 1,
+				GET(LFHn[j]*3)
+			ELSE
+			PRISM_ LFHn[j], t,
+				GET(LFHn[j]*3)
+			ENDIF
+		! Texturausrichtung
+		COOR{3} 2,4,
+			0,0,0,
+			1,0,0,
+			0,1,0,
+			0,0,1
+		BODY 1
+		NEXT j
+
+	! Vertikalen
+	FOR j=1 TO LFVi
+		FOR i=1 TO LFVn[j]
+			IF monolith THEN msk = LFVm[j][i] ELSE msk = BITSET(LFVm[j][i],0,0)
+			PUT LFVX[j][i], LFVY[j][i], msk
+			NEXT i
+		IF ra > tlr THEN
+			HPRISM_	matP, matP, matP, matP,
+				LFVn[j], t, 45, ra, 1,
+				GET(LFVn[j]*3)
+			ELSE
+			PRISM_ LFVn[j], t,
+				GET(LFVn[j]*3)
+			ENDIF
+		! Texturausrichtung
+		COOR{3} 2,4,
+			0,0,0,
+			0,-1,0,
+			1,0,0,
+			0,0,1
+		BODY 1
+		NEXT j
+
+	DEL 1
+	
+	dk_visibleLeaf = 1
+
+	ENDIF
+
+
+! ----------------------------------------------------------------- [ Pfosten/Riegel Bandseite (unten)]
+
+IF (bs_panel_type = "RF" OR bs_panel_type = "RP") AND NOT(monolith) THEN
+
+	ADDz gs_leaf_thk - FillingPosition
+	MULz -1
+	t = gs_leaf_thk - FillingPosition
+
+	IF stand THEN matP = dk_materials[dka_panel2_mat_BS] ELSE matP = dk_materials[dka_panel_mat_BS]
+	MATERIAL matP
+
+	! Horizontal
+	FOR j=1 TO LFHi
+		FOR i=1 TO LFHn[j]
+			PUT LFHX[j][i], LFHY[j][i], BITSET(LFHm[j][i],0,0)
+			NEXT i
+		IF ra > tlr THEN
+			HPRISM_	matP, matP, matP, matP,
+				LFHn[j], t, 45, ra, 1,
+				GET(LFHn[j]*3)
+			ELSE
+			PRISM_ LFHn[j], t,
+				GET(LFHn[j]*3)
+			ENDIF
+		! Texturausrichtung
+		COOR{3} 2,4,
+			0,0,0,
+			1,0,0,
+			0,1,0,
+			0,0,1
+		BODY 1
+		NEXT j
+
+	! Vertikal
+	FOR j=1 TO LFVi
+		FOR i=1 TO LFVn[j]
+			PUT LFVX[j][i], LFVY[j][i], BITSET(LFVm[j][i],0,0)
+			NEXT i
+		IF ra > tlr THEN
+			HPRISM_	matP, matP, matP, matP,
+				LFVn[j], t, 45, ra, 1,
+				GET(LFVn[j]*3)
+			ELSE
+			PRISM_ LFVn[j], t,
+				GET(LFVn[j]*3)
+			ENDIF
+		! Texturausrichtung
+		COOR{3} 2,4,
+			0,0,0,
+			0,1,0,
+			1,0,0,
+			0,0,1
+		BODY 1
+		NEXT j
+
+	dk_visibleLeaf = 1
+
+	DEL 2
+	ENDIF
+
+
+! ----------------------------------------------------------------- [ Vollblatt ]
+
+IF bs_panel_type = "VB" THEN
+
+	! Rahmen
+	IF monolith THEN msk = 1+2+4+8 ELSE msk = 2+4+8
+	PUT 0, 0, msk
+	PUT LeafX, 0, msk
+	PUT LeafX, LeafY, msk
+	PUT 0, LeafY, msk+64
+	PUT 0, 0, -1
+	n = 5
+
+	! Felder
+	FOR j=1 TO LDPi
+		FOR i=1 TO LDPn[j]
+			IF monolith THEN msk = LDPm[j][i] ELSE msk = BITSET(LDPm[j][i],0,0)
+			PUT LDPX[j][i], LDPY[j][i], msk
+			NEXT i
+		n = n + LDPn[j]
+		IF LDPm[j][LDPn[j]] < 4000 THEN ! Poly schließen
+			PUT LDPX[j][1], LDPY[j][1], -1
+			n = n+1
+			ENDIF
+		NEXT j
+
+	! Materialien (oben/unten/Kante)
+	IF stand THEN 
+		matPBS =  dk_materials[dka_panel2_mat_BS] 
+		matPK =   dk_materials[dka_panel2_bandings_mat] 
+		matPBGS = dk_materials[dka_panel2_mat_BGS] 
+		ELSE 
+		matPBS =  dk_materials[dka_panel_mat_BS]
+		matPK =   dk_materials[dka_panel_bandings_mat] 
+		matPBGS = dk_materials[dka_panel_mat_BGS]
+		ENDIF
+	MATERIAL matPBS
+
+	! Bandseite (unten)
+	IF monolith THEN
+
+		! "unten" überspringen, da mit einem Befehl in "oben"
+		ADDz 0
+		t = 0
+		ra = 0
+
+		ELSE
+
+		ADDz gs_leaf_thk - FillingPosition
+		MULz -1
+		t = gs_leaf_thk - FillingPosition
+
+		IF ra > tlr THEN
+			HPRISM_	matPBS, matPBGS, matPK, matPBS,
+				n, t, 45, ra, 1,
+				USE(n*3)
+			ELSE
+			CPRISM_ matPBS, matPBGS, matPK,
+					n, t, USE(n*3)
+			ENDIF
+
+		! Texturausrichtung
+		COOR{3} 2,4,
+			0,0,0,
+			1,0,0,
+			0,1,0,
+			0,0,1
+		DEL 1
+		BODY 1
+		ENDIF
+
+	! Bandgegenseite (oben)
+	t = gs_leaf_thk - t   ! Dicke Gegenstück / Rest
+
+	IF ra > tlr THEN
+		HPRISM_	matPBGS, matPBS, matPK, matPBGS,
+			n, t, 45, ra, 1,
+			GET(n*3)
+		ELSE
+		CPRISM_ matPBGS, matPBS, matPK,
+				n, t, GET(n*3)
+		ENDIF
+
+	! Texturausrichtung
+	COOR{3} 2,4,
+		0,0,0,
+		1,0,0,
+		0,1,0,
+		0,0,1
+	DEL 1
+	BODY 1
+
+	dk_visibleLeaf = 1
+
+	ENDIF
+
+
+! ----------------------------------------------------------------- [ Füllungen + Sprossen ]
+
+IF LDPi > 0 AND dk_LOD > 301 AND NOT(GLOB_FEEDBACK_MODE) THEN
+
+	matP = SYMB_MAT
+	msk1 = 1+2+4+8
+	msk3 = 1+4+8
+	msk5 = 1+2+4+8+64
+
+	! ### FÜLLUNG 1by1
+	
+	FOR j=1 TO LDPi
+
+		! »»» Feldtyp-spezifisch
+		tFeld = 1*BITTEST(LDPF[j],0) + 2*BITTEST(LDPF[j],1) + 3*BITTEST(LDPF[j],2)
+		IF tFeld = 1 AND stand = 0 THEN  ! Hauptfeld Gangflügel
+			matBS  = dk_materials[dka_panelfill1_mat_BS]
+			matBGS = dk_materials[dka_panelfill1_mat_BGS]
+			t = dk_panel_filling_thk[1] : s = t
+			aufbau = dk_panel_filling[1]
+			SECT_FILL dk_fills[dka_panelfill1_fill], dk_bkg_pens[dka_panelfill1_penB], dk_fill_pens[dka_panelfill1_penF], dk_cont_pens[dka_panel_penC2]
+			ENDIF
+		IF tFeld = 2 AND stand = 0 THEN  ! Brüstungsfeld Gangflügel
+			matBS  = dk_materials[dka_panelfill2_mat_BS]
+			matBGS = dk_materials[dka_panelfill2_mat_BGS]
+			t = dk_panel_filling_thk[2] : s = t
+			aufbau = dk_panel_filling[2]
+			SECT_FILL dk_fills[dka_panelfill2_fill], dk_bkg_pens[dka_panelfill2_penB], dk_fill_pens[dka_panelfill2_penF], dk_cont_pens[dka_panel_penC2]
+			ENDIF
+		IF tFeld = 3 AND stand = 0 THEN  ! Mittelfeld Gangflügel
+			matBS  = dk_materials[dka_panelfill3_mat_BS]
+			matBGS = dk_materials[dka_panelfill3_mat_BGS]
+			t = dk_panel_filling_thk[3] : s = t
+			aufbau = dk_panel_filling[3]
+			SECT_FILL dk_fills[dka_panelfill3_fill], dk_bkg_pens[dka_panelfill3_penB], dk_fill_pens[dka_panelfill3_penF], dk_cont_pens[dka_panel_penC2]
+			ENDIF
+		IF tFeld = 1 AND stand THEN  ! Hauptfeld Standflügel
+			matBS  = dk_materials[dka_panel2fill1_mat_BS]
+			matBGS = dk_materials[dka_panel2fill1_mat_BGS]
+			t = dk_panel_filling_thk2[1] : s = t
+			aufbau = dk_panel_filling2[1]
+			SECT_FILL dk_fills[dka_panel2fill1_fill], dk_bkg_pens[dka_panel2fill1_penB], dk_fill_pens[dka_panel2fill1_penF], dk_cont_pens[dka_panel_penC2]
+			ENDIF
+		IF tFeld = 2 AND stand THEN  ! Brüstungsfeld Standflügel
+			matBS  = dk_materials[dka_panel2fill2_mat_BS]
+			matBGS = dk_materials[dka_panel2fill2_mat_BGS]
+			t = dk_panel_filling_thk2[2] : s = t
+			aufbau = dk_panel_filling2[2]
+			SECT_FILL dk_fills[dka_panel2fill2_fill], dk_bkg_pens[dka_panel2fill2_penB], dk_fill_pens[dka_panel2fill2_penF], dk_cont_pens[dka_panel_penC2]
+			ENDIF
+		IF tFeld = 3 AND stand THEN  ! Mittelfeld Standflügel
+			matBS  = dk_materials[dka_panel2fill3_mat_BS]
+			matBGS = dk_materials[dka_panel2fill3_mat_BGS]
+			t = dk_panel_filling_thk2[3] : s = t
+			aufbau = dk_panel_filling2[3]
+			SECT_FILL dk_fills[dka_panel2fill3_fill], dk_bkg_pens[dka_panel2fill3_penB], dk_fill_pens[dka_panel2fill3_penF], dk_cont_pens[dka_panel_penC2]
+			ENDIF
+
+		! »»» Positionierung Füllung (quer):
+		! FillingPosition ist der Abstand der Mittelachsenebene der jeweiligen Füllung zur BGS
+		IF dk_filling_position = 0 THEN
+			FillingPosition = gs_leaf_thk / 2 - dk_panel_fill_offset
+			ELSE
+			FillingPosition = gs_leaf_thk - dk_panel_fill_offset - t/2
+			ENDIF
+
+		! »»» Form (außen) -> n
+		FOR i=1 TO LDPn[j]
+			PUT LDPX[j][i], LDPY[j][i], LDPm[j][i]
+			NEXT i
+		n = LDPn[j] : m = 0
+
+		! »»» Feld gefüllt (Form "eingezogen") -> m
+		IF aufbau = "K1" OR aufbau = "K2" THEN
+
+			! erstmal Hauptpoly abschließen
+			IF LDPm[j][LDPn[j]] < 4000 THEN ! Poly schließen
+				PUT LDPX[j][1], LDPY[j][1], -1
+				n = n+1
+				ENDIF
+
+			! Dicke
+			s = t/3    ! = MIN( gs_leaf_thk, 3*t)
+
+			! Kassette nach Formen
+			IF BITTEST(LDPF[j],3) THEN  ! Rechteck
+				x = LDPX[j][2]-LDPX[j][1]
+				y = LDPY[j][3]-LDPY[j][2]
+				XX = MIN(dk_fill_frame_width, x/4)
+				YY = MIN(dk_fill_frame_width, y/4)
+				PUT LDPX[j][1]+XX, LDPY[j][1]+YY, msk1
+				PUT LDPX[j][2]-XX, LDPY[j][2]+YY, msk1
+				PUT LDPX[j][3]-XX, LDPY[j][3]-YY, msk1
+				PUT LDPX[j][4]+XX, LDPY[j][4]-YY, msk1
+				PUT LDPX[j][1]+XX, LDPY[j][1]+YY, -1
+				m = 5
+				ENDIF
+			IF BITTEST(LDPF[j],4) THEN  ! Kreis
+				XX = MIN(LPDD[1][1]/2, LPDD[1][2]/2)
+				r = XX - MIN(dk_fill_frame_width, x/4, y/4)
+				IF aufbau = "K1" THEN
+					! segmentiert
+					FOR m = 0 TO seg-1+tlr
+						PUT LDPX[j][1] - XX + r * COS(m * 360/seg)
+						PUT LDPY[j][1] + r * SIN(m * 360/seg)
+						PUT msk3
+						NEXT m
+					PUT LDPX[j][1] - XX + r, LDPY[j][1], -1
+					m = seg + 1
+					ELSE
+					! exakt
+					PUT LDPX[j][1], LDPY[j][1], 900+msk3
+					PUT r, 360, 4000 + msk3
+					m = 2
+					ENDIF
+				ENDIF
+			IF BITTEST(LDPF[j],5) THEN  ! Raute
+				x = (LDPX[j][2]-LDPX[j][1])
+				y = (LDPY[j][3]-LDPY[j][2])
+				r = SQR(x^2 + y^2)
+				XX = MIN(dk_fill_frame_width*r/y, x/2)
+				YY = MIN(dk_fill_frame_width*r/x, y/2)
+				PUT LDPX[j][1]+XX, LDPY[j][1], msk1
+				PUT LDPX[j][2], LDPY[j][2]+YY, msk1
+				PUT LDPX[j][3]-XX, LDPY[j][3], msk1
+				PUT LDPX[j][4], LDPY[j][4]-YY, msk1
+				PUT LDPX[j][1]+XX, LDPY[j][1], -1
+				m = 5
+				ENDIF
+			IF BITTEST(LDPF[j],6) AND LAW > tlr AND aufbau = "K2" THEN  ! klassischer Bogen 1 (Segmentbogen)
+				x = LDPX[j][1]-LDPX[j][5]
+				y = LDPY[j][2]-LDPY[j][5]
+				XX = MIN(dk_fill_frame_width, x/4)
+				YY = MIN(dk_fill_frame_width, y/4)
+				r = LAW/2 + (x-2*XX)^2/(8*LAW)
+				w = 2 * asn((x-2*XX)/2/r)
+				PUT LDPX[j][5]+x-XX, LDPY[j][5]+YY, msk1
+				PUT LDPX[j][5]+x-XX, LDPY[j][5]+y-YY, msk5
+				PUT LDPX[j][5]+x/2,  LDPY[j][5]+y-YY+LAW-r, 900+msk5
+				PUT 0, w, 4000+msk5
+				PUT LDPX[j][5]+XX, LDPY[j][5]+YY, msk1
+				PUT LDPX[j][5]+x-XX, LDPY[j][5]+YY, -1
+				m = 6
+				ENDIF
+			IF BITTEST(LDPF[j],6) AND LAW > tlr AND aufbau = "K1" THEN  ! klassischer Bogen 1 (Segmentbogen) - segmentiert
+				! »»» segmentiert für RULES...
+				x = LDPX[j][2]-LDPX[j][1]
+				y = LDPY[j][3]-LDPY[j][2]
+				XX = MIN(dk_fill_frame_width, x/4)
+				YY = MIN(dk_fill_frame_width, y/4)
+				r = LAW/2 + (x-2*XX)^2 /(8*LAW)
+				w = 2 * asn( (x-2*XX) /2 /r)
+				PUT LDPX[j][1]+XX, LDPY[j][1]+YY, msk1
+				PUT LDPX[j][2]-XX, LDPY[j][2]+YY, msk5
+				k = n-4  ! CEIL(seg * w/360/2)*2
+				FOR i = -k/2 TO k/2+tlr
+					PUT LDPX[j][1]+x/2 + r * COS(90 + i * w/k)
+					PUT LDPY[j][1]+y+LAW-YY-r + r * SIN(90 + i * w/k)
+					PUT msk5
+					NEXT i
+				PUT LDPX[j][1]+XX, LDPY[j][1]+YY, -1
+				m = 2 + k+1 + 1
+				ENDIF
+			IF BITTEST(LDPF[j],7) AND aufbau = "K2" THEN  ! Klasisch 2 (gewellter Rand)
+				x = (LDPX[j][1]-LDPX[j][10])/2
+				y = LDPY[j][2]-LDPY[j][10]
+				XX = MIN(dk_fill_frame_width, x/2)
+				YY = MIN(dk_fill_frame_width, y/4)
+				w = atn((x-XX)/LAW)
+				r = ( SQR(LAW^2 + (x-XX)^2) /2 /2) / cos(w)
+				PUT LDPX[j][10]+2*x-XX, LDPY[j][10]+YY, msk1
+				PUT LDPX[j][10]+2*x-XX, LDPY[j][10]+y-YY, msk5
+				PUT -1, 0, 800+msk5 ! Richtung
+				PUT LDPX[j][10]+2*x-XX, LDPY[j][10]+y-YY+r, 900+msk5 ! 1. Bogen
+				PUT LDPX[j][10]+2*x-XX-(x-XX)/2, LDPY[j][10]+y-YY+LAW/2, 3000+msk5
+				PUT LDPX[j][10]+x, LDPY[j][10]+y-YY+LAW-r, 900+msk5 ! 2. Bogen
+				PUT LDPX[j][10]+XX+(x-XX)/2, LDPY[j][10]+y-YY+LAW/2, 3000+msk5
+				PUT LDPX[j][10]+XX, LDPY[j][10]+y-YY+r, 900+msk5 ! 3. Bogen
+				PUT LDPX[j][10]+XX, LDPY[j][10]+y-YY, 3000+msk5
+				PUT LDPX[j][10]+XX, LDPY[j][10]+YY, msk5
+				PUT LDPX[j][10]+2*x-XX, LDPY[j][10]+YY, -1
+				m = 11
+				ENDIF
+			IF BITTEST(LDPF[j],7) AND aufbau = "K1" THEN  ! Klasisch 2 (gewellter Rand) - segmentiert
+				! »»» segmentiert für RULES...
+				x = (LDPX[j][2]-LDPX[j][1])/2
+				y = LDPY[j][2]
+				XX = MIN(dk_fill_frame_width, x/4)
+				YY = MIN(dk_fill_frame_width, y/4)
+				! Welle
+				w = atn( (x-XX) / LAW )
+				r = ( SQR(LAW^2 + (x-XX)^2) /2 /2) / cos(w)
+				w = 2*(90-w)
+				k = ((n-4)-1)/4  ! INT(seg * w/360 + 0.5)
+				! Ecken unten
+				PUT LFWL + XX, y + YY, msk1
+				PUT LFWL + 2*x - XX, y + YY, msk1
+				PUT LFWL + 2*x - XX, LeafY - LFWT - YY, msk5
+				! 1. Bogen
+				FOR m = 0 TO k-1+tlr
+					PUT LeafX - LFWR - XX + r * COS(270 - m * w/k)
+					PUT LeafY - LFWT - YY + r + r * SIN(270 - m * w/k)
+					PUT msk3
+					NEXT m
+				! 2. Bogen
+				FOR m = -k TO k+tlr
+					PUT LFWL + x + r * COS(90 + m * w/k)
+					PUT LeafY - LFWT - YY + LAW - r + r * SIN(90 + m * w/k)
+					PUT msk3
+					NEXT m
+				! 3. Bogen
+				FOR m = k-1 TO 0-tlr STEP -1
+					PUT LFWL + XX + r * COS(270 + m * w/k)
+					PUT LeafY - LFWT - YY + r + r * SIN(270 + m * w/k)
+					PUT msk3
+					NEXT m
+				PUT LFWL + XX, y + YY, -1
+				m = 3 + k*4+1 + 1
+				ENDIF
+			ENDIF
+
+		! »»» Ausgabe
+		ADDz FillingPosition - t/2
+		IF aufbau = "G1" OR aufbau = "PL" THEN ! einfach
+			CPRISM_ matBGS, matBS, matP,
+				n, s, GET(n*3)
+			ENDIF
+		IF aufbau = "G2" THEN ! doppelt
+			s = MIN(0.006, t/3)
+			CPRISM_ matBS, matBS, matP,
+				n, s, USE(n*3)
+			ADDz t-s
+			CPRISM_ matBGS, matBGS, matP,
+				n, s, GET(n*3)
+			DEL 1
+			ENDIF
+		IF aufbau = "G3" THEN ! dreifach
+			s = MIN(0.006, t/5)
+			CPRISM_ matBS, matBS, matP,
+				n, s, USE(n*3)
+			ADDz t/2-s/2
+			CPRISM_ matBGS, matBS, matP,
+				n, s, USE(n*3)
+			ADDz t/2-s/2
+			CPRISM_ matBGS, matBGS, matP,
+				n, s, GET(n*3)
+			DEL 2
+			ENDIF
+		IF aufbau = "K1" THEN ! Kassette 1
+			ADDz t/2 - s/2
+			CPRISM_ matBGS, matBS, matP,
+				n, s, USE(n*3)
+			IF m>0 THEN
+				! Befehlsparameter anpassen
+				FOR i = 1 TO n
+					sts = 0
+					IF (i>3 AND i<n-1) AND (BITTEST(LDPF[j],6) OR BITTEST(LDPF[j],7)) THEN sts = 1
+					IF BITTEST(LDPF[j],4) THEN sts = 1
+					PUT GET(2)
+					PUT GET(1)*0 + sts
+					NEXT i
+				FOR i = 1 TO m
+					PUT GET(2)
+					PUT GET(1)*0 + (t-s)/2
+					NEXT i
+				! Bandgegenseite
+				ADDz s
+				MATERIAL matBGS
+				RULED{2} n, 1+2+4+16+32, USE( (n*2) * 3)
+				DEL 1
+				! Bandseite
+				MATERIAL matBS
+				ADDz 0 : MULz -1
+				RULED{2} n, 1+2+4+16+32, GET( (n*2) * 3)
+				DEL 2
+				ELSE
+				ENDIF
+			FOR i=1 TO nsp : x=GET(1) : NEXT i
+			DEL 1
+			ENDIF
+		IF aufbau = "K2" THEN ! Kassette 2
+			ADDz t/2 - s/2
+			CPRISM_ matBGS, matBS, matP,
+				n, s, GET(n*3)
+			IF m>0 THEN
+				! Bandgegenseite
+				ADDz s
+				CPRISM_ matBGS, matBS, matBGS,
+					m, (t-s)/2, USE(m*3)
+				! Bandseite
+				DEL 2
+				CPRISM_ matBGS, matBS, matBS,
+					m, (t-s)/2, GET(m*3)
+				ELSE
+				DEL 1
+				ENDIF
+			ENDIF
+
+		! »»» Texturausrichtung
+		COOR{3} 2,4,
+			0,0,0,
+			1,0,0,
+			0,1,0,
+			0,0,1
+		DEL 1
+		BODY 1
+
+		! ### SPROSSEN
+
+		IF  NOT( aufbau = "K1" OR aufbau = "K2" ) AND \  ! Kasettenfüllung				
+			NOT( tFeld = 1 AND (design = 2 OR design = 4) ) AND \  ! Raute oder runder Ausschnitt
+			LDPn[j] = 4 AND \  ! Annahme Ausschnitt mit 4 Ecken ist ein Rechteck
+			( PBN[tFeld][1] + PBN[tFeld][2] ) THEN
+
+			x = (LDPX[j][3] - LDPX[j][1] + mullWidthX) / (1 + (PBN[tFeld][2]))
+			y = (LDPY[j][3] - LDPY[j][1] + mullWidthY) / (1 + (PBN[tFeld][1]))
+
+			! »»» Horizontale Sprossen
+			FOR k=1 TO PBN[tFeld][1]
+				FOR i=0 TO PBN[tFeld][2]
+					! Koordinaten 
+					IF i = 0 THEN
+						n = 2
+						PUT LDPX[j][1], LDPY[j][1] + k*y, msk3
+						PUT LDPX[j][1], LDPY[j][1] + k*y - mullWidthY, msk1
+						ELSE
+						n = 3
+						PUT LDPX[j][1] + i*x, LDPY[j][1] + k*y, msk1
+						PUT LDPX[j][1] + i*x - mullWidthX/2, LDPY[j][1] + k*y - mullWidthY/2, msk1
+						PUT LDPX[j][1] + i*x, LDPY[j][1] + k*y - mullWidthY, msk1
+						ENDIF
+					IF i = PBN[tFeld][2] THEN
+						n = n+2
+						PUT LDPX[j][1] + (i+1)*x - mullWidthX, LDPY[j][1] + k*y - mullWidthY, msk3
+						PUT LDPX[j][1] + (i+1)*x - mullWidthX, LDPY[j][1] + k*y, msk1
+						ELSE
+						n = n+3
+						PUT LDPX[j][1] + (i+1)*x - mullWidthX, LDPY[j][1] + k*y - mullWidthY, msk3
+						PUT LDPX[j][1] + (i+1)*x - mullWidthX/2, LDPY[j][1] + k*y - mullWidthY/2, msk3
+						PUT LDPX[j][1] + (i+1)*x - mullWidthX, LDPY[j][1] + k*y, msk1
+						ENDIF
+					! Bandseite
+					ADDz FillingPosition - t/2 - mullThick
+					IF stand THEN matP = dk_materials[dka_panel2_mat_BS] ELSE matP = dk_materials[dka_panel_mat_BS]
+					CPRISM_ matP, matP, matP,
+						n, mullThick, USE(n*3)
+					! Texturausrichtung
+					COOR{3} 2,4,
+						0,0,0,
+						1,0,0,
+						0,1,0,
+						0,0,1
+					BODY 1
+					! Bandgegenseite
+					IF stand THEN matP = dk_materials[dka_panel2_mat_BGS] ELSE matP = dk_materials[dka_panel_mat_BGS]
+					ADDz t + mullThick
+					CPRISM_ matP, matP, matP,
+						n, mullThick, GET(n*3)
+					DEL 2
+					! Texturausrichtung
+					COOR{3} 2,4,
+						0,0,0,
+						1,0,0,
+						0,1,0,
+						0,0,1
+					BODY 1
+					NEXT i
+				NEXT k
+
+			! »»» Vertikale Sprossen
+			FOR k=0 TO PBN[tFeld][1]
+				FOR i=1 TO PBN[tFeld][2]
+					! Koordinaten Sprossen
+					IF k = 0 THEN
+						n = 2
+						PUT LDPX[j][1] + i*x, LDPY[j][1], msk3
+						PUT LDPX[j][1] + i*x - mullWidthX, LDPY[j][1], msk1
+						ELSE
+						n = 3
+						PUT LDPX[j][1] + i*x, LDPY[j][1] + k*y, msk1
+						PUT LDPX[j][1] + i*x - mullWidthX/2, LDPY[j][1] + k*y - mullWidthY/2, msk1
+						PUT LDPX[j][1] + i*x - mullWidthX, LDPY[j][1] + k*y, msk1
+						ENDIF
+					IF k = PBN[tFeld][1] THEN
+						n = n+2
+						PUT LDPX[j][1] + i*x - mullWidthX, LDPY[j][1] + (k+1)*y - mullWidthY, msk3
+						PUT LDPX[j][1] + i*x, LDPY[j][1] + (k+1)*y - mullWidthY, msk1
+						ELSE
+						n = n+3
+						PUT LDPX[j][1] + i*x - mullWidthX, LDPY[j][1] + (k+1)*y - mullWidthY, msk3
+						PUT LDPX[j][1] + i*x - mullWidthX/2, LDPY[j][1] + (k+1)*y - mullWidthY/2, msk3
+						PUT LDPX[j][1] + i*x, LDPY[j][1] + (k+1)*y - mullWidthY, msk1
+						ENDIF
+					! Bandseite
+					ADDz FillingPosition - t/2 - mullThick
+					IF stand THEN matP = dk_materials[dka_panel2_mat_BS] ELSE matP = dk_materials[dka_panel_mat_BS]
+					CPRISM_ matP, matP, matP,
+						n, mullThick, USE(n*3)
+					! Texturausrichtung
+					COOR{3} 2,4,
+						0,0,0,
+						0,-1,0,
+						1,0,0,
+						0,0,1
+					BODY 1
+					! Bandgegenseite
+					IF stand THEN matP = dk_materials[dka_panel2_mat_BGS] ELSE matP = dk_materials[dka_panel_mat_BGS]
+					ADDz t + mullThick
+					CPRISM_ matP, matP, matP,
+						n, mullThick, GET(n*3)
+					! Texturausrichtung
+					COOR{3} 2,4,
+						0,0,0,
+						0,-1,0,
+						1,0,0,
+						0,0,1
+					DEL 2
+					BODY 1
+					NEXT i
+				NEXT k
+
+			ENDIF
+
+		NEXT j
+
+	ENDIF
+
+
+! ----------------------------------------------------------------- [ Öffnungslinien ]
+
+IF dk_visibleLeaf AND NOT(oberblende) 	THEN  ! »»» Gesamtabmessungen
+
+	! Stift + aktivieren
+	IF GLOB_VIEW_TYPE = 3 OR GLOB_VIEW_TYPE = 6 THEN  ! 3D
+		opLineType   = dk_opening3D
+		gs_opLinePen = dk_cont_pens[dka_opline3D]
+		ENDIF
+	IF GLOB_VIEW_TYPE = 4 OR GLOB_VIEW_TYPE = 5 THEN  ! Schnitt / Ansicht
+		opLineType   = dk_openingSA
+		gs_opLinePen = dk_cont_pens[dka_oplineSA]
+		ENDIF
+
+	! Nach MVO?
+	IF opLineType = 4 THEN
+
+		result = 0
+		sts = LIBRARYGLOBAL ("LibraryGlobals13", "D_showBOpLine3D", result)
+
+		IF sts > 0 AND result THEN
+
+			opLineType = 1
+
+			! Stift für Linien
+			sts = LIBRARYGLOBAL ("LibraryGlobals13", "D_opLinePen", gs_opLinePen)
+
+			! Linientypen dieses Flügels nach MVO
+			IF stand THEN
+				sts = LIBRARYGLOBAL ("LibraryGlobals13", "D_iOpLineType2", opLineType3dIn)
+				opLineType3dOut = opLineType3dIn
+				IF opLineType3dIn = 5 THEN opLineType = 0
+				ELSE
+				sts = LIBRARYGLOBAL ("LibraryGlobals13", "gs_opline_type_m", opLineType3dIn)
+				sts = LIBRARYGLOBAL ("LibraryGlobals13", "gs_opline_type_m_out", opLineType3dOut)
+				ENDIF
+
+			ELSE
+
+			! deaktiviert
+			opLineType = 0
+
+			ENDIF
+
+
+		ELSE
+
+		! Linientypen dieses Flügels nach Objekt-Settings
+		IF stand THEN
+			IF dk_openLineType_SF < 1 THEN
+				opLineType = 0
+				ELSE
+				opLineType3dIn  = dk_openLineType_SF
+				opLineType3dOut = dk_openLineType_SF
+				ENDIF
+			ELSE
+			opLineType3dIn  = dk_openLineType_BS
+			opLineType3dOut = dk_openLineType_BGS
+			ENDIF
+
+		ENDIF
+
+	! Ausgabe
+	IF opLineType THEN
+		s = dk_panel_folding_dimensions[1][1]*(dk_panel_folding_nmbr>0)*stand
+		ADDx s
+		call "OpeningLines" parameters a	= LeafX - s,
+						b					= LeafY,
+						frameThickness		= gs_leaf_thk,
+						iOpeningType		= 3,  ! Nur Drehflügeltüren
+						opLineType3dIn		= opLineType3dIn-1,
+						opLineType3dOut		= opLineType3dOut-1,
+						gs_opline_style_m	= opLineType,
+						gs_opLinePen		= gs_opLinePen
+		DEL 1
+		ENDIF
+
+	ENDIF
+
+
+! ----------------------------------------------------------------- [ Fangpunkte ]
+
+IF dk_visibleLeaf THEN  ! Gesamtabmessungen
+	z = 0  !gs_leaf_thk
+	! htspt=htspt+1 : HOTSPOT 0, 0, z, htspt
+	! htspt=htspt+1 : HOTSPOT 0, LeafY, z, htspt
+	! htspt=htspt+1 : HOTSPOT LeafX, 0, z, htspt
+	! htspt=htspt+1 : HOTSPOT LeafX, LeafY, z, htspt
+
+	y = 0     : sts = 0 : GOSUB "Fangpunkte"
+	y = LeafY : sts = 1 : GOSUB "Fangpunkte"
+	ENDIF
+
+IF (dk_LOD > 350 OR GLOB_FEEDBACK_MODE) AND dk_visibleLeaf THEN  ! Editierbare
+
+	! Gangflügel
+	IF stand=0 AND LDPi > 0 THEN
+		IF LPS > 0 THEN
+			! unten
+			htspt=htspt+1 : HOTSPOT LFWL,    0, z, htspt, leafFrWidthBottom, 1+128  ! Basisfangpunkt
+			htspt=htspt+1 : HOTSPOT LFWL, -0.1, z, htspt, leafFrWidthBottom, 3  ! Referenzvektor
+			htspt=htspt+1 : HOTSPOT LFWL, leafFrWidthBottom, z, htspt, leafFrWidthBottom, 2  ! beweglicher Punkt
+			!links
+			htspt=htspt+1 : HOTSPOT LFWL-leafFrWidthLeft, leafFrWidthBottom, z, htspt, leafFrWidthLeft, 1+128  ! Basisfangpunkt
+			htspt=htspt+1 : HOTSPOT -0.1, leafFrWidthBottom, z, htspt, leafFrWidthLeft, 3  ! Referenzvektor
+			htspt=htspt+1 : HOTSPOT LFWL, leafFrWidthBottom, z, htspt, leafFrWidthLeft, 2  ! beweglicher Punkt
+			! oben
+			htspt=htspt+1 : HOTSPOT LeafX-LFWR, LeafY-LFWT+leafFrWidthTop, z, htspt, leafFrWidthTop, 1+128  ! Basisfangpunkt
+			htspt=htspt+1 : HOTSPOT LeafX-LFWR, LeafY+0.1, z, htspt, leafFrWidthTop, 3  ! Referenzvektor
+			htspt=htspt+1 : HOTSPOT LeafX-LFWR, LeafY-LFWT, z, htspt, leafFrWidthTop, 2  ! beweglicher Punkt
+			! rechts
+			htspt=htspt+1 : HOTSPOT LeafX-LFWR+leafFrWidthRight, LeafY-LFWT, z, htspt, leafFrWidthRight, 1+128  ! Basisfangpunkt
+			htspt=htspt+1 : HOTSPOT LeafX+0.1, LeafY-LFWT, z, htspt, leafFrWidthRight, 3  ! Referenzvektor
+			htspt=htspt+1 : HOTSPOT LeafX-LFWR, LeafY-LFWT, z, htspt, leafFrWidthRight, 2  ! beweglicher Punkt
+			ENDIF
+		IF LPS > 1 THEN
+			htspt=htspt+1 : HOTSPOT LeafX/2, LPDB-dk_panel_division_bottom, z, htspt, dk_panel_division_bottom, 1+128  ! Basisfangpunkt
+			htspt=htspt+1 : HOTSPOT LeafX/2, -0.1, z, htspt, dk_panel_division_bottom, 3  ! Referenzvektor
+			htspt=htspt+1 : HOTSPOT LeafX/2, LPDB, z, htspt, dk_panel_division_bottom, 2  ! beweglicher Punkt
+			ENDIF
+		IF LPS > 2 THEN
+			htspt=htspt+1 : HOTSPOT LeafX/2, LPDT-dk_panel_division_top, z, htspt, dk_panel_division_top, 1+128  ! Basisfangpunkt
+			htspt=htspt+1 : HOTSPOT LeafX/2, -0.1, z, htspt, dk_panel_division_top, 3  ! Referenzvektor
+			htspt=htspt+1 : HOTSPOT LeafX/2, LPDT, z, htspt, dk_panel_division_top, 2  ! beweglicher Punkt
+			ENDIF
+		ENDIF
+
+	! Standflügel
+	IF stand AND LDPi > 0 THEN
+		IF LPS > 0 THEN
+			! unten
+			htspt=htspt+1 : HOTSPOT LFWL,    0, z, htspt, leafFrWidthBottom2, 1+128  ! Basisfangpunkt
+			htspt=htspt+1 : HOTSPOT LFWL, -0.1, z, htspt, leafFrWidthBottom2, 3  ! Referenzvektor
+			htspt=htspt+1 : HOTSPOT LFWL, leafFrWidthBottom2, z, htspt, leafFrWidthBottom2, 2  ! beweglicher Punkt
+			!links
+			htspt=htspt+1 : HOTSPOT LFWL-leafFrWidthLeft2, leafFrWidthBottom2, z, htspt, leafFrWidthLeft2, 1+128  ! Basisfangpunkt
+			htspt=htspt+1 : HOTSPOT -0.1, leafFrWidthBottom2, z, htspt, leafFrWidthLeft2, 3  ! Referenzvektor
+			htspt=htspt+1 : HOTSPOT LFWL, leafFrWidthBottom2, z, htspt, leafFrWidthLeft2, 2  ! beweglicher Punkt
+			! oben
+			htspt=htspt+1 : HOTSPOT LeafX-LFWR, LeafY-LFWT+leafFrWidthTop2, z, htspt, leafFrWidthTop2, 1+128  ! Basisfangpunkt
+			htspt=htspt+1 : HOTSPOT LeafX-LFWR, LeafY+0.1, z, htspt, leafFrWidthTop2, 3  ! Referenzvektor
+			htspt=htspt+1 : HOTSPOT LeafX-LFWR, LeafY-LFWT, z, htspt, leafFrWidthTop2, 2  ! beweglicher Punkt
+			! rechts
+			htspt=htspt+1 : HOTSPOT LeafX-LFWR+leafFrWidthRight2, LeafY-LFWT, z, htspt, leafFrWidthRight2, 1+128  ! Basisfangpunkt
+			htspt=htspt+1 : HOTSPOT LeafX+0.1, LeafY-LFWT, z, htspt, leafFrWidthRight2, 3  ! Referenzvektor
+			htspt=htspt+1 : HOTSPOT LeafX-LFWR, LeafY-LFWT, z, htspt, leafFrWidthRight2, 2  ! beweglicher Punkt
+			ENDIF
+		IF LPS > 1 THEN
+			htspt=htspt+1 : HOTSPOT LeafX/2, LPDB-dk_panel_division_bottom2, z, htspt, dk_panel_division_bottom2, 1+128  ! Basisfangpunkt
+			htspt=htspt+1 : HOTSPOT LeafX/2, -0.1, z, htspt, dk_panel_division_bottom2, 3  ! Referenzvektor
+			htspt=htspt+1 : HOTSPOT LeafX/2, LPDB, z, htspt, dk_panel_division_bottom2, 2  ! beweglicher Punkt
+			ENDIF
+		IF LPS > 2 THEN
+			htspt=htspt+1 : HOTSPOT LeafX/2, LPDT-dk_panel_division_top2, z, htspt, dk_panel_division_top2, 1+128  ! Basisfangpunkt
+			htspt=htspt+1 : HOTSPOT LeafX/2, -0.1, z, htspt, dk_panel_division_top2, 3  ! Referenzvektor
+			htspt=htspt+1 : HOTSPOT LeafX/2, LPDT, z, htspt, dk_panel_division_top2, 2  ! beweglicher Punkt
+			ENDIF
+		ENDIF
+
+	ENDIF
+
+! ------------------------------------------------------------------------- [ ENDE ]
+
+FOR i = 1 TO ctpln : CUTEND : NEXT i
+
+DEL 2 + BITTEST(macro_runtype,4) + trnsfrm3
+
+"ende":
+END htspt, dk_visibleLeaf
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"showWhereWeAre":
+	SPHERE 0.0075
+	s=0.12
+	! call "Koordinatenkreuz", PARAMETERS A = s, B = s, zzyzx = s, sx = 35, sy = 15, sz = 55,
+	! 	C = s/3, D = s/6, aTXT = "xyz", E = 0.4, mah = 1, trt = 0, ebene = "Aus", posE = 1, ex1 = -0.15,
+	! 	ex2 = 0.75, ey1 = -0.15, ey2 = 0.75, matE = 1, stiftE = 8, achsV = "Aus",
+	! 	stiftR = 1, rT = "Aus", winkel = 30, vx = 1, vy = 0.5, vz = 0.2, sv = 4, zw = 1
+	IF n>2 AND nsp = n*3 THEN
+		MODEL WIRE
+		PRISM_ n, 0.5, USE(n*3)
+		MODEL SOLID
+		ENDIF
+	RETURN
+
+! ----------------------------------------------------------------- [ Level of Detail ]
+
+"LoD_panel":
+	ra = 0 : seg = 8 : RESOL 24
+
+	! #### Einfache Darstellung
+    IF dk_LOD < 101 THEN  ! LoD100P
+		bs_panel_type = "-"
+		ENDIF
+
+	! #### Reduzierte Darstellung
+	IF dk_LOD > 100 AND dk_LOD < 201 THEN  ! LoD 200
+		IF bs_panel_type = "RF" OR bs_panel_type = "RP" THEN bs_panel_type = "FO"
+		ENDIF
+
+	! #### Komplexe Darstellung
+	IF dk_LOD > 200 AND dk_LOD < 301 THEN  ! LoD 300
+		IF bs_panel_type = "RF" OR bs_panel_type = "RP" THEN bs_panel_type = "VB"
+		seg=12 : RESOL 36
+		ENDIF
+
+	IF dk_LOD > 300 AND dk_LOD < 351 THEN  ! LoD 350
+		seg=16 : RESOL 48
+		ENDIF
+
+	IF dk_LOD < 351 THEN  ! bis LoD 350 einfache Ausschnitte
+		FOR i=1 TO 3 : dk_panel_filling[i]="PL" : dk_panel_filling2[i]="PL" : NEXT i
+		seg=24 : RESOL 48
+		ENDIF
+
+	IF dk_LOD > 350 AND dk_LOD < 401 THEN  ! LoD 400
+		! seg=24 : RESOL 16
+		seg=48 : RESOL 60
+		ENDIF
+
+	! #### Volles Detail
+    IF dk_LOD > 400 THEN  ! LoD 500
+		ra = 0.001
+		seg=64 : RESOL 128
+		ENDIF
+
+    RETURN
+
+! ----------------------------------------------------------------- [ Fangpunkte ]
+
+"Fangpunkte":
+	IF bs_door_leafs = 2 THEN
+
+		IF stand THEN
+
+			x = dk_panel_folding_dimensions[1][1] : z = 0
+			htspt=htspt+1 : HOTSPOT x, y, z, htspt ! Schlosseite
+			x = LeafX : z = 0
+			htspt=htspt+1 : HOTSPOT x, y, z, htspt ! Bandseite
+
+			IF dk_LOD > 299 THEN
+				x = 0 : z = gs_leaf_thk
+				htspt=htspt+1 : HOTSPOT x, y - sts*falzX, z, htspt ! Schlosseite
+				x = LeafX-falzX : z = gs_leaf_thk-falzY
+				htspt=htspt+1 : HOTSPOT x, y - sts*falzX, z, htspt ! Bandseite
+				ENDIF
+
+			ELSE
+
+			x = 0 : z = 0
+			htspt=htspt+1 : HOTSPOT x, y, z, htspt ! Schlosseite
+			x = LeafX : z = 0
+			htspt=htspt+1 : HOTSPOT x, y, z, htspt ! Bandseite
+
+			IF dk_LOD > 299 THEN
+				x = dk_panel_folding_dimensions[1][1] : z = gs_leaf_thk
+				htspt=htspt+1 : HOTSPOT x, y - sts*falzX, z, htspt ! Schlosseite
+				x = LeafX-falzX : z = gs_leaf_thk-falzY
+				htspt=htspt+1 : HOTSPOT x, y - sts*falzX, z, htspt ! Bandseite
+				ENDIF
+
+			ENDIF
+
+		ELSE
+
+		x = 0 : z = 0
+		htspt=htspt+1 : HOTSPOT x, y, z, htspt ! Schlosseite
+		x = LeafX : z = 0
+		htspt=htspt+1 : HOTSPOT x, y, z, htspt ! Bandseite
+
+		IF dk_LOD > 299 THEN
+			x = falzX : z = gs_leaf_thk-falzY
+			htspt=htspt+1 : HOTSPOT x, y - sts*falzX, z, htspt ! Schlosseite
+			x = LeafX-falzX : z = gs_leaf_thk-falzY
+			htspt=htspt+1 : HOTSPOT x, y - sts*falzX, z, htspt ! Bandseite
+			ENDIF
+
+		ENDIF
+
+	RETURN
+
+
+! ----------------------------------------------------------------- [ Bestimmung der Rahmenelemente ]
+
+"rahmenkoordinaten":
+
+	! »»» Counter auf 0 (vertikal/horizontal)
+	LFVi = 0 : LFHi = 0
+
+	IF LPS = 3 THEN ! »»» Mittelfeld
+		
+		! ----- Oberer Riegel
+		i=0 : LFHi = LFHi +1
+		i=i+1
+		LFHX[LFHi][i] = LFWL 
+		LFHY[LFHi][i] = LPDT - LFWH/2
+		LFHm[LFHi][i] = msk2
+		i=i+1
+		LFHX[LFHi][i] = LFWL 
+		LFHY[LFHi][i] = LPDT + LFWH/2
+		LFHm[LFHi][i] = msk1
+		IF LPS = 3 AND LPT[1][2] > 0 THEN  ! Unterbrechungen durch Vertikalen im Hauptfeld
+			start = 1 : ende = LPT[1][2] + tlr : t = LPDD[1][2] : y = LPDT + LFWH/2 : GOSUB "invisbleH"
+			ENDIF
+		i=i+1
+		LFHX[LFHi][i] = LeafX - LFWR 
+		LFHY[LFHi][i] = LPDT + LFWH/2
+		LFHm[LFHi][i] = msk2
+		i=i+1
+		LFHX[LFHi][i] = LeafX - LFWR 
+		LFHY[LFHi][i] = LPDT - LFWH/2
+		LFHm[LFHi][i] = msk1
+		IF LPS = 3 AND LPT[3][2] > 0 THEN  ! Unterbrechungen durch Vertikalen im Mittelfeld
+			start = LPT[3][2] : ende = 1 - tlr : t = LPDD[3][2] : y = LPDT - LFWH/2 : GOSUB "invisbleH"
+			ENDIF
+		LFHn[LFHi] = i
+
+		! Unterteilungen Mittelfeld -  vertikal
+		FOR j=1 TO LPT[3][2]+tlr
+			XX = LFWL + (LPDD[3][2] + LFWV) * j
+			i=0 : LFVi = LFVi +1   ! »»»»»»»»» senkrechte Unterteilung(en)
+			i=i+1
+			LFVX[LFVi][i] = XX 
+			LFVY[LFVi][i] = LPDB + LFWH/2
+			LFVm[LFVi][i] = msk2
+			i=i+1
+			LFVX[LFVi][i] = XX - LFWV
+			LFVY[LFVi][i] = LPDB + LFWH/2
+			LFVm[LFVi][i] = msk1
+			IF LPT[3][1] > 0 THEN  ! Unterbrechungen durch Horizontale in Teilfeldern des Mittelfeldes
+				start = 1 : ende = LPT[3][1] + tlr : t = LPDD[3][1] : x = XX - LFWV : y = LPDB + LFWH/2 : GOSUB "invisbleV"
+				ENDIF
+			i=i+1
+			LFVX[LFVi][i] = XX - LFWV
+			LFVY[LFVi][i] = LPDT - LFWH/2
+			LFVm[LFVi][i] = msk2
+			i=i+1
+			LFVX[LFVi][i] = XX
+			LFVY[LFVi][i] = LPDT - LFWH/2
+			LFVm[LFVi][i] = msk1
+			IF LPT[3][1] > 0 THEN  ! Unterbrechungen durch Horizontale in Teilfeldern des Mittelfeldes
+				start = LPT[3][1] : ende = 1 - tlr : t = LPDD[3][1] : x = XX : y = LPDB + LFWH/2 : GOSUB "invisbleV"
+				ENDIF
+			LFVn[LFVi] = i
+			NEXT j
+
+		!... dann horizontal
+		FOR k=1 TO LPT[3][1]+tlr
+			YY = LPDB + LFWH/2 + (LPDD[3][1] + LFWH) * k
+			! ... unterteilen
+			FOR j=0 TO LPT[3][2]+tlr
+				x = LFWL + (LPDD[3][2] + LFWV) * j
+				i=0 : LFHi = LFHi +1   ! »»» Unterer Riegel
+				i=i+1
+				LFHX[LFHi][i] = x 
+				LFHY[LFHi][i] = YY - LFWH
+				LFHm[LFHi][i] = msk2
+				i=i+1
+				LFHX[LFHi][i] = x 
+				LFHY[LFHi][i] = YY
+				LFHm[LFHi][i] = msk1
+				i=i+1
+				LFHX[LFHi][i] = x + LPDD[3][2]
+				LFHY[LFHi][i] = YY
+				LFHm[LFHi][i] = msk2
+				i=i+1
+				LFHX[LFHi][i] = x + LPDD[3][2] 
+				LFHY[LFHi][i] = YY - LFWH
+				LFHm[LFHi][i] = msk1
+				LFHn[LFHi] = i
+				NEXT j
+			NEXT k
+
+		ENDIF
+
+	IF LPS > 1 THEN ! »»» Brüstungsfeld
+
+		! ----- Unterer Riegel
+		i=0 : LFHi = LFHi +1
+		i=i+1
+		LFHX[LFHi][i] = LFWL 
+		LFHY[LFHi][i] = LPDB - LFWH/2
+		LFHm[LFHi][i] = msk2
+		i=i+1
+		LFHX[LFHi][i] = LFWL 
+		LFHY[LFHi][i] = LPDB + LFWH/2
+		LFHm[LFHi][i] = msk1
+		IF LPS = 2 AND LPT[1][2] > 0 THEN  ! Unterbrechungen durch Vertikalen im Hauptfeld
+			start = 1 : ende = LPT[1][2] + tlr : t = LPDD[1][2] : y =LPDB + LFWH/2  : GOSUB "invisbleH"
+			ENDIF
+		IF LPS = 3 AND LPT[3][2] > 0 THEN  ! Unterbrechungen durch Vertikalen im Mittelfeld
+			start = 1 : ende = LPT[3][2] + tlr : t = LPDD[3][2] : y = LPDB + LFWH/2 : GOSUB "invisbleH"
+			ENDIF
+		i=i+1
+		LFHX[LFHi][i] = LeafX - LFWR 
+		LFHY[LFHi][i] = LPDB + LFWH/2
+		LFHm[LFHi][i] = msk2
+		i=i+1
+		LFHX[LFHi][i] = LeafX - LFWR 
+		LFHY[LFHi][i] = LPDB - LFWH/2
+		LFHm[LFHi][i] = msk1
+		IF LPS > 1 AND LPT[2][2] > 0 THEN  ! Unterbrechungen durch Vertikalen im Brüstungsfeld
+			start = LPT[2][2] : ende = 1 - tlr : t = LPDD[2][2] : y = LPDB - LFWH/2 : GOSUB "invisbleH"
+			ENDIF
+		LFHn[LFHi] = i
+
+		! Unterteilungen Brüstungsfeld -  vertikal
+		FOR j=1 TO LPT[2][2]+tlr
+			XX = LFWL + (LPDD[2][2] + LFWV) * j
+			i=0 : LFVi = LFVi +1   ! »»» senkrechte Unterteilung(en)
+			i=i+1
+			LFVX[LFVi][i] = XX 
+			LFVY[LFVi][i] = LFWB
+			LFVm[LFVi][i] = msk2
+			i=i+1
+			LFVX[LFVi][i] = XX - LFWV
+			LFVY[LFVi][i] = LFWB
+			LFVm[LFVi][i] = msk1
+			IF LPT[2][1] > 0 THEN  ! Unterbrechungen durch Horizontale in Teilfeldern des Brüstungsfeldfeldes
+				start = 1 : ende = LPT[2][1] + tlr : t = LPDD[2][1] : x = XX - LFWV : y = LFWB : GOSUB "invisbleV"
+				ENDIF
+			i=i+1
+			LFVX[LFVi][i] = XX - LFWV
+			LFVY[LFVi][i] = LPDB - LFWH/2
+			LFVm[LFVi][i] = msk2
+			i=i+1
+			LFVX[LFVi][i] = XX
+			LFVY[LFVi][i] = LPDB - LFWH/2
+			LFVm[LFVi][i] = msk1
+			IF LPT[2][1] > 0 THEN  ! Unterbrechungen durch Horizontale in Teilfeldern des Brüstungsfeldfeldes
+				start = LPT[2][1] : ende = 1 - tlr : t = LPDD[2][1] : x = XX : y = LFWB : GOSUB "invisbleV"
+				ENDIF
+			LFVn[LFVi] = i
+			NEXT j
+
+		!... dann horizontal
+		FOR k=1 TO LPT[2][1]+tlr
+			YY = LFWB + (LPDD[2][1] + LFWH) * k
+			! ... unterteilen
+			FOR j=0 TO LPT[2][2]+tlr
+				x = LFWL + (LPDD[2][2] + LFWV) * j
+				i=0 : LFHi = LFHi +1   ! »»» Unterer Riegel
+				i=i+1
+				LFHX[LFHi][i] = x 
+				LFHY[LFHi][i] = YY - LFWH
+				LFHm[LFHi][i] = msk2
+				i=i+1
+				LFHX[LFHi][i] = x 
+				LFHY[LFHi][i] = YY
+				LFHm[LFHi][i] = msk1
+				i=i+1
+				LFHX[LFHi][i] = x + LPDD[2][2]
+				LFHY[LFHi][i] = YY
+				LFHm[LFHi][i] = msk2
+				i=i+1
+				LFHX[LFHi][i] = x + LPDD[2][2] 
+				LFHY[LFHi][i] = YY - LFWH
+				LFHm[LFHi][i] = msk1
+				LFHn[LFHi] = i
+				NEXT j
+			NEXT k
+
+		ENDIF
+
+	IF LPS > 0 THEN ! »»» Hauptfeld
+
+		! Höhe unterer Feldrand des Hauptfeldes
+		IF LPS = 1 THEN YY = LFWB
+		IF LPS = 2 THEN YY = LPDB + LFWH/2
+		IF LPS = 3 THEN YY = LPDT + LFWH/2
+
+		! Unterteilungen Hauptfeld -  vertikal
+		FOR j=1 TO LPT[1][2]+tlr
+			XX = LFWL + (LPDD[1][2] + LFWV) * j
+			i=0 : LFVi = LFVi +1   ! »»» senkrechte Unterteilung(en)
+			i=i+1
+			LFVX[LFVi][i] = XX 
+			LFVY[LFVi][i] = YY
+			LFVm[LFVi][i] = msk2
+			i=i+1
+			LFVX[LFVi][i] = XX - LFWV
+			LFVY[LFVi][i] = YY
+			LFVm[LFVi][i] = msk1
+			IF LPT[1][1] > 0 THEN  ! Unterbrechungen durch Horizontale in Teilfeldern des Hauptfeldes
+				start = 1 : ende = LPT[1][1] + tlr : t = LPDD[1][1] : x = XX - LFWV : y = YY : GOSUB "invisbleV"
+				ENDIF
+			i=i+1
+			LFVX[LFVi][i] = XX - LFWV
+			LFVY[LFVi][i] = LeafY - LFWT
+			LFVm[LFVi][i] = msk2
+			i=i+1
+			LFVX[LFVi][i] = XX
+			LFVY[LFVi][i] = LeafY - LFWT
+			LFVm[LFVi][i] = msk1
+			IF LPT[1][1] > 0 THEN  ! Unterbrechungen durch Horizontale in Teilfeldern des Hauptfeldes
+				start = LPT[1][1] : ende = 1 - tlr : t = LPDD[1][1] : x = XX : y = YY : GOSUB "invisbleV"
+				ENDIF
+			LFVn[LFVi] = i
+			NEXT j
+
+		!... dann horizontal
+		FOR k=1 TO LPT[1][1]+tlr
+			! Höhe unterer Feldrand der Einzelsegmente
+			IF LPS = 1 THEN YY = LFWB
+			IF LPS = 2 THEN YY = LPDB + LFWH/2
+			IF LPS = 3 THEN YY = LPDT + LFWH/2
+			YY = YY + (LPDD[1][1] + LFWH) * k
+			! ... unterteilen
+			FOR j=0 TO LPT[1][2]+tlr
+				x = LFWL + (LPDD[1][2] + LFWV) * j
+				i=0 : LFHi = LFHi +1   ! »»» Unterer Riegel
+				i=i+1
+				LFHX[LFHi][i] = x 
+				LFHY[LFHi][i] = YY - LFWH
+				LFHm[LFHi][i] = msk2
+				i=i+1
+				LFHX[LFHi][i] = x 
+				LFHY[LFHi][i] = YY
+				LFHm[LFHi][i] = msk1
+				i=i+1
+				LFHX[LFHi][i] = x + LPDD[1][2]
+				LFHY[LFHi][i] = YY
+				LFHm[LFHi][i] = msk2
+				i=i+1
+				LFHX[LFHi][i] = x + LPDD[1][2] 
+				LFHY[LFHi][i] = YY - LFWH
+				LFHm[LFHi][i] = msk1
+				LFHn[LFHi] = i
+				NEXT j
+			NEXT k
+
+		ENDIF
+
+	IF LPS > 0 THEN ! »»» Rahmen außen
+
+		! ----- "Sturz"
+		i=0 : LFHi = LFHi +1
+		i=i+1
+		LFHX[LFHi][i] = LFWL 
+		LFHY[LFHi][i] = LeafY - LFWT
+		LFHm[LFHi][i] = msk2
+		i=i+1
+		LFHX[LFHi][i] = LFWL 
+		LFHY[LFHi][i] = LeafY
+		LFHm[LFHi][i] = msk3
+		i=i+1
+		LFHX[LFHi][i] = LeafX - LFWR 
+		LFHY[LFHi][i] = LeafY
+		LFHm[LFHi][i] = msk4
+		i=i+1
+		LFHX[LFHi][i] = LeafX - LFWR 
+		LFHY[LFHi][i] = LeafY - LFWT
+		LFHm[LFHi][i] = msk1
+		IF LPS>0 AND LPT[1][2] > 0 THEN  ! Unterbrechungen durch Vertikalen im Brüstungsfeld
+			start = LPT[1][2] : ende = 1 - tlr : t = LPDD[1][2] : y = LeafY - LFWT : GOSUB "invisbleH"
+			ENDIF
+		IF design = 64 AND ABS(LAW) > tlr THEN  ! klassischer Bogen 1 (Segmentbogen)
+			LFHm[LFHi][i] = BITSET(LFHm[LFHi][i],6)
+			x = LeafX - LFWR - LFWL
+			r = LAW/2 + x^2/(8*LAW)
+			w = 2 * asn(x/2/r)
+			i=i+1
+			LFHX[LFHi][i] = LFWL + x/2 
+			LFHY[LFHi][i] = LeafY - LFWT + LAW - r
+			LFHm[LFHi][i] = 900+msk5
+			i=i+1
+			LFHX[LFHi][i] = 0
+			LFHY[LFHi][i] = w
+			LFHm[LFHi][i] = 4000+msk5
+			ENDIF
+		IF design = 128 AND ABS(LAW) > tlr THEN  ! klassischer Bogen (Welle)
+			LFHm[LFHi][i] = BITSET(LFHm[LFHi][i],6)
+			x = (LeafX - LFWR - LFWL) / 2
+			w = atn(x/LAW)
+			r = ( SQR(LAW^2 + x^2) /2 /2) / cos(w)
+			! w = 2*(90-w)
+			i=i+1
+			LFHX[LFHi][i] = -1 
+			LFHY[LFHi][i] = 0
+			LFHm[LFHi][i] = 800+msk5
+			i=i+1 ! 1. Bogen
+			LFHX[LFHi][i] = LeafX - LFWR 
+			LFHY[LFHi][i] = LeafY - LFWT + r
+			LFHm[LFHi][i] = 900+msk5
+			i=i+1
+			LFHX[LFHi][i] = LeafX - LFWR - x/2
+			LFHY[LFHi][i] = LeafY - LFWT + LAW / 2
+			LFHm[LFHi][i] = 3000+msk5
+			i=i+1 ! 2. Bogen
+			LFHX[LFHi][i] = LFWL + x
+			LFHY[LFHi][i] = LeafY - LFWT + LAW - r
+			LFHm[LFHi][i] = 900+msk5
+			i=i+1
+			LFHX[LFHi][i] = LFWL + x/2
+			LFHY[LFHi][i] = LeafY - LFWT + LAW / 2
+			LFHm[LFHi][i] = 3000+msk5
+			i=i+1 ! 3. Bogen
+			LFHX[LFHi][i] = LFWL 
+			LFHY[LFHi][i] = LeafY - LFWT + r
+			LFHm[LFHi][i] = 900+msk1
+			i=i+1
+			LFHX[LFHi][i] = LFWL
+			LFHY[LFHi][i] = LeafY - LFWT + LAW / 2
+			LFHm[LFHi][i] = 3000+msk5
+ 			ENDIF
+		LFHn[LFHi] = i
+
+		! ----- Sockel
+		i=0 : LFHi = LFHi +1
+		i=i+1
+		LFHX[LFHi][i] = LFWL 
+		LFHY[LFHi][i] = 0
+		LFHm[LFHi][i] = msk4
+		i=i+1
+		LFHX[LFHi][i] = LFWL 
+		LFHY[LFHi][i] = LFWB
+		LFHm[LFHi][i] = msk1
+		IF LPS = 1 AND LPT[1][2] > 0 THEN  ! Unterbrechungen durch Vertikalen im Brüstungsfeld
+			start = 1 : ende = LPT[1][2] + tlr : t = LPDD[1][2] : y = LFWB : GOSUB "invisbleH"
+			ENDIF
+		IF LPS > 1 AND LPT[2][2] > 0 THEN  ! Unterbrechungen durch Vertikalen im Brüstungsfeld
+			start = 1 : ende = LPT[2][2] + tlr : t = LPDD[2][2] : y = LFWB : GOSUB "invisbleH"
+			ENDIF
+		i=i+1
+		LFHX[LFHi][i] = LeafX - LFWR 
+		LFHY[LFHi][i] = LFWB
+		LFHm[LFHi][i] = msk2
+		i=i+1
+		LFHX[LFHi][i] = LeafX - LFWR 
+		LFHY[LFHi][i] = 0
+		LFHm[LFHi][i] = msk3
+		LFHn[LFHi] = i
+
+		! ----- Links / am Schloss
+		i=0 : LFVi = LFVi +1
+		i=i+1
+		LFVX[LFVi][i] = LFWL 
+		LFVY[LFVi][i] = 0
+		LFVm[LFVi][i] = msk3
+		i=i+1
+		LFVX[LFVi][i] = 0 
+		LFVY[LFVi][i] = 0
+		LFVm[LFVi][i] = msk1
+		i=i+1
+		LFVX[LFVi][i] = 0
+		LFVY[LFVi][i] = LeafY
+		LFVm[LFVi][i] = msk1
+		i=i+1
+		LFVX[LFVi][i] = LFWL
+		LFVY[LFVi][i] = LeafY
+		LFVm[LFVi][i] = msk4
+		i=i+1
+		LFVX[LFVi][i] = LFWL
+		LFVY[LFVi][i] = LeafY - LFWT
+		LFVm[LFVi][i] = msk1
+
+		IF LPS > 0 AND LPT[1][1] > 0 THEN  ! Unterbrechungen durch Horizontale in Teilfeldern des Hauptfeldes
+			IF LPS = 1 THEN YY = LFWB
+			IF LPS = 2 THEN YY = LPDB + LFWH/2
+			IF LPS = 3 THEN YY = LPDT + LFWH/2
+			start = LPT[1][1] : ende = 1 - tlr : t = LPDD[1][1] : x = LFWL : y = YY : GOSUB "invisbleV"
+			ENDIF
+
+		IF LPS = 3 THEN  ! Unterbrechungen durch oberen Riegel
+			i=i+1
+			LFVX[LFVi][i] = LFWL 
+			LFVY[LFVi][i] = LPDT + LFWH/2
+			LFVm[LFVi][i] = msk2
+			i=i+1
+			LFVX[LFVi][i] = LFWL 
+			LFVY[LFVi][i] = LPDT - LFWH/2
+			LFVm[LFVi][i] = msk1
+			ENDIF
+
+		IF LPS = 3 AND LPT[3][1] > 0 THEN  ! Unterbrechungen durch Horizontale in Teilfeldern des Mittelfeldes
+			XX = LFWL + (LPDD[3][2] + LFWV) * j
+			start = LPT[3][1] : ende = 1 - tlr : t = LPDD[3][1] : x = LFWL : y = LPDB + LFWH/2 : GOSUB "invisbleV"
+			ENDIF
+
+		IF LPS > 1 THEN  ! Unterbrechungen durch unetern Riegel
+			i=i+1
+			LFVX[LFVi][i] = LFWL 
+			LFVY[LFVi][i] = LPDB + LFWH/2
+			LFVm[LFVi][i] = msk2
+			i=i+1
+			LFVX[LFVi][i] = LFWL 
+			LFVY[LFVi][i] = LPDB - LFWH/2
+			LFVm[LFVi][i] = msk1
+			ENDIF
+
+		IF LPS >1 AND LPT[2][1] > 0 THEN  ! Unterbrechungen durch Horizontale in Teilfeldern des Brüstungsfeldfeldes
+			XX = LFWL + (LPDD[2][2] + LFWV) * j
+			start = LPT[2][1] : ende = 1 - tlr : t = LPDD[2][1] : x = LFWL : y = LFWB : GOSUB "invisbleV"
+			ENDIF
+
+		i=i+1
+		LFVX[LFVi][i] = LFWL
+		LFVY[LFVi][i] = LFWB
+		LFVm[LFVi][i] = msk2
+		LFVn[LFVi] = i
+
+		! ----- Rechts / am Band
+		i=0 : LFVi = LFVi +1
+		i=i+1
+		LFVX[LFVi][i] = LeafX
+		LFVY[LFVi][i] = 0
+		LFVm[LFVi][i] = msk1
+		i=i+1
+		LFVX[LFVi][i] = LeafX - LFWR
+		LFVY[LFVi][i] = 0
+		LFVm[LFVi][i] = msk4
+		i=i+1
+		LFVX[LFVi][i] = LeafX - LFWR
+		LFVY[LFVi][i] = LFWB
+		LFVm[LFVi][i] = msk1
+
+		IF LPS >1 AND LPT[2][1] > 0 THEN  ! Unterbrechungen durch Horizontale in Teilfeldern des Brüstungsfeldfeldes
+			XX = LFWL + (LPDD[2][2] + LFWV) * j
+			start = 1 : ende = LPT[2][1] + tlr : t = LPDD[2][1] : x = LeafX - LFWR : y = LFWB : GOSUB "invisbleV"
+			ENDIF
+
+		IF LPS > 1 THEN  ! Unterbrechungen durch uneteren Riegel
+			i=i+1
+			LFVX[LFVi][i] = LeafX - LFWR 
+			LFVY[LFVi][i] = LPDB - LFWH/2
+			LFVm[LFVi][i] = msk2
+			i=i+1
+			LFVX[LFVi][i] = LeafX - LFWR 
+			LFVY[LFVi][i] = LPDB + LFWH/2
+			LFVm[LFVi][i] = msk1
+			ENDIF
+
+		IF LPS = 3 AND LPT[3][1] > 0 THEN  ! Unterbrechungen durch Horizontale in Teilfeldern des Mittelfeldes
+			XX = LFWL + (LPDD[3][2] + LFWV) * j
+			start = 1 : ende = LPT[3][1] + tlr : t = LPDD[3][1] : x = LeafX - LFWR : y = LPDB + LFWH/2 : GOSUB "invisbleV"
+			ENDIF
+
+		IF LPS = 3 THEN  ! Unterbrechungen durch oberen Riegel
+			i=i+1
+			LFVX[LFVi][i] = LeafX - LFWR 
+			LFVY[LFVi][i] = LPDT - LFWH/2
+			LFVm[LFVi][i] = msk2
+			i=i+1
+			LFVX[LFVi][i] = LeafX - LFWR 
+			LFVY[LFVi][i] = LPDT + LFWH/2
+			LFVm[LFVi][i] = msk1
+			ENDIF
+
+		IF LPS > 0 AND LPT[1][1] > 0 THEN  ! Unterbrechungen durch Horizontale in Teilfeldern des Hauptfeldes
+			IF LPS = 1 THEN YY = LFWB
+			IF LPS = 2 THEN YY = LPDB + LFWH/2
+			IF LPS = 3 THEN YY = LPDT + LFWH/2
+			start = 1 : ende = LPT[1][1] + tlr : t = LPDD[1][1] : x = LeafX - LFWR : y = YY : GOSUB "invisbleV"
+			ENDIF
+
+		i=i+1
+		LFVX[LFVi][i] = LeafX - LFWR 
+		LFVY[LFVi][i] = LeafY - LFWT
+		LFVm[LFVi][i] = msk2
+		i=i+1
+		LFVX[LFVi][i] = LeafX - LFWR 
+		LFVY[LFVi][i] = LeafY
+		LFVm[LFVi][i] = msk3
+		i=i+1
+		LFVX[LFVi][i] = LeafX
+		LFVY[LFVi][i] = LeafY
+		LFVm[LFVi][i] = msk1
+		LFVn[LFVi] = i
+
+		ENDIF
+
+	RETURN
+
+
+! ----------------------------------------------------------------- [ Bestimmung der Auschnittfelder ]
+
+"segmentkoordinaten":
+
+	! LDPF[]: Form des Ausschnitts:
+	! ...BIT-Funktion: 3-Rechteck, 4-Kreis, 5-Raute, 6-Klassisch 1, 7-Klasisch 2
+
+	! »»» Counter auf 0
+	LDPi = 0
+	sts = 0
+
+	IF stand = 0 THEN aufbau = dk_panel_filling[1] ELSE aufbau = dk_panel_filling2[1]  ! Hauptfeld Gangflügel
+
+	IF LPS > 0 THEN ! »»» Hauptfeld
+		IF design =  64 AND LAW > tlr THEN  ! klassischer Bogen 1 (Segmentbogen)
+			IF LPS = 1 THEN y = LFWB
+			IF LPS = 2 THEN y = LPDB + LFWH/2
+			IF LPS = 3 THEN y = LPDT + LFWH/2
+			y = y + (LPDD[1][1] + LFWH) * LPT[1][1]
+			x = LeafX - LFWR - LFWL
+			r = LAW/2 + x^2/(8*LAW)
+			w = 2 * asn(x/2/r)
+			i=0 : LDPi = LDPi +1
+			LDPF[LDPi] = 1 + 64 ! »»» Hauptfeld - Segmentbogen
+			IF aufbau = "K1" THEN
+				! »»» segmentiert für RULES...
+				i=i+1
+				LDPX[LDPi][i] = LFWL
+				LDPY[LDPi][i] = y
+				LDPm[LDPi][i] = msk1
+				i=i+1
+				LDPX[LDPi][i] = LFWL + x
+				LDPY[LDPi][i] = y
+				LDPm[LDPi][i] = msk1
+				k = CEIL(seg * w/360/2)*2
+				FOR j = -k/2 TO k/2+tlr
+					i=i+1
+					LDPX[LDPi][i] = LFWL + x/2 + r * COS(90 + j * w/k)
+					LDPY[LDPi][i] = LeafY - LFWT + LAW - r + r * SIN(90 + j * w/k)
+					LDPm[LDPi][i] = msk3
+					NEXT j
+				LDPm[LDPi][i] = msk1
+				ELSE
+				! »»» exakt
+				i=i+1
+				LDPX[LDPi][i] = LFWL + x
+				LDPY[LDPi][i] = y
+				LDPm[LDPi][i] = msk1
+				i=i+1
+				LDPX[LDPi][i] = LFWL + x
+				LDPY[LDPi][i] = LeafY - LFWT  !y + LPDD[1][1]
+				LDPm[LDPi][i] = msk5
+				i=i+1
+				LDPX[LDPi][i] = LFWL + x/2 
+				LDPY[LDPi][i] = LeafY - LFWT + LAW - r
+				LDPm[LDPi][i] = 900+msk5
+				i=i+1
+				LDPX[LDPi][i] = 0
+				LDPY[LDPi][i] = w
+				LDPm[LDPi][i] = 4000+msk5
+				i=i+1
+				LDPX[LDPi][i] = LFWL
+				LDPY[LDPi][i] = y
+				LDPm[LDPi][i] = msk1
+				ENDIF
+			LDPn[LDPi] = i
+			sts = 1
+			ENDIF
+		IF design = 128 AND LAW > tlr THEN  ! klassischer Bogen (Welle)
+			x = (LeafX - LFWR - LFWL) / 2
+			w = atn(x/LAW)
+			r = ( SQR(LAW^2 + x^2) /2 /2) / cos(w)
+			i=0 : LDPi = LDPi +1
+			LDPF[LDPi] = 1 + 128 ! »»» Hauptfeld - Welle
+			IF LPS = 1 THEN y = LFWB
+			IF LPS = 2 THEN y = LPDB + LFWH/2
+			IF LPS = 3 THEN y = LPDT + LFWH/2
+			y = y + (LPDD[1][1] + LFWH) * LPT[1][1]
+			IF aufbau = "K1" THEN
+				! »»» segmentiert für RULES...
+				i=i+1
+				LDPX[LDPi][i] = LFWL
+				LDPY[LDPi][i] = y
+				LDPm[LDPi][i] = msk1
+				i=i+1
+				LDPX[LDPi][i] = LFWL + 2*x
+				LDPY[LDPi][i] = y
+				LDPm[LDPi][i] = msk1
+				i=i+1
+				LDPX[LDPi][i] = LFWL + 2*x
+				LDPY[LDPi][i] = LeafY - LFWT  !y + LPDD[1][1]
+				LDPm[LDPi][i] = msk5
+				w = 2*(90-w)
+				k = INT(seg * w/360 + 0.5)
+				! 1. Bogen
+				FOR m = 0 TO k-1+tlr
+					i=i+1
+					LDPX[LDPi][i] = LeafX - LFWR + r * COS(270 - m * w/k)
+					LDPY[LDPi][i] = LeafY - LFWT + r + r * SIN(270 - m * w/k)
+					LDPm[LDPi][i] = msk3
+					NEXT m
+				! 2. Bogen
+				FOR m = -k TO k+tlr
+					i=i+1
+					LDPX[LDPi][i] = LFWL + x + r * COS(90 + m * w/k)
+					LDPY[LDPi][i] = LeafY - LFWT + LAW - r + r * SIN(90 + m * w/k)
+					LDPm[LDPi][i] = msk3
+					NEXT m
+				! 3. Bogen
+				FOR m = k-1 TO 0-tlr STEP -1
+					i=i+1
+					LDPX[LDPi][i] = LFWL + r * COS(270 + m * w/k)
+					LDPY[LDPi][i] = LeafY - LFWT + r + r * SIN(270 + m * w/k)
+					LDPm[LDPi][i] = msk3
+					NEXT m
+				LDPm[LDPi][i] = msk1
+				ELSE
+				! »»» exakt
+				i=i+1
+				LDPX[LDPi][i] = LFWL + 2*x
+				LDPY[LDPi][i] = y
+				LDPm[LDPi][i] = msk1
+				i=i+1
+				LDPX[LDPi][i] = LFWL + 2*x
+				LDPY[LDPi][i] = LeafY - LFWT  !y + LPDD[1][1]
+				LDPm[LDPi][i] = msk5
+				i=i+1
+				LDPX[LDPi][i] = -1 
+				LDPY[LDPi][i] = 0
+				LDPm[LDPi][i] = 800+msk5
+				i=i+1 ! 1. Bogen
+				LDPX[LDPi][i] = LeafX - LFWR 
+				LDPY[LDPi][i] = LeafY - LFWT + r
+				LDPm[LDPi][i] = 900+msk5
+				i=i+1
+				LDPX[LDPi][i] = LeafX - LFWR - x/2
+				LDPY[LDPi][i] = LeafY - LFWT + LAW / 2
+				LDPm[LDPi][i] = 3000+msk5
+				i=i+1 ! 2. Bogen
+				LDPX[LDPi][i] = LFWL + x
+				LDPY[LDPi][i] = LeafY - LFWT + LAW - r
+				LDPm[LDPi][i] = 900+msk5
+				i=i+1
+				LDPX[LDPi][i] = LFWL + x/2
+				LDPY[LDPi][i] = LeafY - LFWT + LAW / 2
+				LDPm[LDPi][i] = 3000+msk5
+				i=i+1 ! 3. Bogen
+				LDPX[LDPi][i] = LFWL 
+				LDPY[LDPi][i] = LeafY - LFWT + r
+				LDPm[LDPi][i] = 900+msk1
+				i=i+1
+				LDPX[LDPi][i] = LFWL
+				LDPY[LDPi][i] = LeafY - LFWT
+				LDPm[LDPi][i] = 3000+msk5
+				i=i+1
+				LDPX[LDPi][i] = LFWL
+				LDPY[LDPi][i] = y
+				LDPm[LDPi][i] = msk1
+				ENDIF
+			LDPn[LDPi] = i
+			sts = 1
+ 			ENDIF
+		FOR k=0 TO LPT[1][1]+tlr - sts ! Unterteilungen Hauptfeld
+			IF LPS = 1 THEN y = LFWB
+			IF LPS = 2 THEN y = LPDB + LFWH/2
+			IF LPS = 3 THEN y = LPDT + LFWH/2
+			y = y + (LPDD[1][1] + LFWH) * k
+			FOR j=0 TO LPT[1][2]+tlr
+				x = LFWL + (LPDD[1][2] + LFWV) * j
+				i=0 : LDPi = LDPi +1
+				IF design = 2 THEN ! Kreis
+					LDPF[LDPi] = 1 + 16 ! »»» Hauptfeld - Kreis
+					r = MIN(LPDD[1][1]/2, LPDD[1][2]/2)
+					IF aufbau = "K1" THEN
+						! »»» segmentiert für RULES...
+						FOR m = 0 TO seg-1+tlr
+							i=i+1
+							LDPX[LDPi][i] = x + LPDD[1][2]/2 + r * COS(m * 360/seg)
+							LDPY[LDPi][i] = y + LPDD[1][1]/2 + r * SIN(m * 360/seg)
+							LDPm[LDPi][i] = msk3
+							NEXT m
+						ELSE
+						! »»» exakt
+						i=i+1
+						LDPX[LDPi][i] = x + LPDD[1][2]/2
+						LDPY[LDPi][i] = y + LPDD[1][1]/2
+						LDPm[LDPi][i] = 900 + msk3
+						i=i+1
+						LDPX[LDPi][i] = r
+						LDPY[LDPi][i] = 360
+						LDPm[LDPi][i] = 4000 + msk3
+						ENDIF
+					LDPn[LDPi] = i
+					ELSE
+					IF design = 4 THEN ! Raute
+						LDPF[LDPi] = 1 + 32 ! »»» Hauptfeld - Raute
+						i=i+1
+						LDPX[LDPi][i] = x
+						LDPY[LDPi][i] = y + LPDD[1][1]/2
+						LDPm[LDPi][i] = msk1
+						i=i+1
+						LDPX[LDPi][i] = x + LPDD[1][2]/2
+						LDPY[LDPi][i] = y
+						LDPm[LDPi][i] = msk1
+						i=i+1
+						LDPX[LDPi][i] = x + LPDD[1][2]
+						LDPY[LDPi][i] = y + LPDD[1][1]/2
+						LDPm[LDPi][i] = msk1
+						i=i+1
+						LDPX[LDPi][i] = x + LPDD[1][2]/2
+						LDPY[LDPi][i] = y + LPDD[1][1]
+						LDPm[LDPi][i] = msk1
+						LDPn[LDPi] = i
+						ELSE ! Rechteck
+						LDPF[LDPi] = 1 + 8 ! »»» Hauptfeld - Rechteck
+						i=i+1
+						LDPX[LDPi][i] = x
+						LDPY[LDPi][i] = y
+						LDPm[LDPi][i] = msk1
+						i=i+1
+						LDPX[LDPi][i] = x + LPDD[1][2]
+						LDPY[LDPi][i] = y
+						LDPm[LDPi][i] = msk1
+						i=i+1
+						LDPX[LDPi][i] = x + LPDD[1][2]
+						LDPY[LDPi][i] = y + LPDD[1][1]
+						LDPm[LDPi][i] = msk1
+						i=i+1
+						LDPX[LDPi][i] = x
+						LDPY[LDPi][i] = y + LPDD[1][1]
+						LDPm[LDPi][i] = msk1
+						LDPn[LDPi] = i
+						ENDIF
+					ENDIF
+				NEXT j
+			NEXT k
+		ENDIF
+
+	IF LPS > 1 THEN ! »»» Brüstungsfeld
+		FOR k=0 TO LPT[2][1]+tlr
+			y = LFWB + (LPDD[2][1] + LFWH) * k
+			FOR j=0 TO LPT[2][2]+tlr
+				x = LFWL + (LPDD[2][2] + LFWV) * j
+				i=0 : LDPi = LDPi +1
+				LDPF[LDPi] = 2 + 8 ! »»» Brüstungsfeld - Rechteck
+				i=i+1
+				LDPX[LDPi][i] = x
+				LDPY[LDPi][i] = y
+				LDPm[LDPi][i] = msk1
+				i=i+1
+				LDPX[LDPi][i] = x + LPDD[2][2]
+				LDPY[LDPi][i] = y
+				LDPm[LDPi][i] = msk1
+				i=i+1
+				LDPX[LDPi][i] = x + LPDD[2][2]
+				LDPY[LDPi][i] = y + LPDD[2][1]
+				LDPm[LDPi][i] = msk1
+				i=i+1
+				LDPX[LDPi][i] = x
+				LDPY[LDPi][i] = y + LPDD[2][1]
+				LDPm[LDPi][i] = msk1
+				LDPn[LDPi] = i
+				NEXT j
+			NEXT k
+		ENDIF
+
+	IF LPS > 2 THEN ! »»» Mittelfeld
+		FOR k=0 TO LPT[3][1]+tlr
+			y = LPDB + LFWH/2 + (LPDD[3][1] + LFWH) * k
+			FOR j=0 TO LPT[3][2]+tlr
+				x = LFWL + (LPDD[3][2] + LFWV) * j
+				i=0 : LDPi = LDPi +1 
+				LDPF[LDPi] = 4 + 8 ! »»» Mittelfeld - Rechteck
+				i=i+1
+				LDPX[LDPi][i] = x
+				LDPY[LDPi][i] = y
+				LDPm[LDPi][i] = msk1
+				i=i+1
+				LDPX[LDPi][i] = x + LPDD[3][2]
+				LDPY[LDPi][i] = y
+				LDPm[LDPi][i] = msk1
+				i=i+1
+				LDPX[LDPi][i] = x + LPDD[3][2]
+				LDPY[LDPi][i] = y + LPDD[3][1]
+				LDPm[LDPi][i] = msk1
+				i=i+1
+				LDPX[LDPi][i] = x
+				LDPY[LDPi][i] = y + LPDD[3][1]
+				LDPm[LDPi][i] = msk1
+				LDPn[LDPi] = i
+				NEXT j
+			NEXT k
+		ENDIF
+
+	RETURN
+
+
+! ----------------------------------------------------------------- [ Unterbrechungen der Polylinien ]
+
+"invisbleH":
+	x = LFWL
+	FOR k=start TO ende STEP 1 - 2* (start > ende)
+		
+		i=i+1
+		LFHX[LFHi][i] = x + (t + LFWV) * k - LFWV * (start < ende)
+		LFHY[LFHi][i] = y
+		LFHm[LFHi][i] = msk2
+		i=i+1
+		LFHX[LFHi][i] = x + (t + LFWV) * k - LFWV * (start > ende)
+		LFHY[LFHi][i] = y
+		LFHm[LFHi][i] = msk1
+		NEXT k
+	RETURN
+
+"invisbleV":
+	FOR k=start TO ende STEP 1 - 2* (start > ende)
+		i=i+1
+		LFVX[LFVi][i] = x
+		LFVY[LFVi][i] = y + (t + LFWH) * k - LFWH * (start < ende)
+		LFVm[LFVi][i] = msk2
+		i=i+1
+		LFVX[LFVi][i] = x
+		LFVY[LFVi][i] = y + (t + LFWH) * k - LFWH * (start > ende)
+		LFVm[LFVi][i] = msk1
+		NEXT k
+	RETURN
+

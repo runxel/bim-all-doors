@@ -1,0 +1,4375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Symbol IsArchivable="false" IsPlaceable="true" MigrationValue="Normal" Owner="1196638531" Signature="1196644685" UNID="{940EDAA2-FEA9-438D-9675-215A45892314}-{F6DDFCA3-DC10-4494-A65E-81946F757A4A}" Version="36">
+  <Ancestry SectVersion="1" SectionFlags="0" SubIdent="0" Template="false">
+    <UNID>{F938E33A-329D-4A36-BE3E-85E126820996}-{A3B0AF3A-5916-490C-9C6A-B6BD047EF925}</UNID>
+    <UNID>{103E8D2C-8230-42E1-9597-46F84CCE28C0}-{532B42DA-E2F0-4525-AE80-38E8A91A4E3F}</UNID>
+  </Ancestry>
+  <CalledMacros SectVersion="2" SectionFlags="0" SubIdent="0">
+  </CalledMacros>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_3D SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[
+IF NOT( BITTEST(macro_runtype,5) ) THEN END
+
+
+! PROJECT2 4,270,2
+
+! ----------------------------------------------------------------- [ Grunddefinition der Variablen ]
+
+
+! =============================================================================
+! Ausgabe Bänder
+! =============================================================================
+
+! IF dk_LOD < 101 THEN GOSUB "LoD100"
+! IF dk_LOD > 100 AND dk_LOD < 201 THEN GOSUB "LoD200"
+! IF dk_LOD > 200 AND dk_LOD < 301 THEN GOSUB "LoD300"
+! IF dk_LOD > 300 AND dk_LOD < 351 THEN GOSUB "LoD350"
+! IF dk_LOD > 350 AND dk_LOD < 401 THEN GOSUB "LoD400"
+IF dk_LOD > 400 THEN GOSUB "LoD500"
+
+IF dk_LOD > 350 THEN GOSUB "Fangpunkte"
+
+! ------------------------------------------------------------------------- [ ENDE ]
+
+"ende":
+END htspt
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"LoD100":
+"LoD200":
+"LoD300":
+"LoD350":
+"LoD400":
+	! Keine Darstellung
+	RETURN
+
+
+"LoD500":
+
+	IF rolle THEN GOSUB "Rollenband"
+
+	RETURN
+
+
+"Rollenband":
+
+	MATERIAL dk_materials[dka_hinge_mat]
+	ADDz ac_leaf_height - (1-stumpf)*bs_leaf_oversize
+
+	ADDZ -hinge_pos1 : GOSUB "Rolle"
+	IF bs_hinge_nmbr > 2 THEN
+		ADDZ -bs_hinge_pos3 : GOSUB "Rolle" : DEL 1
+		ENDIF
+
+	ADDZ -hinge_pos2 : GOSUB "Rolle"
+	IF bs_hinge_nmbr = 4 THEN
+		ADDZ bs_hinge_pos4 : GOSUB "Rolle" : DEL 1
+		ENDIF
+
+	DEL 3
+	RETURN
+
+
+"Rolle":
+
+	IF strsub( bs_hinge_type, strlen(bs_hinge_type), 1) = "3" THEN
+
+		ADDz -bs_hinge_height/2
+		CYLIND bs_hinge_height/4-tlr, bs_hinge_reel_diameter/2
+		ADDz bs_hinge_height/4
+		CYLIND bs_hinge_height/2-tlr, bs_hinge_reel_diameter/2
+		ADDz bs_hinge_height/2
+		CYLIND bs_hinge_height/4, bs_hinge_reel_diameter/2
+		DEL 3
+
+		ELSE
+
+		ADDz -bs_hinge_height/2
+		CYLIND bs_hinge_height/2-tlr, bs_hinge_reel_diameter/2
+		DEL 1
+		CYLIND bs_hinge_height/2, bs_hinge_reel_diameter/2
+
+		ENDIF
+	RETURN
+
+
+"Fangpunkte":
+	! Keine Fangpunkte nötig
+	RETURN
+]]></Script_3D>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_2D SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[
+IF NOT( BITTEST(macro_runtype,4) ) THEN END
+
+! PROJECT2 4,270,2
+
+! ----------------------------------------------------------------- [ Grunddefinition der Variablen ]
+
+
+! =============================================================================
+! Ausgabe Bänder
+! =============================================================================
+
+! IF dk_LOD < 101 THEN GOSUB "LoD100"
+! IF dk_LOD > 100 AND dk_LOD < 201 THEN GOSUB "LoD200"
+! IF dk_LOD > 200 AND dk_LOD < 301 THEN GOSUB "LoD300"
+! IF dk_LOD > 300 AND dk_LOD < 351 THEN GOSUB "LoD350"
+! IF dk_LOD > 350 AND dk_LOD < 401 THEN GOSUB "LoD400"
+IF dk_LOD > 400 THEN GOSUB "LoD500"
+
+IF dk_LOD > 350 THEN GOSUB "Fangpunkte"
+
+! ------------------------------------------------------------------------- [ ENDE ]
+
+"ende":
+END htspt
+	 
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"LoD100":
+"LoD200":
+"LoD300":
+"LoD350":
+"LoD400":
+	! Keine Darstellung
+	RETURN
+
+
+"LoD500":
+
+	DRAWINDEX 20
+	FILL dk_fills[dka_topview_fill]
+	PEN dk_cont_pens[dka_topview_penC2]
+
+	POLY2_B 2,1+2, dk_fill_pens[dka_topview_penF], dk_bkg_pens[dka_topview_penB],
+	    0,0,901,
+	    bs_hinge_reel_diameter/2,360,4001
+
+	RETURN
+
+
+"Fangpunkte":
+
+	! in Wandrichtung
+	htspt=htspt+1 : HOTSPOT2 bs_ancor_hinge_X,     0, htspt, bs_ancor_hinge_X, 1+128  ! Basisfangpunkt
+	htspt=htspt+1 : HOTSPOT2 bs_ancor_hinge_X+0.1, 0, htspt, bs_ancor_hinge_X, 3  ! Referenzvektor
+	htspt=htspt+1 : HOTSPOT2 0, 0, htspt, bs_ancor_hinge_X, 2  ! beweglicher Punkt
+
+	! quer zu Wand
+	htspt=htspt+1 : HOTSPOT2 0, -bs_ancor_hinge_Y,     htspt, bs_ancor_hinge_Y, 1+128  ! Basisfangpunkt
+	htspt=htspt+1 : HOTSPOT2 0, -bs_ancor_hinge_Y-0.1, htspt, bs_ancor_hinge_Y, 3  ! Referenzvektor
+	htspt=htspt+1 : HOTSPOT2 0, 0, htspt, bs_ancor_hinge_Y, 2  ! beweglicher Punkt
+
+	RETURN
+]]></Script_2D>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_1D SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[
+! ######################################
+!
+! BIM-all-doors - DOOR SYSTEM
+!
+! Module: Hinge Macro
+!
+! Manufacturer: common
+! Linie: common
+!
+! © 2018 BY DORMAKABA
+! 
+! ######################################
+
+
+! =============================================================================
+! GLOBAL SETTINGS
+! =============================================================================
+
+! »»» Arrays
+DIM clr1[], clr2[][], UI_page_subs[]
+DIM UI_page_names[], UI_page_icons[], UI_page_type[]
+
+! »»» Constants
+tlr = 0.00001  !»» accurancy
+version = 1.56 !»» Objektversion
+txt = ""	   !»»  Text für alles
+checkTXT = ""  !»»  Text für Prüfungen
+
+! »»» Localization
+sprache = language  !»»  Deutsch
+
+! »»» Common keywords
+IF sprache = 1 THEN
+
+	commonKey = "unspezifiziert" 
+	naKey = "[-]"  !"undefiniert" 
+	noKey = "nein" 
+	yesKey = "ja"
+
+	ELSE
+
+	commonKey = "unspecific"
+	naKey = "[-]"  !"common"
+	noKey = "no"
+	yesKey = "yes"
+
+	ENDIF
+
+
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (start)
+
+! --------- PRODUCT PARAMETERS
+
+! --------- DEFAULT VALUE ARRAYS
+
+! --------- dk_folding_dimensions[i][…]
+	dki_Falz1 = 1
+	dki_Falz2 = 2
+! --------- dk_panel_folding_dimensions[i][…]
+	dki_Mittelfalz1 = 1
+	dki_Mittelfalz2 = 2
+	dki_Mittelfalz3 = 3
+! --------- dk_open_leaf[i][…]
+	dka_leaf_angle2D = 1
+	dka_leaf2_angle2D = 2
+	dka_leaf_angleSA = 3
+	dka_leaf2_angleSA = 4
+	dka_leaf_angle3D = 5
+	dka_leaf2_angle3D = 6
+! --------- dk_cont_pens[i][…]
+	dka_handle_penC2 = 1
+	dka_handle_penC3 = 2
+	dka_frame_penC2 = 3
+	dka_frame_penC3 = 4
+	dka_panel_penC2 = 5
+	dka_panel_penC3 = 6
+	dka_opline2D = 7
+	dka_oplineSA = 8
+	dka_opline3D = 9
+	dka_topview_penC2 = 10
+	dka_penC = 11
+	dka_penC = 12
+	dka_penC = 13
+	dka_penC = 14
+	dka_penC = 15
+! --------- dk_fill_pens[i][…]
+	dka_handle_penF = 1
+	dka_frame_penF = 2
+	dka_side1_penF = 3
+	dka_side2_penF = 4
+	dka_panel_penF = 5
+	dka_panelfill1_penF = 6
+	dka_panelfill2_penF = 7
+	dka_panelfill3_penF = 8
+	dka_panel2fill1_penF = 9
+	dka_panel2fill2_penF = 10
+	dka_panel2fill3_penF = 11
+	dka_topview_penF = 12
+	dka_penF = 13
+	dka_penF = 14
+	dka_penF = 15
+! --------- dk_bkg_pens[i][…]
+	dka_handle_penB = 1
+	dka_frame_penB = 2
+	dka_side1_penB = 3
+	dka_side2_penB = 4
+	dka_panel_penB = 5
+	dka_panelfill1_penB = 6
+	dka_panelfill2_penB = 7
+	dka_panelfill3_penB = 8
+	dka_panel2fill1_penB = 9
+	dka_panel2fill2_penB = 10
+	dka_panel2fill3_penB = 11
+	dka_topview_penB = 12
+	dka_penB = 13
+	dka_penB = 14
+	dka_penB = 15
+! --------- dk_fills[i][…]
+	dka_handle_fill = 1
+	dka_frame_fill = 2
+	dka_side1_fill = 3
+	dka_side2_fill = 4
+	dka_panel_fill = 5
+	dka_panelfill1_fill = 6
+	dka_panelfill2_fill = 7
+	dka_panelfill3_fill = 8
+	dka_panel2fill1_fill = 9
+	dka_panel2fill2_fill = 10
+	dka_panel2fill3_fill = 11
+	dka_topview_fill = 12
+	dka_fill = 13
+	dka_fill = 14
+	dka_fill = 15
+! --------- dk_materials[i][…]
+	dka_handle_mat = 1
+	dka_plate_mat = 2
+	dka_frame_mat_BS = 3
+	dka_frame_mat_BGS = 4
+	dka_side1_mat_BS = 5
+	dka_side1_mat_BGS = 6
+	dka_side2_mat_BS = 7
+	dka_side2_mat_BGS = 8
+	dka_fan_mat_BS = 9
+	dka_fan_mat_BGS = 10
+	dka_panel_mat_BS = 11
+	dka_panel_mat_BGS = 12
+	dka_panelfill1_mat_BS = 13
+	dka_panelfill1_mat_BGS = 14
+	dka_panelfill2_mat_BS = 15
+	dka_panelfill2_mat_BGS = 16
+	dka_panelfill3_mat_BS = 17
+	dka_panelfill3_mat_BGS = 18
+	dka_panel2_mat_BS = 19
+	dka_panel2_mat_BGS = 20
+	dka_panel2fill1_mat_BS = 21
+	dka_panel2fill1_mat_BGS = 22
+	dka_panel2fill2_mat_BS = 23
+	dka_panel2fill2_mat_BGS = 24
+	dka_panel2fill3_mat_BS = 25
+	dka_panel2fill3_mat_BGS = 26
+	dka_panel_bandings_mat = 27
+	dka_panel2_bandings_mat = 28
+	dka_hinge_mat = 29
+	dka_closer_mat = 30
+	dka_automation_mat = 31
+	dka_grip_mat_BS1 = 32
+	dka_grip_mat_BS2 = 33
+	dka_grip_mat_BGS1 = 34
+	dka_grip_mat_BGS2 = 35
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (end)
+
+! ----------------------------------- MULTILINGUAL TEXT [ECD.hinge] (start)
+
+! --------- RESET array variables
+	DIM uiTXT[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		uiTXT[1] = "BÄNDER"
+		uiTXT[2] = " ... Drehpunkt + Abmessungen"
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF language = 4 THEN
+		uiTXT[1] = "HINGE"
+		uiTXT[2] = " … center of rotation + dimensions"
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+! ------------------------------------------------------------------------[ Umgebungszustände ]
+
+! »»» Überfälzt?
+IF bs_leaf_oversize < tlr OR bs_leaf_overhang < tlr THEN stumpf = 1 ELSE stumpf = 0
+
+! »»» Darstellung als Rollenband?
+rolle = 1
+IF bs_hinge_type = "VD" THEN rolle = 0
+
+! »»» Türart
+holz = ( bs_panel_material = "H" AND bs_frame_material = "HZ" )
+GOSUB "checkDoorSystem"
+
+! »»» Separater Aufruf der Flügel?
+stand = BITTEST(macro_runtype,2)
+
+
+! ------------------------------------------------------------------------[ Bandbezugslinien - Abstände ]
+
+! »»» Bandbezugslinien ermitteln
+
+IF bs_hinge_DIN THEN
+
+	hinge_pos1 = 0.237  ! +0.004  ! BA oben (1)
+	hinge_posU = 0.309  ! BA unten (minimal)
+
+	leaf_height_class 	= ac_leaf_height - (1-stumpf) * bs_leaf_oversize
+	! leaf_height_class 	= 1.61 + 0.125 * INT( (leaf_height_class - 1.61) / 0.125 )  ! Rastern
+	! hinge_pos2 			= leaf_height_class - hinge_pos1 - hinge_posU  ! Türhöhe der Klasse vorher - BA
+
+	leaf_height_class 	= ac_leaf_height - (1-stumpf) * bs_leaf_oversize
+	leaf_height_class 	= INT( (leaf_height_class - 2.11) / 0.125 )  ! Rastern
+	hinge_pos2 			= 1.56 + 0.125 * leaf_height_class  ! Türhöhe der Klasse vorher
+
+	ELSE
+
+	hinge_pos1 = bs_hinge_pos1
+	hinge_pos2 = bs_hinge_pos2
+
+	ENDIF
+
+! Tabelle für Bandbezugslinien nach DIN 18268 und 18101
+	! k = VARDIM1(bs_hinge2_distance)
+	! hinge_pos2 = bs_hinge2_distance[k][2]
+
+	! FOR i = k TO 1 STEP -1
+	! 	IF ac_leaf_height - (1-stumpf)*bs_leaf_oversize < bs_hinge2_distance[i][1] AND i > 1 THEN
+	! 		hinge_pos2 = bs_hinge2_distance[i-1][2]
+	! 		ELSE
+	! 		i=0
+	! 		ENDIF
+	! 	NEXT i
+
+
+! =============================================================================
+! Defiition UI-Seiten / LoI
+! =============================================================================
+
+!  UI_page_type =  -2 > sub of ROOT, -1 > sub of last, 1 > sub of first macro page
+
+seiten = 0
+
+IF dk_LOI = 5 THEN
+	seiten = 1
+	UI_page_names[seiten] = uiTXT[1]  ! "BÄNDER"
+	UI_page_icons[seiten] = "dk_title_hinge 18x18.png"
+	UI_page_type[seiten]  = -1
+	UI_page_subs[seiten]  = 6100
+	ENDIF
+
+IF dk_LOI = 6 THEN
+	seiten = 1
+	UI_page_names[seiten] = uiTXT[1]  ! "BÄNDER"
+	UI_page_icons[seiten] = "dk_title_hinge 18x18.png"
+	UI_page_type[seiten]  = -1
+	UI_page_subs[seiten]  = 6000
+
+	seiten = seiten + 1
+	UI_page_names[seiten] = uiTXT[2]  ! " ... Drehpunkt + Abmessungen"
+	UI_page_icons[seiten] = "dk_title_hinge_dimensions 18x18.png"
+	UI_page_type[seiten]  = 1
+	UI_page_subs[seiten]  = 6300
+	ENDIF
+
+! =============================================================================
+! FEHLERARRAY
+! =============================================================================
+
+! »»» Fehlermeldungen initialisieren
+DIM errorQ[]
+errorI = 0
+errorQ[1] = ""
+
+IF GLOB_PREVIEW_MODE THEN
+
+	txt = ""
+	! IF macro_runtype=256 THEN txt = "BÄNDER: "
+
+	! »»» Material zu Türtyp
+	sts =	((bs_hinge_type = "E2" OR bs_hinge_type = "E3") AND (bs_panel_material # "HO")) OR \
+			((bs_hinge_type = "K2" OR bs_hinge_type = "K3") AND ((bs_panel_material # "ST" AND bs_panel_material # "AL") OR (bs_frame_material # "ST" AND bs_frame_material # " AL"))) OR \
+			((bs_hinge_type = "FB") AND holz)
+	IF sts THEN
+		errorI = errorI+1 : errorQ[errorI] = txt + "Bandtyp passt nicht zu Tür-/Zargenmaterial. "
+		ELSE
+		checkTXT = bs_hinge_type
+		GOSUB "check4fit"
+		IF sts THEN
+			errorI = errorI+1 : errorQ[errorI] = txt + "Bandtyp passt nicht zu Türkonstruktionstyp. "
+			ENDIF
+		ENDIF
+		
+	! »»» Material zu Brandschutz
+	IF (bs_hinge_material # "ES" AND bs_hinge_material # "ST") AND bs_demand_FireResistance = 1 THEN
+		IF bs_hinge_material = "AL" THEN
+			errorI = errorI+1 : errorQ[errorI] = txt + "Keine Aluminumbänder bei Brandschutzanforderung. "
+			ELSE
+			errorI = errorI+1 : errorQ[errorI] = txt + "Bandmaterial auf Brandschutz prüfen. "
+			ENDIF
+		ENDIF
+		
+	! »»» Anzahl Bänder
+	IF bs_hinge_nmbr < 3 THEN
+		IF MAX(gs_SecondLeaf_w, ac_leaf_width) - tlr > 1.0 + 2*bs_leaf_oversize*NOT(stumpf) THEN
+			errorI = errorI+1 : errorQ[errorI] = txt + "Nur 2 Bänder bei der Flügelbreite (>1,0m) zu wenig. "
+			ELSE
+			IF ac_leaf_height - tlr > 2.15  THEN
+				errorI = errorI+1 : errorQ[errorI] = txt + "Nur 2 Bänder bei der Flügelhöhe (>2,15m) zu wenig. "
+				ENDIF
+			ENDIF
+		ENDIF
+		
+	! »»» Zulässiges Gewicht
+	IF bs_door_leafs > 0 THEN
+		leafWidth	= ac_leaf_width
+		leafWeight	= dk_estimatedWeight
+		GOSUB "checkWeight"
+		IF Breitenfaktor + Hoehenfaktor > 2.0+tlr AND Bandbelastung > 100 THEN
+			errorI = errorI+1 : errorQ[errorI] = txt + "Bandbelastung Gangflügel (" + str(Bandbelastung,1,0) + "kp) könnte kritisch sein. "
+			ENDIF
+		ENDIF
+	IF bs_door_leafs > 1 THEN
+		leafWidth	= gs_SecondLeaf_w
+		leafWeight	= dk_estimatedWeight2
+		GOSUB "checkWeight"
+		IF Breitenfaktor + Hoehenfaktor > 2.0+tlr AND Bandbelastung > 100 THEN
+			errorI = errorI+1 : errorQ[errorI] = txt + "Bandbelastung Standflügel (" + str(Bandbelastung,1,0) + "kp) könnte kritisch sein. "
+			ENDIF
+		ENDIF
+
+	! sts = 1+2+8 : GOSUB "debuginfo"
+	ENDIF
+
+! =============================================================================
+! question - answer mode  / HANDSHAKE
+! =============================================================================
+
+IF macro_runtype = 1   THEN END UI_page_type   ! »»» return UI page hirarchy
+IF macro_runtype = 2   THEN END UI_page_names  ! »»» return UI page names
+IF macro_runtype = 4   THEN END UI_page_icons  ! »»» return UI page picts
+IF macro_runtype = 256 THEN END errorQ  ! »»» Fehlermeldung
+
+! IF macro_runtype = 64 AND errorI > 0 THEN
+!	 txt = ""
+!	 FOR i=1 TO errorI
+!		 txt=txt+errorQ[i]+"\n"+"\n"
+!		 NEXT i
+!	 PRINT txt
+!	 ENDIF
+
+! =============================================================================
+! LOD - Level of Detail
+! =============================================================================
+
+
+! ------------------------------------------------------------------------[ ... ]
+
+GOTO "masterend"
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+! »»» Errorcontent:
+"debuginfo":
+	IF BITTEST(sts,0) THEN txt = "Falscher Wandanschluss " ELSE txt=""
+	IF BITTEST(sts,1) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "Anschlag"
+	IF BITTEST(sts,2) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "Nicht bündig mit Zarge"
+	IF BITTEST(sts,3) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "Leibungstiefe"
+	IF BITTEST(sts,4) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "Türbreite"
+	IF BITTEST(sts,5) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "sonstiges"
+	IF txt # "" THEN txt = " ("+txt+")"
+	RETURN
+
+! »»» Türtypenabhängigkeiten
+"checkDoorSystem":
+	doorSystem = "" 	! bs_frame_material nicht berücksichtigt
+						! = "ST" "HO" "AL "KP" "AP" SP"
+
+	IF dk_frametype = "BZ" THEN
+		IF bs_frame_material = "ST" THEN
+			doorSystem = "ST"
+			ELSE
+			doorSystem = "HO"
+			ENDIF
+		ELSE
+		IF dk_frametype = "UZ" THEN
+			IF bs_frame_material = "HO" THEN
+				doorSystem = "HO"
+				ELSE
+				IF bs_frame_material = "AL" THEN
+					doorSystem = "AL"
+					ELSE
+					doorSystem = "ST"
+					ENDIF
+				ENDIF
+			ELSE
+			IF dk_frametype = "EZ" THEN
+				IF bs_frame_material = "HO" THEN
+					doorSystem = "HO"
+					ELSE
+					IF bs_frame_material = "AL" THEN
+						doorSystem = "AL"
+						ELSE
+						doorSystem = "ST"
+						ENDIF
+					ENDIF
+				ELSE
+				IF dk_frametype = "RR" THEN
+					IF bs_frame_material = "KU" THEN
+						doorSystem = "KP"
+						ELSE
+						IF bs_frame_material = "AL" THEN
+							doorSystem = "AP"
+							ELSE
+							doorSystem = "SP"
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+
+	RETURN
+
+! »»» Prüfung, ob Bandtyp zu Türsystem passt
+"check4fit":
+	! checkTXT = bs_hinge_type
+	sts = 1
+
+	IF doorSystem = "" OR checkTXT = "-" THEN
+		sts = 0
+		ELSE
+		IF doorSystem = "HO" AND STRSTR("O2|O3|E2|E3|PA|FB|VD", checkTXT) THEN
+			sts = 0
+			ELSE
+			IF doorSystem = "ST" AND STRSTR("O2|O3|K2|K3|VD", checkTXT) THEN
+				sts = 0
+				ELSE
+				IF doorSystem = "AL" AND STRSTR("O2|O3|VD", checkTXT) THEN
+					sts = 0
+					ELSE
+					IF doorSystem = "SP" AND STRSTR("ZB|PT|VD", checkTXT) THEN
+						sts = 0
+						ELSE
+						IF doorSystem = "AP" AND STRSTR("K2|K3|PT|VD", checkTXT) THEN
+							sts = 0
+							ELSE
+							IF doorSystem = "KP" AND STRSTR("PT", checkTXT) THEN
+								sts = 0
+								ENDIF
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+
+	RETURN
+
+! »»» Zulssiges Gewicht
+"checkWeight":
+	Breitenlastzuschlag	= 0.01  ! Herstellerabhängig. Bis zu 1,5% = 0.015
+	Breitenfaktor		= MAX( 1, 1 + (leafWidth*1000 - 1000) / 10 * Breitenlastzuschlag)
+	Hoehenfaktor		= 1.435 / MAX(tlr,hinge_pos2)
+	! Formfaktor			= Breitenfaktor * Hoehenfaktor
+	Ausstattungsfaktor	= 1 + MAX(0.37 * (bs_closer_type # "-"), 0.5 * (bs_automation_type # "-"))   ! * 1.5 * (tuerstopper OR feststeller)
+	Bandbelastung		= leafWeight * MAX(1, Breitenfaktor * Hoehenfaktor * Ausstattungsfaktor)
+	RETURN
+
+"masterend":
+]]></Script_1D>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_PR SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[
+! Script_PR
+]]></Script_PR>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_UI SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[
+!-------------------------------------------- [ Standardelemente aller Seiten ]
+
+! #### Standardwerte
+
+DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[] ! Arrays für diskrete Auswahlen UI_INFIELD{4}
+DIM UIpic[], UItxt[], UIval[]
+
+! ----------------------------------- MULTILINGUAL TEXT [bim-all-doors.hinge] (start)
+
+! --------- RESET array variables
+	DIM babel[]
+	DIM bubble[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		babel[1] = "Hersteller:"
+		babel[2] = "Produkt:"
+		babel[3] = "Anzahl:"
+		babel[4] = "Länge / Höhe:"
+		babel[5] = "Rolle:"
+		babel[6] = "Sicherungsbolzen:"
+		babel[7] = "Material/Oberfläche:"
+		babel[8] = "Drehpunkt/ Bandachse:"
+		babel[9] = "Versatz X (1):"
+		babel[10] = "Abstand Y (2):"
+		babel[11] = "Durchmesser (3):"
+		babel[12] = "Abstände nach:"
+		babel[13] = "Anzahl/Bandaufnahme:"
+		babel[14] = "Bandaufnahme:"
+		babel[15] = "3D/Rendering:"
+		babel[16] = "Bandtyp:"
+		babel[17] = "Justage:"
+		babel[18] = "Zarge"
+		babel[19] = "Türblatt"
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF language = 4 THEN
+		babel[1] = "Manufacturer:"
+		babel[2] = "Product:"
+		babel[3] = "Anzahl:"
+		babel[4] = "Länge / Höhe:"
+		babel[5] = "Rolle:"
+		babel[6] = "Sicherungsbolzen:"
+		babel[7] = "Material/Oberfläche:"
+		babel[8] = "Drehpunkt/ Bandachse:"
+		babel[9] = "Versatz X (1):"
+		babel[10] = "Abstand Y (2):"
+		babel[11] = "Durchmesser (3):"
+		babel[12] = "Abstände nach:"
+		babel[13] = "Anzahl/Bandaufnahme:"
+		babel[14] = "Bandaufnahme:"
+		babel[15] = "3D/Rendering:"
+		babel[16] = "Bandtyp:"
+		babel[17] = "Justage:"
+		babel[18] = "Zarge"
+		babel[19] = "Türblatt"
+		ENDIF
+
+! --------- User Interface - Tooltip text (Deutsch)
+	IF language = 1 THEN
+		bubble[1] = "Band Hersteller"
+		bubble[2] = "Band Produktangabe"
+		bubble[3] = "Band Material"
+		bubble[4] = "Band Oberfläche"
+		bubble[5] = "Bandanzahl"
+		bubble[6] = "1. und 2. Band nach DIN?"
+		bubble[7] = "Bandabstand 2. Band"
+		bubble[8] = "Bandabstand 3. Band"
+		bubble[9] = "Bandabstand 4. Band"
+		bubble[10] = "Bandaufnahme / -verstellung"
+		bubble[11] = "Bandaufnahme Produktangabe"
+		bubble[12] = "Bandbezugslinien"
+		bubble[13] = "Bandbezugslinie"
+		bubble[14] = "Bandtyp"
+		bubble[15] = "Bezug- und Drehachsen"
+		bubble[16] = "Oberflächenmaterial"
+		bubble[17] = "Sicherungsbolzen Anzahl"
+		bubble[18] = "Rollendurchmesser"
+		bubble[19] = "Gesamthöhe der Rolle"
+		bubble[20] = "Länge (Höhe) der gesamten Rolle"
+		bubble[21] = "Bandachse in X"
+		bubble[22] = "Bandachse in Y"
+		ENDIF
+! --------- User Interface - Tooltip text (Englisch)
+	IF language = 4 THEN
+		bubble[1] = "Band Hersteller"
+		bubble[2] = "Band Produktangabe"
+		bubble[3] = "Band Material"
+		bubble[4] = "Band Oberfläche"
+		bubble[5] = "Bandanzahl"
+		bubble[6] = "2. und 2. Band nach DIN?"
+		bubble[7] = "Bandabstand 2. Band"
+		bubble[8] = "Bandabstand 3. Band"
+		bubble[9] = "Bandabstand 4. Band"
+		bubble[10] = "Bandaufnahme / -verstellung"
+		bubble[11] = "Bandaufnahme Produktangabe"
+		bubble[12] = "Bandbezugslinien"
+		bubble[13] = "Bandbezugslinie"
+		bubble[14] = "Bandtyp"
+		bubble[15] = "Bezug- und Drehachsen"
+		bubble[16] = "Oberflächenmaterial"
+		bubble[17] = "Sicherungsbolzen Anzahl"
+		bubble[18] = "Rollendurchmesser"
+		bubble[19] = "Gesamthöhe der Rolle"
+		bubble[20] = "Länge (Höhe) der gesamten Rolle"
+		bubble[21] = "Bandachse in X"
+		bubble[22] = "Bandachse in Y"
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+! =============================================================================
+! Dialogstart
+! =============================================================================
+
+
+! ------------------------------------------------------------------------[ Dialog start in development environment ]
+
+IF macro_runtype # 128 THEN
+
+	UI_DIALOG "DORMA HINGE MACRO V0.1 12.08.17", 444,266
+
+	ENDIF
+
+format = "" : sts = REQUEST ("Working_length_unit", "",format)			  !	Format für UI-Outfield -Längenwerte	
+	
+
+! ------------------------------------------------------------------------[ 1. Seite ]
+
+s = 1
+IF  seiten > 0 THEN
+	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ 2. Seite ]
+
+s = 2
+IF  seiten > 1 THEN
+	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+	ENDIF
+
+
+! =============================================================================
+! Dialogende
+! =============================================================================
+
+END
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"devshow":
+	UI_STYLE 1,2
+	UI_OUTFIELD "[HINGE v" + str("%^.2",version) + "]"  , 60,0,100,15, 4
+	UI_STYLE 0,0
+
+	i = -1 : s = 20
+	i = i+1 :	UI_INFIELD{3} "bs_frame_material",	475,i*s, 45,19  UI_TOOLTIP "bs_frame_material"
+				UI_INFIELD{3} "bs_panel_material",	525,i*s, 45,19  UI_TOOLTIP "bs_panel_material"
+	i = i+1 :	ui_outfield str(dk_estimatedWeight ,3,1)+"kg",	475,i*s, 45,15  UI_TOOLTIP "dk_estimatedWeight"
+				ui_outfield str(dk_estimatedWeight2,3,1)+"kg",	525,i*s, 45,15  UI_TOOLTIP "dk_estimatedWeight2"
+	i = i+1 :	ui_outfield str(Breitenfaktor,3,1)+"",	475,i*s, 45,15  UI_TOOLTIP "Breitenfaktor"
+				ui_outfield str(Hoehenfaktor,3,1)+"",	525,i*s, 45,15  UI_TOOLTIP "Hoehenfaktor"
+				ui_outfield str(Ausstattungsfaktor,3,1)+"",	575,i*s, 45,15  UI_TOOLTIP "Ausstattungsfaktor"
+	i = i+1 :	ui_outfield str(Breitenfaktor+Hoehenfaktor,3,1)+"",	475,i*s, 45,15  UI_TOOLTIP "Formfaktor"
+				ui_outfield str(Bandbelastung,3,1)+"kp",	525,i*s, 45,15  UI_TOOLTIP "Bandbelastung"
+	RETURN
+
+"devSELECTION":
+	FOR i= 1 TO VARDIM1(UIpicIdxArray)
+		ui_outfield UIpicIdxArray[i],   0,260+i*15,140,15
+		ui_outfield UItextArray[i]  , 150,260+i*15,140,15
+		ui_outfield UIvaluesArray[i], 300,260+i*15,140,15
+		NEXT i
+	RETURN
+
+! ------------------------------------------------------------------------[ Auswahloptionen ]
+
+
+! ----------------------------------- PARAMETER / INFIELD VALUE LIST [ECD.hinge] (start)
+
+"VALUES_bs_hinge_type":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Objekt-/Rollenband zweiteilig" : UIvaluesArray[j] = "O2"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Objekt-/Rollenband dreiteilig" : UIvaluesArray[j] = "O3"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Einbohrband zweiteilig" : UIvaluesArray[j] = "E2"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Einbohrband dreiteilig" : UIvaluesArray[j] = "E3"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Paumelle" : UIvaluesArray[j] = "PA"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Fitschenband" : UIvaluesArray[j] = "FB"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Universalband zweiteilig" : UIvaluesArray[j] = "U2"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Universalband dreiteilig" : UIvaluesArray[j] = "U3"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Konstruktionsband zweiteilig" : UIvaluesArray[j] = "K2"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Konstruktionsband dreiteilig" : UIvaluesArray[j] = "K3"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Profiltürband" : UIvaluesArray[j] = "PT"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Zapfenband" : UIvaluesArray[j] = "ZB"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verdecktes Band" : UIvaluesArray[j] = "VD"
+	RETURN
+
+"VALUES_bs_hinge_chuck":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "eingebohrt" : UIvaluesArray[j] = "BO"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "aufgeschraubt" : UIvaluesArray[j] = "AG"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "eingestemmt" : UIvaluesArray[j] = "GS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "angeschweißt" : UIvaluesArray[j] = "SW"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Bandaufnahme" : UIvaluesArray[j] = "BA"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "individuell" : UIvaluesArray[j] = "XX"
+	RETURN
+
+"VALUES_bs_hinge_material":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Stahl" : UIvaluesArray[j] = "ST"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Edelstahl" : UIvaluesArray[j] = "ES"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aluminium" : UIvaluesArray[j] = "AL"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sondermaterial" : UIvaluesArray[j] = "XX"
+	RETURN
+
+"VALUES_bs_hinge_surface":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbehandelt" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gebürstet" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Geschliffen" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Getrommelt" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Poliert" : UIvaluesArray[j] = "P"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vernickelt" : UIvaluesArray[j] = "N"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lackiert" : UIvaluesArray[j] = "L"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Pulverbeschichtet" : UIvaluesArray[j] = "V"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verzinkt" : UIvaluesArray[j] = "Z"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verchromt" : UIvaluesArray[j] = "C"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Eloxiert" : UIvaluesArray[j] = "E"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Titanisiert" : UIvaluesArray[j] = "I"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vergoldet" : UIvaluesArray[j] = "G"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sonderoberfläche" : UIvaluesArray[j] = "X"
+	RETURN
+
+! --------------------------------------------------------------- PARAMETER / INFIELD VALUE LIST (end)
+
+
+"SELECT_bs_hinge_type":
+	GOSUB "VALUES_bs_hinge_type"
+	j = 0 : DIM UIpic[], UItxt[], UIval[]
+
+	FOR i=1 TO VARDIM1(UIpicIdxArray)
+
+		! Test ob zulässig
+		checkTXT = UIvaluesArray[i]
+		GOSUB "check4fit"
+		IF stumpf AND checkTXT = "FB" THEN sts = 1
+		IF not(stumpf) AND checkTXT = "PA" THEN sts = 1
+		! IF not(stumpf) AND checkTXT = "VD" THEN sts = 1
+
+		! für Eingabefeld einrihten
+		IF NOT(sts) THEN
+			j=j+1 : UIpic[j] = UIpicIdxArray[i] : UItxt[j] = UItextArray[i] : UIval[j] = UIvaluesArray[i]
+			ENDIF
+		IF sts AND bs_hinge_type = checkTXT THEN
+			j=j+1 : UIpic[j] = UIpicIdxArray[i] : UItxt[j] = "[" + UItextArray[i] + "]" : UIval[j] = UIvaluesArray[i]
+			ENDIF
+
+		NEXT i
+
+	IF j < 1 THEN
+		j=j+1 : UIpic[j] = UIpicIdxArray[i] : UItxt[j] = UItextArray[i] : UIval[j] = UIvaluesArray[i]
+		ENDIF
+	RETURN
+
+"SELECT_bs_hinge_chuck":
+	GOSUB "VALUES_bs_hinge_chuck"
+	sts = 0
+	IF bs_hinge_chuck # "XX" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_hinge_chuck THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+
+"SELECT_bs_hinge_material":
+	GOSUB "VALUES_bs_hinge_material"
+	sts = 0
+	IF bs_hinge_material # "XX" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_hinge_material THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_hinge_surface":
+	GOSUB "VALUES_bs_hinge_surface"
+	sts = 0
+	IF bs_hinge_surface # "X" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_hinge_surface THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+
+"SELECT_HingePosBitmap":
+	uiBitmap = "dk_ui_hingeZ_"
+	IF bs_hinge_type = "VD" THEN uiBitmap = uiBitmap + "V" ELSE uiBitmap = uiBitmap + "R"
+	IF stumpf THEN uiBitmap = uiBitmap + "S" ELSE uiBitmap = uiBitmap + "F"
+	uiBitmap = uiBitmap + STR(bs_hinge_nmbr,1,0)
+	uiBitmap = uiBitmap + " 40x140.png"
+	RETURN
+
+"SELECT_HingePosBitmap2":
+	uiBitmap = "dk_ui_hingeXY_"
+	IF bs_hinge_type = "VD" THEN uiBitmap = uiBitmap + "V" ELSE uiBitmap = uiBitmap + "A"
+	IF stumpf THEN uiBitmap = uiBitmap + "S" ELSE uiBitmap = uiBitmap + "F"
+	uiBitmap = uiBitmap + STR(bs_folding_nmbr,1,0)
+	uiBitmap = uiBitmap + " 80x90.png"
+	RETURN
+
+
+! ------------------------------------------------------------- MAIN PAGE [ 6000 ]
+	6000:   ! #### LOI 6 -Grundeinstellungen Türbänder
+	GOSUB 9900
+	UI_OUTFIELD babel[16], 61,39 , 125,15, 0+0
+	GOSUB "SELECT_bs_hinge_type"
+	UI_INFIELD{3} "bs_hinge_type", 187,34 , 204,21, 2, "", 99, 1, 0, 0, 0, 0, UIpic, UItxt, UIval UI_TOOLTIP bubble[14]
+	GOSUB 6200
+	RETURN
+! ------------------------------------------------------------- MAIN PAGE [ 6100 ]
+	6100:   ! #### LOI 5 -Grundeinstellungen Türbänder
+	GOSUB 9900
+	UI_OUTFIELD babel[16], 61,30 , 125,15, 0+0
+	UI_OUTFIELD babel[13], 61,53 , 125,15, 0+0
+	GOSUB "SELECT_bs_hinge_type"
+	UI_INFIELD{3} "bs_hinge_type", 187,25 , 204,21, 2, "", 99, 1, 0, 0, 0, 0, UIpic, UItxt, UIval UI_TOOLTIP bubble[14]
+	UI_INFIELD{3} "bs_hinge_nmbr", 187,51 , 45,19 UI_TOOLTIP bubble[5]
+	GOSUB "SELECT_bs_hinge_chuck"
+	IF sts THEN
+		UI_INFIELD{3} "bs_hinge_chuck", 247,50 , 144,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[11]
+		ENDIF
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_hinge_chuck", 247,51 , 144,19 UI_TOOLTIP bubble[11]
+	GOSUB 6200
+	RETURN
+! ------------------------------------------------------------- SUB PAGE [ 6200 ]
+	6200:   ! #### SUB Grundeinstellungen Türbänder
+	UI_OUTFIELD babel[2], 61,122 , 125,15, 0+0
+	UI_OUTFIELD babel[1], 61,98 , 125,15, 0+0
+	UI_OUTFIELD babel[7], 61,169 , 125,15, 0+0
+	UI_OUTFIELD babel[15], 61,193 , 125,15, 0+0
+	UI_INFIELD{3} "bs_hinge_manufacturer", 188,95 , 202,19 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} "bs_hinge_model", 188,120 , 202,19 UI_TOOLTIP bubble[2]
+	GOSUB "SELECT_bs_hinge_material"
+	IF sts THEN
+		UI_INFIELD{3} "bs_hinge_material", 188,164 , 100,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+		ENDIF
+	UI_INFIELD{3} dk_materials[dka_hinge_mat], 213,189 , 178,21 UI_TOOLTIP bubble[16]
+	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_material", 188,165 , 100,19 UI_TOOLTIP bubble[3]
+	GOSUB "SELECT_bs_hinge_surface"
+	IF sts THEN
+		UI_INFIELD{3} "bs_hinge_surface", 291,164 , 100,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[4]
+		ENDIF
+	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_surface", 291,165 , 100,19 UI_TOOLTIP bubble[4]
+	UI_PICT "ui_general_surface_flat 23x23.png", 187,189 , 23,23, 1
+	UI_SEPARATOR 61,158, 391,158
+	UI_SEPARATOR 61,215, 391,215
+	UI_SEPARATOR 61,76, 391,76
+	RETURN
+! ------------------------------------------------------------- MAIN PAGE [ 6300 ]
+	6300:   ! #### LOI 6 -Abmessungen Türbänder
+	GOSUB 9900
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[3], 12,22 , 59,15, 0+0
+	UI_STYLE 0,0
+	IF rolle THEN
+		UI_STYLE 0,1
+		UI_OUTFIELD babel[5], 237,22 , 79,15, 0+0
+		UI_STYLE 0,0
+		ENDIF
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[8], 238,205 , 179,15, 0+0
+	UI_STYLE 0,0
+	UI_OUTFIELD babel[6], 12,202 , 100,15, 0+0
+	UI_OUTFIELD babel[14], 12,224 , 100,15, 0+0
+	IF rolle THEN UI_OUTFIELD babel[11], 237,40 , 100,15, 0+0
+	UI_OUTFIELD babel[17], 12,247 , 100,15, 0+0
+	IF rolle THEN UI_OUTFIELD babel[4], 237,63 , 100,15, 0+0 UI_TOOLTIP bubble[20]
+	UI_OUTFIELD babel[9], 238,225 , 100,15, 0+0
+	UI_OUTFIELD babel[10], 238,248 , 100,15, 0+0
+	UI_INFIELD{3} "bs_hinge_nmbr", 116,20 , 40,19 UI_TOOLTIP bubble[5]
+	UI_INFIELD{3} "bs_hinge_safety_pin", 116,200 , 39,19 UI_TOOLTIP bubble[17]
+	GOSUB "SELECT_bs_hinge_chuck"
+	IF sts THEN
+		UI_INFIELD{3} "bs_hinge_chuck", 116,222 , 90,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[11]
+		ENDIF
+	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_chuck", 116,223 , 90,19 UI_TOOLTIP bubble[11]
+	UI_INFIELD{3} "bs_hinge_adjust", 116,246 , 90,19 UI_TOOLTIP bubble[10]
+	IF rolle THEN UI_INFIELD{3} "bs_hinge_reel_diameter", 352,38 , 65,19 UI_TOOLTIP bubble[18]
+	IF rolle THEN UI_INFIELD{3} "bs_hinge_height", 352,61 , 65,19 UI_TOOLTIP bubble[19]
+	UI_INFIELD{3} "bs_ancor_hinge_X", 352,223 , 65,19 UI_TOOLTIP bubble[21]
+	UI_INFIELD{3} "bs_ancor_hinge_Y", 352,246 , 65,19 UI_TOOLTIP bubble[22]
+	UI_OUTFIELD babel[12], 1,81 , 57,28, 2+0
+	UI_INFIELD{3} "bs_hinge_DIN", 18,109 , 22,22, 6, 3, 3, 1, 18, 18, 18, 18, 3,"-",0, 2,"X",1 UI_TOOLTIP bubble[6]
+	UI_PICT 2, 106,69 , 6,1, 1
+	UI_PICT 2, 106,123 , 6,1, 1
+	IF bs_hinge_DIN THEN
+		out_value = STR (format, hinge_pos1)
+		UI_OUTFIELD out_value, 120,62 , 54,15, 0+0
+		out_value = STR (format, hinge_pos2)
+		UI_OUTFIELD out_value, 120,116 , 54,15, 0+0
+		ELSE
+		UI_INFIELD{3} "bs_hinge_pos1", 116,60 , 58,19 UI_TOOLTIP bubble[13]
+		UI_INFIELD{3} "bs_hinge_pos2", 116,113 , 58,19 UI_TOOLTIP bubble[7]
+		ENDIF
+	IF bs_hinge_nmbr>2 THEN
+		UI_INFIELD{3} "bs_hinge_pos3", 116,83 , 58,19 UI_TOOLTIP bubble[8]
+		UI_PICT 2, 107,92 , 6,1, 1
+		ENDIF
+	IF bs_hinge_nmbr=4 THEN
+		UI_INFIELD{3} "bs_hinge_pos4", 116,143 , 58,19 UI_TOOLTIP bubble[9]
+		UI_PICT 2, 106,151 , 6,1, 1
+		ENDIF
+	GOSUB "SELECT_HingePosBitmap2"
+	UI_PICT uiBitmap, 283,92 , 80,90, 1 UI_TOOLTIP bubble[15]
+	GOSUB "SELECT_HingePosBitmap"
+	UI_PICT uiBitmap, 66,49 , 40,140, 1 UI_TOOLTIP bubble[12]
+	UI_STYLE 1,2
+	UI_OUTFIELD babel[18], 236,178 , 37,12, 1+0
+	UI_STYLE 0,0
+	UI_STYLE 1,2
+	UI_OUTFIELD babel[19], 373,108 , 39,12, 0+0
+	UI_STYLE 0,0
+	UI_SEPARATOR 221,18, 221,266
+	RETURN
+! -------------------------------------------------------------TITLE [ 9900 ]
+	9900:   ! #### TITEL on all pages
+	IF develop THEN GOSUB "devshow"
+	UI_STYLE 0,0
+	UI_PICT 1, 305,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 445,15
+	IF errorI>0 THEN
+		txt = ""
+		FOR i=1 TO errorI
+		txt = txt + errorQ[i]
+		NEXT i
+		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
+		ENDIF
+	RETURN
+
+]]></Script_UI>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_VL SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[
+! ------------------------------------------------------------------------[ Object development settings ]
+
+IF macro_runtype = 0 THEN
+	VALUES{2} "macro_runtype" 0, "IDLE", 1,"handshake page hirarchy", 2,"handshake page names", 3,"CALL UI page", 5,"return element values", 10,"rebuilt VALUE lists"
+	ENDIF
+
+
+! =============================================================================
+! PLAUSIBILITY
+! =============================================================================
+
+
+! ----------------------------------------------------------------- Prüfung der Abmessungen
+
+! Prüfung in X
+sts = 0
+IF stumpf THEN s = bs_hinge_reel_diameter/2 * (bs_leaf_overhang > 0) ELSE s = bs_leaf_oversize + bs_hinge_reel_diameter/2
+IF rolle AND bs_ancor_hinge_X < s THEN
+	bs_ancor_hinge_X = s : sts = 1
+	ENDIF
+
+IF sts THEN PARAMETERS bs_ancor_hinge_X = bs_ancor_hinge_X
+
+! Prüfung in Y
+sts = 0
+s = bs_hinge_reel_diameter/2
+IF rolle AND bs_ancor_hinge_Y < s THEN
+	bs_ancor_hinge_Y = s : sts = 2
+	ENDIF
+
+IF sts THEN PARAMETERS bs_ancor_hinge_Y = bs_ancor_hinge_Y
+
+
+! =============================================================================
+! VALUES
+! =============================================================================
+
+IF bs_hinge_DIN THEN
+	PARAMETERS bs_hinge_pos1 = hinge_pos1, bs_hinge_pos2 = hinge_pos2
+	ENDIF
+
+! ----------------------------------- PARAMETER VALUE LIST [ECD.hinge] (start)
+
+VALUES "bs_hinge_type" "-", "O2", "O3", "E2", "E3", "PA", "FB", "U2", "U3", "K2", "K3", "PT", "ZB", "VD"
+VALUES "bs_hinge_chuck" "-", "BO", "AG", "GS", "SW", "BA", "XX", CUSTOM
+VALUES "bs_hinge_material" " ", "ST", "ES", "AL", "XX", CUSTOM
+VALUES "bs_hinge_surface" " ", "-", "B", "S", "T", "P", "N", "L", "V", "Z", "C", "E", "I", "G", "X", CUSTOM
+VALUES "bs_hinge_adjust" "-", "2D", "3D"
+VALUES "bs_hinge_nmbr" 2, 3, 4
+VALUES "bs_hinge_reel_diameter" 0.015, 0.018, 0.02, 0.021, 0.022, CUSTOM
+VALUES "bs_hinge_height" 0.095, 0.103, 0.12, 0.148, 0.16, CUSTOM
+VALUES "bs_hinge_fixture_width" 0.04, 0.06, CUSTOM
+VALUES "bs_hinge_fixture_height" 0.04, 0.05, CUSTOM
+VALUES "bs_ancor_hinge_X" 0.0205, 0.0285, CUSTOM
+VALUES "bs_ancor_hinge_Y" 0.012, 0.013, CUSTOM
+VALUES "bs_hinge_pos1" 0.237, CUSTOM
+VALUES "bs_hinge_pos2" 1.185, 1.31, 1.435, 1.56, 1.685, 1.81, 1.935, 2.06, 2.185, 2.31, CUSTOM
+VALUES "bs_hinge_pos3" 0.35, CUSTOM
+VALUES "bs_hinge_pos4" 0.35, CUSTOM
+VALUES "develop" 0, 1, 2, 3, 4, 5, 6, 7, 8
+
+! --------------------------------------------------------------- PARAMETER VALUE LISTS (end)
+
+
+! ---------------------------------------------------------------------- !
+
+END
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+]]></Script_VL>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_FWM SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[
+! Script_FWM
+]]></Script_FWM>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_BWM SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[
+! Script_BWM
+]]></Script_BWM>
+  <ParamSection SectVersion="22" SectionFlags="0" SubIdent="0">
+    <ParamSectHeader>
+      <Version>21</Version>
+      <AutoHotspots>no</AutoHotspots>
+      <StatBits>
+        <STBit_UIDefault />
+        <STBit_FixSize />
+        <STBit_UIUseHierarchicalPages />
+      </StatBits>
+      <WDLeftFrame>0</WDLeftFrame>
+      <WDRightFrame>0</WDRightFrame>
+      <WDTopFrame>0</WDTopFrame>
+      <WDBotFrame>0</WDBotFrame>
+      <LayFlags>0</LayFlags>
+      <WDMirrorThickness>0</WDMirrorThickness>
+      <WDWallInset>0</WDWallInset>
+      <SymbolColor>0</SymbolColor>
+    </ParamSectHeader>
+    <Parameters>
+      <Length Name="A">
+        <Description><![CDATA["Nominalbreite"]]></Description>
+        <Fix />
+        <Value>0.885</Value>
+      </Length>
+      <Length Name="B">
+        <Description><![CDATA["Nominalhöhe"]]></Description>
+        <Fix />
+        <Value>2.135</Value>
+      </Length>
+      <Length Name="ZZYZX">
+        <Description><![CDATA["Z-Achse"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+        </Flags>
+        <Value>1</Value>
+      </Length>
+      <Integer Name="bs_demand_FireResistance">
+        <Description><![CDATA["Brandschutzanforderung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_demand_SmokeResistance">
+        <Description><![CDATA["Rauchschutzanforderung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_demand_NoiseInsulaion">
+        <Description><![CDATA["Schallschutzanforderung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_demand_Accessibility">
+        <Description><![CDATA["Anforderungen Barrierefreiheit"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_demand_AdmissionControl">
+        <Description><![CDATA["Anforderung Zugangskontrolle"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_demand_MoistureProofing">
+        <Description><![CDATA["Klimatische Anforderungen"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_demand_EscapeRoute">
+        <Description><![CDATA["Fluchtweg- und Rettungsweganforderung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <String Name="bs_quality_FireResistanceRating">
+        <Description><![CDATA["Brandschutz"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_SmokeResistance">
+        <Description><![CDATA["Rauchschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_NoiseInsulaion">
+        <Description><![CDATA["Schallschutz"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_ThermalInsulaion">
+        <Description><![CDATA["max. Wärmedurchgangskoeffizient"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_BurglaryProtection">
+        <Description><![CDATA["Einbruchschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_StrafingProtection">
+        <Description><![CDATA["Beschußsicherheit"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_DetonationProtection">
+        <Description><![CDATA["Sprengwirkungsschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_RadiationProtection">
+        <Description><![CDATA["Strahlenschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_LaserProtection">
+        <Description><![CDATA["Laserschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_FloodProtection">
+        <Description><![CDATA["Hochwasserschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_VandalismProtection">
+        <Description><![CDATA["Vandalismus"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_GasDefense">
+        <Description><![CDATA["Gasschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA[""]]></Value>
+      </String>
+      <String Name="bs_quality_EscapeRoute">
+        <Description><![CDATA["Flucht- und Rettungsweg"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <Length Name="bs_quality_UsableClearance">
+        <Description><![CDATA["Mindestdurchgangsbreite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.8</Value>
+      </Length>
+      <Length Name="bs_quality_UsableHeight">
+        <Description><![CDATA["Mindestdurchgangshöhe"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </Length>
+      <Angle Name="bs_quality_OpeningAngle">
+        <Description><![CDATA["Mindestöffnungswinkel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>90</Value>
+      </Angle>
+      <Length Name="bs_quality_GuardrailHeight">
+        <Description><![CDATA["Absturzsicherung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <String Name="bs_quality_SHE">
+        <Description><![CDATA["RWA-Zuluft"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_SelfClosing">
+        <Description><![CDATA["Selbstschließend"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_Automation">
+        <Description><![CDATA["Automatisiert"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_AntiTrapProtection">
+        <Description><![CDATA["Klemmschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_ClimateClass">
+        <Description><![CDATA["Klimaklasse"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_WetRoom">
+        <Description><![CDATA["Nassraum"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_DampArea">
+        <Description><![CDATA["Feuchtraum"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_Tightness">
+        <Description><![CDATA["Dichtigkeit"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_Hygiene">
+        <Description><![CDATA["Hygiene"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_Sustainability">
+        <Description><![CDATA["Nachhaltigkeit"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_ExplosionSafety">
+        <Description><![CDATA["Explosionsschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_MechanicalLoad">
+        <Description><![CDATA["Mechanische Beanspruchung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_CorrosionPrevention">
+        <Description><![CDATA["Korrosionschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_UsefulLife">
+        <Description><![CDATA["Nutzungsdauer"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_IntensityOfUse">
+        <Description><![CDATA["Nutzungsintensität"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_EMShielding">
+        <Description><![CDATA["Elektromagnetische Abschirmung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_BurglaryAlarmSystem">
+        <Description><![CDATA["Einbruchmeldeanlage"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_AccidentPrevention">
+        <Description><![CDATA["Unfallverhütung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_Accessibility">
+        <Description><![CDATA["Barrierefreiheit"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_ActuatingForce">
+        <Description><![CDATA["Bedienkraft"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_ac_identify1">
+        <Description><![CDATA["Zugang von der  BS"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_ac_identify2">
+        <Description><![CDATA["Zugang von der BGS"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_ac_opening1">
+        <Description><![CDATA["Öffnen von der BS"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_ac_opening2">
+        <Description><![CDATA["Öffnen von der BGS"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_ac_closing">
+        <Description><![CDATA["Schließverhalten"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_ac_status">
+        <Description><![CDATA["Flügelposition im Betrieb"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_ac_control">
+        <Description><![CDATA["Überwachung Türzustand"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <!-- dk_basic_features: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="dk_basic_features">
+        <Description><![CDATA["Grundeigenschaften"]]></Description>
+      </Title>
+      <String Name="bs_door_OpeningType">
+        <Description><![CDATA["Türtyp / Öffnungsart"]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Drehflügel"]]></Value>
+      </String>
+      <String Name="bs_door_ConstructionType">
+        <Description><![CDATA["Konstruktionstyp"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["allgemein"]]></Value>
+      </String>
+      <Boolean Name="gs_mountingFrame">
+        <Description><![CDATA["Einbaurahmen"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <Integer Name="bs_door_leafs">
+        <Description><![CDATA["Anzahl der Türblätter"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Boolean Name="gs_kamp">
+        <Description><![CDATA["Oberlicht / Kämpfer / Riegel"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <String Name="bs_door_sidelight">
+        <Description><![CDATA["Seitenfelder"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["keine"]]></Value>
+      </String>
+      <Integer Name="gs_list_orientationDef_m">
+        <Description><![CDATA["Türausrichtungsdefinition"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <String Name="ac_OpeningSide">
+        <Description><![CDATA["Türausrichtung in Wandebene"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value><![CDATA["R"]]></Value>
+      </String>
+      <Integer Name="bs_door_electrified">
+        <Description><![CDATA["Elektrische Zuleitungen"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Boolean Name="bThreshold">
+        <Description><![CDATA["Schwelle"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_BoldName />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <Boolean Name="gs_sill_outside">
+        <Description><![CDATA["Fensterbank außen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_BoldName />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <!-- gs_door_sizes: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_door_sizes">
+        <Description><![CDATA["Abmessungen Tür"]]></Description>
+        <Fix />
+      </Title>
+      <Length Name="gs_tolerance_left">
+        <Description><![CDATA["Einbautoleranz links"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.04</Value>
+      </Length>
+      <Length Name="gs_tolerance_right">
+        <Description><![CDATA["Einbautoleranz rechts"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.05</Value>
+      </Length>
+      <Length Name="gs_tolerance_upper">
+        <Description><![CDATA["Einbautoleranz oben"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_tolerance_lower">
+        <Description><![CDATA["Einbautoleranz unten"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_outer_left">
+        <Description><![CDATA["Toleranz außen links"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_inner_left">
+        <Description><![CDATA["Toleranz innen links"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_outer_right">
+        <Description><![CDATA["Toleranz außen rechts"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_inner_right">
+        <Description><![CDATA["Toleranz innen rechts"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_outer_upper">
+        <Description><![CDATA["Toleranz außen oben"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_inner_upper">
+        <Description><![CDATA["Toleranz innen oben"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_outer_lower">
+        <Description><![CDATA["Toleranz außen unten"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_inner_lower">
+        <Description><![CDATA["Toleranz innen unten"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="ac_wallhole_width">
+        <Description><![CDATA["Rohbauöffnung Breite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.62</Value>
+      </Length>
+      <Length Name="ac_wallhole_height">
+        <Description><![CDATA["Rohbauöffnung Höhe"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.565</Value>
+      </Length>
+      <Length Name="ac_wallhole_height_original">
+        <Description><![CDATA["Rohbauöffnung Höhe"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>2.565</Value>
+      </Length>
+      <Length Name="ac_reveal_width">
+        <Description><![CDATA["Architekturlichte Breite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.51</Value>
+      </Length>
+      <Length Name="ac_reveal_height">
+        <Description><![CDATA["Architekturlichte Höhe"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.51</Value>
+      </Length>
+      <Length Name="ac_reveal_height_original">
+        <Description><![CDATA["Architekturlichte Höhe"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>2.51</Value>
+      </Length>
+      <Length Name="ac_unit_width">
+        <Description><![CDATA["Rahmen Breite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.53</Value>
+      </Length>
+      <Length Name="ac_unit_height">
+        <Description><![CDATA["Rahmen Höhe"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.565</Value>
+      </Length>
+      <Length Name="ac_baurichtmass_width">
+        <Description><![CDATA["Breite Baurichtmaß"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>2.62</Value>
+      </Length>
+      <Length Name="ac_baurichtmass_height">
+        <Description><![CDATA["Höhe Baurichtmaß"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>2.565</Value>
+      </Length>
+      <Length Name="bs_FrameRebate_width">
+        <Description><![CDATA["Zargenfalzmaß Breite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.98</Value>
+      </Length>
+      <Length Name="bs_FrameRebate_height">
+        <Description><![CDATA["Zargenfalzmaß Höhe"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1.99</Value>
+      </Length>
+      <Length Name="ac_egress_width">
+        <Description><![CDATA["Durchgangslichte Breite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1.3</Value>
+      </Length>
+      <Length Name="ac_egress_height">
+        <Description><![CDATA["Durchgangslichte Höhe"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.065</Value>
+      </Length>
+      <Length Name="bs_UsableClearance">
+        <Description><![CDATA["Effektive Durchgangsbreite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.8</Value>
+      </Length>
+      <Length Name="bs_UsableHeight">
+        <Description><![CDATA["Effektive Durchgangshöhe"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.05</Value>
+      </Length>
+      <Length Name="ac_leaf_width">
+        <Description><![CDATA["Türblatt Breite (Flügelmaß)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1.33</Value>
+      </Length>
+      <Length Name="ac_leaf_height">
+        <Description><![CDATA["Türblatt Höhe (Flügelmaß)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.075</Value>
+      </Length>
+      <Integer Name="gs_nominal_size">
+        <Description><![CDATA["Nominalmaß"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Boolean Name="gs_retain_nominal_sizes">
+        <Description><![CDATA["Übertrage aktuelle Nominal Größe auf die Auswahl"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <!-- gs_door_frame: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_door_frame">
+        <Description><![CDATA["Türzarge"]]></Description>
+        <Fix />
+      </Title>
+      <String Name="gs_frame_type">
+        <Description><![CDATA["Rahmentyp"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Standard"]]></Value>
+      </String>
+      <Integer Name="iFrameType">
+        <Description><![CDATA["Rahmentyp"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="bs_inner_frame">
+        <Description><![CDATA["Seiten mit Profil um Türblatt"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>3</Value>
+      </Integer>
+      <String Name="bs_frame_material">
+        <Description><![CDATA["Zargenmaterial"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Stahl"]]></Value>
+      </String>
+      <Boolean Name="gs_different_framewidth">
+        <Description><![CDATA["Unterschiedliche Breiten"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Length Name="gs_frame_width">
+        <Description><![CDATA["Rahmen-Breite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_width_right">
+        <Description><![CDATA["Rahmenbreite Seite 1"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_width_left">
+        <Description><![CDATA["Rahmenbreite Seite 2"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_width_right_2">
+        <Description><![CDATA["Mittlerer Rahmen Seite 1"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_width_left_2">
+        <Description><![CDATA["Mittlerer Rahmen Seite 2"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_width_upper">
+        <Description><![CDATA["Oberer Rahmen Breite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_width_transom">
+        <Description><![CDATA["Querbalken Rahmen Breite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_width_bottom_sl">
+        <Description><![CDATA["Unterer Rahmen Breite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_thk">
+        <Description><![CDATA["Rahmen-Dicke"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.07</Value>
+      </Length>
+      <Boolean Name="dk_different_frame_thk">
+        <Description><![CDATA["Unterschiedliche Rahmenstärken"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Length Name="dk_frame_thk_post">
+        <Description><![CDATA["Rahmenstärke Pfosten"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.07</Value>
+      </Length>
+      <Length Name="dk_frame_thk_upper">
+        <Description><![CDATA["Rahmenstärke oben"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="dk_frame_thk_bottom">
+        <Description><![CDATA["Rahmenstärke unten"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="dk_frame_thk_transom">
+        <Description><![CDATA["Rahmenstärke Kämpfer"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="dk_frame_thk_EZ">
+        <Description><![CDATA["Rahmenstärke Eckzarge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.12</Value>
+      </Length>
+      <Length Name="bs_sidelight_filling_thk1">
+        <Description><![CDATA["Dicke Seitenfeldfüllung 1"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.008</Value>
+      </Length>
+      <Length Name="bs_sidelight_filling_thk2">
+        <Description><![CDATA["Dicke Seitenfeldfüllung 2"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.008</Value>
+      </Length>
+      <Length Name="bs_spiegel_br_bs">
+        <Description><![CDATA["Zarge Spiegelbreite BS"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.035</Value>
+      </Length>
+      <Length Name="bs_spiegel_br_bgs">
+        <Description><![CDATA["Zarge Spiegelbreite BGS"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.035</Value>
+      </Length>
+      <Length Name="bs_spiegel_br_ob_bs">
+        <Description><![CDATA["Zarge Spiegelbreite BS oben"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.035</Value>
+      </Length>
+      <Length Name="bs_spiegel_br_ob_bgs">
+        <Description><![CDATA["Zarge Spiegelbreite BGS oben"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.035</Value>
+      </Length>
+      <Integer Name="bs_folding_nmbr">
+        <Description><![CDATA["Falzdichtung Anzahl"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Length Name="gs_vb">
+        <Description><![CDATA["Falzbreite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.015</Value>
+      </Length>
+      <Length Name="gs_vt">
+        <Description><![CDATA["Falztiefe"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.02</Value>
+      </Length>
+      <Length Name="dk_design_folding_depth">
+        <Description><![CDATA["Tiefe Zierfalz"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="dk_folding_dimensions">
+        <Description><![CDATA["Abmessungen Zargenfalze"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="2" SecondDimension="2">
+          <AVal Column="1" Row="1">0.005</AVal>
+          <AVal Column="2" Row="1">0.0075</AVal>
+          <AVal Column="1" Row="2">0.005</AVal>
+          <AVal Column="2" Row="2">0.0075</AVal>
+        </ArrayValues>
+      </Length>
+      <Length Name="dk_frame_gasket_thk">
+        <Description><![CDATA["Dicke Dichtung an Zarge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.008</Value>
+      </Length>
+      <Boolean Name="gs_rev">
+        <Description><![CDATA["Seite Laibung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Length Name="gs_bl_thk">
+        <Description><![CDATA["Block Breite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.05</Value>
+      </Length>
+      <Length Name="gs_bl_width">
+        <Description><![CDATA["Block Dicke"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.06</Value>
+      </Length>
+      <Length Name="gs_fuge">
+        <Description><![CDATA["Mörtel"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.01</Value>
+      </Length>
+      <Length Name="gs_ub_st1">
+        <Description><![CDATA["Überstand 1"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.01</Value>
+      </Length>
+      <Length Name="gs_ub_st2">
+        <Description><![CDATA["Überstand 2"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.01</Value>
+      </Length>
+      <Material Name="gs_frame_mat">
+        <Description><![CDATA["Rahmen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>133</Value>
+      </Material>
+      <Length Name="bz_tiefe">
+        <Description><![CDATA["Zargentiefe"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.15</Value>
+      </Length>
+      <Integer Name="bz_typ_einzug">
+        <Description><![CDATA["Typ Einzug Blockzarge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Length Name="bz_einzug">
+        <Description><![CDATA["Einzug Blockzarge BS"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="wall_shell_thk_1">
+        <Description><![CDATA["Bekleidungsdicke auf Bandseite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.005</Value>
+      </Length>
+      <Length Name="wall_shell_thk_2">
+        <Description><![CDATA["Bekleidungsdicke auf Bandgegenseite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.005</Value>
+      </Length>
+      <!-- gs_door_panel: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_door_panel">
+        <Description><![CDATA["Türblatt"]]></Description>
+        <Fix />
+      </Title>
+      <String Name="bs_panel_type">
+        <Description><![CDATA["Türblatt"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["VB"]]></Value>
+      </String>
+      <Integer Name="dk_panel_segments">
+        <Description><![CDATA["Ausschnittfelder"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <String Name="bs_panel_material">
+        <Description><![CDATA["Türblatt Material"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["H"]]></Value>
+      </String>
+      <RealNum Name="dk_estimatedWeight">
+        <Description><![CDATA["Berechnetes, abgeschätztes Gewicht Gangflügel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </RealNum>
+      <RealNum Name="dk_estimatedWeight2">
+        <Description><![CDATA["Berechnetes, abgeschätztes Gewicht Standflügel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </RealNum>
+      <!-- gs_door_panel_filling: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_door_panel_filling">
+        <Description><![CDATA["Türblatt Abmessungen"]]></Description>
+        <Fix />
+      </Title>
+      <Boolean Name="bUniformPanels1">
+        <Description><![CDATA["Einheitliche Panele pro Blatt 1"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <Boolean Name="bUniformPanels2">
+        <Description><![CDATA["Einheitliche Panele pro Blatt 2"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <Boolean Name="symm">
+        <Description><![CDATA["Symmtrische Unterteilung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Length Name="gs_SecondLeaf_w">
+        <Description><![CDATA["Türblatt- Breite Seite 1"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Length>
+      <Length Name="dk_panel_division_bottom">
+        <Description><![CDATA["Untere Panelteilung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.75</Value>
+      </Length>
+      <Length Name="dk_panel_division_top">
+        <Description><![CDATA["Obere Panelteilung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1.15</Value>
+      </Length>
+      <Integer Name="dk_panel_folding_ancor">
+        <Description><![CDATA["Lage Türblatt zu Zarge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="dk_panel_folding_nmbr">
+        <Description><![CDATA["Falz an Mittelfuge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Length Name="dk_panel_fill_offset">
+        <Description><![CDATA["Ausmitte Füllung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="dk_panel_folding_gap">
+        <Description><![CDATA["Fuge Türblatt zu Zarge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.004</Value>
+      </Length>
+      <Length Name="dk_panel_folding_gap2">
+        <Description><![CDATA["Fuge Türblatt an Mittelfuge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.006</Value>
+      </Length>
+      <Boolean Name="dk_fries_ancor">
+        <Description><![CDATA["Friesbreite # Rahmenbreite (von Falzseite/BGS gemessen)"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Length Name="dk_panel_gasket_thk">
+        <Description><![CDATA["Dichtungsstärke Türblatt an Mittelfuge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.002</Value>
+      </Length>
+      <Length Name="gapHeightUnderPanel">
+        <Description><![CDATA["Spalt unter Türblatt"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.005</Value>
+      </Length>
+      <Length Name="gs_leaf_thk">
+        <Description><![CDATA["Türblatt Stärke"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.04</Value>
+      </Length>
+      <Length Name="dk_panel_folding_dimensions">
+        <Description><![CDATA["Abmessungen Mittelfalz Doppelflügel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="3" SecondDimension="2">
+          <AVal Column="1" Row="1">0.021</AVal>
+          <AVal Column="2" Row="1">0.03</AVal>
+          <AVal Column="1" Row="2">0.042</AVal>
+          <AVal Column="2" Row="2">0.015</AVal>
+          <AVal Column="1" Row="3">0.075</AVal>
+          <AVal Column="2" Row="3">0.015</AVal>
+        </ArrayValues>
+      </Length>
+      <Length Name="bs_leaf_oversize">
+        <Description><![CDATA["Spiegelbreite des Falzes"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.02</Value>
+      </Length>
+      <Length Name="bs_leaf_overhang">
+        <Description><![CDATA["Überstand Türblatt zu Zarge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.01</Value>
+      </Length>
+      <Length Name="bs_ancor_panel_BS">
+        <Description><![CDATA["Distanz Türblattoberfläche Bandseite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="bs_ancor_panel_top">
+        <Description><![CDATA["OK Türblatt"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="leafFrWidthLeft">
+        <Description><![CDATA["Rahmenbreite links"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="leafFrWidthRight">
+        <Description><![CDATA["Rahmenbreite rechts"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="leafFrWidthLeft2">
+        <Description><![CDATA["Rahmen-Breite links 2"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="leafFrWidthRight2">
+        <Description><![CDATA["Rahmenbreite rechts 2"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <!-- bs_door_hinge: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="bs_door_hinge">
+        <Description><![CDATA["Bänder / Lager"]]></Description>
+      </Title>
+      <String Name="bs_hinge_type">
+        <Description><![CDATA["Bandtyp"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["O"]]></Value>
+      </String>
+      <String Name="bs_hinge_manufacturer">
+        <Description><![CDATA["Band Hersteller"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA[""]]></Value>
+      </String>
+      <String Name="bs_hinge_model">
+        <Description><![CDATA["Band Produktangabe"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA[""]]></Value>
+      </String>
+      <String Name="bs_hinge_chuck">
+        <Description><![CDATA["Bandaufnahme Produktangabe"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA[""]]></Value>
+      </String>
+      <String Name="bs_hinge_material">
+        <Description><![CDATA["Band Material"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["ES"]]></Value>
+      </String>
+      <String Name="bs_hinge_surface">
+        <Description><![CDATA["Band Oberfläche"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["B"]]></Value>
+      </String>
+      <String Name="bs_hinge_adjust">
+        <Description><![CDATA["Bandverstellung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["2D"]]></Value>
+      </String>
+      <Integer Name="bs_hinge_nmbr">
+        <Description><![CDATA["Bandanzahl"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </Integer>
+      <Length Name="bs_hinge_reel_diameter">
+        <Description><![CDATA["Rollendurchmesser"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.02</Value>
+      </Length>
+      <Boolean Name="bs_hinge_DIN">
+        <Description><![CDATA["1. und 2. Band nach DIN?"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Length Name="bs_hinge_pos1">
+        <Description><![CDATA["Bandbezugslinie"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.237</Value>
+      </Length>
+      <Length Name="bs_hinge_pos2">
+        <Description><![CDATA["Bandabstand 2. Band"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1.56</Value>
+      </Length>
+      <Length Name="bs_hinge_pos3">
+        <Description><![CDATA["Bandabstand 3. Band"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.35</Value>
+      </Length>
+      <Length Name="bs_hinge_pos4">
+        <Description><![CDATA["Bandabstand 4. Band"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.35</Value>
+      </Length>
+      <Length Name="bs_hinge_height">
+        <Description><![CDATA["Gesamthöhe eines Bandes"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.12</Value>
+      </Length>
+      <Integer Name="bs_hinge_safety_pin">
+        <Description><![CDATA["Sicherungsbolzen Anzahl"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Length Name="bs_hinge_fixture_width">
+        <Description><![CDATA["Breite Aufsatz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.05</Value>
+      </Length>
+      <Length Name="bs_hinge_fixture_height">
+        <Description><![CDATA["Höhe Aufsatz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.03</Value>
+      </Length>
+      <Length Name="bs_ancor_hinge_X">
+        <Description><![CDATA["Bandachse in X"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="bs_ancor_hinge_Y">
+        <Description><![CDATA["Bandachse in Y"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.018</Value>
+      </Length>
+      <!-- bs_escape_door: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="bs_escape_door">
+        <Description><![CDATA["Fluchttürsteuerung"]]></Description>
+      </Title>
+      <!-- bs_door_closer: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="bs_door_closer">
+        <Description><![CDATA["Türschließer / Feststellanlage"]]></Description>
+      </Title>
+      <String Name="bs_closer_type">
+        <Description><![CDATA["Schließertyp"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["OTS"]]></Value>
+      </String>
+      <String Name="bs_slider_system">
+        <Description><![CDATA["Schließsystem"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["G"]]></Value>
+      </String>
+      <Integer Name="bs_closer2">
+        <Description><![CDATA["Schließer auf Bedarfsflügel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <String Name="bs_closer_model">
+        <Description><![CDATA["Schließer Produktangabe"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["TS 93 G EN 2-5"]]></Value>
+      </String>
+      <String Name="bs_closer_model2">
+        <Description><![CDATA["Schließer Produktangabe Standflügel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["TS 93 G EN 2-5"]]></Value>
+      </String>
+      <!-- bs_door_automation: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="bs_door_automation">
+        <Description><![CDATA["Automatisierung"]]></Description>
+      </Title>
+      <String Name="bs_automation_type">
+        <Description><![CDATA["Automatik"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["generic"]]></Value>
+      </String>
+      <!-- bs_additionals: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="bs_additionals">
+        <Description><![CDATA["Zusätzliche Ausstattung + Eigenschaften"]]></Description>
+      </Title>
+      <String Name="gs_list_accessories">
+        <Description><![CDATA["Zubehör"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA[""]]></Value>
+      </String>
+      <String Name="gs_list_nameplate">
+        <Description><![CDATA["Bezeichnungsschild"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA[""]]></Value>
+      </String>
+      <!-- gs_2D_representation: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_2D_representation">
+        <Description><![CDATA["2D-Darstellung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+        </Flags>
+      </Title>
+      <!-- dk_fill_settings: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="dk_fill_settings">
+        <Description><![CDATA["Schraffuren"]]></Description>
+        <Fix />
+      </Title>
+      <FillPattern Name="dk_fills">
+        <Description><![CDATA["Array für Schraffuren"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="15" SecondDimension="0">
+          <AVal Row="1">64</AVal>
+          <AVal Row="2">64</AVal>
+          <AVal Row="3">64</AVal>
+          <AVal Row="4">64</AVal>
+          <AVal Row="5">64</AVal>
+          <AVal Row="6">64</AVal>
+          <AVal Row="7">64</AVal>
+          <AVal Row="8">64</AVal>
+          <AVal Row="9">64</AVal>
+          <AVal Row="10">64</AVal>
+          <AVal Row="11">64</AVal>
+          <AVal Row="12">64</AVal>
+          <AVal Row="13">64</AVal>
+          <AVal Row="14">64</AVal>
+          <AVal Row="15">64</AVal>
+        </ArrayValues>
+      </FillPattern>
+      <!-- gs_pen_settings: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_pen_settings">
+        <Description><![CDATA["Stifte"]]></Description>
+        <Fix />
+      </Title>
+      <PenColor Name="dk_cont_pens">
+        <Description><![CDATA["Array für Konturstifte"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="15" SecondDimension="0">
+          <AVal Row="1">2</AVal>
+          <AVal Row="2">2</AVal>
+          <AVal Row="3">2</AVal>
+          <AVal Row="4">2</AVal>
+          <AVal Row="5">2</AVal>
+          <AVal Row="6">2</AVal>
+          <AVal Row="7">2</AVal>
+          <AVal Row="8">2</AVal>
+          <AVal Row="9">2</AVal>
+          <AVal Row="10">2</AVal>
+          <AVal Row="11">2</AVal>
+          <AVal Row="12">2</AVal>
+          <AVal Row="13">2</AVal>
+          <AVal Row="14">2</AVal>
+          <AVal Row="15">2</AVal>
+        </ArrayValues>
+      </PenColor>
+      <PenColor Name="dk_fill_pens">
+        <Description><![CDATA["Array für Schraffurstifte"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="15" SecondDimension="0">
+          <AVal Row="1">1</AVal>
+          <AVal Row="2">1</AVal>
+          <AVal Row="3">1</AVal>
+          <AVal Row="4">1</AVal>
+          <AVal Row="5">1</AVal>
+          <AVal Row="6">1</AVal>
+          <AVal Row="7">1</AVal>
+          <AVal Row="8">1</AVal>
+          <AVal Row="9">1</AVal>
+          <AVal Row="10">1</AVal>
+          <AVal Row="11">1</AVal>
+          <AVal Row="12">1</AVal>
+          <AVal Row="13">1</AVal>
+          <AVal Row="14">1</AVal>
+          <AVal Row="15">1</AVal>
+        </ArrayValues>
+      </PenColor>
+      <PenColor Name="dk_bkg_pens">
+        <Description><![CDATA["Array für Schraffurhintergrundstifte"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="15" SecondDimension="0">
+          <AVal Row="1">91</AVal>
+          <AVal Row="2">91</AVal>
+          <AVal Row="3">91</AVal>
+          <AVal Row="4">91</AVal>
+          <AVal Row="5">91</AVal>
+          <AVal Row="6">91</AVal>
+          <AVal Row="7">91</AVal>
+          <AVal Row="8">91</AVal>
+          <AVal Row="9">91</AVal>
+          <AVal Row="10">91</AVal>
+          <AVal Row="11">91</AVal>
+          <AVal Row="12">91</AVal>
+          <AVal Row="13">91</AVal>
+          <AVal Row="14">91</AVal>
+          <AVal Row="15">91</AVal>
+        </ArrayValues>
+      </PenColor>
+      <PenColor Name="gs_pen_2D">
+        <Description><![CDATA["Rahmen-Aufsicht-Stift"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </PenColor>
+      <PenColor Name="gs_frame_pen">
+        <Description><![CDATA["Rahmen-Stift"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </PenColor>
+      <FillPattern Name="gs_fillFr">
+        <Description><![CDATA["Rahmen-Schnittschraffur-Typ"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>65</Value>
+      </FillPattern>
+      <PenColor Name="gs_penFr_fg">
+        <Description><![CDATA["Rahmen-Schnittschraffur-Stift"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>19</Value>
+      </PenColor>
+      <PenColor Name="gs_penFr_bg">
+        <Description><![CDATA["Rahmen-Schnittschraffurhintergrund-Stift"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>19</Value>
+      </PenColor>
+      <PenColor Name="gs_leaf_pen">
+        <Description><![CDATA["Türblatt-Stift"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </PenColor>
+      <FillPattern Name="gs_fillLeaf">
+        <Description><![CDATA["Schraffurtyp geschnitten Türblatt"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>16</Value>
+      </FillPattern>
+      <PenColor Name="gs_penLeaf_fg">
+        <Description><![CDATA["Schraffur-Stift geschnitten Türblatt"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>19</Value>
+      </PenColor>
+      <PenColor Name="gs_penLeaf_bg">
+        <Description><![CDATA["Schraffurhintergrund-Stift geschnitten Türblatt"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>19</Value>
+      </PenColor>
+      <PenColor Name="gs_glass_pen">
+        <Description><![CDATA["Glas Linienstift Kontur"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </PenColor>
+      <FillPattern Name="gs_fillGlass">
+        <Description><![CDATA["Schraffurtyp Glas"]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>65</Value>
+      </FillPattern>
+      <PenColor Name="gs_penGlass_fg">
+        <Description><![CDATA["Schraffurstift Glas"]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>19</Value>
+      </PenColor>
+      <PenColor Name="gs_penGlass_bg">
+        <Description><![CDATA["Schraffurstift Hintergrund Glas"]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>19</Value>
+      </PenColor>
+      <PenColor Name="gs_glass_view_pen">
+        <Description><![CDATA["Linienstift Glas"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </PenColor>
+      <FillPattern Name="gs_fillShCover">
+        <Description><![CDATA["Schraffur-Typ Rahmen"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>65</Value>
+      </FillPattern>
+      <PenColor Name="gs_penShCov_fg">
+        <Description><![CDATA["Schraffur-Stift Rahmen"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>19</Value>
+      </PenColor>
+      <!-- _trennzeile: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="_trennzeile">
+        <Description><![CDATA["Verschiedenes"]]></Description>
+      </Title>
+      <PenColor Name="penSIASymbolText">
+        <Description><![CDATA["Stift Text"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </PenColor>
+      <PenColor Name="penSIASymbolLine">
+        <Description><![CDATA["Symbol-Stift"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </PenColor>
+      <String Name="SIASymbolFontStyle">
+        <Description><![CDATA["Marker-Text"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Arial"]]></Value>
+      </String>
+      <RealNum Name="SIASymbolFontSize">
+        <Description><![CDATA["Schriftgröße"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </RealNum>
+      <Boolean Name="gs_trim_outside">
+        <Description><![CDATA["Außenverkleidung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_BoldName />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <String Name="gs_trimtype_out">
+        <Description><![CDATA["Türfutter außen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Rechteckig"]]></Value>
+      </String>
+      <Integer Name="gs_trimtype_out_int">
+        <Description><![CDATA["Türfutter außen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="iCasingHeadTypeOut">
+        <Description><![CDATA["Gehäuse Kopftyp"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Boolean Name="bArchitraveCapital">
+        <Description><![CDATA["Querbalken oben"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Integer Name="iArchitraveCapitalType">
+        <Description><![CDATA["Querbalken Typ oben"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Length Name="architraveCapitalWidth">
+        <Description><![CDATA["Querbalken oben Breite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.02</Value>
+      </Length>
+      <Boolean Name="gs_trim_show_cover_out">
+        <Description><![CDATA["Verkleidung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Boolean Name="gs_trim_outside_uniform">
+        <Description><![CDATA["einheitliche Einfassungsbreiten"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Length Name="gs_tw_right_out">
+        <Description><![CDATA["Breite Seite 1"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.05</Value>
+      </Length>
+      <Length Name="gs_tw_left_out">
+        <Description><![CDATA["Breite Seite 2"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.05</Value>
+      </Length>
+      <Length Name="gs_tw_top_out">
+        <Description><![CDATA["Breite oben"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.05</Value>
+      </Length>
+      <Length Name="gs_trim_thk_out">
+        <Description><![CDATA["Dicke an Wand"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.019</Value>
+      </Length>
+      <Length Name="gs_trim_width_out">
+        <Description><![CDATA["Dicke in Wandloch"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.025</Value>
+      </Length>
+      <Length Name="gs_trim_offs_out">
+        <Description><![CDATA["Versatz"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_trim_jambext_nosing_out">
+        <Description><![CDATA["Auskragung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.05</Value>
+      </Length>
+      <Length Name="gs_trimov_top_right_out">
+        <Description><![CDATA["Oberer Überstand"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <PenColor Name="gs_trim_pen_cont">
+        <Description><![CDATA["Futter Schnittlinienstift auf beiden Seiten"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </PenColor>
+      <FillPattern Name="gs_trim_fill_out">
+        <Description><![CDATA["Schraffur Zarge außen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>65</Value>
+      </FillPattern>
+      <PenColor Name="gs_trim_pen_fg_out">
+        <Description><![CDATA["Schraffurstift Zarge assuen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>19</Value>
+      </PenColor>
+      <PenColor Name="gs_trim_pen_bg_out">
+        <Description><![CDATA["Stift Hintergr.schr. Verkleidung außen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>19</Value>
+      </PenColor>
+      <Boolean Name="gs_trim_inside">
+        <Description><![CDATA["Innenverkleidung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_BoldName />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <String Name="gs_trimtype_in">
+        <Description><![CDATA["Türfutter innen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Rechteckig"]]></Value>
+      </String>
+      <Integer Name="gs_trimtype_in_int">
+        <Description><![CDATA["Türfutter innen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Boolean Name="gs_trim_show_cover_in">
+        <Description><![CDATA["Verkleidung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Boolean Name="gs_trim_inside_uniform">
+        <Description><![CDATA["einheitliche Einfassungsbreiten"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Length Name="gs_tw_right_in">
+        <Description><![CDATA["Breite Seite 1"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.05</Value>
+      </Length>
+      <Length Name="gs_tw_left_in">
+        <Description><![CDATA["Breite Seite 2"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.05</Value>
+      </Length>
+      <Length Name="gs_tw_top_in">
+        <Description><![CDATA["Breite oben"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.05</Value>
+      </Length>
+      <Length Name="gs_trim_thk_in">
+        <Description><![CDATA["Dicke an Wand"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.019</Value>
+      </Length>
+      <Length Name="gs_trim_width_in">
+        <Description><![CDATA["Dicke in Wandloch"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.025</Value>
+      </Length>
+      <Length Name="gs_trim_offs_in">
+        <Description><![CDATA["Versatz"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_trim_jambext_nosing_in">
+        <Description><![CDATA["Auskragung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.03</Value>
+      </Length>
+      <Length Name="gs_trimov_top_right_in">
+        <Description><![CDATA["Oberer Überstand"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <FillPattern Name="gs_trim_fill_in">
+        <Description><![CDATA["Schraffur Zarge innen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>65</Value>
+      </FillPattern>
+      <PenColor Name="gs_trim_pen_fg_in">
+        <Description><![CDATA["Schraffurstift Zarge innen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>19</Value>
+      </PenColor>
+      <PenColor Name="gs_trim_pen_bg_in">
+        <Description><![CDATA["Hintergrundstift Zarge innen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>19</Value>
+      </PenColor>
+      <PenColor Name="gs_penShCov_bg">
+        <Description><![CDATA["Schraffurhintergrund-Stift Rahmen"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>19</Value>
+      </PenColor>
+      <!-- gs_door_offnung: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_door_offnung">
+        <Description><![CDATA["Öffnung"]]></Description>
+        <Fix />
+      </Title>
+      <Integer Name="dk_opening2D">
+        <Description><![CDATA["Öffnungslinien Grundriss"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>4</Value>
+      </Integer>
+      <Integer Name="dk_openingSA">
+        <Description><![CDATA["Öffnungslinien in Schnitten+Ansichten"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>4</Value>
+      </Integer>
+      <Integer Name="dk_opening3D">
+        <Description><![CDATA["Öffnungslinien in 3D"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>4</Value>
+      </Integer>
+      <Integer Name="iDrawSimpleLeafTo">
+        <Description><![CDATA["Symbol ausrichten"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </Integer>
+      <Angle Name="gs_open_2D">
+        <Description><![CDATA["Öffnungswinkel für Durchgangsflügel in 2D"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>90</Value>
+      </Angle>
+      <Angle Name="gs_open_2D_s">
+        <Description><![CDATA["Öffnungswinkel für Standflügel in 2D"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>90</Value>
+      </Angle>
+      <Angle Name="gs_open_3D">
+        <Description><![CDATA["Öffnungswinkel für Durchgangsflügel in 3D"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Angle>
+      <Angle Name="gs_open_3D_s">
+        <Description><![CDATA["Öffnungswinkel für Standflügel in 3D"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Angle>
+      <Angle Name="dk_open_leaf">
+        <Description><![CDATA["Öffnungswinkel Türblätter"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="6" SecondDimension="0">
+          <AVal Row="1">0</AVal>
+          <AVal Row="2">0</AVal>
+          <AVal Row="3">0</AVal>
+          <AVal Row="4">0</AVal>
+          <AVal Row="5">90</AVal>
+          <AVal Row="6">0</AVal>
+        </ArrayValues>
+      </Angle>
+      <Boolean Name="gs_bSameLineTypeForLeaves">
+        <Description><![CDATA["Gleicher Linientyp für Türblätter"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Boolean Name="bOverride_MVO_2D">
+        <Description><![CDATA["Modelldarstell. für symbolische 2D-Darstellung überschreiben"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_BoldName />
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <Boolean Name="or_bOplines2D">
+        <Description><![CDATA["Öffnungslinien in 2D"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <LineType Name="or_swingLineType">
+        <Description><![CDATA["Öffnungslinien-Typ"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </LineType>
+      <LineType Name="or_swingLineType2">
+        <Description><![CDATA["Nebenöffnung Linientyp in 2D"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>4</Value>
+      </LineType>
+      <String Name="or_SwingType">
+        <Description><![CDATA["Öffnungslinien-Form"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Gebogen"]]></Value>
+      </String>
+      <Integer Name="or_iSwingType">
+        <Description><![CDATA["Öffnungslinien-Form"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <String Name="or_SlidingType">
+        <Description><![CDATA["Öffnungslinien-Form"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Kein"]]></Value>
+      </String>
+      <Integer Name="or_iSlidingType">
+        <Description><![CDATA["Öffnungslinien-Form"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="dk_openLineType_BS">
+        <Description><![CDATA["Öffnungslinien-Typ Bandseite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="dk_openLineType_BGS">
+        <Description><![CDATA["Öffnungslinien-Typ Bandgegenseite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="dk_openLineType_SF">
+        <Description><![CDATA["Öffnungslinien-Typ Standflügel"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <PenColor Name="or_opLinePen">
+        <Description><![CDATA["2D & 3D Öffnungslinien-Stift"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </PenColor>
+      <Integer Name="or_iOpLinePen">
+        <Description><![CDATA["2D & 3D Öffnungslinien-Stift"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Boolean Name="bOverride_MVO_3D">
+        <Description><![CDATA["Modelldarstell. für 3D-Darstellung überschreiben"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_BoldName />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Boolean Name="or_bOplines3d">
+        <Description><![CDATA["Öffnungslinie zeigen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <String Name="or_opLineType3dIn">
+        <Description><![CDATA["Linientyp Öffnungsseite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Vollinie"]]></Value>
+      </String>
+      <Integer Name="or_iOpLineType3dIn">
+        <Description><![CDATA["Linientyp Öffnungsseite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <String Name="or_opLineType3dOut">
+        <Description><![CDATA["Linientyp Gegenüberliegende Seite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Strichlinie"]]></Value>
+      </String>
+      <Integer Name="or_iOpLineType3dOut">
+        <Description><![CDATA["Linientyp Gegenüberliegende Seite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <String Name="or_opLineType3dSecondary">
+        <Description><![CDATA["Standflügel Linientyp in 3D"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Strichlinie"]]></Value>
+      </String>
+      <Integer Name="or_iOpLineType3dSecondary">
+        <Description><![CDATA["Standflügel Linientyp"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <String Name="or_oplineStyle">
+        <Description><![CDATA["Linien-Ausrichtung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Griff"]]></Value>
+      </String>
+      <Integer Name="or_iOplineStyle">
+        <Description><![CDATA["Linien-Ausrichtung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <!-- gs_detail_level: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_detail_level">
+        <Description><![CDATA["Detaillierungsgrad"]]></Description>
+        <Fix />
+      </Title>
+      <Integer Name="iDWDet2D">
+        <Description><![CDATA["Grundriss"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="iDWDet3D">
+        <Description><![CDATA["3D"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </Integer>
+      <Integer Name="iDWDetSE">
+        <Description><![CDATA["Schnitt / Ansicht"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="iRevealOnSymbol">
+        <Description><![CDATA["Anschlag im Grundriss zeigen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Boolean Name="gs_bFills_Wallhole">
+        <Description><![CDATA["Schraffur Wandöffnung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_BoldName />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <FillPattern Name="gs_wallhole_fill">
+        <Description><![CDATA["Schraffur-Typ"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>65</Value>
+      </FillPattern>
+      <PenColor Name="gs_wallhole_pen_fg">
+        <Description><![CDATA["Schraffur-Stift"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </PenColor>
+      <PenColor Name="gs_wallhole_pen_bg">
+        <Description><![CDATA["Schraffurhintergrund-Stift"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>91</Value>
+      </PenColor>
+      <Boolean Name="bEtikett">
+        <Description><![CDATA["Türkoten"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_BoldName />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <String Name="gs_etikett">
+        <Description><![CDATA["Sichtbarkeit Türbemaßung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Modelldarstellungs-Optionen"]]></Value>
+      </String>
+      <Integer Name="iEtikett">
+        <Description><![CDATA["Sichtbarkeit Türbemaßung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>3</Value>
+      </Integer>
+      <Integer Name="iDWDimRawOpening">
+        <Description><![CDATA["Öffnung roh"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <String Name="gs_mtext">
+        <Description><![CDATA["Text Öffnung roh"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Öffnung roh"]]></Value>
+      </String>
+      <Length Name="gs_me">
+        <Description><![CDATA["Eigene Kote Öffnung roh"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Integer Name="iDWDimFinishedLintel">
+        <Description><![CDATA["Sturz fertig"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <String Name="gs_ntext">
+        <Description><![CDATA["Text Fertig Sturz"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Sturz fertig"]]></Value>
+      </String>
+      <Length Name="gs_n">
+        <Description><![CDATA["Eigene Kote Schwelle fertig"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Integer Name="iDWDimFinishedParapet">
+        <Description><![CDATA["OK Schwelle"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <String Name="gs_qtext">
+        <Description><![CDATA["Text Schwelle Fertig"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["OK Schwelle"]]></Value>
+      </String>
+      <Length Name="gs_q">
+        <Description><![CDATA["Eigene Kote Schwelle fertig"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Integer Name="iDWDimRawParapet">
+        <Description><![CDATA["Schwelle"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <String Name="gs_ptext">
+        <Description><![CDATA["Text Schwelle"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Schwelle"]]></Value>
+      </String>
+      <Length Name="gs_P">
+        <Description><![CDATA["Eigene Kote Schwelle"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <String Name="gs_Etikett_scaleValues">
+        <Description><![CDATA["Texteinstellung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Maßstababhängig (Modellgröße)"]]></Value>
+      </String>
+      <Integer Name="gs_Etikett_scaleValues_m">
+        <Description><![CDATA["Massstab"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </Integer>
+      <String Name="fontType">
+        <Description><![CDATA["Schrifttyp"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Arial"]]></Value>
+      </String>
+      <Length Name="gs_lsize">
+        <Description><![CDATA["Schriftgröße (modell)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.075</Value>
+      </Length>
+      <RealNum Name="gs_Etikett_fontSize_mm">
+        <Description><![CDATA["Schriftgröße (papier)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1.5</Value>
+      </RealNum>
+      <PenColor Name="gs_koten_pen">
+        <Description><![CDATA["Dimension Stift Text"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </PenColor>
+      <Length Name="gs_etx">
+        <Description><![CDATA["Position X"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <RealNum Name="gs_Etikett_xTextPos_m">
+        <Description><![CDATA["X Position (m)"]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </RealNum>
+      <RealNum Name="gs_Etikett_xTextPos_mm">
+        <Description><![CDATA["Position X (mm)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </RealNum>
+      <Length Name="gs_ety">
+        <Description><![CDATA["Position Y"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.4</Value>
+      </Length>
+      <RealNum Name="gs_Etikett_yTextPos_m">
+        <Description><![CDATA["Y Position (m)"]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </RealNum>
+      <RealNum Name="gs_Etikett_yTextPos_mm">
+        <Description><![CDATA["Position Y (mm)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </RealNum>
+      <Boolean Name="gs_autheight">
+        <Description><![CDATA["Automat. Zeilenabstand"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <Length Name="gs_heightuser">
+        <Description><![CDATA["Zeilenabstand (modell)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.05</Value>
+      </Length>
+      <RealNum Name="gs_Etikett_lineSpace_mm">
+        <Description><![CDATA["Zeilenabstand (papier)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </RealNum>
+      <Length Name="gs_festb">
+        <Description><![CDATA["Feste breite in mm (0= autom.)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Angle Name="angleRotate">
+        <Description><![CDATA["Drehwinkel"]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Angle>
+      <Boolean Name="bIDTextDisplayMode">
+        <Description><![CDATA["Zeige die ID im Grundriss"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_BoldName />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <Integer Name="gs_IDText_displayMode_m">
+        <Description><![CDATA["Beschriftung Türtyp"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Boolean Name="gs_IDText_bAutoIDNumber">
+        <Description><![CDATA["Automatische Tür ID"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <String Name="gs_IDText_stCustomText">
+        <Description><![CDATA["Eigener Text"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Eigene ID"]]></Value>
+      </String>
+      <Boolean Name="gs_IDText_bFlipMarker">
+        <Description><![CDATA["Marker spiegeln"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Boolean Name="gs_IDText_bAdditionalValues">
+        <Description><![CDATA["Zusätzliche Werte zeigen (Öffnungsmass 1.20/1.50)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Length Name="gs_IDText_xTextPos">
+        <Description><![CDATA["Text Position X"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_IDText_yTextPos">
+        <Description><![CDATA["Text Position Y"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.4</Value>
+      </Length>
+      <RealNum Name="gs_IDText_xTextPos_mm">
+        <Description><![CDATA["Text Position X (mm)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </RealNum>
+      <RealNum Name="gs_IDText_yTextPos_mm">
+        <Description><![CDATA["Text Position Y (mm)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>8</Value>
+      </RealNum>
+      <String Name="gs_IDText_scaleValues">
+        <Description><![CDATA["Texteinstellung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Maßstababhängig (Modellgröße)"]]></Value>
+      </String>
+      <Integer Name="gs_IDText_scaleValues_m">
+        <Description><![CDATA["Massstab"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </Integer>
+      <RealNum Name="gs_IDText_fontSize_mm">
+        <Description><![CDATA["Schriftgröße (papier)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </RealNum>
+      <Length Name="gs_IDText_fontSize_model">
+        <Description><![CDATA["Schriftgröße (modell)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <String Name="gs_IDText_fontType">
+        <Description><![CDATA["Schrifttyp"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Arial"]]></Value>
+      </String>
+      <PenColor Name="gs_IDText_fontPen">
+        <Description><![CDATA["Text-Stift"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </PenColor>
+      <Boolean Name="gs_head_symbol">
+        <Description><![CDATA["Sturztiefe im Grundriss zeigen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_BoldName />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <LineType Name="gs_head_symbol_line">
+        <Description><![CDATA["Sturztiefe Symbol- Linientyp"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>21</Value>
+      </LineType>
+      <PenColor Name="gs_head_symbol_pen">
+        <Description><![CDATA["Sturztiefe Symbolstift"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>6</Value>
+      </PenColor>
+      <!-- gs_3D_representation: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_3D_representation">
+        <Description><![CDATA["2D-Darstellung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+        </Flags>
+      </Title>
+      <Material Name="dk_materials">
+        <Description><![CDATA["Array für Oberflächenmaterialien"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="35" SecondDimension="0">
+          <AVal Row="1">40</AVal>
+          <AVal Row="2">40</AVal>
+          <AVal Row="3">62</AVal>
+          <AVal Row="4">57</AVal>
+          <AVal Row="5">24</AVal>
+          <AVal Row="6">24</AVal>
+          <AVal Row="7">24</AVal>
+          <AVal Row="8">24</AVal>
+          <AVal Row="9">24</AVal>
+          <AVal Row="10">24</AVal>
+          <AVal Row="11">62</AVal>
+          <AVal Row="12">57</AVal>
+          <AVal Row="13">24</AVal>
+          <AVal Row="14">24</AVal>
+          <AVal Row="15">57</AVal>
+          <AVal Row="16">57</AVal>
+          <AVal Row="17">57</AVal>
+          <AVal Row="18">57</AVal>
+          <AVal Row="19">62</AVal>
+          <AVal Row="20">57</AVal>
+          <AVal Row="21">24</AVal>
+          <AVal Row="22">24</AVal>
+          <AVal Row="23">57</AVal>
+          <AVal Row="24">57</AVal>
+          <AVal Row="25">57</AVal>
+          <AVal Row="26">57</AVal>
+          <AVal Row="27">40</AVal>
+          <AVal Row="28">40</AVal>
+          <AVal Row="29">40</AVal>
+          <AVal Row="30">40</AVal>
+          <AVal Row="31">40</AVal>
+          <AVal Row="32">40</AVal>
+          <AVal Row="33">40</AVal>
+          <AVal Row="34">40</AVal>
+          <AVal Row="35">40</AVal>
+        </ArrayValues>
+      </Material>
+      <Material Name="gs_leaf_mat">
+        <Description><![CDATA["Paneel"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>133</Value>
+      </Material>
+      <Material Name="gs_glass_mat">
+        <Description><![CDATA["Glas"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>24</Value>
+      </Material>
+      <Material Name="gs_metal_mat">
+        <Description><![CDATA["Metallteile"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>40</Value>
+      </Material>
+      <Material Name="gs_mat_spr">
+        <Description><![CDATA["Sprossen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>133</Value>
+      </Material>
+      <Boolean Name="bLinkCasingSurfaces">
+        <Description><![CDATA["Einheitliche Oberflächen Verkleidung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Material Name="gs_trim_in_mat">
+        <Description><![CDATA["Innenverkleidung Oberflächenmaterial"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>133</Value>
+      </Material>
+      <Material Name="gs_trim_out_mat">
+        <Description><![CDATA["Außenverkleidung Oberflächenmaterial"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>133</Value>
+      </Material>
+      <!-- dk_bim: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="dk_bim">
+        <Description><![CDATA["BIM + Struktur"]]></Description>
+      </Title>
+      <Integer Name="dk_LOI">
+        <Description><![CDATA["Level of Input"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="dk_LOD">
+        <Description><![CDATA["Level of Detail"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <String Name="dk_frametype">
+        <Description><![CDATA["Zargentyp Kürzel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["ZU"]]></Value>
+      </String>
+      <!-- ac_library: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="ac_library">
+        <Description><![CDATA["User Interface + Editing"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+        </Flags>
+      </Title>
+      <Integer Name="language">
+        <Description><![CDATA["Sprachversion Interface"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="dk_dlg_subset">
+        <Description><![CDATA["Dialogseiten-Gruppe"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="gs_ui_current_page">
+        <Description><![CDATA["Aktuelle UI-Seite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="gs_ui_sub_tabpage">
+        <Description><![CDATA["UI-Unterseite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="gs_ui_sub_tabpage_closure">
+        <Description><![CDATA["UI-Unterseite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="gs_RevealTypeEnable">
+        <Description><![CDATA[""]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="gs_subHandle">
+        <Description><![CDATA[""]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <String Name="gs_GLOB_MODPAR_NAME">
+        <Description><![CDATA["Zuletzt geänderter Parameter"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA[""]]></Value>
+      </String>
+      <Integer Name="iUIPictIndex">
+        <Description><![CDATA["Index auf UI-Bitmaps"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>2</Value>
+      </Integer>
+      <Boolean Name="gs_full_edit">
+        <Description><![CDATA["Bearbeitbare Fixpunkte"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Integer Name="htspt">
+        <Description><![CDATA["Fangpunktindex"]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>8000</Value>
+      </Integer>
+      <Integer Name="develop">
+        <Description><![CDATA["Entwicklungsmodus"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <!-- dorma_call: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="dorma_call">
+        <Description><![CDATA["Macro Call Settings"]]></Description>
+      </Title>
+      <Integer Name="macro_runtype">
+        <Description><![CDATA["Parameter to specify the question"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="UIpage_number">
+        <Description><![CDATA["Number of pages for output"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="Uipage">
+        <Description><![CDATA["Page number"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="UIpage_parent">
+        <Description><![CDATA["Parent page number"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+    </Parameters>
+  </ParamSection>
+  <Copyright SectVersion="1" SectionFlags="0" SubIdent="0">
+    <Author>©2018 dormakaba, written by Frank Beister, Hamburg, Germany</Author>
+    <License>
+      <Type>Commercial</Type>
+      <Version>
+      </Version>
+    </License>
+  </Copyright>
+  <Keywords SectVersion="1" SectionFlags="0" SubIdent="0"><![CDATA[" "]]></Keywords>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Comment SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[" "]]></Comment>
+  <Picture MIME="image/png" path="ECD Chamäleon.png" SubIdent="0" SectVersion="19" SectionFlags="0">
+  </Picture>
+  <GDLPict MIME="image/png" path="dormakaba_grey 139x15.png" SubIdent="1" platform="Win" SectVersion="19" SectionFlags="0">
+  </GDLPict>
+  <GDLPict MIME="image/png" path="dk_4dots 6x1.png" SubIdent="2" platform="Win" SectVersion="19" SectionFlags="0">
+  </GDLPict>
+  <GDLPict MIME="image/png" path="dk_tolerance 54x18.png" SubIdent="3" platform="Win" SectVersion="19" SectionFlags="0">
+  </GDLPict>
+</Symbol>

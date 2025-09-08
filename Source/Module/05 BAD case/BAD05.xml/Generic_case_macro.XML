@@ -1,0 +1,3159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Symbol IsArchivable="false" IsPlaceable="true" MigrationValue="Normal" Owner="1196638531" Signature="1196644685" UNID="{C2666E41-B10F-41D1-8838-B8BC193775B9}-{681E2794-AE3F-4435-ACAB-8CDD46A12272}" Version="36">
+  <Ancestry SectVersion="1" SectionFlags="0" SubIdent="0" Template="false">
+    <UNID>{F938E33A-329D-4A36-BE3E-85E126820996}-{A3B0AF3A-5916-490C-9C6A-B6BD047EF925}</UNID>
+    <UNID>{103E8D2C-8230-42E1-9597-46F84CCE28C0}-{532B42DA-E2F0-4525-AE80-38E8A91A4E3F}</UNID>
+  </Ancestry>
+  <CalledMacros SectVersion="2" SectionFlags="0" SubIdent="0">
+  </CalledMacros>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_3D SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[
+IF NOT( BITTEST(macro_runtype,5) ) THEN END
+]]></Script_3D>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_2D SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[
+IF NOT( BITTEST(macro_runtype,4) ) THEN END
+
+! PROJECT2 4,270,2
+
+]]></Script_2D>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_1D SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[! ######################################
+!
+! BIM-all-doors - DOOR SYSTEM
+!
+! Module: Case Macro
+!
+! Manufacturer: common
+! Linie: common
+!
+! © 2018 BY DORMAKABA
+! 
+! ######################################
+
+
+! =============================================================================
+! GLOBAL SETTINGS
+! =============================================================================
+
+! »»» Arrays
+
+DIM UI_page_subs[]
+DIM UI_page_names[], UI_page_icons[], UI_page_type[]
+
+! »»» Constants
+
+tlr = 0.00001	!»» accurancy
+txt = ""		!»» Text für alles mögliche
+sts = 0  		!»» Status
+version = 1.59  !»» Objektversion
+
+! »»» Localization
+
+sprache = language  !»»  Deutsch
+
+
+! »»» Common keywords
+
+IF sprache = 1 THEN
+
+	commonKey = "unspezifiziert" 
+	naKey = "[-]"  !"undefiniert" 
+	noKey = "nein" 
+	yesKey = "ja"
+
+	ELSE
+
+	commonKey = "unspecific"
+	naKey = "[-]"  !"common"
+	noKey = "no"
+	yesKey = "yes"
+
+	ENDIF
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (start)
+
+! --------- PRODUCT PARAMETERS
+
+! --------- DEFAULT VALUE ARRAYS
+
+! --------- dk_folding_dimensions[i][…]
+	dki_Falz1 = 1
+	dki_Falz2 = 2
+! --------- dk_panel_folding_dimensions[i][…]
+	dki_Mittelfalz1 = 1
+	dki_Mittelfalz2 = 2
+	dki_Mittelfalz3 = 3
+! --------- dk_open_leaf[i][…]
+	dka_leaf_angle2D = 1
+	dka_leaf2_angle2D = 2
+	dka_leaf_angleSA = 3
+	dka_leaf2_angleSA = 4
+	dka_leaf_angle3D = 5
+	dka_leaf2_angle3D = 6
+! --------- dk_cont_pens[i][…]
+	dka_handle_penC2 = 1
+	dka_handle_penC3 = 2
+	dka_frame_penC2 = 3
+	dka_frame_penC3 = 4
+	dka_panel_penC2 = 5
+	dka_panel_penC3 = 6
+	dka_opline2D = 7
+	dka_oplineSA = 8
+	dka_opline3D = 9
+	dka_topview_penC2 = 10
+	dka_penInvisible = 11
+	dka_closer_penSA = 12
+	dka_closer_pen3D = 13
+	dka_penC = 14
+	dka_penC = 15
+! --------- dk_fill_pens[i][…]
+	dka_handle_penF = 1
+	dka_frame_penF = 2
+	dka_side1_penF = 3
+	dka_side2_penF = 4
+	dka_panel_penF = 5
+	dka_panelfill1_penF = 6
+	dka_panelfill2_penF = 7
+	dka_panelfill3_penF = 8
+	dka_panel2fill1_penF = 9
+	dka_panel2fill2_penF = 10
+	dka_panel2fill3_penF = 11
+	dka_topview_penF = 12
+	dka_fan_penF = 13
+	dka_penF = 14
+	dka_penF = 15
+! --------- dk_bkg_pens[i][…]
+	dka_handle_penB = 1
+	dka_frame_penB = 2
+	dka_side1_penB = 3
+	dka_side2_penB = 4
+	dka_panel_penB = 5
+	dka_panelfill1_penB = 6
+	dka_panelfill2_penB = 7
+	dka_panelfill3_penB = 8
+	dka_panel2fill1_penB = 9
+	dka_panel2fill2_penB = 10
+	dka_panel2fill3_penB = 11
+	dka_topview_penB = 12
+	dka_fan_penB = 13
+	dka_penB = 14
+	dka_penB = 15
+! --------- dk_fills[i][…]
+	dka_handle_fill = 1
+	dka_frame_fill = 2
+	dka_side1_fill = 3
+	dka_side2_fill = 4
+	dka_panel_fill = 5
+	dka_panelfill1_fill = 6
+	dka_panelfill2_fill = 7
+	dka_panelfill3_fill = 8
+	dka_panel2fill1_fill = 9
+	dka_panel2fill2_fill = 10
+	dka_panel2fill3_fill = 11
+	dka_topview_fill = 12
+	dka_fan_fill = 13
+	dka_fill = 14
+	dka_fill = 15
+! --------- dk_linetype[i][…]
+	dka_invisible = 1
+! --------- dk_materials[i][…]
+	dka_handle_mat = 1
+	dka_plate_mat = 2
+	dka_frame_mat_BS = 3
+	dka_frame_mat_BGS = 4
+	dka_side1_mat_BS = 5
+	dka_side1_mat_BGS = 6
+	dka_side2_mat_BS = 7
+	dka_side2_mat_BGS = 8
+	dka_fan_mat_BS = 9
+	dka_fan_mat_BGS = 10
+	dka_panel_mat_BS = 11
+	dka_panel_mat_BGS = 12
+	dka_panelfill1_mat_BS = 13
+	dka_panelfill1_mat_BGS = 14
+	dka_panelfill2_mat_BS = 15
+	dka_panelfill2_mat_BGS = 16
+	dka_panelfill3_mat_BS = 17
+	dka_panelfill3_mat_BGS = 18
+	dka_panel2_mat_BS = 19
+	dka_panel2_mat_BGS = 20
+	dka_panel2fill1_mat_BS = 21
+	dka_panel2fill1_mat_BGS = 22
+	dka_panel2fill2_mat_BS = 23
+	dka_panel2fill2_mat_BGS = 24
+	dka_panel2fill3_mat_BS = 25
+	dka_panel2fill3_mat_BGS = 26
+	dka_hinge_mat = 27
+	dka_closer_mat = 28
+	dka_mat = 29
+	dka_mat = 30
+	dka_mat = 31
+	dka_mat = 32
+	dka_mat = 33
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (end)
+
+! ----------------------------------- MULTILINGUAL TEXT [ECD.hinge] (start)
+
+! --------- RESET array variables
+	DIM uiTXT[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		uiTXT[1] = "SCHLOSS"
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF language = 4 THEN
+		uiTXT[1] = "CASE"
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+
+! ------------------------------------------------------------------------[ environment ]
+
+
+! ------------------------------------------------------------------------[ settings / locals ]
+
+!  UI_page_type =  -2 > sub of ROOT, -1 > sub of last, 1 > sub of first macro page
+
+seiten = 0
+
+IF dk_LOI = 5 THEN
+	seiten = 1
+	UI_page_names[seiten] = uiTXT[1]  ! "SCHLOSS"
+	UI_page_icons[seiten] = "dk_title_case 18x18.png"
+	UI_page_type[seiten]  = -1
+	UI_page_subs[seiten] = 8100
+	ENDIF
+
+IF dk_LOI = 6 THEN
+	seiten = 1
+	UI_page_names[seiten] = uiTXT[1]  ! "SCHLOSS"
+	UI_page_icons[seiten] = "dk_title_case 18x18.png"
+	UI_page_type[seiten]  = -1
+	UI_page_subs[seiten] = 8000
+
+	! IF dk_LOI = dk_LOI+1 THEN
+	! 	seiten = seiten+1
+	! 	UI_page_names[seiten] = uiTXT[2]  ! "SCHLOSS 2. Seite"
+	! 	UI_page_icons[seiten] = "uiTab_DoorHorizontalDim_flat(1).png"
+	! 	UI_page_type[seiten]  = 1
+	! 	UI_page_subs[seiten] = 8000
+	! 	ENDIF
+
+	ENDIF
+
+
+! =============================================================================
+! FEHLERARRAY
+! =============================================================================
+
+! »»» Fehlermeldungen
+DIM errorQ[]
+errorI = 0
+errorQ[1] = ""
+
+! »»» ... aus Plausibilitäten
+IF GLOB_PREVIEW_MODE THEN
+
+	If ((bs_lock_type = "FR" AND bs_lock_panic # 1 ) OR \
+		(bs_lock_type = "RI")) AND bs_demand_EscapeRoute = 1 THEN
+		errorI = errorI+1 : errorQ[errorI] = "Schloss nicht zulässig für Fluchtweganforderung."
+		ENDIF
+
+	If STRSTR( bs_ac_identify1 + bs_ac_identify2, "ID" ) AND ( bs_access_control_type = "-" OR bs_lock_type = "FA" ) THEN
+		errorI = errorI+1 : errorQ[errorI] = "Zugangskontrollsystem erforderlich."
+		ENDIF
+
+	If (bs_ac_identify1 = "ID" OR bs_ac_identify1 = "ZID") AND ( bs_locking_side # "ZS" AND bs_locking_side # "BS" ) THEN
+		errorI = errorI+1 : errorQ[errorI] = "Zugangskontrolle von Bandseite gefordert."
+		ENDIF
+
+	If (bs_ac_identify2 = "ID" OR bs_ac_identify2 = "ZID") AND ( bs_locking_side # "ZS" AND bs_locking_side # "BGS" ) THEN
+		errorI = errorI+1 : errorQ[errorI] = "Zugangskontrolle von Bandgegenseite gefordert."
+		ENDIF
+
+	! IF sts THEN
+	! 	GOSUB "debuginfo"
+	! 	errorI = errorI+1 : errorQ[errorI] = ""+txt
+	! 	ENDIF
+
+	ENDIF
+
+! =============================================================================
+! question - answer mode  / HANDSHAKE
+! =============================================================================
+
+IF macro_runtype = 1   THEN END UI_page_type   ! »»» return UI page hirarchy
+IF macro_runtype = 2   THEN END UI_page_names  ! »»» return UI page names
+IF macro_runtype = 4   THEN END UI_page_icons  ! »»» return UI page picts
+IF macro_runtype = 256 THEN END errorQ  ! »»» Fehlermeldung
+
+
+! =============================================================================
+! LOD - Level of Detail
+! =============================================================================
+
+
+! ------------------------------------------------------------------------[ ... ]
+
+GOTO "masterend"
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+! »»» Errorcontent:
+"debuginfo":
+	IF BITTEST(sts,0) THEN txt = "Schloss passt nicht " ELSE txt=""
+	IF BITTEST(sts,1) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "zu XXX"
+	IF BITTEST(sts,2) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "zu XXX"
+	IF BITTEST(sts,3) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "zu XXX"
+	IF BITTEST(sts,4) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "zu XXX"
+	IF BITTEST(sts,5) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "zu XXX"
+	IF txt # "" THEN txt = " ("+txt+")"
+	RETURN
+
+"masterend":
+]]></Script_1D>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_PR SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[
+! Script_PR
+]]></Script_PR>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_UI SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[
+!-------------------------------------------- [ Standardelemente aller Seiten ]
+
+! »»» Standardwerte
+
+DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[] ! Arrays für diskrete Auswahlen UI_INFIELD{4}
+
+! format = "" : sts = REQUEST ("Working_length_unit", "",format)			  !	Format für UI-Outfield -Längenwerte	
+
+! ----------------------------------- MULTILINGUAL TEXT [ECD.hinge] (start)
+
+! --------- RESET array variables
+	DIM babel[]
+	DIM bubble[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		babel[1] = "Schloss:"
+		babel[2] = "Typ:"
+		babel[3] = "Hersteller / Produkt:"
+		babel[4] = "Schlosstyp:"
+		babel[5] = "Form/Material/Oberfläche:"
+		babel[6] = "Gangflügel:"
+		babel[7] = "Position:"
+		babel[8] = "Schließung:"
+		babel[9] = "Zylindertyp:"
+		babel[10] = "Dornmaß:"
+		babel[11] = "Entfernung:"
+		babel[12] = "mit Elektrik"
+		babel[13] = "mit Elektronik:"
+		babel[14] = "Panikfunktion"
+		babel[15] = "Panikfunktion:"
+		babel[16] = "Schließanlage"
+		babel[17] = "Schließseite:"
+		babel[18] = "Türöffner"
+		babel[19] = "Türöffner:"
+		babel[20] = "Wechselfunktion"
+		babel[21] = "Wechselfunktion:"
+		babel[22] = "Vierkant:"
+		babel[23] = "Verriegelung:"
+		babel[24] = "Verriegelung SF"
+		babel[25] = "Selbstverriegelnd"
+		babel[26] = "Standflügel:"
+		babel[27] = "Anforderung:"
+		babel[28] = "Stulp:"
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF language = 4 THEN
+		babel[1] = "Case:"
+		babel[2] = "Type:"
+		babel[3] = "Hersteller / Produkt:"
+		babel[4] = "Schlosstyp:"
+		babel[5] = "Form/Material/Oberfläche:"
+		babel[6] = "Gangflügel:"
+		babel[7] = "Position:"
+		babel[8] = "Locking:"
+		babel[9] = "Zylindertyp:"
+		babel[10] = "Dornmaß:"
+		babel[11] = "Entfernung:"
+		babel[12] = "mit Elektrik"
+		babel[13] = "mit Elektronik:"
+		babel[14] = "Panikfunktion"
+		babel[15] = "Panikfunktion:"
+		babel[16] = "Schließanlage"
+		babel[17] = "Schließseite:"
+		babel[18] = "Türöffner"
+		babel[19] = "Türöffner:"
+		babel[20] = "Wechselfunktion"
+		babel[21] = "Wechselfunktion:"
+		babel[22] = "Vierkant:"
+		babel[23] = "Verriegelung:"
+		babel[24] = "Verriegelung SF"
+		babel[25] = "Selbstverriegelnd"
+		babel[26] = "Standflügel:"
+		babel[27] = "Anforderung:"
+		babel[28] = "Stulp:"
+		ENDIF
+
+! --------- User Interface - Tooltip text (Deutsch)
+	IF language = 1 THEN
+		bubble[1] = "Modell / Produktbezeichnung"
+		bubble[2] = "Zugangskontrollsystem"
+		bubble[3] = "Zylindertyp"
+		bubble[4] = "Hersteller Türschloss"
+		bubble[5] = "Zylindertyp/Mechanische Verriegelung"
+		bubble[6] = "Dornmaß Gangflügel"
+		bubble[7] = "Dornmaß Standflügel"
+		bubble[8] = "Elektrischer Türöffner"
+		bubble[9] = "Elektronisches Schloss"
+		bubble[10] = "Entfernungsmaß Gangflügel"
+		bubble[11] = "Entfernungsmaß Standflügel"
+		bubble[12] = "Falle mit Schlüssel öffnen"
+		bubble[13] = "Form Stulpblech"
+		bubble[14] = "Vierkantmaß/Lochung Gangflügel"
+		bubble[15] = "Vierkantmaß/Lochung Standflügel"
+		bubble[16] = "Material Stulpblech"
+		bubble[17] = "Oberfläche Stulpblech"
+		bubble[18] = "Panikfunktionen"
+		bubble[19] = "Schließanlage"
+		bubble[20] = "Schloßtyp"
+		bubble[21] = "Seite der Schließung"
+		bubble[22] = "Selbstverriegelnd"
+		bubble[23] = "Standflügelverriegelung"
+		bubble[24] = "Verriegelungsfunktionen"
+		bubble[25] = "Homepage generische Tür"
+		ENDIF
+! --------- User Interface - Tooltip text (Englisch)
+	IF language = 4 THEN
+		bubble[1] = "Modell / Produktbezeichnung"
+		bubble[2] = "Access control system"
+		bubble[3] = "Zylindertyp"
+		bubble[4] = "Hersteller Türschloss"
+		bubble[5] = "Zylindertyp/Mechanische Verriegelung"
+		bubble[6] = "Dornmaß Gangflügel"
+		bubble[7] = "Dornmaß Standflügel"
+		bubble[8] = "Elektrischer Türöffner"
+		bubble[9] = "Elektronisches Schloss"
+		bubble[10] = "Entfernungsmaß Gangflügel"
+		bubble[11] = "Entfernungsmaß Standflügel"
+		bubble[12] = "Falle mit Schlüssel öffnen"
+		bubble[13] = "Form Stulpblech"
+		bubble[14] = "Lochung Gangflügel"
+		bubble[15] = "Lochung Standflügel"
+		bubble[16] = "Material Stulpblech"
+		bubble[17] = "Oberfläche Stulpblech"
+		bubble[18] = "Panikfunktionen"
+		bubble[19] = "Schließanlage"
+		bubble[20] = "Schloßtyp"
+		bubble[21] = "Seite der Schließung"
+		bubble[22] = "Selbstverriegelnd"
+		bubble[23] = "Standflügelverriegelung"
+		bubble[24] = "Verriegelungsfunktionen"
+		bubble[25] = "Homepage generische Tür"
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+
+! =============================================================================
+! Dialogstart
+! =============================================================================
+
+
+! ------------------------------------------------------------------------[ Dialog start in development environment ]
+
+IF macro_runtype # 128 THEN
+	UI_DIALOG "DORMA CASE MACRO V"+STR(version,3,2), 444,266
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ 1. Seite ]
+
+s = 1
+IF  seiten > 0 THEN
+	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ 2. Seite ]
+
+s = 2
+IF  seiten > 1 THEN
+	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+	ENDIF
+
+
+! =============================================================================
+! Dialogende
+! =============================================================================
+
+END
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+! ------------------------------------------------------------------------[ Auswahloptionen ]
+
+"devshow":
+	UI_STYLE 1,2
+	UI_OUTFIELD "[CASE v" + str("%^.2",version) + "]"  , 60,0,100,15, 4
+
+	! i=0 : s=20
+	! UI_STYLE 0,0
+	! i = i   : UI_INFIELD{3} "dk_LOI",			475,i*s , 15,19  UI_TOOLTIP "Level of Input"
+	! i = i+1 : UI_INFIELD{3} "bs_door_leafs",	475,i*s , 15,19  UI_TOOLTIP "Türblätter"
+	RETURN
+
+"devSELECTION":
+	FOR i= 1 TO VARDIM1(UIpicIdxArray)
+		ui_outfield UIpicIdxArray[i],   0,260+i*15,140,15
+		ui_outfield UItextArray[i]  , 150,260+i*15,140,15
+		ui_outfield UIvaluesArray[i], 300,260+i*15,140,15
+		NEXT i
+	RETURN
+
+! ----------------------------------- PARAMETER / INFIELD VALUE LIST [ECD.hinge] (start)
+
+"VALUES_bs_access_control_type":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Mechanisch" : UIvaluesArray[j] = "M"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Schlüssel" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Karte/Chip" : UIvaluesArray[j] = "K"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Code" : UIvaluesArray[j] = "C"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Ferngesteuert" : UIvaluesArray[j] = "F"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Biometrisch" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "individuell" : UIvaluesArray[j] = "X"
+	RETURN
+
+"VALUES_bs_lock_type":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = "XX"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Fallen-Riegelschloß" : UIvaluesArray[j] = "FR"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Fallenschloß" : UIvaluesArray[j] = "FA"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Riegelschloß" : UIvaluesArray[j] = "RI"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rollenfallenschloß" : UIvaluesArray[j] = "RF"
+	RETURN
+
+"VALUES_bs_lock_system":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "einfach" : UIvaluesArray[j] = "1f"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "zweifach" : UIvaluesArray[j] = "2f"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "mehrfach" : UIvaluesArray[j] = "3f"
+	RETURN
+
+"VALUES_bs_case_material":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Stahl" : UIvaluesArray[j] = "ST"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Edelstahl" : UIvaluesArray[j] = "ES"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aluminium" : UIvaluesArray[j] = "AL"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Messing" : UIvaluesArray[j] = "MS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sondermaterial" : UIvaluesArray[j] = "XX"
+	RETURN
+
+"VALUES_bs_case_surface":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbehandelt" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gebürstet" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Geschliffen" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Getrommelt" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Poliert" : UIvaluesArray[j] = "P"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vernickelt" : UIvaluesArray[j] = "N"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lackiert" : UIvaluesArray[j] = "L"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Pulverbeschichtet" : UIvaluesArray[j] = "V"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verzinkt" : UIvaluesArray[j] = "Z"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verchromt" : UIvaluesArray[j] = "C"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Eloxiert" : UIvaluesArray[j] = "E"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Titanisiert" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vergoldet" : UIvaluesArray[j] = "G"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sonderoberfläche" : UIvaluesArray[j] = "X"
+	RETURN
+
+"VALUES_bs_latch_plate":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "rund" : UIvaluesArray[j] = "R"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "kantig" : UIvaluesArray[j] = "K"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "U-Form" : UIvaluesArray[j] = "U"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "abgwinkelt" : UIvaluesArray[j] = "W"
+	RETURN
+
+"VALUES_gs_han_pos":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "individuell" : UIvalRealArray[j] = 0.02
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Zimmertür 55mm" : UIvalRealArray[j] = 0.055
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Zimmertür 60mm" : UIvalRealArray[j] = 0.06
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Haustür 65mm" : UIvalRealArray[j] = 0.065
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 30mm" : UIvalRealArray[j] = 0.03
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 35mm" : UIvalRealArray[j] = 0.035
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 40mm" : UIvalRealArray[j] = 0.04
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 45mm" : UIvalRealArray[j] = 0.045
+	RETURN
+
+"VALUES_bs_case_distance":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "individuell" : UIvalRealArray[j] = 0.09
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Standard" : UIvalRealArray[j] = 0.072
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "WC-Schloss" : UIvalRealArray[j] = 0.078
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmen/Haustür" : UIvalRealArray[j] = 0.092
+	RETURN
+
+"VALUES_gs_han_pos2":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "individuell" : UIvalRealArray[j] = 0.02
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Zimmertür 55mm" : UIvalRealArray[j] = 0.055
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Zimmertür 60mm" : UIvalRealArray[j] = 0.06
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Haustür 65mm" : UIvalRealArray[j] = 0.065
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 30mm" : UIvalRealArray[j] = 0.03
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 35mm" : UIvalRealArray[j] = 0.035
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 40mm" : UIvalRealArray[j] = 0.04
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 45mm" : UIvalRealArray[j] = 0.045
+	RETURN
+
+"VALUES_bs_case_distance2":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "individuell" : UIvalRealArray[j] = 0.09
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Standard" : UIvalRealArray[j] = 0.072
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "WC-Schloss" : UIvalRealArray[j] = 0.078
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmen/Haustür" : UIvalRealArray[j] = 0.092
+	RETURN
+
+"VALUES_bs_lock_panic":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvalRealArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvalRealArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbestimmt" : UIvalRealArray[j] = 2
+	RETURN
+
+"VALUES_bs_lock_change":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvalRealArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvalRealArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbestimmt" : UIvalRealArray[j] = 2
+	RETURN
+
+"VALUES_bs_selflocking":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvalRealArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvalRealArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbestimmt" : UIvalRealArray[j] = 2
+	RETURN
+
+"VALUES_bs_lock_SF":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvalRealArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvalRealArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbestimmt" : UIvalRealArray[j] = 2
+	RETURN
+
+"VALUES_bs_lock_master":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvalRealArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvalRealArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbestimmt" : UIvalRealArray[j] = 2
+	RETURN
+
+"VALUES_bs_lock_barrel":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "kein Zylinder" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Profilzylinder" : UIvaluesArray[j] = "PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rundzylinder" : UIvaluesArray[j] = "RZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Ovallochung" : UIvaluesArray[j] = "OZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Buntbart" : UIvaluesArray[j] = "BB"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "WC" : UIvaluesArray[j] = "WC"
+	RETURN
+
+"VALUES_bs_locking_side":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "zweiseitig" : UIvaluesArray[j] = "ZS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Bandseite" : UIvaluesArray[j] = "BS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Bandgegenseite" : UIvaluesArray[j] = "BGS"
+	RETURN
+
+"VALUES_bs_lock_electric":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvalRealArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvalRealArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbestimmt" : UIvalRealArray[j] = 2
+	RETURN
+
+"VALUES_bs_lock_opener":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvalRealArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvalRealArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbestimmt" : UIvalRealArray[j] = 2
+	RETURN
+
+! --------------------------------------------------------------- PARAMETER / INFIELD VALUE LIST (end)
+
+"SELECT_bs_lock_type":
+	IF bs_lock_change = 1 THEN
+		j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+		j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Fallen-Riegelschloß" : UIvaluesArray[j] = "FR"
+		ELSE
+		GOSUB "VALUES_bs_lock_type"
+		ENDIF
+	RETURN
+
+"SELECT_bs_access_control_type":
+	GOSUB "VALUES_bs_access_control_type"
+	sts = 0
+	IF bs_access_control_type # "X" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_access_control_type THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_case_material":
+	GOSUB "VALUES_bs_case_material"
+	sts = 0
+	IF bs_case_material # "XX" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_case_material THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_case_surface":
+	GOSUB "VALUES_bs_case_surface"
+	sts = 0
+	IF bs_case_surface # "X" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_case_surface THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_gs_han_pos":
+	GOSUB "VALUES_gs_han_pos"
+	sts = 0
+	IF ABS(gs_han_pos - 0.02) > tlr THEN
+		FOR i = 2 TO j
+			IF ABS(UIvalRealArray[i] - gs_han_pos) < tlr THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_gs_han_pos2":
+	GOSUB "VALUES_gs_han_pos2"
+	sts = 0
+	IF ABS(gs_han_pos2 - 0.02) > tlr THEN
+		FOR i = 2 TO j
+			IF ABS(UIvalRealArray[i] - gs_han_pos2) < tlr THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_case_distance":
+	GOSUB "VALUES_bs_case_distance"
+	sts = 0
+	IF ABS(bs_case_distance - 0.09) > tlr THEN
+		FOR i = 2 TO j
+			IF ABS(UIvalRealArray[i] - bs_case_distance) < tlr THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_case_distance2":
+	GOSUB "VALUES_bs_case_distance2"
+	sts = 0
+	IF ABS(bs_case_distance2 - 0.09) > tlr THEN
+		FOR i = 2 TO j
+			IF ABS(UIvalRealArray[i] - bs_case_distance2) < tlr THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+! ------------------------------------------------------------- MAIN PAGE [ 8000 ]
+	8000:   ! #### LOI 6 -Grundeinstellungen 1/2 Flügel
+	GOSUB 9900
+	UI_SEPARATOR 0,89, 445,89
+	UI_SEPARATOR 0,142, 445,142
+	UI_SEPARATOR 208,148, 208,267
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[1], 0,24 , 58,15, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[28], 0,69 , 58,15, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[27], 0,150 , 77,15, 0+0
+	UI_STYLE 0,0
+	UI_OUTFIELD babel[2], 58,24 , 137,15, 0+0
+	UI_OUTFIELD babel[3], 58,45 , 137,15, 0+0
+	UI_OUTFIELD babel[5], 58,69 , 137,15, 0+0
+	GOSUB "SELECT_bs_lock_type"
+	UI_INFIELD{3} "bs_lock_type", 196,19 , 247,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[20]
+	UI_INFIELD{3} "bs_case_manufacturer", 197,43 , 119,19 UI_TOOLTIP bubble[4]
+	UI_INFIELD{3} "bs_case_model", 323,43 , 120,19 UI_TOOLTIP bubble[1]
+	GOSUB "VALUES_bs_latch_plate"
+	UI_INFIELD{3} "bs_latch_plate", 196,64 , 78,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[13]
+	GOSUB "SELECT_bs_case_material"
+	IF sts THEN UI_INFIELD{3} "bs_case_material", 280,64 , 79,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[16]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_case_material", 280,65 , 79,19 UI_TOOLTIP bubble[16]
+	GOSUB "SELECT_bs_case_surface"
+	IF sts THEN UI_INFIELD{3} "bs_case_surface", 365,64 , 78,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[17]
+	UI_STYLE 0,1
+	IF bs_door_leafs > 1 THEN txt = babel[6] ELSE txt = babel[7]
+		UI_OUTFIELD txt, 0,97 , 77,15, 0+0
+		UI_STYLE 0,0
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_case_surface", 365,65 , 78,19 UI_TOOLTIP bubble[17]
+	UI_OUTFIELD babel[10], 77,97 , 60,15, 0+0
+	UI_OUTFIELD babel[22], 200,97 , 55,15, 2+0
+	UI_OUTFIELD babel[11], 318,97 , 66,15, 2+0
+	GOSUB "SELECT_gs_han_pos"
+	IF sts THEN UI_INFIELD{3} "gs_han_pos", 137,94 , 60,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[6]
+	IF not(sts) THEN UI_INFIELD{3} "gs_han_pos", 137,95 , 60,19 UI_TOOLTIP bubble[6]
+	UI_INFIELD{3} "bs_case_hole", 255,95 , 60,19 UI_TOOLTIP bubble[14]
+	GOSUB "SELECT_bs_case_distance"
+	IF sts THEN UI_INFIELD{3} "bs_case_distance", 384,94 , 60,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[10]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_case_distance", 384,95 , 60,19 UI_TOOLTIP bubble[10]
+	IF bs_door_leafs > 1 THEN
+		UI_STYLE 0,1
+		
+		UI_OUTFIELD babel[26], 0,120 , 77,15, 0+0
+		UI_STYLE 0,0
+		UI_OUTFIELD babel[10], 77,120 , 60,15, 0+0
+		UI_OUTFIELD babel[22], 200,120 , 55,15, 2+0
+		UI_OUTFIELD babel[11], 318,120 , 66,15, 2+0
+		GOSUB "SELECT_gs_han_pos2"
+		IF sts THEN UI_INFIELD{3} "gs_han_pos2", 137,117 , 60,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[7]
+		IF not(sts) THEN UI_INFIELD{3} "gs_han_pos2", 137,118 , 60,19 UI_TOOLTIP bubble[7]
+		UI_INFIELD{3} "bs_case_hole2", 255,118 , 60,19 UI_TOOLTIP bubble[15]
+		GOSUB "SELECT_bs_case_distance2"
+		IF sts THEN UI_INFIELD{3} "bs_case_distance2", 384,117 , 60,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[11]
+		IF not(sts) THEN UI_INFIELD{3} "bs_case_distance2", 384,118 , 60,19 UI_TOOLTIP bubble[11]
+		ENDIF
+	GOSUB "SELECT_bs_access_control_type"
+	IF sts THEN UI_INFIELD{3} "bs_access_control_type", 317,147 , 126,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_access_control_type", 318,148 , 124,19 UI_TOOLTIP bubble[2]
+	GOSUB "VALUES_bs_lock_barrel"
+	UI_INFIELD{3} "bs_lock_barrel", 318,172 , 126,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+	GOSUB "VALUES_bs_locking_side"
+	UI_INFIELD{3} "bs_locking_side", 318,220 , 126,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+	GOSUB "VALUES_bs_lock_system"
+	UI_INFIELD{3} "bs_lock_system", 318,245 , 126,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[24]
+	IF bs_lock_type = "FA" THEN sts = 1 ELSE sts = 0
+	UI_INFIELD{3} "bs_lock_panic", 77,147 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[18]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[14], 108,150 , 98,15, 0+4*(sts OR bs_lock_type = "RI")
+	UI_INFIELD{3} "bs_lock_change", 317,197 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[12]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[20], 346,200 , 98,15, 0+4*(sts OR bs_lock_type = "RI")
+	UI_INFIELD{3} "bs_selflocking", 77,167 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[22]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[25], 108,170 , 98,15, 0+4*(sts)
+	UI_INFIELD{3} "bs_lock_SF", 77,187 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[23]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[24], 108,190 , 98,15, 0+4*(bs_door_leafs < 2)
+	UI_INFIELD{3} "bs_lock_master", 77,207 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[19]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[16], 108,210 , 98,15, 0+4*(sts)
+	UI_INFIELD{3} "bs_lock_electric", 77,227 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[9]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[12], 108,230 , 98,15, 0+0
+	UI_INFIELD{3} "bs_lock_opener", 77,247 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[8]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[18], 108,250 , 98,15, 0+0
+	UI_OUTFIELD babel[9], 212,175 , 105,15, 0+4*(sts) UI_TOOLTIP bubble[5]
+	UI_OUTFIELD babel[17], 212,223 , 105,15, 0+4*(sts)
+	UI_OUTFIELD babel[23], 212,248 , 105,15, 0+4*(sts)
+	UI_OUTFIELD babel[8], 212,150 , 105,15, 0+4*(sts) UI_TOOLTIP bubble[2]
+	RETURN
+! ------------------------------------------------------------- MAIN PAGE [ 8100 ]
+	8100:   ! #### LOI 5 -Grundeinstellungen 1/2 Flügel
+	GOSUB 9900
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[4], 60,40 , 89,15, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[27], 60,89 , 91,15, 0+0
+	UI_STYLE 0,0
+	UI_SEPARATOR 60,72, 385,72
+	GOSUB "SELECT_bs_lock_type"
+	UI_INFIELD{3} "bs_lock_type", 154,35 , 230,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[20]
+	GOSUB "SELECT_bs_access_control_type"
+	IF sts THEN UI_INFIELD{3} "bs_access_control_type", 254,86 , 131,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_access_control_type", 255,87 , 129,19 UI_TOOLTIP bubble[2]
+	GOSUB "VALUES_bs_lock_barrel"
+	UI_INFIELD{3} "bs_lock_barrel", 254,112 , 131,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+	GOSUB "VALUES_bs_locking_side"
+	UI_INFIELD{3} "bs_locking_side", 254,162 , 131,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+	IF bs_lock_type = "FA" THEN sts = 1 ELSE sts = 0
+	UI_INFIELD{3} "bs_lock_panic", 254,188 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[18]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[15], 154,191 , 100,15, 0+4*(sts OR bs_lock_type = "RI")
+	UI_INFIELD{3} "bs_lock_change", 254,138 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[12]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[21], 154,141 , 100,15, 0+4*(sts OR bs_lock_type = "RI")
+	UI_INFIELD{3} "bs_lock_electric", 254,212 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[9]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[13], 154,215 , 100,15, 0+0
+	UI_INFIELD{3} "bs_lock_opener", 254,236 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[8]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[19], 154,239 , 100,15, 0+0
+	UI_OUTFIELD babel[8], 154,89 , 97,15, 0+4*(sts) UI_TOOLTIP bubble[2]
+	UI_OUTFIELD babel[9], 154,115 , 97,15, 0+4*(sts)
+	UI_OUTFIELD babel[17], 154,165 , 100,15, 0+4*(sts)
+	RETURN
+! ------------------------------------------------------------- MAIN PAGE [ 8200 ]
+	9800:   ! #### TITEL on all pages
+	IF develop THEN GOSUB "devshow"
+	UI_STYLE 0,0
+	UI_PICT 1, 245,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 389,15
+	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 388,-5 , 22,22, 0, "http://www.opengdl.org/Default.aspx?tabid=11009" UI_TOOLTIP bubble[25]
+	IF errorI>0 THEN
+		txt = ""
+		FOR i=1 TO errorI
+		txt = txt + errorQ[errorI]
+		NEXT i
+		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
+		ENDIF
+	RETURN
+! -------------------------------------------------------------TITLE [ 9900 ]
+	9900:   ! #### TITEL on all pages
+	IF develop THEN GOSUB "devshow"
+	UI_STYLE 0,0
+	UI_PICT 1, 305,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 445,15
+	IF errorI>0 THEN
+		txt = ""
+		FOR i=1 TO errorI
+		txt = txt + errorQ[errorI]
+		NEXT i
+		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
+		ENDIF
+	RETURN
+
+]]></Script_UI>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_VL SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[! ------------------------------------------------------------------------[ Module development settings ]
+
+IF macro_runtype = 0 THEN
+	VALUES{2} "macro_runtype" 0, "IDLE", 1,"handshake page hirarchy", 2,"handshake page names", 3,"CALL UI page", 5,"return element values", 10,"rebuilt VALUE lists"
+	ENDIF
+
+
+! =============================================================================
+! PLAUSIBILITY
+! =============================================================================
+
+! ----------------------------------------------------------------- Parameterabhängigkeiten
+
+! »»» Wechselfunktion nur bei Fallen-Riegelschloss
+IF gs_han_pos < 0.046 AND GLOB_MODPAR_NAME = "gs_han_pos" AND bs_control_side = "-" THEN
+	bs_case_distance = 0.092
+	PARAMETERS bs_case_distance = bs_case_distance
+	ENDIF
+
+IF gs_han_pos2 < 0.046 AND GLOB_MODPAR_NAME = "gs_han_pos2" AND bs_control_side = "-" THEN
+	bs_case_distance2 = 0.092
+	PARAMETERS bs_case_distance2 = bs_case_distance2
+	ENDIF
+
+! »»» Wechselfunktion nur bei Fallen-Riegelschloss
+IF bs_lock_type = "FA" THEN
+	bs_access_control_type = "-"
+	bs_lock_type = "FR"
+	bs_lock_panic = 0 : bs_lock_change = 0 : bs_selflocking = 0 : bs_lock_master = 0
+	bs_lock_barrel = "-"
+	PARAMETERS	bs_access_control_type = bs_access_control_type,
+				bs_lock_panic	= bs_lock_panic,
+				bs_lock_change	= bs_lock_change,
+				bs_selflocking	= bs_selflocking,
+				bs_lock_master	= bs_lock_master,
+				bs_lock_barrel	= bs_lock_barrel
+	LOCK "bs_lock_system", "bs_locking_side", 
+		"bs_access_control_type", 
+		"bs_lock_panic", "bs_lock_change", 
+		"bs_selflocking", "bs_lock_master", "bs_lock_barrel"
+	ENDIF
+
+! »»» Panik- und Wechsel	funktion ohne Falle nicht möglich
+IF bs_lock_type = "RI" THEN
+	bs_lock_panic = 0 : bs_lock_change = 0
+	PARAMETERS	bs_lock_panic = bs_lock_panic, bs_lock_change = bs_lock_change
+	LOCK "bs_lock_panic", "bs_lock_change"
+	ENDIF
+
+! »»» Wechselfunktion nur bei Fallen-Riegelschloss
+IF bs_lock_change = 1 AND bs_lock_type # "FR" THEN
+	bs_lock_type = "FR"
+	PARAMETERS bs_lock_type = bs_lock_type
+	ENDIF
+
+! »»» Elektrifizierung setzen (Bit 5)
+IF bs_lock_electric = 1 THEN
+	bs_door_electrified = BITSET(bs_door_electrified, 5)
+	ELSE
+	bs_door_electrified = BITSET(bs_door_electrified, 5, 0)
+	ENDIF
+PARAMETERS bs_door_electrified = bs_door_electrified
+
+! »»» Einflügelig
+IF bs_door_leafs < 2 THEN
+	PARAMETERS bs_lock_SF = 2
+	LOCK "bs_lock_SF"
+	ENDIF
+
+! =============================================================================
+! VALUES
+! =============================================================================
+
+! ----------------------------------- PARAMETER VALUE LIST [ECD.hinge] (start)
+
+VALUES "bs_access_control_type" "-", " ", "M", "S", "K", "C", "F", "B", "X"
+VALUES "bs_lock_type" "XX", "FR", "FA", "RI", "RF"
+VALUES "bs_lock_system" "1f", "2f", "3f"
+VALUES "bs_case_material" " ", "ST", "ES", "AL", "MS", "XX", CUSTOM
+VALUES "bs_case_surface" " ", "-", "B", "S", "T", "P", "N", "L", "V", "Z", "C", "E", "T", "G", "X", CUSTOM
+VALUES "bs_latch_plate" "R", "K", "U", "W"
+VALUES "gs_han_pos" 0.02, 0.055, 0.06, 0.065, 0.03, 0.035, 0.04, 0.045, CUSTOM
+VALUES "bs_case_hole" 0.08, CUSTOM
+VALUES "bs_case_distance" 0.09, 0.072, 0.078, 0.092, CUSTOM
+VALUES "gs_han_pos2" 0.02, 0.055, 0.06, 0.065, 0.03, 0.035, 0.04, 0.045, CUSTOM
+VALUES "bs_case_hole2" 0.08, CUSTOM
+VALUES "bs_case_distance2" 0.09, 0.072, 0.078, 0.092, CUSTOM
+VALUES{2} "bs_lock_panic" 0, "nein", 1, "ja", 2, "unbestimmt"
+VALUES{2} "bs_lock_change" 0, "nein", 1, "ja", 2, "unbestimmt"
+VALUES{2} "bs_selflocking" 0, "nein", 1, "ja", 2, "unbestimmt"
+VALUES{2} "bs_lock_SF" 0, "nein", 1, "ja", 2, "unbestimmt"
+VALUES{2} "bs_lock_master" 0, "nein", 1, "ja", 2, "unbestimmt"
+VALUES "bs_lock_barrel" "-", "PZ", "RZ", "OZ", "BB", "WC"
+VALUES "bs_locking_side" "ZS", "BS", "BGS"
+VALUES "bs_lock_electric" 0, 1, 2, CUSTOM
+VALUES{2} "bs_lock_opener" 0, "nein", 1, "ja", 2, "unbestimmt"
+VALUES "develop" 0, 1, 2, 3, 4, 5, 6, 7, 8
+
+! --------------------------------------------------------------- PARAMETER VALUE LISTS (end)
+
+! ---------------------------------------------------------------------- !
+
+END bs_door_electrified, bs_door_external_button
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+]]></Script_VL>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_FWM SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[
+! Script_FWM
+]]></Script_FWM>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_BWM SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[
+! Script_BWM
+]]></Script_BWM>
+  <ParamSection SectVersion="22" SectionFlags="0" SubIdent="0">
+    <ParamSectHeader>
+      <Version>21</Version>
+      <AutoHotspots>no</AutoHotspots>
+      <StatBits>
+        <STBit_UIDefault />
+        <STBit_FixSize />
+        <STBit_UIUseHierarchicalPages />
+      </StatBits>
+      <WDLeftFrame>0</WDLeftFrame>
+      <WDRightFrame>0</WDRightFrame>
+      <WDTopFrame>0</WDTopFrame>
+      <WDBotFrame>0</WDBotFrame>
+      <LayFlags>0</LayFlags>
+      <WDMirrorThickness>0</WDMirrorThickness>
+      <WDWallInset>0</WDWallInset>
+      <SymbolColor>0</SymbolColor>
+    </ParamSectHeader>
+    <Parameters>
+      <Length Name="A">
+        <Description><![CDATA["Nominalbreite"]]></Description>
+        <Fix />
+        <Value>0.885</Value>
+      </Length>
+      <Length Name="B">
+        <Description><![CDATA["Nominalhöhe"]]></Description>
+        <Fix />
+        <Value>2.135</Value>
+      </Length>
+      <Length Name="ZZYZX">
+        <Description><![CDATA["Z-Achse"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+        </Flags>
+        <Value>1</Value>
+      </Length>
+      <Integer Name="bs_demand_FireResistance">
+        <Description><![CDATA["Brandschutzanforderung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_demand_SmokeResistance">
+        <Description><![CDATA["Rauchschutzanforderung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_demand_NoiseInsulaion">
+        <Description><![CDATA["Schallschutzanforderung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_demand_Accessibility">
+        <Description><![CDATA["Anforderungen Barrierefreiheit"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_demand_AdmissionControl">
+        <Description><![CDATA["Anforderung Zugangskontrolle"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_demand_MoistureProofing">
+        <Description><![CDATA["Klimatische Anforderungen"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_demand_EscapeRoute">
+        <Description><![CDATA["Fluchtweg- und Rettungsweganforderung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <String Name="bs_quality_FireResistanceRating">
+        <Description><![CDATA["Brandschutz"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_SmokeResistance">
+        <Description><![CDATA["Rauchschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_NoiseInsulaion">
+        <Description><![CDATA["Schallschutz"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_ThermalInsulaion">
+        <Description><![CDATA["max. Wärmedurchgangskoeffizient"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_BurglaryProtection">
+        <Description><![CDATA["Einbruchschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_StrafingProtection">
+        <Description><![CDATA["Beschußsicherheit"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_DetonationProtection">
+        <Description><![CDATA["Sprengwirkungsschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_RadiationProtection">
+        <Description><![CDATA["Strahlenschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_LaserProtection">
+        <Description><![CDATA["Laserschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_FloodProtection">
+        <Description><![CDATA["Hochwasserschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_VandalismProtection">
+        <Description><![CDATA["Vandalismus"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_GasDefense">
+        <Description><![CDATA["Gasschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA[""]]></Value>
+      </String>
+      <String Name="bs_quality_EscapeRoute">
+        <Description><![CDATA["Flucht- und Rettungsweg"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <Length Name="bs_quality_UsableClearance">
+        <Description><![CDATA["Mindestdurchgangsbreite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.8</Value>
+      </Length>
+      <Length Name="bs_quality_UsableHeight">
+        <Description><![CDATA["Mindestdurchgangshöhe"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </Length>
+      <Angle Name="bs_quality_OpeningAngle">
+        <Description><![CDATA["Mindestöffnungswinkel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>90</Value>
+      </Angle>
+      <Length Name="bs_quality_GuardrailHeight">
+        <Description><![CDATA["Absturzsicherung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <String Name="bs_quality_SHE">
+        <Description><![CDATA["RWA-Zuluft"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_SelfClosing">
+        <Description><![CDATA["Selbstschließend"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_Automation">
+        <Description><![CDATA["Automatisiert"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_AntiTrapProtection">
+        <Description><![CDATA["Klemmschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_ClimateClass">
+        <Description><![CDATA["Klimaklasse"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_WetRoom">
+        <Description><![CDATA["Nassraum"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_DampArea">
+        <Description><![CDATA["Feuchtraum"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_Tightness">
+        <Description><![CDATA["Dichtigkeit"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_Hygiene">
+        <Description><![CDATA["Hygiene"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_Sustainability">
+        <Description><![CDATA["Nachhaltigkeit"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_ExplosionSafety">
+        <Description><![CDATA["Explosionsschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_MechanicalLoad">
+        <Description><![CDATA["Mechanische Beanspruchung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_CorrosionPrevention">
+        <Description><![CDATA["Korrosionschutz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_UsefulLife">
+        <Description><![CDATA["Nutzungsdauer"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_IntensityOfUse">
+        <Description><![CDATA["Nutzungsintensität"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_EMShielding">
+        <Description><![CDATA["Elektromagnetische Abschirmung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_BurglaryAlarmSystem">
+        <Description><![CDATA["Einbruchmeldeanlage"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_AccidentPrevention">
+        <Description><![CDATA["Unfallverhütung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_Accessibility">
+        <Description><![CDATA["Barrierefreiheit"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_quality_ActuatingForce">
+        <Description><![CDATA["Bedienkraft"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_ac_identify1">
+        <Description><![CDATA["Zugang von der  BS"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_ac_identify2">
+        <Description><![CDATA["Zugang von der BGS"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_ac_opening1">
+        <Description><![CDATA["Öffnen von der BS"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_ac_opening2">
+        <Description><![CDATA["Öffnen von der BGS"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_ac_closing">
+        <Description><![CDATA["Schließverhalten"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_ac_status">
+        <Description><![CDATA["Flügelposition im Betrieb"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <String Name="bs_ac_control">
+        <Description><![CDATA["Überwachung Türzustand"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["undefiniert"]]></Value>
+      </String>
+      <!-- dk_basic_features: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="dk_basic_features">
+        <Description><![CDATA["Grundeigenschaften"]]></Description>
+      </Title>
+      <String Name="bs_door_OpeningType">
+        <Description><![CDATA["Türtyp / Öffnungsart"]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Drehflügel"]]></Value>
+      </String>
+      <String Name="bs_door_ConstructionType">
+        <Description><![CDATA["Konstruktionstyp"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["allgemein"]]></Value>
+      </String>
+      <Boolean Name="gs_mountingFrame">
+        <Description><![CDATA["Einbaurahmen"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <Integer Name="bs_door_leafs">
+        <Description><![CDATA["Anzahl der Türblätter"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Boolean Name="gs_kamp">
+        <Description><![CDATA["Oberlicht / Kämpfer / Riegel"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <String Name="bs_door_sidelight">
+        <Description><![CDATA["Seitenfelder"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["keine"]]></Value>
+      </String>
+      <Integer Name="gs_list_orientationDef_m">
+        <Description><![CDATA["Türausrichtungsdefinition"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <String Name="ac_OpeningSide">
+        <Description><![CDATA["Türausrichtung in Wandebene"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value><![CDATA["R"]]></Value>
+      </String>
+      <Integer Name="bs_door_electrified">
+        <Description><![CDATA["Elektrische Zuleitungen"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_door_external_button">
+        <Description><![CDATA["Taster erforderlich"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Boolean Name="bThreshold">
+        <Description><![CDATA["Schwelle"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_BoldName />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <Boolean Name="gs_sill_outside">
+        <Description><![CDATA["Fensterbank außen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_BoldName />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <!-- gs_door_sizes: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_door_sizes">
+        <Description><![CDATA["Abmessungen Tür"]]></Description>
+        <Fix />
+      </Title>
+      <Length Name="gs_tolerance_left">
+        <Description><![CDATA["Einbautoleranz links"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.04</Value>
+      </Length>
+      <Length Name="gs_tolerance_right">
+        <Description><![CDATA["Einbautoleranz rechts"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.05</Value>
+      </Length>
+      <Length Name="gs_tolerance_upper">
+        <Description><![CDATA["Einbautoleranz oben"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_tolerance_lower">
+        <Description><![CDATA["Einbautoleranz unten"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_outer_left">
+        <Description><![CDATA["Toleranz außen links"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_inner_left">
+        <Description><![CDATA["Toleranz innen links"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_outer_right">
+        <Description><![CDATA["Toleranz außen rechts"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_inner_right">
+        <Description><![CDATA["Toleranz innen rechts"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_outer_upper">
+        <Description><![CDATA["Toleranz außen oben"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_inner_upper">
+        <Description><![CDATA["Toleranz innen oben"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_outer_lower">
+        <Description><![CDATA["Toleranz außen unten"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="gs_baurichtmass_inner_lower">
+        <Description><![CDATA["Toleranz innen unten"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="ac_wallhole_width">
+        <Description><![CDATA["Rohbauöffnung Breite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.62</Value>
+      </Length>
+      <Length Name="ac_wallhole_height">
+        <Description><![CDATA["Rohbauöffnung Höhe"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.565</Value>
+      </Length>
+      <Length Name="ac_wallhole_height_original">
+        <Description><![CDATA["Rohbauöffnung Höhe"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>2.565</Value>
+      </Length>
+      <Length Name="ac_reveal_width">
+        <Description><![CDATA["Architekturlichte Breite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.51</Value>
+      </Length>
+      <Length Name="ac_reveal_height">
+        <Description><![CDATA["Architekturlichte Höhe"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.51</Value>
+      </Length>
+      <Length Name="ac_reveal_height_original">
+        <Description><![CDATA["Architekturlichte Höhe"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>2.51</Value>
+      </Length>
+      <Length Name="ac_unit_width">
+        <Description><![CDATA["Rahmen Breite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.53</Value>
+      </Length>
+      <Length Name="ac_unit_height">
+        <Description><![CDATA["Rahmen Höhe"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.565</Value>
+      </Length>
+      <Length Name="ac_baurichtmass_width">
+        <Description><![CDATA["Breite Baurichtmaß"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>2.62</Value>
+      </Length>
+      <Length Name="ac_baurichtmass_height">
+        <Description><![CDATA["Höhe Baurichtmaß"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>2.565</Value>
+      </Length>
+      <Length Name="bs_FrameRebate_width">
+        <Description><![CDATA["Zargenfalzmaß Breite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.98</Value>
+      </Length>
+      <Length Name="bs_FrameRebate_height">
+        <Description><![CDATA["Zargenfalzmaß Höhe"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1.99</Value>
+      </Length>
+      <Length Name="ac_egress_width">
+        <Description><![CDATA["Durchgangslichte Breite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1.3</Value>
+      </Length>
+      <Length Name="ac_egress_height">
+        <Description><![CDATA["Durchgangslichte Höhe"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.065</Value>
+      </Length>
+      <Length Name="bs_UsableClearance">
+        <Description><![CDATA["Effektive Durchgangsbreite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.8</Value>
+      </Length>
+      <Length Name="bs_UsableHeight">
+        <Description><![CDATA["Effektive Durchgangshöhe"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.05</Value>
+      </Length>
+      <Length Name="ac_leaf_width">
+        <Description><![CDATA["Türblatt Breite (Flügelmaß)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1.33</Value>
+      </Length>
+      <Length Name="ac_leaf_height">
+        <Description><![CDATA["Türblatt Höhe (Flügelmaß)"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2.075</Value>
+      </Length>
+      <Integer Name="gs_nominal_size">
+        <Description><![CDATA["Nominalmaß"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Boolean Name="gs_retain_nominal_sizes">
+        <Description><![CDATA["Übertrage aktuelle Nominal Größe auf die Auswahl"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <!-- gs_door_frame: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_door_frame">
+        <Description><![CDATA["Türzarge"]]></Description>
+        <Fix />
+      </Title>
+      <String Name="gs_frame_type">
+        <Description><![CDATA["Rahmentyp"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Standard"]]></Value>
+      </String>
+      <Integer Name="iFrameType">
+        <Description><![CDATA["Rahmentyp"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="bs_inner_frame">
+        <Description><![CDATA["Seiten mit Profil um Türblatt"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>3</Value>
+      </Integer>
+      <String Name="bs_frame_material">
+        <Description><![CDATA["Zargenmaterial"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["Stahl"]]></Value>
+      </String>
+      <Boolean Name="gs_different_framewidth">
+        <Description><![CDATA["Unterschiedliche Breiten"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Length Name="gs_frame_width">
+        <Description><![CDATA["Rahmen-Breite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_width_right">
+        <Description><![CDATA["Rahmenbreite Seite 1"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_width_left">
+        <Description><![CDATA["Rahmenbreite Seite 2"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_width_right_2">
+        <Description><![CDATA["Mittlerer Rahmen Seite 1"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_width_left_2">
+        <Description><![CDATA["Mittlerer Rahmen Seite 2"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_width_upper">
+        <Description><![CDATA["Oberer Rahmen Breite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_width_transom">
+        <Description><![CDATA["Querbalken Rahmen Breite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_width_bottom_sl">
+        <Description><![CDATA["Unterer Rahmen Breite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="gs_frame_thk">
+        <Description><![CDATA["Rahmen-Dicke"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.07</Value>
+      </Length>
+      <Boolean Name="dk_different_frame_thk">
+        <Description><![CDATA["Unterschiedliche Rahmenstärken"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Length Name="dk_frame_thk_post">
+        <Description><![CDATA["Rahmenstärke Pfosten"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.07</Value>
+      </Length>
+      <Length Name="dk_frame_thk_upper">
+        <Description><![CDATA["Rahmenstärke oben"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="dk_frame_thk_bottom">
+        <Description><![CDATA["Rahmenstärke unten"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="dk_frame_thk_transom">
+        <Description><![CDATA["Rahmenstärke Kämpfer"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="dk_frame_thk_EZ">
+        <Description><![CDATA["Rahmenstärke Eckzarge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.12</Value>
+      </Length>
+      <Length Name="bs_sidelight_filling_thk1">
+        <Description><![CDATA["Dicke Seitenfeldfüllung 1"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.008</Value>
+      </Length>
+      <Length Name="bs_sidelight_filling_thk2">
+        <Description><![CDATA["Dicke Seitenfeldfüllung 2"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.008</Value>
+      </Length>
+      <Length Name="bs_spiegel_br_bs">
+        <Description><![CDATA["Zarge Spiegelbreite BS"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.035</Value>
+      </Length>
+      <Length Name="bs_spiegel_br_bgs">
+        <Description><![CDATA["Zarge Spiegelbreite BGS"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.035</Value>
+      </Length>
+      <Length Name="bs_spiegel_br_ob_bs">
+        <Description><![CDATA["Zarge Spiegelbreite BS oben"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.035</Value>
+      </Length>
+      <Length Name="bs_spiegel_br_ob_bgs">
+        <Description><![CDATA["Zarge Spiegelbreite BGS oben"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.035</Value>
+      </Length>
+      <Integer Name="bs_folding_nmbr">
+        <Description><![CDATA["Falzdichtung Anzahl"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Length Name="gs_vb">
+        <Description><![CDATA["Falzbreite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.015</Value>
+      </Length>
+      <Length Name="gs_vt">
+        <Description><![CDATA["Falztiefe"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.02</Value>
+      </Length>
+      <Length Name="dk_design_folding_depth">
+        <Description><![CDATA["Tiefe Zierfalz"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="dk_folding_dimensions">
+        <Description><![CDATA["Abmessungen Zargenfalze"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="2" SecondDimension="2">
+          <AVal Column="1" Row="1">0.005</AVal>
+          <AVal Column="2" Row="1">0.0075</AVal>
+          <AVal Column="1" Row="2">0.005</AVal>
+          <AVal Column="2" Row="2">0.0075</AVal>
+        </ArrayValues>
+      </Length>
+      <Length Name="dk_frame_gasket_thk">
+        <Description><![CDATA["Dicke Dichtung an Zarge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.008</Value>
+      </Length>
+      <Boolean Name="gs_rev">
+        <Description><![CDATA["Seite Laibung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Length Name="gs_bl_thk">
+        <Description><![CDATA["Block Breite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.05</Value>
+      </Length>
+      <Length Name="gs_bl_width">
+        <Description><![CDATA["Block Dicke"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.06</Value>
+      </Length>
+      <Length Name="gs_fuge">
+        <Description><![CDATA["Mörtel"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.01</Value>
+      </Length>
+      <Length Name="gs_ub_st1">
+        <Description><![CDATA["Überstand 1"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.01</Value>
+      </Length>
+      <Length Name="gs_ub_st2">
+        <Description><![CDATA["Überstand 2"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.01</Value>
+      </Length>
+      <Material Name="gs_frame_mat">
+        <Description><![CDATA["Rahmen"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>133</Value>
+      </Material>
+      <Length Name="bz_tiefe">
+        <Description><![CDATA["Zargentiefe"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.15</Value>
+      </Length>
+      <Integer Name="bz_typ_einzug">
+        <Description><![CDATA["Typ Einzug Blockzarge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Length Name="bz_einzug">
+        <Description><![CDATA["Einzug Blockzarge BS"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="wall_shell_thk_1">
+        <Description><![CDATA["Bekleidungsdicke auf Bandseite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.005</Value>
+      </Length>
+      <Length Name="wall_shell_thk_2">
+        <Description><![CDATA["Bekleidungsdicke auf Bandgegenseite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.005</Value>
+      </Length>
+      <!-- gs_door_panel: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_door_panel">
+        <Description><![CDATA["Türblatt"]]></Description>
+        <Fix />
+      </Title>
+      <String Name="bs_panel_type">
+        <Description><![CDATA["Türblatt"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["VB"]]></Value>
+      </String>
+      <Integer Name="dk_panel_segments">
+        <Description><![CDATA["Ausschnittfelder"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <String Name="bs_panel_material">
+        <Description><![CDATA["Türblatt Material"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["H"]]></Value>
+      </String>
+      <!-- gs_door_panel_filling: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_door_panel_filling">
+        <Description><![CDATA["Türblatt Abmessungen"]]></Description>
+        <Fix />
+      </Title>
+      <Boolean Name="bUniformPanels1">
+        <Description><![CDATA["Einheitliche Panele pro Blatt 1"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <Boolean Name="bUniformPanels2">
+        <Description><![CDATA["Einheitliche Panele pro Blatt 2"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Boolean>
+      <Boolean Name="symm">
+        <Description><![CDATA["Symmtrische Unterteilung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Length Name="gs_SecondLeaf_w">
+        <Description><![CDATA["Türblatt- Breite Seite 1"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Length>
+      <Length Name="dk_panel_division_bottom">
+        <Description><![CDATA["Untere Panelteilung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.75</Value>
+      </Length>
+      <Length Name="dk_panel_division_top">
+        <Description><![CDATA["Obere Panelteilung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1.15</Value>
+      </Length>
+      <Integer Name="dk_panel_folding_ancor">
+        <Description><![CDATA["Lage Türblatt zu Zarge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="dk_panel_folding_nmbr">
+        <Description><![CDATA["Falz an Mittelfuge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Length Name="dk_panel_fill_offset">
+        <Description><![CDATA["Ausmitte Füllung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="dk_panel_folding_gap">
+        <Description><![CDATA["Fuge Türblatt zu Zarge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.004</Value>
+      </Length>
+      <Length Name="dk_panel_folding_gap2">
+        <Description><![CDATA["Fuge Türblatt an Mittelfuge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.006</Value>
+      </Length>
+      <Boolean Name="dk_fries_ancor">
+        <Description><![CDATA["Friesbreite # Rahmenbreite (von Falzseite/BGS gemessen)"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Length Name="dk_panel_gasket_thk">
+        <Description><![CDATA["Dichtungsstärke Türblatt an Mittelfuge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.002</Value>
+      </Length>
+      <Length Name="gapHeightUnderPanel">
+        <Description><![CDATA["Spalt unter Türblatt"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.005</Value>
+      </Length>
+      <Length Name="gs_leaf_thk">
+        <Description><![CDATA["Türblatt Stärke"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.04</Value>
+      </Length>
+      <Length Name="dk_panel_folding_dimensions">
+        <Description><![CDATA["Abmessungen Mittelfalz Doppelflügel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="3" SecondDimension="2">
+          <AVal Column="1" Row="1">0.021</AVal>
+          <AVal Column="2" Row="1">0.03</AVal>
+          <AVal Column="1" Row="2">0.042</AVal>
+          <AVal Column="2" Row="2">0.015</AVal>
+          <AVal Column="1" Row="3">0.075</AVal>
+          <AVal Column="2" Row="3">0.015</AVal>
+        </ArrayValues>
+      </Length>
+      <Length Name="bs_leaf_oversize">
+        <Description><![CDATA["Spiegelbreite des Falzes"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.02</Value>
+      </Length>
+      <Length Name="bs_leaf_overhang">
+        <Description><![CDATA["Überstand Türblatt zu Zarge"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.01</Value>
+      </Length>
+      <Length Name="bs_ancor_panel_BS">
+        <Description><![CDATA["Distanz Türblattoberfläche Bandseite"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="bs_ancor_panel_top">
+        <Description><![CDATA["OK Türblatt"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="leafFrWidthLeft">
+        <Description><![CDATA["Rahmenbreite links"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="leafFrWidthRight">
+        <Description><![CDATA["Rahmenbreite rechts"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="leafFrWidthLeft2">
+        <Description><![CDATA["Rahmen-Breite links 2"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <Length Name="leafFrWidthRight2">
+        <Description><![CDATA["Rahmenbreite rechts 2"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.1</Value>
+      </Length>
+      <!-- bs_door_case: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="bs_door_case">
+        <Description><![CDATA["Türschloss"]]></Description>
+      </Title>
+      <String Name="bs_case_manufacturer">
+        <Description><![CDATA["Hersteller Türschloss"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA[""]]></Value>
+      </String>
+      <String Name="bs_case_model">
+        <Description><![CDATA["Modell Türschloss"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA[""]]></Value>
+      </String>
+      <String Name="bs_lock_type">
+        <Description><![CDATA["Schloßtyp"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["FA"]]></Value>
+      </String>
+      <Length Name="gs_han_pos">
+        <Description><![CDATA["Dornmaß Gangflügel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.055</Value>
+      </Length>
+      <Length Name="bs_case_hole">
+        <Description><![CDATA["Lochung Gangflügel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.008</Value>
+      </Length>
+      <Length Name="bs_case_distance">
+        <Description><![CDATA["Entfernungsmaß Gangflügel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.072</Value>
+      </Length>
+      <Length Name="gs_han_pos2">
+        <Description><![CDATA["Dornmaß Standflügel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.055</Value>
+      </Length>
+      <Length Name="bs_case_hole2">
+        <Description><![CDATA["Lochung Standflügel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.008</Value>
+      </Length>
+      <Length Name="bs_case_distance2">
+        <Description><![CDATA["Entfernungsmaß Standflügel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.072</Value>
+      </Length>
+      <String Name="bs_latch_plate">
+        <Description><![CDATA["Stulpblech"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["R"]]></Value>
+      </String>
+      <String Name="bs_case_material">
+        <Description><![CDATA["Material Schloss"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["ST"]]></Value>
+      </String>
+      <String Name="bs_case_surface">
+        <Description><![CDATA["Oberfläche Schloss"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["-"]]></Value>
+      </String>
+      <Integer Name="bs_lock_panic">
+        <Description><![CDATA["Panikfunktion"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_lock_change">
+        <Description><![CDATA["Wechselfunktionen"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <String Name="bs_lock_system">
+        <Description><![CDATA["Verriegelungsfunktionen"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["1f"]]></Value>
+      </String>
+      <Integer Name="bs_selflocking">
+        <Description><![CDATA["Selbstverriegelnd"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_lock_SF">
+        <Description><![CDATA["Standflügelverriegelung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_lock_master">
+        <Description><![CDATA["Schließanlage"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <String Name="bs_locking_side">
+        <Description><![CDATA["Schließung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["ZS"]]></Value>
+      </String>
+      <Integer Name="bs_lock_opener">
+        <Description><![CDATA["Elektrischer Türöffner"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_lock_electric">
+        <Description><![CDATA["Elektronisches Schloss"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <!-- bs_locking_system: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="bs_locking_system">
+        <Description><![CDATA["Zylinder / Kontrollsystem"]]></Description>
+      </Title>
+      <String Name="bs_access_control_type">
+        <Description><![CDATA["Schließungssystem"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["S"]]></Value>
+      </String>
+      <String Name="bs_lock_barrel">
+        <Description><![CDATA["Zylinder(typ)"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["PZ"]]></Value>
+      </String>
+      <String Name="bs_control_side">
+        <Description><![CDATA["Seite von der Zugangskontrolle erfolgt"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["ZS"]]></Value>
+      </String>
+      <String Name="bs_access_control_system">
+        <Description><![CDATA["Zugangsidentifikationssystem"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["c-lever compact"]]></Value>
+      </String>
+      <String Name="bs_acs_manufacturer">
+        <Description><![CDATA["Hersteller Zugangskontrollsystem"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["dormakaba"]]></Value>
+      </String>
+      <String Name="bs_acs_model">
+        <Description><![CDATA["Modell Zugangskontrollsystem"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA[""]]></Value>
+      </String>
+      <Integer Name="bs_acs_function">
+        <Description><![CDATA["Funktion Zugangskontrollsystem"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="bs_acs_sytle">
+        <Description><![CDATA["Ausführung Zugangskontrollsystem"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="bs_acs_systemlevel">
+        <Description><![CDATA["Systemlevel"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <String Name="bs_acs_cover">
+        <Description><![CDATA["Antennenabdeckung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["B"]]></Value>
+      </String>
+      <String Name="bs_acs_baseplate">
+        <Description><![CDATA["Rückplatte (Ländercode)"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["EU"]]></Value>
+      </String>
+      <String Name="bs_acs_emodule">
+        <Description><![CDATA["E-Modul"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["E300"]]></Value>
+      </String>
+      <String Name="bs_acs_electric">
+        <Description><![CDATA["Stromversorgung"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["B"]]></Value>
+      </String>
+      <String Name="bs_acs_addon">
+        <Description><![CDATA["Zusatz"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["O"]]></Value>
+      </String>
+      <String Name="bs_acs_material">
+        <Description><![CDATA["Material Zugangskontrollsystem"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["ST"]]></Value>
+      </String>
+      <String Name="bs_acs_surface">
+        <Description><![CDATA["Oberfläche Zugangskontrollsystem"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["-"]]></Value>
+      </String>
+      <!-- bs_door_hinge: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="bs_door_hinge">
+        <Description><![CDATA["Bänder / Lager"]]></Description>
+      </Title>
+      <String Name="bs_hinge_type">
+        <Description><![CDATA["Bandtyp"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["O"]]></Value>
+      </String>
+      <Integer Name="bs_hinge_nmbr">
+        <Description><![CDATA["Bandanzahl"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>2</Value>
+      </Integer>
+      <Length Name="bs_hinge_pos3">
+        <Description><![CDATA["Bandabstand 3. Band"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.35</Value>
+      </Length>
+      <Length Name="bs_hinge_pos4">
+        <Description><![CDATA["Bandabstand 4. Band"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.35</Value>
+      </Length>
+      <Length Name="bs_ancor_hinge_X">
+        <Description><![CDATA["Bandachse in X"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Length>
+      <Length Name="bs_ancor_hinge_Y">
+        <Description><![CDATA["Bandachse in Y"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0.018</Value>
+      </Length>
+      <Length Name="bs_hinge2_distance">
+        <Description><![CDATA["Abstand 2. Bandachse"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="22" SecondDimension="2">
+          <AVal Column="1" Row="1">1.546</AVal>
+          <AVal Column="2" Row="1">0.935</AVal>
+          <AVal Column="1" Row="2">1.671</AVal>
+          <AVal Column="2" Row="2">1.06</AVal>
+          <AVal Column="1" Row="3">1.796</AVal>
+          <AVal Column="2" Row="3">1.185</AVal>
+          <AVal Column="1" Row="4">1.921</AVal>
+          <AVal Column="2" Row="4">1.31</AVal>
+          <AVal Column="1" Row="5">2.046</AVal>
+          <AVal Column="2" Row="5">1.435</AVal>
+          <AVal Column="1" Row="6">2.109</AVal>
+          <AVal Column="2" Row="6">1.435</AVal>
+          <AVal Column="1" Row="7">2.171</AVal>
+          <AVal Column="2" Row="7">1.56</AVal>
+          <AVal Column="1" Row="8">2.296</AVal>
+          <AVal Column="2" Row="8">1.685</AVal>
+          <AVal Column="1" Row="9">2.421</AVal>
+          <AVal Column="2" Row="9">1.81</AVal>
+          <AVal Column="1" Row="10">2.546</AVal>
+          <AVal Column="2" Row="10">1.935</AVal>
+          <AVal Column="1" Row="11">2.671</AVal>
+          <AVal Column="2" Row="11">2.06</AVal>
+          <AVal Column="1" Row="12">2.796</AVal>
+          <AVal Column="2" Row="12">2.185</AVal>
+          <AVal Column="1" Row="13">2.921</AVal>
+          <AVal Column="2" Row="13">2.31</AVal>
+          <AVal Column="1" Row="14">3.046</AVal>
+          <AVal Column="2" Row="14">2.435</AVal>
+          <AVal Column="1" Row="15">3.171</AVal>
+          <AVal Column="2" Row="15">2.56</AVal>
+          <AVal Column="1" Row="16">3.296</AVal>
+          <AVal Column="2" Row="16">2.685</AVal>
+          <AVal Column="1" Row="17">3.421</AVal>
+          <AVal Column="2" Row="17">2.81</AVal>
+          <AVal Column="1" Row="18">3.546</AVal>
+          <AVal Column="2" Row="18">2.935</AVal>
+          <AVal Column="1" Row="19">3.671</AVal>
+          <AVal Column="2" Row="19">3.06</AVal>
+          <AVal Column="1" Row="20">3.796</AVal>
+          <AVal Column="2" Row="20">3.185</AVal>
+          <AVal Column="1" Row="21">3.921</AVal>
+          <AVal Column="2" Row="21">3.31</AVal>
+          <AVal Column="1" Row="22">4.046</AVal>
+          <AVal Column="2" Row="22">3.435</AVal>
+        </ArrayValues>
+      </Length>
+      <String Name="gs_list_accessories">
+        <Description><![CDATA["Zubehör"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA[""]]></Value>
+      </String>
+      <!-- gs_2D_representation: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_2D_representation">
+        <Description><![CDATA["2D-Darstellung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+        </Flags>
+      </Title>
+      <!-- dk_fill_settings: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="dk_fill_settings">
+        <Description><![CDATA["Schraffuren"]]></Description>
+        <Fix />
+      </Title>
+      <FillPattern Name="dk_fills">
+        <Description><![CDATA["Array für Schraffuren"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="16" SecondDimension="0">
+          <AVal Row="1">64</AVal>
+          <AVal Row="2">71</AVal>
+          <AVal Row="3">64</AVal>
+          <AVal Row="4">64</AVal>
+          <AVal Row="5">71</AVal>
+          <AVal Row="6">64</AVal>
+          <AVal Row="7">71</AVal>
+          <AVal Row="8">71</AVal>
+          <AVal Row="9">64</AVal>
+          <AVal Row="10">71</AVal>
+          <AVal Row="11">71</AVal>
+          <AVal Row="12">65</AVal>
+          <AVal Row="13">64</AVal>
+          <AVal Row="14">64</AVal>
+          <AVal Row="15">64</AVal>
+          <AVal Row="16">65</AVal>
+        </ArrayValues>
+      </FillPattern>
+      <!-- gs_pen_settings: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_pen_settings">
+        <Description><![CDATA["Stifte"]]></Description>
+        <Fix />
+      </Title>
+      <PenColor Name="dk_cont_pens">
+        <Description><![CDATA["Array für Konturstifte"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="18" SecondDimension="0">
+          <AVal Row="1">96</AVal>
+          <AVal Row="2">2</AVal>
+          <AVal Row="3">3</AVal>
+          <AVal Row="4">96</AVal>
+          <AVal Row="5">3</AVal>
+          <AVal Row="6">100</AVal>
+          <AVal Row="7">96</AVal>
+          <AVal Row="8">96</AVal>
+          <AVal Row="9">96</AVal>
+          <AVal Row="10">2</AVal>
+          <AVal Row="11">1</AVal>
+          <AVal Row="12">2</AVal>
+          <AVal Row="13">2</AVal>
+          <AVal Row="14">1</AVal>
+          <AVal Row="15">1</AVal>
+          <AVal Row="16">2</AVal>
+          <AVal Row="17">1</AVal>
+          <AVal Row="18">1</AVal>
+        </ArrayValues>
+      </PenColor>
+      <PenColor Name="dk_fill_pens">
+        <Description><![CDATA["Array für Schraffurstifte"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="16" SecondDimension="0">
+          <AVal Row="1">92</AVal>
+          <AVal Row="2">96</AVal>
+          <AVal Row="3">96</AVal>
+          <AVal Row="4">96</AVal>
+          <AVal Row="5">96</AVal>
+          <AVal Row="6">96</AVal>
+          <AVal Row="7">96</AVal>
+          <AVal Row="8">96</AVal>
+          <AVal Row="9">96</AVal>
+          <AVal Row="10">96</AVal>
+          <AVal Row="11">96</AVal>
+          <AVal Row="12">96</AVal>
+          <AVal Row="13">96</AVal>
+          <AVal Row="14">92</AVal>
+          <AVal Row="15">96</AVal>
+          <AVal Row="16">92</AVal>
+        </ArrayValues>
+      </PenColor>
+      <PenColor Name="dk_bkg_pens">
+        <Description><![CDATA["Array für Schraffurhintergrundstifte"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="16" SecondDimension="0">
+          <AVal Row="1">91</AVal>
+          <AVal Row="2">91</AVal>
+          <AVal Row="3">91</AVal>
+          <AVal Row="4">91</AVal>
+          <AVal Row="5">91</AVal>
+          <AVal Row="6">91</AVal>
+          <AVal Row="7">91</AVal>
+          <AVal Row="8">91</AVal>
+          <AVal Row="9">91</AVal>
+          <AVal Row="10">91</AVal>
+          <AVal Row="11">91</AVal>
+          <AVal Row="12">91</AVal>
+          <AVal Row="13">91</AVal>
+          <AVal Row="14">91</AVal>
+          <AVal Row="15">91</AVal>
+          <AVal Row="16">91</AVal>
+        </ArrayValues>
+      </PenColor>
+      <!-- dk_linetype_settings: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="dk_linetype_settings">
+        <Description><![CDATA["Linientypen"]]></Description>
+      </Title>
+      <LineType Name="dk_linetype">
+        <Description><![CDATA["Array für Linientypen"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="5" SecondDimension="0">
+          <AVal Row="1">21</AVal>
+          <AVal Row="2">1</AVal>
+          <AVal Row="3">1</AVal>
+          <AVal Row="4">21</AVal>
+          <AVal Row="5">21</AVal>
+        </ArrayValues>
+      </LineType>
+      <!-- _trennzeile: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="_trennzeile">
+        <Description><![CDATA["Verschiedenes"]]></Description>
+      </Title>
+      <!-- gs_door_offnung: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_door_offnung">
+        <Description><![CDATA["Öffnung"]]></Description>
+        <Fix />
+      </Title>
+      <Angle Name="dk_open_leaf">
+        <Description><![CDATA["Öffnungswinkel Türblätter"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="6" SecondDimension="0">
+          <AVal Row="1">0</AVal>
+          <AVal Row="2">0</AVal>
+          <AVal Row="3">0</AVal>
+          <AVal Row="4">0</AVal>
+          <AVal Row="5">90</AVal>
+          <AVal Row="6">0</AVal>
+        </ArrayValues>
+      </Angle>
+      <!-- gs_detail_level: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_detail_level">
+        <Description><![CDATA["Detaillierungsgrad"]]></Description>
+        <Fix />
+      </Title>
+      <!-- gs_3D_representation: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="gs_3D_representation">
+        <Description><![CDATA["2D-Darstellung"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+        </Flags>
+      </Title>
+      <Material Name="dk_materials">
+        <Description><![CDATA["Array für Oberflächenmaterialien"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <ArrayValues FirstDimension="36" SecondDimension="0">
+          <AVal Row="1">40</AVal>
+          <AVal Row="2">40</AVal>
+          <AVal Row="3">57</AVal>
+          <AVal Row="4">57</AVal>
+          <AVal Row="5">24</AVal>
+          <AVal Row="6">24</AVal>
+          <AVal Row="7">24</AVal>
+          <AVal Row="8">24</AVal>
+          <AVal Row="9">24</AVal>
+          <AVal Row="10">24</AVal>
+          <AVal Row="11">57</AVal>
+          <AVal Row="12">57</AVal>
+          <AVal Row="13">24</AVal>
+          <AVal Row="14">24</AVal>
+          <AVal Row="15">57</AVal>
+          <AVal Row="16">57</AVal>
+          <AVal Row="17">57</AVal>
+          <AVal Row="18">57</AVal>
+          <AVal Row="19">57</AVal>
+          <AVal Row="20">57</AVal>
+          <AVal Row="21">24</AVal>
+          <AVal Row="22">24</AVal>
+          <AVal Row="23">57</AVal>
+          <AVal Row="24">57</AVal>
+          <AVal Row="25">57</AVal>
+          <AVal Row="26">57</AVal>
+          <AVal Row="27">57</AVal>
+          <AVal Row="28">57</AVal>
+          <AVal Row="29">40</AVal>
+          <AVal Row="30">40</AVal>
+          <AVal Row="31">40</AVal>
+          <AVal Row="32">40</AVal>
+          <AVal Row="33">40</AVal>
+          <AVal Row="34">40</AVal>
+          <AVal Row="35">40</AVal>
+          <AVal Row="36">40</AVal>
+        </ArrayValues>
+      </Material>
+      <!-- dk_bim: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="dk_bim">
+        <Description><![CDATA["BIM + Struktur"]]></Description>
+      </Title>
+      <Integer Name="dk_LOI">
+        <Description><![CDATA["Level of Input"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="dk_LOD">
+        <Description><![CDATA["Level of Detail"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <!-- dk_extendable_components: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="dk_extendable_components">
+        <Description><![CDATA["Erweiterungsbibliotheken"]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+        </Flags>
+      </Title>
+      <String Name="hinge_system">
+        <Description><![CDATA["Verfügbare Türbandsysteme"]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["allgemein"]]></Value>
+      </String>
+      <String Name="closer_system">
+        <Description><![CDATA["Verfügbare Türschließersysteme"]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA["DORMA_TS"]]></Value>
+      </String>
+      <!-- ac_library: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="ac_library">
+        <Description><![CDATA["User Interface + Editing"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+        </Flags>
+      </Title>
+      <Integer Name="language">
+        <Description><![CDATA["Sprachversion Interface"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="dk_dlg_subset">
+        <Description><![CDATA["Dialogseiten-Gruppe"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="gs_ui_current_page">
+        <Description><![CDATA["Aktuelle UI-Seite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="gs_ui_sub_tabpage">
+        <Description><![CDATA["UI-Unterseite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="gs_ui_sub_tabpage_closure">
+        <Description><![CDATA["UI-Unterseite"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="gs_RevealTypeEnable">
+        <Description><![CDATA[""]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="gs_subHandle">
+        <Description><![CDATA[""]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <String Name="gs_GLOB_MODPAR_NAME">
+        <Description><![CDATA["Zuletzt geänderter Parameter"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value><![CDATA[""]]></Value>
+      </String>
+      <Integer Name="iUIPictIndex">
+        <Description><![CDATA["Index auf UI-Bitmaps"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>2</Value>
+      </Integer>
+      <Boolean Name="gs_full_edit">
+        <Description><![CDATA["Bearbeitbare Fixpunkte"]]></Description>
+        <Fix />
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>1</Value>
+      </Boolean>
+      <Integer Name="htspt">
+        <Description><![CDATA["Fangpunktindex"]]></Description>
+        <Flags>
+          <ParFlg_Hidden />
+          <ParFlg_Child />
+        </Flags>
+        <Value>8000</Value>
+      </Integer>
+      <Integer Name="develop">
+        <Description><![CDATA["Entwicklungsmodus"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <!-- dorma_call: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+      <Title Name="dorma_call">
+        <Description><![CDATA["Macro Call Settings"]]></Description>
+      </Title>
+      <Integer Name="macro_runtype">
+        <Description><![CDATA["Parameter to specify the question"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="UIpage_number">
+        <Description><![CDATA["Number of pages for output"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>1</Value>
+      </Integer>
+      <Integer Name="Uipage">
+        <Description><![CDATA["Page number"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+      <Integer Name="UIpage_parent">
+        <Description><![CDATA["Parent page number"]]></Description>
+        <Flags>
+          <ParFlg_Child />
+          <ParFlg_Unique />
+        </Flags>
+        <Value>0</Value>
+      </Integer>
+    </Parameters>
+  </ParamSection>
+  <Copyright SectVersion="1" SectionFlags="0" SubIdent="0">
+    <Author>©2018 dormakaba, written by Frank Beister, Hamburg, Germany</Author>
+    <License>
+      <Type>Commercial</Type>
+      <Version>
+      </Version>
+    </License>
+  </Copyright>
+  <Keywords SectVersion="1" SectionFlags="0" SubIdent="0"><![CDATA[Schlossmodul für dormakaba generische Tür]]></Keywords>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Comment SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[Schloss, Case, Tür, door]]></Comment>
+  <Picture MIME="image/png" path="ECD Chamäleon.png" SubIdent="0" SectVersion="19" SectionFlags="0">
+  </Picture>
+  <GDLPict MIME="image/png" path="dormakaba_grey 139x15.png" SubIdent="1" platform="Win" SectVersion="19" SectionFlags="0">
+  </GDLPict>
+  <GDLPict MIME="image/png" path="dk_yes_no_na 72x18.png" SubIdent="2" platform="Win" SectVersion="19" SectionFlags="0">
+  </GDLPict>
+</Symbol>

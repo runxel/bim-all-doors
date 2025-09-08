@@ -1,0 +1,13 @@
+<AllPictures>
+  <Picture MIME="image/png" path="icon bim-all-doors 150x150.png" SubIdent="0" SectVersion="19" SectionFlags="0"></Picture>
+  <GDLPict MIME="image/png" path="logo bim-all-doors 139x15.png"  SubIdent="1" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_oberlicht_teilung 125x25.png" SubIdent="2" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_oberlicht 50x50.png" SubIdent="3" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_yes_no_na 72x18.png" SubIdent="4" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_frame_side_lock 120x25.png" SubIdent="5" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_frame_thick_lock 120x25.png" SubIdent="6" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_frame_width_lock 120x25.png" SubIdent="7" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_ui_falz_Zarge 180x360.png" SubIdent="8" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_frame_indentation 75x25.png" SubIdent="9" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_ui_sidefield_filling 75x25.png" SubIdent="10" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+</AllPictures>

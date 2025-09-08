@@ -1,0 +1,70 @@
+
+IF NOT( BITTEST(macro_runtype,4) ) THEN END
+
+! PROJECT2 4,270,2
+
+! ----------------------------------------------------------------- [ Grunddefinition der Variablen ]
+
+
+! =============================================================================
+! Ausgabe Bänder
+! =============================================================================
+
+! IF dk_LOD < 101 THEN GOSUB "LoD100"
+! IF dk_LOD > 100 AND dk_LOD < 201 THEN GOSUB "LoD200"
+! IF dk_LOD > 200 AND dk_LOD < 301 THEN GOSUB "LoD300"
+! IF dk_LOD > 300 AND dk_LOD < 351 THEN GOSUB "LoD350"
+! IF dk_LOD > 350 AND dk_LOD < 401 THEN GOSUB "LoD400"
+IF dk_LOD > 400 THEN GOSUB "LoD500"
+
+IF dk_LOD > 350 THEN GOSUB "Fangpunkte"
+
+! ------------------------------------------------------------------------- [ ENDE ]
+
+"ende":
+END htspt
+	 
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"LoD100":
+"LoD200":
+"LoD300":
+"LoD350":
+"LoD400":
+	! Keine Darstellung
+	RETURN
+
+
+"LoD500":
+
+	DRAWINDEX 20
+	FILL dk_fills[dka_topview_fill]
+	PEN dk_cont_pens[dka_topview_penC2]
+
+	POLY2_B 2,1+2, dk_fill_pens[dka_topview_penF], dk_bkg_pens[dka_topview_penB],
+	    0,0,901,
+	    bs_hinge_reel_diameter/2,360,4001
+
+	RETURN
+
+
+"Fangpunkte":
+
+	! in Wandrichtung
+	htspt=htspt+1 : HOTSPOT2 bs_ancor_hinge_X,     0, htspt, bs_ancor_hinge_X, 1+128  ! Basisfangpunkt
+	htspt=htspt+1 : HOTSPOT2 bs_ancor_hinge_X+0.1, 0, htspt, bs_ancor_hinge_X, 3  ! Referenzvektor
+	htspt=htspt+1 : HOTSPOT2 0, 0, htspt, bs_ancor_hinge_X, 2  ! beweglicher Punkt
+
+	! quer zu Wand
+	htspt=htspt+1 : HOTSPOT2 0, -bs_ancor_hinge_Y,     htspt, bs_ancor_hinge_Y, 1+128  ! Basisfangpunkt
+	htspt=htspt+1 : HOTSPOT2 0, -bs_ancor_hinge_Y-0.1, htspt, bs_ancor_hinge_Y, 3  ! Referenzvektor
+	htspt=htspt+1 : HOTSPOT2 0, 0, htspt, bs_ancor_hinge_Y, 2  ! beweglicher Punkt
+
+	RETURN

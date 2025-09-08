@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Symbol IsArchivable="false" IsPlaceable="false" MigrationValue="Normal" Owner="1196638531" Signature="1196644685" UNID="{A2C21335-EFF8-41D2-B2AA-5768C16A3286}-{58483B77-B0A2-494E-93A5-E89A66199A33}" Version="36">
+  <Ancestry SectVersion="1" SectionFlags="0" SubIdent="0" Template="false">
+    <UNID>{F938E33A-329D-4A36-BE3E-85E126820996}-{A3B0AF3A-5916-490C-9C6A-B6BD047EF925}</UNID>
+    <UNID>{103E8D2C-8230-42E1-9597-46F84CCE28C0}-{532B42DA-E2F0-4525-AE80-38E8A91A4E3F}</UNID>
+  </Ancestry>
+  <CalledMacros SectVersion="2" SectionFlags="0" SubIdent="0">
+  </CalledMacros>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_3D SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[<!-- insert:30_3D-Script.gdl -->]]></Script_3D>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_2D SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[<!-- insert:20_2D-Script.gdl -->]]></Script_2D>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_1D SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[<!-- insert:10_Master-Script.gdl -->]]></Script_1D>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_PR SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[<!-- insert:80_Properties-Script.gdl -->]]></Script_PR>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_UI SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[<!-- insert:50_User-Interface-Script.gdl -->]]></Script_UI>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_VL SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[<!-- insert:40_Parameter-Script.gdl -->]]></Script_VL>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_FWM SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[<!-- insert:60_Forward-Migration-Script.gdl -->]]></Script_FWM>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Script_BWM SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[<!-- insert:70_Backward-Migration-Script.gdl -->]]></Script_BWM>
+  <ParamSection SectVersion="26" SectionFlags="0" SubIdent="0">
+    <!-- insert:90_Parameters.xml -->
+  </ParamSection>
+  <Copyright SectVersion="1" SectionFlags="0" SubIdent="0">
+    <Author>originally by Frank Beister, Hamburg, Germany</Author>
+    <License>
+      <Type>CC0</Type>
+      <Version>1.0</Version>
+    </License>
+  </Copyright>
+  <Keywords SectVersion="1" SectionFlags="0" SubIdent="0"><![CDATA[" "]]></Keywords>
+  <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
+  <Comment SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[" "]]></Comment>
+</Symbol>

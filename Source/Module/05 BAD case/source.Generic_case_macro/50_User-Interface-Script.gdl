@@ -1,0 +1,609 @@
+
+!-------------------------------------------- [ Standardelemente aller Seiten ]
+
+! »»» Standardwerte
+
+DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[] ! Arrays für diskrete Auswahlen UI_INFIELD{4}
+
+! format = "" : sts = REQUEST ("Working_length_unit", "",format)			  !	Format für UI-Outfield -Längenwerte	
+
+! ----------------------------------- MULTILINGUAL TEXT [ECD.hinge] (start)
+
+! --------- RESET array variables
+	DIM babel[]
+	DIM bubble[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		babel[1] = "Schloss:"
+		babel[2] = "Typ:"
+		babel[3] = "Hersteller / Produkt:"
+		babel[4] = "Schlosstyp:"
+		babel[5] = "Form/Material/Oberfläche:"
+		babel[6] = "Gangflügel:"
+		babel[7] = "Position:"
+		babel[8] = "Schließung:"
+		babel[9] = "Zylindertyp:"
+		babel[10] = "Dornmaß:"
+		babel[11] = "Entfernung:"
+		babel[12] = "mit Elektrik"
+		babel[13] = "mit Elektronik:"
+		babel[14] = "Panikfunktion"
+		babel[15] = "Panikfunktion:"
+		babel[16] = "Schließanlage"
+		babel[17] = "Schließseite:"
+		babel[18] = "Türöffner"
+		babel[19] = "Türöffner:"
+		babel[20] = "Wechselfunktion"
+		babel[21] = "Wechselfunktion:"
+		babel[22] = "Vierkant:"
+		babel[23] = "Verriegelung:"
+		babel[24] = "Verriegelung SF"
+		babel[25] = "Selbstverriegelnd"
+		babel[26] = "Standflügel:"
+		babel[27] = "Anforderung:"
+		babel[28] = "Stulp:"
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF language = 4 THEN
+		babel[1] = "Case:"
+		babel[2] = "Type:"
+		babel[3] = "Hersteller / Produkt:"
+		babel[4] = "Schlosstyp:"
+		babel[5] = "Form/Material/Oberfläche:"
+		babel[6] = "Gangflügel:"
+		babel[7] = "Position:"
+		babel[8] = "Locking:"
+		babel[9] = "Zylindertyp:"
+		babel[10] = "Dornmaß:"
+		babel[11] = "Entfernung:"
+		babel[12] = "mit Elektrik"
+		babel[13] = "mit Elektronik:"
+		babel[14] = "Panikfunktion"
+		babel[15] = "Panikfunktion:"
+		babel[16] = "Schließanlage"
+		babel[17] = "Schließseite:"
+		babel[18] = "Türöffner"
+		babel[19] = "Türöffner:"
+		babel[20] = "Wechselfunktion"
+		babel[21] = "Wechselfunktion:"
+		babel[22] = "Vierkant:"
+		babel[23] = "Verriegelung:"
+		babel[24] = "Verriegelung SF"
+		babel[25] = "Selbstverriegelnd"
+		babel[26] = "Standflügel:"
+		babel[27] = "Anforderung:"
+		babel[28] = "Stulp:"
+		ENDIF
+
+! --------- User Interface - Tooltip text (Deutsch)
+	IF language = 1 THEN
+		bubble[1] = "Modell / Produktbezeichnung"
+		bubble[2] = "Zugangskontrollsystem"
+		bubble[3] = "Zylindertyp"
+		bubble[4] = "Hersteller Türschloss"
+		bubble[5] = "Zylindertyp/Mechanische Verriegelung"
+		bubble[6] = "Dornmaß Gangflügel"
+		bubble[7] = "Dornmaß Standflügel"
+		bubble[8] = "Elektrischer Türöffner"
+		bubble[9] = "Elektronisches Schloss"
+		bubble[10] = "Entfernungsmaß Gangflügel"
+		bubble[11] = "Entfernungsmaß Standflügel"
+		bubble[12] = "Falle mit Schlüssel öffnen"
+		bubble[13] = "Form Stulpblech"
+		bubble[14] = "Vierkantmaß/Lochung Gangflügel"
+		bubble[15] = "Vierkantmaß/Lochung Standflügel"
+		bubble[16] = "Material Stulpblech"
+		bubble[17] = "Oberfläche Stulpblech"
+		bubble[18] = "Panikfunktionen"
+		bubble[19] = "Schließanlage"
+		bubble[20] = "Schloßtyp"
+		bubble[21] = "Seite der Schließung"
+		bubble[22] = "Selbstverriegelnd"
+		bubble[23] = "Standflügelverriegelung"
+		bubble[24] = "Verriegelungsfunktionen"
+		bubble[25] = "Homepage generische Tür"
+		ENDIF
+! --------- User Interface - Tooltip text (Englisch)
+	IF language = 4 THEN
+		bubble[1] = "Modell / Produktbezeichnung"
+		bubble[2] = "Access control system"
+		bubble[3] = "Zylindertyp"
+		bubble[4] = "Hersteller Türschloss"
+		bubble[5] = "Zylindertyp/Mechanische Verriegelung"
+		bubble[6] = "Dornmaß Gangflügel"
+		bubble[7] = "Dornmaß Standflügel"
+		bubble[8] = "Elektrischer Türöffner"
+		bubble[9] = "Elektronisches Schloss"
+		bubble[10] = "Entfernungsmaß Gangflügel"
+		bubble[11] = "Entfernungsmaß Standflügel"
+		bubble[12] = "Falle mit Schlüssel öffnen"
+		bubble[13] = "Form Stulpblech"
+		bubble[14] = "Lochung Gangflügel"
+		bubble[15] = "Lochung Standflügel"
+		bubble[16] = "Material Stulpblech"
+		bubble[17] = "Oberfläche Stulpblech"
+		bubble[18] = "Panikfunktionen"
+		bubble[19] = "Schließanlage"
+		bubble[20] = "Schloßtyp"
+		bubble[21] = "Seite der Schließung"
+		bubble[22] = "Selbstverriegelnd"
+		bubble[23] = "Standflügelverriegelung"
+		bubble[24] = "Verriegelungsfunktionen"
+		bubble[25] = "Homepage generische Tür"
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+
+! =============================================================================
+! Dialogstart
+! =============================================================================
+
+
+! ------------------------------------------------------------------------[ Dialog start in development environment ]
+
+IF macro_runtype # 128 THEN
+	UI_DIALOG "DORMA CASE MACRO V"+STR(version,3,2), 444,266
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ 1. Seite ]
+
+s = 1
+IF  seiten > 0 THEN
+	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ 2. Seite ]
+
+s = 2
+IF  seiten > 1 THEN
+	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+	ENDIF
+
+
+! =============================================================================
+! Dialogende
+! =============================================================================
+
+END
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+! ------------------------------------------------------------------------[ Auswahloptionen ]
+
+"devshow":
+	UI_STYLE 1,2
+	UI_OUTFIELD "[CASE v" + str("%^.2",version) + "]"  , 60,0,100,15, 4
+
+	! i=0 : s=20
+	! UI_STYLE 0,0
+	! i = i   : UI_INFIELD{3} "dk_LOI",			475,i*s , 15,19  UI_TOOLTIP "Level of Input"
+	! i = i+1 : UI_INFIELD{3} "bs_door_leafs",	475,i*s , 15,19  UI_TOOLTIP "Türblätter"
+	RETURN
+
+"devSELECTION":
+	FOR i= 1 TO VARDIM1(UIpicIdxArray)
+		ui_outfield UIpicIdxArray[i],   0,260+i*15,140,15
+		ui_outfield UItextArray[i]  , 150,260+i*15,140,15
+		ui_outfield UIvaluesArray[i], 300,260+i*15,140,15
+		NEXT i
+	RETURN
+
+! ----------------------------------- PARAMETER / INFIELD VALUE LIST [ECD.hinge] (start)
+
+"VALUES_bs_access_control_type":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Mechanisch" : UIvaluesArray[j] = "M"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Schlüssel" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Karte/Chip" : UIvaluesArray[j] = "K"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Code" : UIvaluesArray[j] = "C"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Ferngesteuert" : UIvaluesArray[j] = "F"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Biometrisch" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "individuell" : UIvaluesArray[j] = "X"
+	RETURN
+
+"VALUES_bs_lock_type":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = "XX"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Fallen-Riegelschloß" : UIvaluesArray[j] = "FR"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Fallenschloß" : UIvaluesArray[j] = "FA"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Riegelschloß" : UIvaluesArray[j] = "RI"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rollenfallenschloß" : UIvaluesArray[j] = "RF"
+	RETURN
+
+"VALUES_bs_lock_system":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "einfach" : UIvaluesArray[j] = "1f"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "zweifach" : UIvaluesArray[j] = "2f"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "mehrfach" : UIvaluesArray[j] = "3f"
+	RETURN
+
+"VALUES_bs_case_material":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Stahl" : UIvaluesArray[j] = "ST"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Edelstahl" : UIvaluesArray[j] = "ES"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aluminium" : UIvaluesArray[j] = "AL"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Messing" : UIvaluesArray[j] = "MS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sondermaterial" : UIvaluesArray[j] = "XX"
+	RETURN
+
+"VALUES_bs_case_surface":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbehandelt" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gebürstet" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Geschliffen" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Getrommelt" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Poliert" : UIvaluesArray[j] = "P"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vernickelt" : UIvaluesArray[j] = "N"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lackiert" : UIvaluesArray[j] = "L"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Pulverbeschichtet" : UIvaluesArray[j] = "V"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verzinkt" : UIvaluesArray[j] = "Z"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verchromt" : UIvaluesArray[j] = "C"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Eloxiert" : UIvaluesArray[j] = "E"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Titanisiert" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vergoldet" : UIvaluesArray[j] = "G"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sonderoberfläche" : UIvaluesArray[j] = "X"
+	RETURN
+
+"VALUES_bs_latch_plate":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "rund" : UIvaluesArray[j] = "R"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "kantig" : UIvaluesArray[j] = "K"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "U-Form" : UIvaluesArray[j] = "U"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "abgwinkelt" : UIvaluesArray[j] = "W"
+	RETURN
+
+"VALUES_gs_han_pos":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "individuell" : UIvalRealArray[j] = 0.02
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Zimmertür 55mm" : UIvalRealArray[j] = 0.055
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Zimmertür 60mm" : UIvalRealArray[j] = 0.06
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Haustür 65mm" : UIvalRealArray[j] = 0.065
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 30mm" : UIvalRealArray[j] = 0.03
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 35mm" : UIvalRealArray[j] = 0.035
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 40mm" : UIvalRealArray[j] = 0.04
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 45mm" : UIvalRealArray[j] = 0.045
+	RETURN
+
+"VALUES_bs_case_distance":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "individuell" : UIvalRealArray[j] = 0.09
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Standard" : UIvalRealArray[j] = 0.072
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "WC-Schloss" : UIvalRealArray[j] = 0.078
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmen/Haustür" : UIvalRealArray[j] = 0.092
+	RETURN
+
+"VALUES_gs_han_pos2":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "individuell" : UIvalRealArray[j] = 0.02
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Zimmertür 55mm" : UIvalRealArray[j] = 0.055
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Zimmertür 60mm" : UIvalRealArray[j] = 0.06
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Haustür 65mm" : UIvalRealArray[j] = 0.065
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 30mm" : UIvalRealArray[j] = 0.03
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 35mm" : UIvalRealArray[j] = 0.035
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 40mm" : UIvalRealArray[j] = 0.04
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmentür 45mm" : UIvalRealArray[j] = 0.045
+	RETURN
+
+"VALUES_bs_case_distance2":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "individuell" : UIvalRealArray[j] = 0.09
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Standard" : UIvalRealArray[j] = 0.072
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "WC-Schloss" : UIvalRealArray[j] = 0.078
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rohrrahmen/Haustür" : UIvalRealArray[j] = 0.092
+	RETURN
+
+"VALUES_bs_lock_panic":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvalRealArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvalRealArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbestimmt" : UIvalRealArray[j] = 2
+	RETURN
+
+"VALUES_bs_lock_change":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvalRealArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvalRealArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbestimmt" : UIvalRealArray[j] = 2
+	RETURN
+
+"VALUES_bs_selflocking":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvalRealArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvalRealArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbestimmt" : UIvalRealArray[j] = 2
+	RETURN
+
+"VALUES_bs_lock_SF":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvalRealArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvalRealArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbestimmt" : UIvalRealArray[j] = 2
+	RETURN
+
+"VALUES_bs_lock_master":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvalRealArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvalRealArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbestimmt" : UIvalRealArray[j] = 2
+	RETURN
+
+"VALUES_bs_lock_barrel":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "kein Zylinder" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Profilzylinder" : UIvaluesArray[j] = "PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rundzylinder" : UIvaluesArray[j] = "RZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Ovallochung" : UIvaluesArray[j] = "OZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Buntbart" : UIvaluesArray[j] = "BB"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "WC" : UIvaluesArray[j] = "WC"
+	RETURN
+
+"VALUES_bs_locking_side":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "zweiseitig" : UIvaluesArray[j] = "ZS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Bandseite" : UIvaluesArray[j] = "BS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Bandgegenseite" : UIvaluesArray[j] = "BGS"
+	RETURN
+
+"VALUES_bs_lock_electric":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvalRealArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvalRealArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbestimmt" : UIvalRealArray[j] = 2
+	RETURN
+
+"VALUES_bs_lock_opener":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvalRealArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "nein" : UIvalRealArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ja" : UIvalRealArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbestimmt" : UIvalRealArray[j] = 2
+	RETURN
+
+! --------------------------------------------------------------- PARAMETER / INFIELD VALUE LIST (end)
+
+"SELECT_bs_lock_type":
+	IF bs_lock_change = 1 THEN
+		j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+		j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Fallen-Riegelschloß" : UIvaluesArray[j] = "FR"
+		ELSE
+		GOSUB "VALUES_bs_lock_type"
+		ENDIF
+	RETURN
+
+"SELECT_bs_access_control_type":
+	GOSUB "VALUES_bs_access_control_type"
+	sts = 0
+	IF bs_access_control_type # "X" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_access_control_type THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_case_material":
+	GOSUB "VALUES_bs_case_material"
+	sts = 0
+	IF bs_case_material # "XX" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_case_material THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_case_surface":
+	GOSUB "VALUES_bs_case_surface"
+	sts = 0
+	IF bs_case_surface # "X" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_case_surface THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_gs_han_pos":
+	GOSUB "VALUES_gs_han_pos"
+	sts = 0
+	IF ABS(gs_han_pos - 0.02) > tlr THEN
+		FOR i = 2 TO j
+			IF ABS(UIvalRealArray[i] - gs_han_pos) < tlr THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_gs_han_pos2":
+	GOSUB "VALUES_gs_han_pos2"
+	sts = 0
+	IF ABS(gs_han_pos2 - 0.02) > tlr THEN
+		FOR i = 2 TO j
+			IF ABS(UIvalRealArray[i] - gs_han_pos2) < tlr THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_case_distance":
+	GOSUB "VALUES_bs_case_distance"
+	sts = 0
+	IF ABS(bs_case_distance - 0.09) > tlr THEN
+		FOR i = 2 TO j
+			IF ABS(UIvalRealArray[i] - bs_case_distance) < tlr THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_case_distance2":
+	GOSUB "VALUES_bs_case_distance2"
+	sts = 0
+	IF ABS(bs_case_distance2 - 0.09) > tlr THEN
+		FOR i = 2 TO j
+			IF ABS(UIvalRealArray[i] - bs_case_distance2) < tlr THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+! ------------------------------------------------------------- MAIN PAGE [ 8000 ]
+	8000:   ! #### LOI 6 -Grundeinstellungen 1/2 Flügel
+	GOSUB 9900
+	UI_SEPARATOR 0,89, 445,89
+	UI_SEPARATOR 0,142, 445,142
+	UI_SEPARATOR 208,148, 208,267
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[1], 0,24 , 58,15, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[28], 0,69 , 58,15, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[27], 0,150 , 77,15, 0+0
+	UI_STYLE 0,0
+	UI_OUTFIELD babel[2], 58,24 , 137,15, 0+0
+	UI_OUTFIELD babel[3], 58,45 , 137,15, 0+0
+	UI_OUTFIELD babel[5], 58,69 , 137,15, 0+0
+	GOSUB "SELECT_bs_lock_type"
+	UI_INFIELD{3} "bs_lock_type", 196,19 , 247,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[20]
+	UI_INFIELD{3} "bs_case_manufacturer", 197,43 , 119,19 UI_TOOLTIP bubble[4]
+	UI_INFIELD{3} "bs_case_model", 323,43 , 120,19 UI_TOOLTIP bubble[1]
+	GOSUB "VALUES_bs_latch_plate"
+	UI_INFIELD{3} "bs_latch_plate", 196,64 , 78,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[13]
+	GOSUB "SELECT_bs_case_material"
+	IF sts THEN UI_INFIELD{3} "bs_case_material", 280,64 , 79,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[16]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_case_material", 280,65 , 79,19 UI_TOOLTIP bubble[16]
+	GOSUB "SELECT_bs_case_surface"
+	IF sts THEN UI_INFIELD{3} "bs_case_surface", 365,64 , 78,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[17]
+	UI_STYLE 0,1
+	IF bs_door_leafs > 1 THEN txt = babel[6] ELSE txt = babel[7]
+		UI_OUTFIELD txt, 0,97 , 77,15, 0+0
+		UI_STYLE 0,0
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_case_surface", 365,65 , 78,19 UI_TOOLTIP bubble[17]
+	UI_OUTFIELD babel[10], 77,97 , 60,15, 0+0
+	UI_OUTFIELD babel[22], 200,97 , 55,15, 2+0
+	UI_OUTFIELD babel[11], 318,97 , 66,15, 2+0
+	GOSUB "SELECT_gs_han_pos"
+	IF sts THEN UI_INFIELD{3} "gs_han_pos", 137,94 , 60,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[6]
+	IF not(sts) THEN UI_INFIELD{3} "gs_han_pos", 137,95 , 60,19 UI_TOOLTIP bubble[6]
+	UI_INFIELD{3} "bs_case_hole", 255,95 , 60,19 UI_TOOLTIP bubble[14]
+	GOSUB "SELECT_bs_case_distance"
+	IF sts THEN UI_INFIELD{3} "bs_case_distance", 384,94 , 60,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[10]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_case_distance", 384,95 , 60,19 UI_TOOLTIP bubble[10]
+	IF bs_door_leafs > 1 THEN
+		UI_STYLE 0,1
+		
+		UI_OUTFIELD babel[26], 0,120 , 77,15, 0+0
+		UI_STYLE 0,0
+		UI_OUTFIELD babel[10], 77,120 , 60,15, 0+0
+		UI_OUTFIELD babel[22], 200,120 , 55,15, 2+0
+		UI_OUTFIELD babel[11], 318,120 , 66,15, 2+0
+		GOSUB "SELECT_gs_han_pos2"
+		IF sts THEN UI_INFIELD{3} "gs_han_pos2", 137,117 , 60,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[7]
+		IF not(sts) THEN UI_INFIELD{3} "gs_han_pos2", 137,118 , 60,19 UI_TOOLTIP bubble[7]
+		UI_INFIELD{3} "bs_case_hole2", 255,118 , 60,19 UI_TOOLTIP bubble[15]
+		GOSUB "SELECT_bs_case_distance2"
+		IF sts THEN UI_INFIELD{3} "bs_case_distance2", 384,117 , 60,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[11]
+		IF not(sts) THEN UI_INFIELD{3} "bs_case_distance2", 384,118 , 60,19 UI_TOOLTIP bubble[11]
+		ENDIF
+	GOSUB "SELECT_bs_access_control_type"
+	IF sts THEN UI_INFIELD{3} "bs_access_control_type", 317,147 , 126,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_access_control_type", 318,148 , 124,19 UI_TOOLTIP bubble[2]
+	GOSUB "VALUES_bs_lock_barrel"
+	UI_INFIELD{3} "bs_lock_barrel", 318,172 , 126,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+	GOSUB "VALUES_bs_locking_side"
+	UI_INFIELD{3} "bs_locking_side", 318,220 , 126,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+	GOSUB "VALUES_bs_lock_system"
+	UI_INFIELD{3} "bs_lock_system", 318,245 , 126,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[24]
+	IF bs_lock_type = "FA" THEN sts = 1 ELSE sts = 0
+	UI_INFIELD{3} "bs_lock_panic", 77,147 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[18]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[14], 108,150 , 98,15, 0+4*(sts OR bs_lock_type = "RI")
+	UI_INFIELD{3} "bs_lock_change", 317,197 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[12]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[20], 346,200 , 98,15, 0+4*(sts OR bs_lock_type = "RI")
+	UI_INFIELD{3} "bs_selflocking", 77,167 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[22]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[25], 108,170 , 98,15, 0+4*(sts)
+	UI_INFIELD{3} "bs_lock_SF", 77,187 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[23]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[24], 108,190 , 98,15, 0+4*(bs_door_leafs < 2)
+	UI_INFIELD{3} "bs_lock_master", 77,207 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[19]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[16], 108,210 , 98,15, 0+4*(sts)
+	UI_INFIELD{3} "bs_lock_electric", 77,227 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[9]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[12], 108,230 , 98,15, 0+0
+	UI_INFIELD{3} "bs_lock_opener", 77,247 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[8]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[18], 108,250 , 98,15, 0+0
+	UI_OUTFIELD babel[9], 212,175 , 105,15, 0+4*(sts) UI_TOOLTIP bubble[5]
+	UI_OUTFIELD babel[17], 212,223 , 105,15, 0+4*(sts)
+	UI_OUTFIELD babel[23], 212,248 , 105,15, 0+4*(sts)
+	UI_OUTFIELD babel[8], 212,150 , 105,15, 0+4*(sts) UI_TOOLTIP bubble[2]
+	RETURN
+! ------------------------------------------------------------- MAIN PAGE [ 8100 ]
+	8100:   ! #### LOI 5 -Grundeinstellungen 1/2 Flügel
+	GOSUB 9900
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[4], 60,40 , 89,15, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[27], 60,89 , 91,15, 0+0
+	UI_STYLE 0,0
+	UI_SEPARATOR 60,72, 385,72
+	GOSUB "SELECT_bs_lock_type"
+	UI_INFIELD{3} "bs_lock_type", 154,35 , 230,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[20]
+	GOSUB "SELECT_bs_access_control_type"
+	IF sts THEN UI_INFIELD{3} "bs_access_control_type", 254,86 , 131,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_access_control_type", 255,87 , 129,19 UI_TOOLTIP bubble[2]
+	GOSUB "VALUES_bs_lock_barrel"
+	UI_INFIELD{3} "bs_lock_barrel", 254,112 , 131,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+	GOSUB "VALUES_bs_locking_side"
+	UI_INFIELD{3} "bs_locking_side", 254,162 , 131,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+	IF bs_lock_type = "FA" THEN sts = 1 ELSE sts = 0
+	UI_INFIELD{3} "bs_lock_panic", 254,188 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[18]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[15], 154,191 , 100,15, 0+4*(sts OR bs_lock_type = "RI")
+	UI_INFIELD{3} "bs_lock_change", 254,138 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[12]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[21], 154,141 , 100,15, 0+4*(sts OR bs_lock_type = "RI")
+	UI_INFIELD{3} "bs_lock_electric", 254,212 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[9]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[13], 154,215 , 100,15, 0+0
+	UI_INFIELD{3} "bs_lock_opener", 254,236 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[8]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[19], 154,239 , 100,15, 0+0
+	UI_OUTFIELD babel[8], 154,89 , 97,15, 0+4*(sts) UI_TOOLTIP bubble[2]
+	UI_OUTFIELD babel[9], 154,115 , 97,15, 0+4*(sts)
+	UI_OUTFIELD babel[17], 154,165 , 100,15, 0+4*(sts)
+	RETURN
+! ------------------------------------------------------------- MAIN PAGE [ 8200 ]
+	9800:   ! #### TITEL on all pages
+	IF develop THEN GOSUB "devshow"
+	UI_STYLE 0,0
+	UI_PICT 1, 245,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 389,15
+	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 388,-5 , 22,22, 0, "http://www.opengdl.org/Default.aspx?tabid=11009" UI_TOOLTIP bubble[25]
+	IF errorI>0 THEN
+		txt = ""
+		FOR i=1 TO errorI
+		txt = txt + errorQ[errorI]
+		NEXT i
+		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
+		ENDIF
+	RETURN
+! -------------------------------------------------------------TITLE [ 9900 ]
+	9900:   ! #### TITEL on all pages
+	IF develop THEN GOSUB "devshow"
+	UI_STYLE 0,0
+	UI_PICT 1, 305,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 445,15
+	IF errorI>0 THEN
+		txt = ""
+		FOR i=1 TO errorI
+		txt = txt + errorQ[errorI]
+		NEXT i
+		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
+		ENDIF
+	RETURN
+

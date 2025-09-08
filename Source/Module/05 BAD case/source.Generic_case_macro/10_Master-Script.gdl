@@ -1,0 +1,304 @@
+! ######################################
+!
+! BIM-all-doors - DOOR SYSTEM
+!
+! Module: Case Macro
+!
+! Manufacturer: common
+! Linie: common
+!
+! © 2018 BY DORMAKABA
+! 
+! ######################################
+
+
+! =============================================================================
+! GLOBAL SETTINGS
+! =============================================================================
+
+! »»» Arrays
+
+DIM UI_page_subs[]
+DIM UI_page_names[], UI_page_icons[], UI_page_type[]
+
+! »»» Constants
+
+tlr = 0.00001	!»» accurancy
+txt = ""		!»» Text für alles mögliche
+sts = 0  		!»» Status
+version = 1.90  !»» Objektversion
+
+! »»» Localization
+
+sprache = language  !»»  Deutsch
+
+
+! »»» Common keywords
+
+IF sprache = 1 THEN
+
+	commonKey = "unspezifiziert" 
+	naKey = "[-]"  !"undefiniert" 
+	noKey = "nein" 
+	yesKey = "ja"
+
+	ELSE
+
+	commonKey = "unspecific"
+	naKey = "[-]"  !"common"
+	noKey = "no"
+	yesKey = "yes"
+
+	ENDIF
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (start)
+
+! --------- PRODUCT PARAMETERS
+
+! --------- DEFAULT VALUE ARRAYS
+
+! --------- dk_folding_dimensions[i][…]
+	dki_Falz1 = 1
+	dki_Falz2 = 2
+! --------- dk_panel_folding_dimensions[i][…]
+	dki_Mittelfalz1 = 1
+	dki_Mittelfalz2 = 2
+	dki_Mittelfalz3 = 3
+! --------- dk_open_leaf[i][…]
+	dka_leaf_angle2D = 1
+	dka_leaf2_angle2D = 2
+	dka_leaf_angleSA = 3
+	dka_leaf2_angleSA = 4
+	dka_leaf_angle3D = 5
+	dka_leaf2_angle3D = 6
+! --------- dk_cont_pens[i][…]
+	dka_handle_penC2 = 1
+	dka_handle_penC3 = 2
+	dka_frame_penC2 = 3
+	dka_frame_penC3 = 4
+	dka_panel_penC2 = 5
+	dka_panel_penC3 = 6
+	dka_opline2D = 7
+	dka_oplineSA = 8
+	dka_opline3D = 9
+	dka_topview_penC2 = 10
+	dka_penInvisible = 11
+	dka_closer_penSA = 12
+	dka_closer_pen3D = 13
+	dka_penC = 14
+	dka_penC = 15
+! --------- dk_fill_pens[i][…]
+	dka_handle_penF = 1
+	dka_frame_penF = 2
+	dka_side1_penF = 3
+	dka_side2_penF = 4
+	dka_panel_penF = 5
+	dka_panelfill1_penF = 6
+	dka_panelfill2_penF = 7
+	dka_panelfill3_penF = 8
+	dka_panel2fill1_penF = 9
+	dka_panel2fill2_penF = 10
+	dka_panel2fill3_penF = 11
+	dka_topview_penF = 12
+	dka_fan_penF = 13
+	dka_penF = 14
+	dka_penF = 15
+! --------- dk_bkg_pens[i][…]
+	dka_handle_penB = 1
+	dka_frame_penB = 2
+	dka_side1_penB = 3
+	dka_side2_penB = 4
+	dka_panel_penB = 5
+	dka_panelfill1_penB = 6
+	dka_panelfill2_penB = 7
+	dka_panelfill3_penB = 8
+	dka_panel2fill1_penB = 9
+	dka_panel2fill2_penB = 10
+	dka_panel2fill3_penB = 11
+	dka_topview_penB = 12
+	dka_fan_penB = 13
+	dka_penB = 14
+	dka_penB = 15
+! --------- dk_fills[i][…]
+	dka_handle_fill = 1
+	dka_frame_fill = 2
+	dka_side1_fill = 3
+	dka_side2_fill = 4
+	dka_panel_fill = 5
+	dka_panelfill1_fill = 6
+	dka_panelfill2_fill = 7
+	dka_panelfill3_fill = 8
+	dka_panel2fill1_fill = 9
+	dka_panel2fill2_fill = 10
+	dka_panel2fill3_fill = 11
+	dka_topview_fill = 12
+	dka_fan_fill = 13
+	dka_fill = 14
+	dka_fill = 15
+! --------- dk_linetype[i][…]
+	dka_invisible = 1
+! --------- dk_materials[i][…]
+	dka_handle_mat = 1
+	dka_plate_mat = 2
+	dka_frame_mat_BS = 3
+	dka_frame_mat_BGS = 4
+	dka_side1_mat_BS = 5
+	dka_side1_mat_BGS = 6
+	dka_side2_mat_BS = 7
+	dka_side2_mat_BGS = 8
+	dka_fan_mat_BS = 9
+	dka_fan_mat_BGS = 10
+	dka_panel_mat_BS = 11
+	dka_panel_mat_BGS = 12
+	dka_panelfill1_mat_BS = 13
+	dka_panelfill1_mat_BGS = 14
+	dka_panelfill2_mat_BS = 15
+	dka_panelfill2_mat_BGS = 16
+	dka_panelfill3_mat_BS = 17
+	dka_panelfill3_mat_BGS = 18
+	dka_panel2_mat_BS = 19
+	dka_panel2_mat_BGS = 20
+	dka_panel2fill1_mat_BS = 21
+	dka_panel2fill1_mat_BGS = 22
+	dka_panel2fill2_mat_BS = 23
+	dka_panel2fill2_mat_BGS = 24
+	dka_panel2fill3_mat_BS = 25
+	dka_panel2fill3_mat_BGS = 26
+	dka_hinge_mat = 27
+	dka_closer_mat = 28
+	dka_mat = 29
+	dka_mat = 30
+	dka_mat = 31
+	dka_mat = 32
+	dka_mat = 33
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (end)
+
+! ----------------------------------- MULTILINGUAL TEXT [ECD.hinge] (start)
+
+! --------- RESET array variables
+	DIM uiTXT[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		uiTXT[1] = "SCHLOSS"
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF language = 4 THEN
+		uiTXT[1] = "CASE"
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+
+! ------------------------------------------------------------------------[ environment ]
+
+
+! ------------------------------------------------------------------------[ settings / locals ]
+
+!  UI_page_type =  -2 > sub of ROOT, -1 > sub of last, 1 > sub of first macro page
+
+seiten = 0
+
+IF dk_LOI = 5 THEN
+	seiten = 1
+	UI_page_names[seiten] = uiTXT[1]  ! "SCHLOSS"
+	UI_page_icons[seiten] = "dk_title_case 18x18.png"
+	UI_page_type[seiten]  = -1
+	UI_page_subs[seiten] = 8100
+	ENDIF
+
+IF dk_LOI = 6 THEN
+	seiten = 1
+	UI_page_names[seiten] = uiTXT[1]  ! "SCHLOSS"
+	UI_page_icons[seiten] = "dk_title_case 18x18.png"
+	UI_page_type[seiten]  = -1
+	UI_page_subs[seiten] = 8000
+
+	! IF dk_LOI = dk_LOI+1 THEN
+	! 	seiten = seiten+1
+	! 	UI_page_names[seiten] = uiTXT[2]  ! "SCHLOSS 2. Seite"
+	! 	UI_page_icons[seiten] = "uiTab_DoorHorizontalDim_flat(1).png"
+	! 	UI_page_type[seiten]  = 1
+	! 	UI_page_subs[seiten] = 8000
+	! 	ENDIF
+
+	ENDIF
+
+
+! =============================================================================
+! FEHLERARRAY
+! =============================================================================
+
+! »»» Fehlermeldungen
+DIM errorQ[]
+errorI = 0
+errorQ[1] = ""
+
+! »»» ... aus Plausibilitäten
+IF GLOB_PREVIEW_MODE THEN
+
+	If ((bs_lock_type = "FR" AND bs_lock_panic # 1 ) OR \
+		(bs_lock_type = "RI")) AND bs_demand_EscapeRoute = 1 THEN
+		errorI = errorI+1 : errorQ[errorI] = "Schloss nicht zulässig für Fluchtweganforderung."
+		ENDIF
+
+	If STRSTR( bs_ac_identify1 + bs_ac_identify2, "ID" ) AND ( bs_access_control_type = "-" OR bs_lock_type = "FA" ) THEN
+		errorI = errorI+1 : errorQ[errorI] = "Zugangskontrollsystem erforderlich."
+		ENDIF
+
+	If (bs_ac_identify1 = "ID" OR bs_ac_identify1 = "ZID") AND ( bs_locking_side # "ZS" AND bs_locking_side # "BS" ) THEN
+		errorI = errorI+1 : errorQ[errorI] = "Zugangskontrolle von Bandseite gefordert."
+		ENDIF
+
+	If (bs_ac_identify2 = "ID" OR bs_ac_identify2 = "ZID") AND ( bs_locking_side # "ZS" AND bs_locking_side # "BGS" ) THEN
+		errorI = errorI+1 : errorQ[errorI] = "Zugangskontrolle von Bandgegenseite gefordert."
+		ENDIF
+
+	! IF sts THEN
+	! 	GOSUB "debuginfo"
+	! 	errorI = errorI+1 : errorQ[errorI] = ""+txt
+	! 	ENDIF
+
+	ENDIF
+
+! =============================================================================
+! question - answer mode  / HANDSHAKE
+! =============================================================================
+
+IF macro_runtype = 1   THEN END UI_page_type   ! »»» return UI page hirarchy
+IF macro_runtype = 2   THEN END UI_page_names  ! »»» return UI page names
+IF macro_runtype = 4   THEN END UI_page_icons  ! »»» return UI page picts
+IF macro_runtype = 256 THEN END errorQ  ! »»» Fehlermeldung
+
+
+! =============================================================================
+! LOD - Level of Detail
+! =============================================================================
+
+
+! ------------------------------------------------------------------------[ ... ]
+
+GOTO "masterend"
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+! »»» Errorcontent:
+"debuginfo":
+	IF BITTEST(sts,0) THEN txt = "Schloss passt nicht " ELSE txt=""
+	IF BITTEST(sts,1) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "zu XXX"
+	IF BITTEST(sts,2) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "zu XXX"
+	IF BITTEST(sts,3) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "zu XXX"
+	IF BITTEST(sts,4) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "zu XXX"
+	IF BITTEST(sts,5) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "zu XXX"
+	IF txt # "" THEN txt = " ("+txt+")"
+	RETURN
+
+"masterend":

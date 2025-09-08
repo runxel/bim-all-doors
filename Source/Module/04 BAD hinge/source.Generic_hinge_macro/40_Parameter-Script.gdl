@@ -1,0 +1,77 @@
+
+! ------------------------------------------------------------------------[ Object development settings ]
+
+IF macro_runtype = 0 THEN
+	VALUES{2} "macro_runtype" 0, "IDLE", 1,"handshake page hirarchy", 2,"handshake page names", 3,"CALL UI page", 5,"return element values", 10,"rebuilt VALUE lists"
+	ENDIF
+
+
+! =============================================================================
+! PLAUSIBILITY
+! =============================================================================
+
+
+! ----------------------------------------------------------------- Prüfung der Abmessungen
+
+! Prüfung in X
+sts = 0
+IF stumpf THEN s = bs_hinge_reel_diameter/2 * (bs_leaf_overhang > 0) ELSE s = bs_leaf_oversize + bs_hinge_reel_diameter/2
+IF rolle AND bs_ancor_hinge_X < s THEN
+	bs_ancor_hinge_X = s : sts = 1
+	ENDIF
+
+IF sts THEN PARAMETERS bs_ancor_hinge_X = bs_ancor_hinge_X
+
+! Prüfung in Y
+sts = 0
+s = bs_hinge_reel_diameter/2
+IF rolle AND bs_ancor_hinge_Y < s THEN
+	bs_ancor_hinge_Y = s : sts = 2
+	ENDIF
+
+IF sts THEN PARAMETERS bs_ancor_hinge_Y = bs_ancor_hinge_Y
+
+
+! =============================================================================
+! VALUES
+! =============================================================================
+
+IF bs_hinge_DIN THEN
+	PARAMETERS bs_hinge_pos1 = hinge_pos1, bs_hinge_pos2 = hinge_pos2
+	ENDIF
+
+! ----------------------------------- PARAMETER VALUE LIST [ECD.hinge] (start)
+
+VALUES "bs_hinge_type" "-", "O2", "O3", "E2", "E3", "PA", "FB", "U2", "U3", "K2", "K3", "PT", "ZB", "VD"
+VALUES "bs_hinge_chuck" "-", "BO", "AG", "GS", "SW", "BA", "XX", CUSTOM
+VALUES "bs_hinge_material" " ", "ST", "ES", "AL", "XX", CUSTOM
+VALUES "bs_hinge_surface" " ", "-", "B", "S", "T", "P", "N", "L", "V", "Z", "C", "E", "I", "G", "X", CUSTOM
+VALUES "bs_hinge_adjust" "-", "2D", "3D"
+VALUES "bs_hinge_nmbr" 2, 3, 4
+VALUES "bs_hinge_reel_diameter" 0.015, 0.018, 0.02, 0.021, 0.022, CUSTOM
+VALUES "bs_hinge_height" 0.095, 0.103, 0.12, 0.148, 0.16, CUSTOM
+VALUES "bs_hinge_fixture_width" 0.04, 0.06, CUSTOM
+VALUES "bs_hinge_fixture_height" 0.04, 0.05, CUSTOM
+VALUES "bs_ancor_hinge_X" 0.0205, 0.0285, CUSTOM
+VALUES "bs_ancor_hinge_Y" 0.012, 0.013, CUSTOM
+VALUES "bs_hinge_pos1" 0.237, CUSTOM
+VALUES "bs_hinge_pos2" 1.185, 1.31, 1.435, 1.56, 1.685, 1.81, 1.935, 2.06, 2.185, 2.31, CUSTOM
+VALUES "bs_hinge_pos3" 0.35, CUSTOM
+VALUES "bs_hinge_pos4" 0.35, CUSTOM
+VALUES "develop" 0, 1, 2, 3, 4, 5, 6, 7, 8
+
+! --------------------------------------------------------------- PARAMETER VALUE LISTS (end)
+
+
+! ---------------------------------------------------------------------- !
+
+END
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+

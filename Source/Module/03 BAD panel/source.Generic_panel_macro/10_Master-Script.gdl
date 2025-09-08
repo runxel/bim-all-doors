@@ -1,0 +1,1098 @@
+! ######################################
+!
+! BIM-all-doors - DOOR SYSTEM
+!
+! Module: Panel Macro
+!
+! Manufacturer: common
+! Linie: common
+!
+! © 2018 BY DORMAKABA
+! 
+! ######################################
+
+
+! =============================================================================
+! GLOBAL SETTINGS
+! =============================================================================
+
+dk_visibleLeaf = -1 ! Türblatt da/wird ausgegeben? Zunächst undefiniert
+
+! »»» Arrays
+
+DIM clr1[], clr2[][], UI_page_subs[]
+DIM UI_page_names[], UI_page_icons[], UI_page_type[], UI_page_subs[]
+
+! »»» Constants
+
+tlr = 0.00001  !»» accurancy
+version = 1.90 !»» Objektversion
+txt = ""	   !»» Text für alles
+trnsfrm2 = 0   !»» Anzahl Transformationen 2D
+trnsfrm3 = 0   !»» Anzahl Transformationen 3D
+separateProfiles = 0.0005  !»» Minimaler Abstand um Profile in echten Schnitten zu trennen
+
+dk_fill_frame_width = 0.08  ! Klassische Füllungen, Randstreifen
+IF dk_LOD > 400 THEN
+	dk_notch_bar_width = 0.015
+	ELSE
+	dk_notch_bar_width = 0
+	ENDIF
+
+! »»» Localization
+
+sprache = language  !»»  Deutsch
+
+! »»» Common keywords
+
+IF sprache = 1 THEN
+
+	commonKey = "unspezifiziert" 
+	naKey = "undefiniert" 
+	noKey = "nein" 
+	yesKey = "ja"
+
+	ELSE
+		
+	commonKey = "unspecific"
+	naKey = "common"
+	noKey = "no"
+	yesKey = "yes"
+
+	ENDIF
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (start)
+
+! --------- PRODUCT PARAMETERS
+
+! --------- DEFAULT VALUE ARRAYS
+
+! --------- dk_folding_dimensions[i][…]
+	dki_Falz1 = 1
+	dki_Falz2 = 2
+! --------- dk_panel_folding_dimensions[i][…]
+	dki_Mittelfalz1 = 1
+	dki_Mittelfalz2 = 2
+	dki_Mittelfalz3 = 3
+! --------- dk_open_leaf[i][…]
+	dka_leaf_angle2D = 1
+	dka_leaf2_angle2D = 2
+	dka_leaf_angleSA = 3
+	dka_leaf2_angleSA = 4
+	dka_leaf_angle3D = 5
+	dka_leaf2_angle3D = 6
+! --------- dk_cont_pens[i][…]
+	dka_handle_penC2 = 1
+	dka_handle_penC3 = 2
+	dka_frame_penC2 = 3
+	dka_frame_penC3 = 4
+	dka_panel_penC2 = 5
+	dka_panel_penC3 = 6
+	dka_opline2D = 7
+	dka_oplineSA = 8
+	dka_opline3D = 9
+	dka_topview_penC2 = 10
+	dka_penInvisible = 11
+	dka_closer_penSA = 12
+	dka_closer_pen3D = 13
+	dka_grip_penC2 = 14
+	dka_grip_penC3 = 15
+! --------- dk_fill_pens[i][…]
+	dka_handle_penF = 1
+	dka_frame_penF = 2
+	dka_side1_penF = 3
+	dka_side2_penF = 4
+	dka_panel_penF = 5
+	dka_panelfill1_penF = 6
+	dka_panelfill2_penF = 7
+	dka_panelfill3_penF = 8
+	dka_panel2fill1_penF = 9
+	dka_panel2fill2_penF = 10
+	dka_panel2fill3_penF = 11
+	dka_topview_penF = 12
+	dka_fan_penF = 13
+	dka_gap_filling_penF = 14
+	dka_grip_penF = 15
+! --------- dk_bkg_pens[i][…]
+	dka_handle_penB = 1
+	dka_frame_penB = 2
+	dka_side1_penB = 3
+	dka_side2_penB = 4
+	dka_panel_penB = 5
+	dka_panelfill1_penB = 6
+	dka_panelfill2_penB = 7
+	dka_panelfill3_penB = 8
+	dka_panel2fill1_penB = 9
+	dka_panel2fill2_penB = 10
+	dka_panel2fill3_penB = 11
+	dka_topview_penB = 12
+	dka_fan_penB = 13
+	dka_gap_filling_penB = 14
+	dka_grip_penB = 15
+! --------- dk_fills[i][…]
+	dka_handle_fill = 1
+	dka_frame_fill = 2
+	dka_side1_fill = 3
+	dka_side2_fill = 4
+	dka_panel_fill = 5
+	dka_panelfill1_fill = 6
+	dka_panelfill2_fill = 7
+	dka_panelfill3_fill = 8
+	dka_panel2fill1_fill = 9
+	dka_panel2fill2_fill = 10
+	dka_panel2fill3_fill = 11
+	dka_topview_fill = 12
+	dka_fan_fill = 13
+	dka_gap_filling_fill = 14
+	dka_grip_fill = 15
+! --------- dk_materials[i][…]
+	dka_handle_mat = 1
+	dka_plate_mat = 2
+	dka_frame_mat_BS = 3
+	dka_frame_mat_BGS = 4
+	dka_side1_mat_BS = 5
+	dka_side1_mat_BGS = 6
+	dka_side2_mat_BS = 7
+	dka_side2_mat_BGS = 8
+	dka_fan_mat_BS = 9
+	dka_fan_mat_BGS = 10
+	dka_panel_mat_BS = 11
+	dka_panel_mat_BGS = 12
+	dka_panelfill1_mat_BS = 13
+	dka_panelfill1_mat_BGS = 14
+	dka_panelfill2_mat_BS = 15
+	dka_panelfill2_mat_BGS = 16
+	dka_panelfill3_mat_BS = 17
+	dka_panelfill3_mat_BGS = 18
+	dka_panel2_mat_BS = 19
+	dka_panel2_mat_BGS = 20
+	dka_panel2fill1_mat_BS = 21
+	dka_panel2fill1_mat_BGS = 22
+	dka_panel2fill2_mat_BS = 23
+	dka_panel2fill2_mat_BGS = 24
+	dka_panel2fill3_mat_BS = 25
+	dka_panel2fill3_mat_BGS = 26
+	dka_panel_bandings_mat = 27
+	dka_panel2_bandings_mat = 28
+	dka_hinge_mat = 29
+	dka_closer_mat = 30
+	dka_automation_mat = 31
+	dka_grip_mat_BS1 = 32
+	dka_grip_mat_BS2 = 33
+	dka_grip_mat_BGS1 = 34
+	dka_grip_mat_BGS2 = 35
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (end)
+
+! ----------------------------------- MULTILINGUAL TEXT [ECD.panel] (start)
+
+! --------- RESET array variables
+	DIM uiTXT[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		uiTXT[1] = "TÜRBLATT"
+		uiTXT[2] = "TÜRBLATT - Grundeinstellungen + Darstellung"
+		uiTXT[3] = " ... Abmessungen Türblatt"
+		uiTXT[4] = " ... Gestaltung Türblatt"
+		uiTXT[5] = " ... Darstellung Türblatt"
+		uiTXT[6] = " ... Ausbildung Kanten"
+		uiTXT[7] = "TÜRBLATT - Grundeinstellungen"
+		uiTXT[8] = " ... Abmessungen Gangflügel"
+		uiTXT[9] = " ... Gestaltung Gangflügel"
+		uiTXT[10] = " ... Abmessungen Standflügel"
+		uiTXT[11] = " ... Gestaltung Standflügel"
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF language = 4 THEN
+		uiTXT[1] = "DOOR LEAF"
+		uiTXT[2] = "DOOR LEAF -  basic settings + representation"
+		uiTXT[3] = " ... dimensions door leaf"
+		uiTXT[4] = " ... design door leaf"
+		uiTXT[5] = " ... representation door leaf"
+		uiTXT[6] = " ... setting bandings"
+		uiTXT[7] = "DOOR LEAF -  basic settings"
+		uiTXT[8] = " ... dimensions active door leaf"
+		uiTXT[9] = " ... design active door leaf"
+		uiTXT[10] = " ... dimensions inactive door leaf"
+		uiTXT[11] = " ... design inactive door leaf"
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+
+! »»» Konstruktionstyp und Festlegungen ermitteln
+maxFalzBreite = MAX(gs_vb + bs_leaf_oversize, (bs_door_leafs > 1) * dk_panel_folding_dimensions[1][1]) + 0.005
+
+! »»» Falztiefe mind. 1mm
+gs_vt = MAX(0.001, gs_vt)
+
+
+! =============================================================================
+! Defiition UI-Seiten / LoI
+! =============================================================================
+
+!  UI_page_type =  -2 > sub of ROOT, -1 > sub of last, 1 > sub of first macro page
+
+! »»» UI-Seiten nach Level of Information
+IF dk_LOI < 5 THEN
+	seiten=1
+	UI_page_names[seiten] = uiTXT[1]  ! "TÜRBLATT"
+	UI_page_icons[seiten] = "dk_title_panel_basic 18x18.png"
+	UI_page_type[seiten]  = -1
+	UI_page_subs[seiten] = 5000
+	ENDIF
+
+IF dk_LOI > 4 AND bs_door_leafs = 1 THEN
+	seiten=1
+	UI_page_names[seiten] = uiTXT[2]  ! "TÜRBLATT - Grundeinstellungen + Darstellung"
+	UI_page_icons[seiten] = "dk_title_panel_basic 18x18.png"
+	UI_page_type[seiten]  = -1
+	UI_page_subs[seiten] = 5100
+	IF bs_panel_material # "GL" AND bs_panel_type # "-" THEN
+		seiten=seiten+1
+		UI_page_names[seiten] = uiTXT[3]  ! " ... Abmessungen Türblatt"
+		UI_page_icons[seiten] = "dk_title_panel_dims.png"
+		UI_page_type[seiten]  = 1
+		UI_page_subs[seiten] = 5500
+		IF dk_panel_segments > 0 THEN
+			seiten=seiten+1
+			UI_page_names[seiten] = uiTXT[4]  ! " ... Gestaltung Türblatt"
+			UI_page_icons[seiten] = "dk_title_panel_style.png"
+			UI_page_type[seiten]  = 1
+			UI_page_subs[seiten] = 5700
+			ENDIF
+		ENDIF
+	seiten=seiten+1
+	UI_page_names[seiten] = uiTXT[5]  ! " ... Darstellung Türblatt"
+	UI_page_icons[seiten] = "dk_title_panel_props.png"
+	UI_page_type[seiten]  = 1
+	UI_page_subs[seiten] = 5200
+	! IF bs_panel_material # "GL" AND bs_panel_type # "-"  THEN
+		seiten=seiten+1
+		UI_page_names[seiten] = uiTXT[6]  ! " ... Ausbildung Kanten"
+		UI_page_icons[seiten] = "dk_title_panel_bandings.png"
+		UI_page_type[seiten]  = 1
+		UI_page_subs[seiten] = 5900
+		! ENDIF
+	ENDIF
+
+IF dk_LOI > 4 AND bs_door_leafs = 2 THEN
+	seiten=1
+	UI_page_names[seiten] = uiTXT[7]  ! "TÜRBLATT - Grundeinstellungen"
+	UI_page_icons[seiten] = "dk_title_panel_basic 18x18.png"
+	UI_page_type[seiten]  = -1
+	UI_page_subs[seiten] = 5300
+	seiten=seiten+1
+	UI_page_names[seiten] = uiTXT[5]  ! " ... Darstellung Türblatt"
+	UI_page_icons[seiten] = "dk_title_panel_props.png"
+	UI_page_type[seiten]  = 1
+	UI_page_subs[seiten] = 5400
+	IF bs_panel_material # "GL" AND bs_panel_type # "-" THEN
+		seiten=seiten+1
+		UI_page_names[seiten] = uiTXT[8]  ! " ... Abmessungen Gangflügel"
+		UI_page_icons[seiten] = "dk_title_panel_dims.png"
+		UI_page_type[seiten]  = 1
+		UI_page_subs[seiten] = 5500
+		IF dk_panel_segments > 0 THEN
+			seiten=seiten+1
+			UI_page_names[seiten] = uiTXT[9]  ! " ... Gestaltung Gangflügel"
+			UI_page_icons[seiten] = "dk_title_panel_style.png"
+			UI_page_type[seiten]  = 1
+			UI_page_subs[seiten] = 5700
+			ENDIF
+		ENDIF
+	IF bs_panel_material # "GL" AND bs_panel_type # "-"  THEN
+		seiten=seiten+1
+		UI_page_names[seiten] = uiTXT[10]  ! " ... Abmessungen Standflügel"
+		UI_page_icons[seiten] = "dk_title_panel_dims.png"
+		UI_page_type[seiten]  = 1
+		UI_page_subs[seiten] = 5600
+		IF dk_panel_segments2 > 0 THEN
+			seiten=seiten+1
+			UI_page_names[seiten] = uiTXT[11]  ! " ... Gestaltung Standflügel"
+			UI_page_icons[seiten] = "dk_title_panel_style.png"
+			UI_page_type[seiten]  = 1
+			UI_page_subs[seiten] = 5800
+			ENDIF
+		ENDIF
+	! IF bs_panel_material # "GL" AND bs_panel_type # "-"  THEN
+		seiten=seiten+1
+		UI_page_names[seiten] = uiTXT[6]  ! " ... Ausbildung Kanten"
+		UI_page_icons[seiten] = "dk_title_panel_bandings.png"
+		UI_page_type[seiten]  = 1
+		UI_page_subs[seiten] = 5900
+		! ENDIF
+	ENDIF
+
+! Makroende, wenn nur Voranfrage
+IF macro_runtype = 1   THEN END UI_page_type   ! »»» return UI page hirarchy
+IF macro_runtype = 2   THEN END UI_page_names  ! »»» return UI page names
+IF macro_runtype = 4   THEN END UI_page_icons  ! »»» return UI page picts
+
+
+! =============================================================================
+! Plausibilitäten und Feststellungen
+! =============================================================================
+
+! je Flügel ein Parameter für Teilungen "nodiv" und für Sprossen "nobar"
+! Bitweise wird je Ausschnittfeld gesetzt, ob zulässig oder nicht
+! Nicht genutzte Felder bekommen auch das Bit gesetzt.
+
+! »»» Sprossen zulässig?
+
+! Gangflügel
+nobar = 0
+IF dk_mainpanel_design = 2 OR dk_mainpanel_design = 4 THEN
+	nobar = 1+2
+	ENDIF
+IF (dk_mainpanel_design = 64 OR dk_mainpanel_design = 128) AND dk_panel_division[1][1] < 1 THEN
+	nobar = 1+2
+	ENDIF
+FOR i = 1 TO dk_panel_segments
+	IF NOT(STRSUB(dk_panel_filling[i],1,1) = "G") THEN
+		! Sprossen nur bei Glasfüllung
+		nobar = BITSET(nobar, 2*(i-1)  )
+		nobar = BITSET(nobar, 2*(i-1)+1)
+		ENDIF
+	NEXT i
+FOR i = dk_panel_segments + 1 TO 3
+	nobar = BITSET(nobar, 2*(i-1)  )
+	nobar = BITSET(nobar, 2*(i-1)+1)
+	NEXT i
+
+! Standflügel
+nobar2 = 0
+IF dk_mainpanel_design2 = 2 OR dk_mainpanel_design2 = 4 THEN
+	nobar2 = 1+2
+	ENDIF
+IF (dk_mainpanel_design2 = 64 OR dk_mainpanel_design2 = 128) AND dk_panel_division2[1][1] < 1 THEN
+	nobar2 = 1+2
+	ENDIF
+FOR i = 1 TO dk_panel_segments2
+	IF NOT(STRSUB(dk_panel_filling2[i],1,1) = "G") THEN
+		! Sprossen nur bei Glasfüllung
+		nobar2 = BITSET(nobar2, 2*(i-1)  )
+		nobar2 = BITSET(nobar2, 2*(i-1)+1)
+		ENDIF
+	NEXT i
+FOR i = dk_panel_segments2 + 1 TO 3
+	nobar2 = BITSET(nobar2, 2*(i-1)  )
+	nobar2 = BITSET(nobar2, 2*(i-1)+1)
+	NEXT i
+
+
+! »»» Unterteilungen zulässig?
+
+! Gangflügel
+nodiv = 0
+IF dk_mainpanel_design = 2 OR dk_mainpanel_design = 4 THEN
+	! nodiv = 1+2
+	ENDIF
+IF BITTEST(dk_mainpanel_design,3) OR BITTEST(dk_mainpanel_design,4) THEN
+	nodiv = BITSET(nodiv, 0)
+	nobar = BITSET(nobar, 0)
+	ENDIF
+IF dk_mainpanel_design = 64 OR dk_mainpanel_design = 128 THEN
+	! nodiv = BITSET(nodiv, 0)
+	IF dk_panel_division[1][1] < 1 THEN nodiv = BITSET(nodiv, 1)
+	ENDIF
+
+! Standflügel
+nodiv2 = 0
+IF dk_mainpanel_design2 = 2 OR dk_mainpanel_design2 = 4 THEN
+	! nodiv2 = 1+2
+	ENDIF
+IF BITTEST(dk_mainpanel_design2,3) OR BITTEST(dk_mainpanel_design2,4) THEN
+	nodiv2 = BITSET(nodiv2, 0)
+	nobar2 = BITSET(nobar2, 0)
+	ENDIF
+IF dk_mainpanel_design2 = 64 OR dk_mainpanel_design2 = 128 THEN
+	! nodiv2 = BITSET(nodiv2, 0)
+	IF dk_panel_division2[1][1] < 1 THEN nodiv2 = BITSET(nodiv2, 1)
+	ENDIF
+
+
+! =============================================================================
+! FEHLERARRAY
+! =============================================================================
+
+! »»» Fehlermeldungen initialisieren
+DIM errorQ[]
+errorI = 0
+errorQ[1] = ""
+
+IF GLOB_PREVIEW_MODE THEN
+	! IF BITTEST(macro_runtype,8) THEN txt = "TÜRBLATT: "  ELSE txt = ""  ! = 256
+
+	! »»» Falzausrichtung korrekt?
+	IF dk_panel_folding_ancor = 1 THEN   !am Falz
+		IF gs_vt - (gs_leaf_thk - bs_leaf_overhang) > tlr AND bs_leaf_oversize > tlr THEN
+			errorI = errorI+1 : errorQ[errorI] = "Türblatt (mit Deckfalz) zu dünn für Zargenfalz"
+			ENDIF
+		IF (gs_leaf_thk - bs_leaf_overhang) -gs_vt > tlr AND bs_leaf_oversize > tlr THEN
+			errorI = errorI+1 : errorQ[errorI] = "Türblatt: Dicke Deckfalz passt nicht zu Zargenfalz"
+			ENDIF
+		ENDIF
+	IF dk_panel_folding_ancor = 2 THEN   !am Spiegel
+		IF gs_vt - (gs_leaf_thk - bs_leaf_overhang) > tlr THEN
+			errorI = errorI+1 : errorQ[errorI] = "Türblatt zu dünn für Zargenfalz"
+			ENDIF
+		ENDIF
+
+	! »»» Geometrie
+	IF bs_leaf_overhang < -tlr THEN
+		errorI = errorI+1 : errorQ[errorI] = "Stärke Türblatt kleiner als Falztiefe. "
+		ENDIF
+	IF bs_demand_FireResistance=1 AND bs_panel_material = "GL" THEN
+		errorI = errorI+1 : errorQ[errorI] = "Material Türblatt widerspricht Brandschutzanforderung. "
+		ENDIF
+
+	! »»» Konstellationen mit Zarge
+	IF (( bs_frame_material = "KU" AND bs_panel_material # "KU") OR \
+		( bs_panel_material = "KU" AND bs_frame_material # "KU") OR \
+		( bs_frame_material = "ST" AND bs_panel_material = "AL") OR \
+		( bs_frame_material = "AL" AND bs_panel_material = "ST") OR \
+		( bs_frame_material = "HO" AND \
+			( bs_panel_material # "GL" AND bs_panel_material # "HO")) ) AND bs_door_leafs > 0 THEN
+		errorI = errorI+1 : errorQ[errorI] = "Material Türblatt passt nicht zur Zarge."
+		ENDIF
+
+	! »»» Glastür-Specials
+	IF  bs_panel_material = "GL" AND bs_leaf_oversize > tlr AND bs_door_leafs > 0 THEN
+		errorI = errorI+1 : errorQ[errorI] = "Bei Glastüren kein Falz möglich."
+		ENDIF
+
+	! »»» Brandschutz
+	IF bs_demand_FireResistance = 1 AND bs_door_leafs > 1 AND dk_panel_folding_nmbr = 0 THEN
+		errorI = errorI+1 : errorQ[errorI] = "Kein Stumpfer Mittelfalz bei Brandschutzanforderung."
+		ENDIF
+
+	! sts = 1+2+8 : GOSUB "debuginfo"
+
+	ENDIF
+
+
+! =============================================================================
+!
+! GRUNDDEFINITION
+!
+! Basis sind LeafWidthG und LeafWidthS und LeafHeight. 
+! Dies sind die Türblattaußenmaße, die im Hauptobjekt berechnet werden.
+! Abhängigkeit Fries- und Rahmenbreite gem. Schörghuber auf Falzseite gemessen (dk_fries_ancor)
+! Fugenbreiten an Zarge (dk_panel_folding_gap) und Mittelfuge (dk_panel_folding_gap2), konstant als Parameter festgelegt,
+! Falztiefe vergrößert sich durch die ebenfalls fest gesetzte Dichtungsstärke der Zarge (dk_frame_gasket_thk).
+! 
+! geometrischer "Einspringpunkt ist die bandseitige untere Ecke auf dem Türblatt (Bandseite).
+! Das Türblatt liegt in XZ-Ebene und Bandgegenseite ist vorne (-), die Bandseite hinten (+)
+! Das Blatt baut ich in den I.Quadranten des Koordinatensystems auf und ist damit ein [L]inkes Türblatt.
+!
+! Die Oberblende bird als separates Türblatt aufgerufen. Die untere Ecke bezieht sich dann auf die Bandseite. 
+! Zur Ausgabe muss die Position noch um die Falzbreite abgesenkt werden.
+!
+! =============================================================================
+
+
+! ------------------------------------------------------------------------[ Basic settings ]
+
+! »»» Standflügel?
+stand = BITTEST(macro_runtype,0)
+
+! »»» Oberblende?
+oberblende = BITTEST(macro_runtype,1)
+
+! »»» Ist da was über dem Türblatt?
+oberLichtBlende = gs_door_transom * (1 + (bs_inner_frame = 2))  ! 1: Oberlicht, 2:Oberblende
+
+! »»» Überfälzt?
+IF bs_leaf_oversize < tlr OR bs_leaf_overhang < tlr THEN stumpf = 1 ELSE stumpf = 0
+
+! »»» Korrektur Abmessungen /Verschiebung wegen Detailierung
+extendsizeL = 0		! Erweiterung BS links
+extendsizeR = 0		! Erweiterung BS rechts
+extendsizeO = 0		! Erweiterung in der Höhe
+extendsizeU = 0		! Erweiterung unten
+offsetElevation = 0	! Lage Quer zur Wand
+
+! »» ... bei stumpfem Türblatt
+IF dk_LOD<500 AND stumpf THEN
+
+	IF dk_LOD<400 THEN
+		! Einrücken auf lichtene Durchgang
+		extendsizeL = extendsizeL - (gs_vb - dk_panel_folding_gap + separateProfiles)
+		extendsizeR = extendsizeR - (gs_vb - dk_panel_folding_gap + separateProfiles)
+		extendsizeO = extendsizeO - (gs_vb - dk_panel_folding_gap + separateProfiles) * (oberLichtBlende # 2) - (gs_vb + separateProfiles) * oberblende
+		ELSE
+		! Fuge zu Zarge (nahezu) füllen
+		extendsizeL = extendsizeL +  dk_panel_folding_gap - separateProfiles
+		extendsizeR = extendsizeR +  dk_panel_folding_gap - separateProfiles
+		extendsizeO = extendsizeO + (dk_panel_folding_gap - separateProfiles) * (oberLichtBlende # 2)
+		ENDIF
+
+	ENDIF
+
+! »» ... bei stumpfem oder überfälztem Türblatt
+IF dk_LOD<300 THEN
+
+	! Vereinfachte Darstellung. Türblattgröße überdeckt Rahmen am Rand
+	IF NOT(gs_sidelight_left) THEN
+		extendsizeL = extendsizeL + gs_frame_width_left + gs_tolerance_left
+		ENDIF
+	IF NOT(gs_sidelight_right) THEN
+		extendsizeR = extendsizeR + gs_frame_width_right + gs_tolerance_right
+		ENDIF
+
+	IF oberLichtBlende = 0 THEN
+		extendsizeO = extendsizeO + gs_frame_width_upper + gs_tolerance_upper
+		ENDIF
+	IF oberLichtBlende = 2 AND oberblende THEN
+		extendsizeO = extendsizeO + gs_frame_width_upper + gs_tolerance_upper
+		ENDIF
+
+	! Um Überstand des Türblattes über die Oberfläche Zarge zurück
+	offsetElevation = bs_leaf_overhang
+
+	ENDIF
+
+! Um Bekleidungsdicke der Zarge zurückspringen, da bei dem LOD Zarge Wandoberflächen-bündig
+IF dk_LOD < 301 AND NOT(gs_frame_type = "RR") THEN offsetElevation = offsetElevation + gs_ub_st1
+
+! Abrücken für Entwicklung
+IF develop=2 THEN offsetElevation = offsetElevation - 0.01 *(1+oberblende)
+
+
+! ----------------------------------------------------------------- [ Definition der Blattgrößen ]
+
+! ... Höhen
+IF oberblende THEN
+	IF dk_LOD < 500 THEN LeafHeight = bs_FrameRebate_height - gs_vb ELSE LeafHeight = bs_FrameRebate_height
+	LeafHeight = LeafHeight - ac_egress_height + extendsizeO + extendsizeU
+	ELSE
+	LeafHeight = ac_leaf_height + gapHeightUnderPanel + extendsizeO
+	ENDIF
+
+! ... Breiten
+IF bs_door_leafs=2 THEN
+	IF symm THEN
+		LeafWidthG = ac_leaf_width	
+		LeafWidthS = gs_SecondLeaf_w
+		ELSE
+		LeafWidthG = ac_leaf_width 	
+		LeafWidthS = gs_SecondLeaf_w
+		ENDIF
+	IF ac_OpeningSide = "L" THEN
+		LeafWidthG = LeafWidthG + extendsizeL
+		LeafWidthS = LeafWidthS + extendsizeR
+		ELSE
+		LeafWidthG = LeafWidthG + extendsizeR
+		LeafWidthS = LeafWidthS + extendsizeL
+		ENDIF
+	ELSE
+	IF oberblende THEN
+		! LeafWidthG = ac_egress_width + 2 * (bs_leaf_oversize + gs_vb * (bs_folding_nmbr > 0) )
+		LeafWidthG = ac_leaf_width + gs_SecondLeaf_w + extendsizeL+extendsizeR ! - bs_leaf_oversize*2
+		LeafWidthS = 0
+		ELSE
+		LeafWidthG = ac_leaf_width + extendsizeL+extendsizeR ! - bs_leaf_oversize*2
+		LeafWidthS = 0
+		ENDIF
+	ENDIF
+
+
+! =============================================================================
+! ENDE INITIALISIERUNG
+! =============================================================================
+
+IF macro_runtype = 256 THEN END errorQ  ! »»» Fehlermeldung
+
+! ------------------------------------------------------------------------[ ... ]
+
+GOTO "masterend"
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+! Errorcontent:
+"debuginfo":
+	IF BITTEST(sts,0) THEN txt = "Abmessungen Türblatt " ELSE txt=""
+	IF BITTEST(sts,1) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "A"
+	IF BITTEST(sts,2) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "B"
+	IF BITTEST(sts,3) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "C"
+	IF BITTEST(sts,4) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "D"
+	IF BITTEST(sts,5) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "E"
+	IF txt # "" THEN txt = " ("+txt+")"
+	RETURN
+
+! Profilabmessungen ...
+"initialize":
+	DIM LPT[][], PBN[][]
+
+	! ... Vereingfachungen nach Level of Detail
+		! "Spiel" im Falz
+		! PARAMETER settings:
+		! dk_panel_folding_gap	= 0.004		! Fuge Türblatt zu Zarge
+		! dk_panel_folding_gap2	= 0.006		! Fuge Türblatt an Mittelfuge
+		! dk_panel_gasket_thk	= 0.002		! Dichtungsstärke Türblatt an Mittelfuge
+		! gapHeightUnderPanel	= 0.005		
+
+	IF stumpf THEN
+
+		! »» Stumpfes Türblatt einstellen
+	
+		IF dk_LOD<500 AND NOT(GLOB_FEEDBACK_MODE) THEN
+
+			! Keine Falzfugen
+			dk_panel_folding_gap = 0 : dk_panel_folding_gap2 = 0
+			dk_frame_gasket_thk  = 0 : dk_panel_gasket_thk   = 0.002
+
+			! Falze reduzieren?
+			bs_folding_nmbr = MIN(1,bs_folding_nmbr)
+			dk_panel_folding_nmbr = MIN(0,dk_panel_folding_nmbr)
+
+			IF dk_LOD<400 THEN ! LOD bis 350
+
+				! Keine Fuge unter Türblatt
+				gapHeightUnderPanel = 0
+
+				! Überfälzung um Falz verbreitern, Da Zarge ohne Falz
+				! LeafOversize = separateProfiles  ! ???
+
+				! "Folien"-Türblatt für Liniendarstellung im Schnitt
+				IF dk_LOD<300 AND (BITTEST(macro_runtype,4) OR BITTEST(macro_runtype,5)) THEN
+					dk_panel_folding_nmbr = 0
+					bs_leaf_overhang = 0
+					gs_leaf_thk = tlr*2
+					ENDIF
+
+				ELSE ! LOD 400
+
+		 		! Profile für "echten" Schnitt trennen
+				! LeafOversize = separateProfiles  ! ???
+
+				ENDIF
+
+			ELSE ! LOD 500
+
+			! plausiblen Fugenspalt an Zarge
+			s = 0.75
+			IF bs_folding_nmbr = 1 THEN
+				dk_panel_folding_gap = MAX( 0, MIN( dk_panel_folding_gap, s * gs_vb ) )
+				dk_frame_gasket_thk  = MAX( 0, MIN( dk_frame_gasket_thk,  s * gs_vt ) )
+				ENDIF
+			IF bs_folding_nmbr = 2 THEN
+				dk_panel_folding_gap = MAX( 0, MIN( dk_panel_folding_gap, s * ( gs_vb - dk_folding_dimensions[1][2] ) ) )
+				dk_frame_gasket_thk  = MAX( 0, MIN( dk_frame_gasket_thk,  s * ( gs_vt - dk_folding_dimensions[1][1] ) ) )
+				ENDIF
+			IF bs_folding_nmbr = 3 THEN
+				dk_panel_folding_gap = MAX( 0, MIN( dk_panel_folding_gap, s * ( gs_vb - dk_folding_dimensions[1][2] - dk_folding_dimensions[2][2] ) ) )
+				dk_frame_gasket_thk  = MAX( 0, MIN( dk_frame_gasket_thk,  s * ( gs_vt - dk_folding_dimensions[1][1] - dk_folding_dimensions[2][1] ) ) )
+				ENDIF
+
+			! Überfälzung um Fuge verbreitern, damit Türblattaußenmaß erhalten bleibt
+			LeafOversize = 0
+
+			ENDIF
+
+		ELSE
+
+		! »» Überfälzetees Türblatt einstellen
+	
+		IF dk_LOD<500 AND NOT(GLOB_FEEDBACK_MODE) THEN
+
+			! Keine Falzfugen
+			dk_panel_folding_gap = 0 : dk_panel_folding_gap2 = 0
+			dk_frame_gasket_thk  = 0 : dk_panel_gasket_thk   = 0.002
+
+			! Falze reduzieren?
+			bs_folding_nmbr = MIN(1,bs_folding_nmbr)
+			dk_panel_folding_nmbr = MIN(0,dk_panel_folding_nmbr)
+
+			IF dk_LOD<400 THEN ! LOD bis 350
+
+				! Keine Fuge unter Türblatt
+				gapHeightUnderPanel = 0
+
+				! Überfälzung um Falz verbreitern, Da Zarge ohne Falz
+				LeafOversize = bs_leaf_oversize + gs_vb + separateProfiles
+
+				! "Folien"-Türblatt für Liniendarstellung im Schnitt
+				IF dk_LOD<300 AND (BITTEST(macro_runtype,4) OR BITTEST(macro_runtype,5)) THEN
+					dk_panel_folding_nmbr = 0
+					bs_leaf_overhang = 0
+					gs_leaf_thk = tlr*2
+					ENDIF
+
+				ELSE ! LOD 400
+
+				! Profile für "echten" Schnitt trennen
+				LeafOversize = bs_leaf_oversize + separateProfiles
+
+				ENDIF
+
+			ELSE ! LOD 500
+
+			! plausiblen Fugenspalt an Zarge
+			s = 0.75
+			IF bs_folding_nmbr = 1 THEN
+				dk_panel_folding_gap = MAX( 0, MIN( dk_panel_folding_gap, s * gs_vb ) )
+				dk_frame_gasket_thk  = MAX( 0, MIN( dk_frame_gasket_thk,  s * gs_vt ) )
+				ENDIF
+			IF bs_folding_nmbr = 2 THEN
+				dk_panel_folding_gap = MAX( 0, MIN( dk_panel_folding_gap, s * ( gs_vb - dk_folding_dimensions[1][2] ) ) )
+				dk_frame_gasket_thk  = MAX( 0, MIN( dk_frame_gasket_thk,  s * ( gs_vt - dk_folding_dimensions[1][1] ) ) )
+				ENDIF
+			IF bs_folding_nmbr = 3 THEN
+				dk_panel_folding_gap = MAX( 0, MIN( dk_panel_folding_gap, s * ( gs_vb - dk_folding_dimensions[1][2] - dk_folding_dimensions[2][2] ) ) )
+				dk_frame_gasket_thk  = MAX( 0, MIN( dk_frame_gasket_thk,  s * ( gs_vt - dk_folding_dimensions[1][1] - dk_folding_dimensions[2][1] ) ) )
+				ENDIF
+
+			! Überfälzung um Fuge verbreitern, damit Türblattaußenmaß erhalten bleibt
+			LeafOversize = bs_leaf_oversize + dk_panel_folding_gap
+
+			ENDIF
+
+		ENDIF
+
+	! plausiblen Fugenspalt an Mittelfalz
+	IF dk_panel_folding_nmbr = 1 THEN
+		dk_panel_gasket_thk   = MAX( 0, MIN( dk_panel_gasket_thk,  s * (gs_leaf_thk - dk_panel_folding_dimensions[1][2]) ) )
+		ENDIF
+	IF dk_panel_folding_nmbr = 2 THEN
+		dk_panel_gasket_thk   = MAX( 0, MIN( dk_panel_gasket_thk,  s * (gs_leaf_thk - dk_panel_folding_dimensions[2][2]) ) )
+		ENDIF
+	IF dk_panel_folding_nmbr = 3 THEN
+		dk_panel_gasket_thk   = MAX( 0, MIN( dk_panel_gasket_thk,  s * (gs_leaf_thk - dk_panel_folding_dimensions[3][2]) ) )
+		ENDIF
+
+
+	! ... von Flügelseite abhängige Variablen festlegen (Standflügel)
+	IF stand THEN 
+
+		! Breite / Höhe Standflügel
+		LeafX = LeafWidthS + (dk_panel_folding_nmbr > 0) * dk_panel_folding_dimensions[1][1] - dk_panel_folding_gap2
+		LeafY = LeafHeight - gapHeightUnderPanel
+
+		! ... Profile:
+		LFWL = leafFrWidthLeft2 + LeafOversize*dk_fries_ancor*(bs_door_leafs<2)
+		LFWR = leafFrWidthRight2 + LeafOversize*dk_fries_ancor
+
+		LFWB = leafFrWidthBottom2
+		LFWT = leafFrWidthTop2 + LeafOversize*dk_fries_ancor + dk_arch_height2 * (BITTEST(dk_mainpanel_design2,6) + BITTEST(dk_mainpanel_design2,7))
+
+		LFWH = dk_leafFrWidthHorizontal2
+		LFWV = dk_leafFrWidthVertical2
+		LAW = dk_arch_height2
+
+		LPDB = dk_panel_division_bottom2 - gapHeightUnderPanel
+		LPDT = dk_panel_division_top2 - gapHeightUnderPanel
+
+		LPS = dk_panel_segments2
+		LPT = dk_panel_division2
+		design = dk_mainpanel_design2
+
+		PBN = dk_panel_bar2 : mullWidthX = mullWidth2 : mullWidthY = mullWidth2 : mullThick = mullThickness2
+
+		ENDIF
+
+	! ... von Flügelseite abhängige Variablen festlegen (Gangflügel)
+	IF NOT(stand) THEN 
+
+		! Breite / Höhe Gangflügel / Oberblende
+		LeafX = LeafWidthG
+		IF oberblende THEN
+			LeafY = LeafHeight - dk_panel_folding_gap * stumpf + bs_leaf_oversize * (1-stumpf)
+			ELSE
+			LeafY = LeafHeight - gapHeightUnderPanel
+			ENDIF
+
+		! ... Profile:
+		LFWL = leafFrWidthLeft + LeafOversize*dk_fries_ancor*(bs_door_leafs<2)
+		LFWR = leafFrWidthRight + LeafOversize*dk_fries_ancor
+
+		LFWB = leafFrWidthBottom
+		LFWT = leafFrWidthTop + LeafOversize*dk_fries_ancor + dk_arch_height * (BITTEST(dk_mainpanel_design,6) + BITTEST(dk_mainpanel_design,7))
+
+		LFWH = dk_leafFrWidthHorizontal
+		LFWV = dk_leafFrWidthVertical
+		LAW = dk_arch_height
+
+		LPDB = dk_panel_division_bottom - gapHeightUnderPanel
+		LPDT = dk_panel_division_top - gapHeightUnderPanel
+
+		LPS = dk_panel_segments
+		LPT = dk_panel_division
+		design = dk_mainpanel_design
+
+		PBN = dk_panel_bar : mullWidthX = mullWidth : mullWidthY = mullWidth : mullThick = mullThickness
+
+		ENDIF
+
+	RETURN
+
+! Teilfeldgrößen
+"posDivisions":
+
+	DIM LPDD[3][2]
+
+	IF LPS = 1 THEN
+		! Hauptfeld
+		LPDD[1][2] = (LeafX - LFWL - LFWR - LFWV*LPT[1][2]) / (LPT[1][2]+1)
+		LPDD[1][1] = (LeafY - LFWT - LFWB - LFWH*LPT[1][1]) / (LPT[1][1]+1)
+		! Brüstungsfeld
+		LPDD[2][2] = 0
+		LPDD[2][1] = 0
+		! Mittelfeld
+		LPDD[3][2] = 0
+		LPDD[3][1] = 0
+		ENDIF
+	IF LPS = 2 THEN
+		! Hauptfeld
+		LPDD[1][2] = (LeafX - LFWL - LFWR - LFWV*LPT[1][2]) / (LPT[1][2]+1)
+		LPDD[1][1] = (LeafY - LFWT - (LPDB + LFWH/2) - LFWH*LPT[1][1]) / (LPT[1][1]+1)
+		! Brüstungsfeld
+		LPDD[2][2] = (LeafX - LFWL - LFWR - LFWV*LPT[2][2]) / (LPT[2][2]+1)
+		LPDD[2][1] = ((LPDB - LFWH/2) - LFWB - LFWH*LPT[2][1]) / (LPT[2][1]+1)
+		! Mittelfeld
+		LPDD[3][2] = 0
+		LPDD[3][1] = 0
+		ENDIF
+	IF LPS = 3 THEN
+		! Hauptfeld
+		LPDD[1][2] = (LeafX - LFWL - LFWR - LFWV*LPT[1][2]) / (LPT[1][2]+1)
+		LPDD[1][1] = (LeafY - LFWT - (LPDT + LFWH/2) - LFWH*LPT[1][1]) / (LPT[1][1]+1)
+		! Brüstungsfeld
+		LPDD[2][2] = (LeafX - LFWL - LFWR - LFWV*LPT[2][2]) / (LPT[2][2]+1)
+		LPDD[2][1] = ((LPDB - LFWH/2) - LFWB - LFWH*LPT[2][1]) / (LPT[2][1]+1)
+		! Mittelfeld
+		LPDD[3][2] = (LeafX - LFWL - LFWR - LFWV*LPT[3][2]) / (LPT[3][2]+1)
+		LPDD[3][1] = ((LPDT - LFWH/2) - (LPDB + LFWH/2) - LFWH*LPT[3][1]) / (LPT[3][1]+1)
+		ENDIF
+
+	RETURN
+
+! Koordinaten Zargenfalz
+"shapeSideFolding":
+
+	! n=n+1 : PUT offsetX + flipX * ( 0 ), 0, msk  ! node 0
+
+	IF bs_leaf_oversize > tlr THEN
+		! Überfälzung
+		x = LeafOversize
+		y = bs_leaf_overhang
+		! Koordinaten
+		n=n+1 : PUT offsetX + flipX * ( 0 ), 			gs_leaf_thk-y, msk  ! node 1
+		falzX = 	offsetX + flipX * ( x ) : falzY = 	gs_leaf_thk-y
+		n=n+1 : PUT falzX, falzY, msk  ! node 2
+		ELSE
+		! Stumpf
+		falzX = 0
+		falzY = 0
+		x = 0
+		IF dk_panel_folding_ancor # 2 THEN y = bs_leaf_overhang ELSE y = 0
+		ENDIF
+
+	foldingEdgeX = x + gs_vb
+	foldingEdgeY = gs_leaf_thk - y - gs_vt
+	gap2rebate = (foldingEdgeY>tlr)
+
+	IF bs_folding_nmbr = 1 THEN
+		falzX = offsetX + flipX * x : falzY = foldingEdgeY + dk_frame_gasket_thk * gap2rebate  ! node 31
+		n=n+1 : PUT falzX, falzY, msk
+		ENDIF
+
+	IF bs_folding_nmbr = 2 THEN
+		n=n+1 : PUT	offsetX + flipX * ( x ), 													foldingEdgeY + dk_folding_dimensions[1][1]+dk_frame_gasket_thk, msk  ! node 3
+		n=n+1 : PUT	offsetX + flipX * ( foldingEdgeX - dk_folding_dimensions[1][2] ), 			foldingEdgeY + dk_folding_dimensions[1][1]+dk_frame_gasket_thk, msk  ! node 4
+		falzX = 	offsetX + flipX * ( foldingEdgeX - dk_folding_dimensions[1][2] ) : falzY = 	foldingEdgeY + dk_frame_gasket_thk * gap2rebate  ! node 42
+		n=n+1 : PUT falzX, falzY, msk
+		ENDIF
+
+	IF bs_folding_nmbr = 3 THEN
+		n=n+1 : PUT	offsetX + flipX * ( x ), 																		foldingEdgeY + dk_folding_dimensions[1][1]+dk_folding_dimensions[2][1]+dk_frame_gasket_thk, msk  ! node 3
+		n=n+1 : PUT	offsetX + flipX * ( foldingEdgeX - dk_folding_dimensions[1][2]-dk_folding_dimensions[2][2]), 	foldingEdgeY + dk_folding_dimensions[1][1]+dk_folding_dimensions[2][1]+dk_frame_gasket_thk, msk  ! node 4
+		n=n+1 : PUT	offsetX + flipX * ( foldingEdgeX - dk_folding_dimensions[1][2]-dk_folding_dimensions[2][2]), 	foldingEdgeY + dk_folding_dimensions[1][1]+dk_frame_gasket_thk, msk  ! node 5
+		n=n+1 : PUT	offsetX + flipX * ( foldingEdgeX - dk_folding_dimensions[1][2] ), 								foldingEdgeY + dk_folding_dimensions[1][1]+dk_frame_gasket_thk, msk  ! node 6
+		falzX = 	offsetX + flipX * ( foldingEdgeX - dk_folding_dimensions[1][2] ) : 						falzY =	foldingEdgeY + dk_frame_gasket_thk * gap2rebate  ! node 63
+		n=n+1 : PUT falzX, falzY, msk
+		ENDIF
+
+	! last node(s)
+	IF bs_folding_nmbr = 0 THEN
+		falzX = offsetX + flipX * x : falzY = 0
+		n=n+1 : PUT falzX, falzY, msk
+		ELSE
+		IF foldingEdgeY > tlr THEN
+			n=n+1 : PUT offsetX + flipX * foldingEdgeX, foldingEdgeY + dk_frame_gasket_thk, msk  ! node 8
+			falzX = offsetX + flipX * foldingEdgeX : falzY = 0
+			n=n+1 : PUT falzX, falzY, msk
+			ENDIF
+		ENDIF
+
+	! s=0.001 : ADD2 -s,-s : POLY2_B n+1, 1+2+4, 1,0, offsetX, 0, msk, USE(n*3) : DEL 1
+
+	RETURN
+
+! Koordinaten Mittelfalz Gangflügel
+"shapeMiddleFoldingGang":
+
+	! n=n+1 : PUT offsetX + flipX * ( 0 ), 0, msk  ! node 0
+
+	IF dk_panel_folding_nmbr = 1 THEN
+		n=n+1 : PUT offsetX, dk_panel_folding_dimensions[1][2], msk
+		n=n+1 : PUT offsetX + flipX * dk_panel_folding_dimensions[1][1], dk_panel_folding_dimensions[1][2], msk
+		ENDIF
+
+	IF dk_panel_folding_nmbr = 2 THEN
+		n=n+1 : PUT offsetX, dk_panel_folding_dimensions[2][2], msk
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[1][1] - dk_panel_folding_dimensions[2][1] ), dk_panel_folding_dimensions[2][2], msk
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[1][1] - dk_panel_folding_dimensions[2][1] ), dk_panel_folding_dimensions[1][2], msk
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[1][1] )                                    , dk_panel_folding_dimensions[1][2], msk
+		ENDIF
+
+	IF dk_panel_folding_nmbr = 3 THEN
+		n=n+1 : PUT offsetX, dk_panel_folding_dimensions[3][2], msk
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[1][1] - dk_panel_folding_dimensions[3][1] ), dk_panel_folding_dimensions[3][2], msk
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[1][1] - dk_panel_folding_dimensions[3][1] ), dk_panel_folding_dimensions[2][2], msk
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[1][1] - dk_panel_folding_dimensions[2][1] ), dk_panel_folding_dimensions[2][2], msk
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[1][1] - dk_panel_folding_dimensions[2][1] ), dk_panel_folding_dimensions[1][2], msk
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[1][1] )                                    , dk_panel_folding_dimensions[1][2], msk
+		ENDIF
+
+	! n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[1][1] ), 0, msk  ! last node
+
+	RETURN
+
+! Koordinaten Mittelfalz  Standflügel
+"shapeMiddleFoldingStand":
+
+	! n=n+1 : PUT 0, offsetX + flipX * ( dk_panel_folding_dimensions[1][2] - dk_panel_gasket_thk ), msk  ! node 02
+
+	IF dk_panel_folding_nmbr = 1 THEN
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[1][1] ), dk_panel_folding_dimensions[1][2] - dk_panel_gasket_thk, msk
+		ENDIF
+
+	IF dk_panel_folding_nmbr = 2 THEN
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[2][1] ), dk_panel_folding_dimensions[1][2] - dk_panel_gasket_thk, msk  ! node 52
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[2][1] ), dk_panel_folding_dimensions[2][2] - dk_panel_gasket_thk, msk  ! node 53
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[1][1] ), dk_panel_folding_dimensions[2][2] - dk_panel_gasket_thk, msk  ! node 13
+		ENDIF
+
+	IF dk_panel_folding_nmbr = 3 THEN
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[2][1] ), dk_panel_folding_dimensions[1][2] - dk_panel_gasket_thk, msk  ! node 52
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[2][1] ), dk_panel_folding_dimensions[2][2] - dk_panel_gasket_thk, msk  ! node 53
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[3][1] ), dk_panel_folding_dimensions[2][2] - dk_panel_gasket_thk, msk  ! node 63
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[3][1] ), dk_panel_folding_dimensions[3][2] - dk_panel_gasket_thk, msk  ! node 64
+		n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[1][1] ), dk_panel_folding_dimensions[3][2] - dk_panel_gasket_thk, msk  ! node 14
+		ENDIF
+
+	! n=n+1 : PUT offsetX + flipX * ( dk_panel_folding_dimensions[1][1] ), gs_leaf_thk, msk  ! node 1T
+	! n=n+1 : PUT offsetX + flipX * ( 0 ), gs_leaf_thk, msk  ! last node 00
+	RETURN
+
+! Kalkulation Flügelgewicht
+"calcLeafWeight":
+
+	areaMAIN = 0 : areaGLAS = 0 : areaFILL = 0
+	volMAIN  = 0 : volGLAS  = 0 : volFILL  = 0
+
+	areaMAIN = LeafX * LeafY
+	volMAIN  = areaMAIN * gs_leaf_thk
+
+	FOR i=1 TO LPS+tlr
+
+		! IF i-1 < LPS-tlr THEN
+
+			s = LPDD[i][2] * LPDD[i][1]
+			areaMAIN = areaMAIN - s
+			volMAIN  = volMAIN  - s * gs_leaf_thk
+
+			IF stand THEN
+
+				t = dk_panel_filling_thk2[i]
+				aufbau = dk_panel_filling2[i]
+
+				ELSE
+
+				t = dk_panel_filling_thk[i]
+				aufbau = dk_panel_filling[i]
+
+				ENDIF 
+
+			IF aufbau = "G1" THEN
+				areaGLAS = areaGLAS + s
+				volGLAS  = volGLAS + s * t
+				ELSE
+
+				IF aufbau = "G2" THEN
+					areaGLAS = areaGLAS + s
+					volGLAS  = volGLAS + s * MIN(t/3, 0.006) * 2
+					ELSE
+
+					IF aufbau = "G3" THEN
+						areaGLAS = areaGLAS + s
+						volGLAS  = volGLAS + s * MIN(t/5, 0.006) * 3
+						ELSE
+							
+						! PL, K1, K2 ...
+						areaFILL = areaFILL + s
+						volFILL  = volFILL  + s * t
+						ENDIF
+
+					ENDIF
+
+				ENDIF
+			! ENDIF
+		
+		NEXT i
+
+	! bs_panel_type     "VB" "RF" "RP"
+	! bs_panel_material "HO" "ST" "GL" "KU" "AL"
+
+	dichteGLAS = 2500 ! 2500-2600 kg/cbm Dichte Glas
+	dichteRAHMEN = 700  ! ??? kg/cbm Dichte Türblatt (Material allgemein: Stahlblechtür, Röhrenspantür, ...)
+	dichteFUELLUNG = dichteRAHMEN
+
+	IF bs_panel_type = "RP" AND (bs_panel_material = "AL" OR bs_panel_material = "KU") THEN
+		dichteRAHMEN = 550  ! ??? kg/cbm Dichte Aluminium 2700kg/m3, 80% Luft, 20% Alu, 90x70mm=0,001305 m3
+		dichteFUELLUNG = 550 ! Sandwichfüllungen
+		ENDIF
+	IF bs_panel_type = "RP" AND bs_panel_material = "ST" THEN
+		dichteRAHMEN = 1220 ! ??? kg/cbm Dichte Stahl 7860kg/m3, 11x14 Profile 90x70mm x 0,001 m3
+		dichteFUELLUNG = 550 ! Sandwichfüllungen
+		ENDIF
+
+	IF bs_panel_type = "RP" AND bs_panel_material = "ST" AND bs_demand_FireResistance=1 THEN
+		dichteRAHMEN = 1265 ! ??? kg/cbm Dichte Türblatt (Brandschutztür)
+		dichteFUELLUNG = 550 !??? Wahrscheinlich nur MiWo
+		ENDIF
+
+	IF bs_panel_type = "RF" AND bs_panel_material = "HO" THEN
+		dichteRAHMEN = 800  ! 470-690 kg/cbm Dichte Türblatt (MassivHolz)
+		dichteFUELLUNG = dichteRAHMEN
+		ENDIF
+
+	IF bs_panel_type = "VB" AND bs_panel_material = "GL" THEN
+		dichteRAHMEN = 2600 ! 2500-2600 kg/cbm Dichte Türblatt (Glas)
+		dichteFUELLUNG = dichteRAHMEN
+		ENDIF
+	IF bs_panel_type = "VB" AND (bs_panel_material = "ST" OR bs_panel_material = "AL") THEN
+		dichteRAHMEN = 600 ! 2500-2600 kg/cbm Dichte Türblatt (Sandwich)
+		dichteFUELLUNG = dichteRAHMEN
+		ENDIF
+
+	weight = INT((volMAIN * dichteRAHMEN + volGLAS * dichteGLAS) * 2 + 0.5) / 2
+
+	RETURN
+
+! =============================================================================
+! =============================================================================
+
+"masterend":
+
+

@@ -1,0 +1,2 @@
+
+IF NOT( BITTEST(macro_runtype,5) ) THEN END

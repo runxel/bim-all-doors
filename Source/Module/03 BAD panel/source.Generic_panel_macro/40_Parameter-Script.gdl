@@ -1,0 +1,1619 @@
+! ------------------------------------------------------------------------[ Module development settings ]
+
+IF macro_runtype = 0 THEN
+	VALUES{2} "macro_runtype" 0, "IDLE", 1,"handshake page hirarchy", 2,"handshake page names", 3,"CALL UI page", 5,"return element values", 10,"rebuilt VALUE lists"
+	ENDIF
+
+! Auswahl für dk_mainpanel_design und dk_mainpanel_design2 mit 1 = Sprossen nicht implementiert
+
+! =============================================================================
+! PLAUSIBILITY
+! =============================================================================
+
+! ----------------------------------------------------------------- Parameterverfügbarkeiten
+
+! »»» Rahmenprofile
+
+IF bs_door_leafs > 0 THEN
+	IF dk_panel_segments < 1 THEN LOCK "dk_mainpanel_design", "dk_arch_height"
+	IF dk_panel_segments < 1 THEN LOCK "leafFrWidthLeft", "leafFrWidthRight", "leafFrWidthTop", "leafFrWidthBottom"
+	IF dk_panel_segments < 1 THEN LOCK "dk_leafFrWidthHorizontal", "dk_leafFrWidthVertical"
+	IF NOT(BITTEST(dk_mainpanel_design,6) OR BITTEST(dk_mainpanel_design,7)) THEN LOCK "dk_arch_height"
+	IF dk_panel_segments < 2 THEN LOCK "dk_panel_division_bottom"
+	IF dk_panel_segments < 3 THEN LOCK "dk_panel_division_top"
+	IF nobar=63 THEN LOCK "mullWidth", "mullThickness"
+	ENDIF
+
+IF bs_door_leafs > 1 THEN
+	IF dk_panel_segments2 < 1 THEN LOCK "dk_mainpanel_design2", "dk_arch_height2"
+	IF dk_panel_segments2 < 1 THEN LOCK "leafFrWidthLeft2", "leafFrWidthRight2", "leafFrWidthTop2", "leafFrWidthBottom2"
+	IF dk_panel_segments2 < 1 THEN LOCK "dk_leafFrWidthHorizontal2", "dk_leafFrWidthVertical2"
+	IF NOT(BITTEST(dk_mainpanel_design2,6) OR BITTEST(dk_mainpanel_design2,7)) THEN LOCK "dk_arch_height2"
+	IF dk_panel_segments2 < 2 THEN LOCK "dk_panel_division_bottom2"
+	IF dk_panel_segments2 < 3 THEN LOCK "dk_panel_division_top2"
+	IF nobar2=63 THEN LOCK "mullWidth2", "mullThickness2"
+	ENDIF
+
+! »»» Öffnungslinien
+IF (dk_opening3D = 4 OR dk_opening3D = 0) AND (dk_openingSA = 4 OR dk_openingSA = 0) THEN
+	LOCK "dk_openLineType_SF", "dk_openLineType_BS", "dk_openLineType_BGS"
+	ENDIF
+
+! ----------------------------------------------------------------- Vordefinierte Türblätter (Archicad)
+
+IF (GLOB_MODPAR_NAME = "iDoorPanelType" OR GLOB_MODPAR_NAME = "dk_LOI" OR GLOB_MODPAR_NAME = "dk_materials") AND dk_LOI < 5 AND iDoorPanelType < 27 THEN
+
+	sts = 0
+	GOSUB "predefinedLeafs"
+
+	IF sts THEN
+		bs_leaf_oversize = 0.013
+		bs_leaf_overhang = 0.018  ! 0.021
+		gs_leaf_thk      = gs_vt + bs_leaf_overhang
+
+		PARAMETERS  gs_leaf_thk=gs_leaf_thk, 
+			bs_leaf_oversize = bs_leaf_oversize, 
+			bs_leaf_overhang  = bs_leaf_overhang,
+
+			! ### Teilung / Design
+			dk_panel_segments        = dk_panel_segments,
+			dk_mainpanel_design      = dk_mainpanel_design,
+			dk_panel_filling         = dk_panel_filling,
+			leafFrWidthLeft          = leafFrWidthLeft,
+			leafFrWidthRight         = leafFrWidthRight,
+			leafFrWidthBottom        = leafFrWidthBottom,
+			leafFrWidthTop           = leafFrWidthTop,
+			dk_arch_height           = dk_arch_height,
+			dk_leafFrWidthHorizontal = dk_leafFrWidthHorizontal,
+			dk_leafFrWidthVertical   = dk_leafFrWidthVertical,
+			! ### Fülliungen / felder
+			dk_panel_division_bottom = dk_panel_division_bottom,
+			dk_panel_division_top    = dk_panel_division_top,
+			dk_panel_division        = dk_panel_division,
+			dk_panel_filling_thk     = dk_panel_filling_thk,
+			dk_panel_bar             = dk_panel_bar,
+			mullWidth                = mullWidth,
+			mullThickness            = mullThickness,
+
+			! ### Schraffurstifte
+			dk_fill_pens[dka_panelfill1_penF] = dk_fill_pens[dka_panelfill1_penF],
+			dk_fill_pens[dka_panelfill2_penF] = dk_fill_pens[dka_panelfill2_penF],
+			dk_fill_pens[dka_panelfill3_penF] = dk_fill_pens[dka_panelfill3_penF],
+			! ### Hintergrundstifte
+			dk_bkg_pens[dka_panelfill1_penB] = dk_bkg_pens[dka_panelfill1_penB],
+			dk_bkg_pens[dka_panelfill2_penB] = dk_bkg_pens[dka_panelfill2_penB],
+			dk_bkg_pens[dka_panelfill3_penB] = dk_bkg_pens[dka_panelfill3_penB],
+			! ### Schraffuren
+			dk_fills[dka_panelfill1_fill] = dk_fills[dka_panelfill1_fill],
+			dk_fills[dka_panelfill2_fill] = dk_fills[dka_panelfill2_fill],
+			dk_fills[dka_panelfill3_fill] = dk_fills[dka_panelfill3_fill],
+			! ### Materialien,
+			dk_materials[dka_panel_mat_BGS] = dk_materials[dka_panel_mat_BGS],
+			dk_materials[dka_panelfill1_mat_BS] = dk_materials[dka_panelfill1_mat_BGS],
+			dk_materials[dka_panelfill1_mat_BGS] = dk_materials[dka_panelfill1_mat_BGS],
+			dk_materials[dka_panelfill2_mat_BS] = dk_materials[dka_panelfill2_mat_BS],
+			dk_materials[dka_panelfill2_mat_BGS] = dk_materials[dka_panelfill2_mat_BGS],
+			dk_materials[dka_panelfill3_mat_BS] = dk_materials[dka_panelfill3_mat_BS],
+			dk_materials[dka_panelfill3_mat_BGS] = dk_materials[dka_panelfill3_mat_BGS]
+
+		ENDIF
+
+	ENDIF
+
+IF GLOB_MODPAR_NAME = "dk_LOI" AND dk_LOI > 4 THEN
+	iDoorPanelType = 27
+	PARAMETERS iDoorPanelType = iDoorPanelType
+	ENDIF
+
+IF (GLOB_MODPAR_NAME = "iDoorPanelType2" OR GLOB_MODPAR_NAME = "dk_LOI" OR GLOB_MODPAR_NAME = "dk_materials") AND bs_door_leafs > 1 AND dk_LOI < 5 AND iDoorPanelType2 < 27 THEN
+
+	sts = 0
+	GOSUB "predefinedLeafs2"
+
+	IF sts THEN
+		bs_leaf_oversize = 0.013
+		bs_leaf_overhang = 0.018  ! 0.021
+		gs_leaf_thk      = gs_vt + bs_leaf_overhang
+
+		PARAMETERS  gs_leaf_thk=gs_leaf_thk, 
+			bs_leaf_oversize = bs_leaf_oversize, 
+			bs_leaf_overhang  = bs_leaf_overhang,
+
+			! ### Teilung / Design
+			dk_panel_segments2           = dk_panel_segments2,
+			dk_mainpanel_design2         = dk_mainpanel_design2,
+			dk_panel_filling2            = dk_panel_filling2,
+			leafFrWidthLeft2             = leafFrWidthLeft2,
+			leafFrWidthRight2            = leafFrWidthRight2,
+			leafFrWidthBottom2           = leafFrWidthBottom2,
+			leafFrWidthTop2              = leafFrWidthTop2,
+			dk_arch_height2              = dk_arch_height2,
+			dk_leafFrWidthHorizontal2    = dk_leafFrWidthHorizontal2,
+			dk_leafFrWidthVertical2      = dk_leafFrWidthVertical2,
+			! ### Fülliungen / felder
+			dk_panel_division_bottom2    = dk_panel_division_bottom2,
+			dk_panel_division_top2       = dk_panel_division_top2,
+			dk_panel_division2           = dk_panel_division2,
+			dk_panel_filling_thk2        = dk_panel_filling_thk2,
+			dk_panel_bar2                = dk_panel_bar2,
+			mullWidth2                   = mullWidth2,
+			mullThickness2               = mullThickness2,
+			! ### Falz
+			dk_panel_folding_nmbr       = dk_panel_folding_nmbr,
+			dk_panel_folding_dimensions = dk_panel_folding_dimensions,
+
+			! ### Schraffurstifte
+			dk_fill_pens[dka_panel2fill1_penF] = dk_fill_pens[dka_panel2fill1_penF],
+			dk_fill_pens[dka_panel2fill2_penF] = dk_fill_pens[dka_panel2fill2_penF],
+			dk_fill_pens[dka_panel2fill3_penF] = dk_fill_pens[dka_panel2fill3_penF],
+			! ### Hintergrundstifte
+			dk_bkg_pens[dka_panel2fill1_penB] = dk_bkg_pens[dka_panel2fill1_penB],
+			dk_bkg_pens[dka_panel2fill2_penB] = dk_bkg_pens[dka_panel2fill2_penB],
+			dk_bkg_pens[dka_panel2fill3_penB] = dk_bkg_pens[dka_panel2fill3_penB],
+			! ### Schraffuren
+			dk_fills[dka_panel2fill1_fill] = dk_fills[dka_panel2fill1_fill],
+			dk_fills[dka_panel2fill2_fill] = dk_fills[dka_panel2fill2_fill],
+			dk_fills[dka_panel2fill3_fill] = dk_fills[dka_panel2fill3_fill],
+			! ### Materialien,
+			dk_materials[dka_panel2_mat_BS] = dk_materials[dka_panel2_mat_BS],
+			dk_materials[dka_panel2_mat_BGS] = dk_materials[dka_panel2_mat_BGS],
+			dk_materials[dka_panel2fill1_mat_BS] = dk_materials[dka_panel2fill1_mat_BS],
+			dk_materials[dka_panel2fill1_mat_BGS] = dk_materials[dka_panel2fill1_mat_BGS],
+			dk_materials[dka_panel2fill2_mat_BS] = dk_materials[dka_panel2fill2_mat_BS],
+			dk_materials[dka_panel2fill2_mat_BGS] = dk_materials[dka_panel2fill2_mat_BGS],
+			dk_materials[dka_panel2fill3_mat_BS] = dk_materials[dka_panel2fill3_mat_BS],
+			dk_materials[dka_panel2fill3_mat_BGS] = dk_materials[dka_panel2fill3_mat_BGS]
+
+		ENDIF
+
+	ENDIF
+
+IF GLOB_MODPAR_NAME = "dk_LOI" AND dk_LOI > 4 AND bs_door_leafs > 1 THEN
+	iDoorPanelType2 = 27
+	PARAMETERS iDoorPanelType2 = iDoorPanelType2
+	ENDIF
+
+
+! ----------------------------------------------------------------- Parameterabhängigkeiten
+
+! »»» Rahmenrohrzargen bestimmen Auswahl
+
+IF gs_frame_type # "RR" THEN
+	IF bs_panel_type = "RP" THEN
+		bs_panel_type   = "RF" : PARAMETERS bs_panel_type = bs_panel_type
+		ENDIF
+	ENDIF
+
+! »»» Glastüren ohne Teilungen, ...
+
+IF bs_panel_material = "GL" AND ( bs_panel_type = "RF" OR bs_panel_type = "RP" ) THEN
+	bs_panel_type   = "VB" : PARAMETERS bs_panel_type = bs_panel_type
+	bs_leaf_oversize   = 0 : PARAMETERS bs_leaf_oversize = bs_leaf_oversize
+	ENDIF
+
+IF bs_panel_material = "GL" AND dk_panel_segments > 0 THEN
+	dk_panel_segments = 1 : PARAMETERS dk_panel_segments = dk_panel_segments
+	ENDIF
+IF bs_panel_material = "GL" AND dk_panel_segments2 > 0 THEN
+	dk_panel_segments2 = 1 : PARAMETERS dk_panel_segments2 = dk_panel_segments2
+	ENDIF
+
+! »»» Glastüren keine Kantenausbildung
+
+IF bs_panel_material = "GL" THEN 
+	dk_panel_bandings = "-"
+	PARAMETERS dk_panel_bandings = dk_panel_bandings
+	LOCK "dk_panel_bandings"
+	ENDIF
+
+! »»» Kunststoff nicht als Vollblatt
+
+IF bs_panel_material = "KU" AND bs_panel_type = "VB" THEN
+	bs_panel_material = "ST" : PARAMETERS bs_panel_material = bs_panel_material
+	ENDIF
+! »»» Rohrrahmen nicht aus Holz
+IF NOT( bs_panel_material = "ST" OR bs_panel_material = "AL" OR bs_panel_material = "KU" ) AND bs_panel_type = "RP" THEN
+	bs_panel_material = "ST" : PARAMETERS bs_panel_material = bs_panel_material
+	ENDIF
+
+! ... Rahmenkonstruktionen mind. 1 Feld
+
+IF ( bs_panel_type = "RF" OR bs_panel_type = "RP" ) AND dk_panel_segments < 1 THEN
+	dk_panel_segments = 1 : PARAMETERS dk_panel_segments = dk_panel_segments
+	ENDIF
+IF ( bs_panel_type = "RF" OR bs_panel_type = "RP" ) AND dk_panel_segments2 < 1 THEN
+	dk_panel_segments2 = 1 : PARAMETERS dk_panel_segments2 = dk_panel_segments2
+	ENDIF
+
+
+! »»» Bei Rahmenblättern keine Sonderausschnitte
+
+IF ( bs_panel_type = "RF" OR bs_panel_type = "RP" ) AND (dk_mainpanel_design = 2 OR dk_mainpanel_design = 4) THEN
+	dk_mainpanel_design = 0 : PARAMETERS dk_mainpanel_design = dk_mainpanel_design
+	ENDIF
+IF ( bs_panel_type = "RF" OR bs_panel_type = "RP" ) AND (dk_mainpanel_design2 = 2 OR dk_mainpanel_design2 = 4) THEN
+	dk_mainpanel_design2 = 0 : PARAMETERS dk_mainpanel_design2 = dk_mainpanel_design2
+	ENDIF
+
+
+! »»» Anzahl Teilungen und Sprossen nicht negativ
+
+FOR i = 1 TO 3 : FOR j = 1 TO 2
+	IF dk_panel_division[i][j] < 0 THEN
+		dk_panel_division[i][j] = 0 : PARAMETERS dk_panel_division[i][j] = dk_panel_division[i][j]
+		ENDIF
+	NEXT j  : NEXT i
+
+FOR i = 1 TO 3 : FOR j = 1 TO 2
+	IF dk_panel_bar[i][j] < 0 THEN
+		dk_panel_bar[i][j] = 0 : PARAMETERS dk_panel_bar[i][j] = dk_panel_bar[i][j]
+		ENDIF
+	NEXT j  : NEXT i
+
+
+! »»» Falz des Blattes an Zargenfalztiefe(n) prüfen und ggf. anpassen
+
+IF bs_leaf_oversize < tlr THEN
+	bs_leaf_oversize = 0
+	PARAMETERS bs_leaf_oversize = bs_leaf_oversize
+	ENDIF
+
+IF bs_leaf_oversize > tlr AND bs_leaf_overhang < tlr THEN
+	! Überfälzung hat keine Dicke. Korrigieren
+	bs_leaf_overhang = MAX(0.018, gs_leaf_thk - gs_vt)
+	PARAMETERS bs_leaf_overhang = bs_leaf_overhang
+	ENDIF
+
+IF dk_panel_folding_ancor  = 1 THEN  ! Anker am Falz
+	IF bs_leaf_oversize > tlr AND ABS(gs_leaf_thk - bs_leaf_overhang - gs_vt) > tlr THEN
+		! Überfälzt: TB = Zargenfalz + Überfälzungsdicke
+		gs_leaf_thk = bs_leaf_overhang + gs_vt
+		PARAMETERS gs_leaf_thk = gs_leaf_thk
+		ENDIF
+	IF ABS(gs_leaf_thk - bs_leaf_overhang - gs_vt) > tlr THEN
+		! Überfälzungsdicke = TB - Zargenfalz
+		bs_leaf_overhang = gs_leaf_thk - gs_vt
+		PARAMETERS bs_leaf_overhang = bs_leaf_overhang
+		ENDIF
+	IF bs_leaf_oversize < tlr THEN LOCK "bs_leaf_overhang" ELSE LOCK "gs_leaf_thk"
+	ENDIF
+
+IF dk_panel_folding_ancor  = 2 THEN  ! Anker am Spiegel
+	IF bs_leaf_oversize > tlr AND gs_leaf_thk - bs_leaf_overhang - gs_vt < -tlr THEN
+		gs_leaf_thk = bs_leaf_overhang + gs_vt
+		PARAMETERS gs_leaf_thk = gs_leaf_thk
+		ENDIF
+	IF bs_leaf_oversize < tlr AND gs_vt - gs_leaf_thk > tlr THEN
+		gs_leaf_thk = gs_vt
+		PARAMETERS gs_leaf_thk = gs_leaf_thk
+		ENDIF
+	IF bs_leaf_oversize < tlr THEN
+		bs_leaf_overhang = 0
+		PARAMETERS bs_leaf_overhang = bs_leaf_overhang
+		LOCK "bs_leaf_overhang"
+		ENDIF
+	ENDIF
+
+IF dk_panel_folding_ancor  = 3 THEN  ! Frei positioniert
+	IF gs_leaf_thk - bs_leaf_overhang - gs_vt < -tlr THEN
+		gs_leaf_thk = bs_leaf_overhang + gs_vt
+		PARAMETERS gs_leaf_thk = gs_leaf_thk
+		ENDIF
+	ENDIF
+
+
+! »»» Falz des Blattes an Mittelfalz prüfen und anpassen
+
+IF dk_panel_folding_nmbr = 0 THEN
+
+	! Kein Mittelfalz.
+	dk_panel_folding_dimensions[dki_Mittelfalz1][1] = 0
+	PARAMETERS dk_panel_folding_dimensions[dki_Mittelfalz1][1] = dk_panel_folding_dimensions[dki_Mittelfalz1][1]
+
+	ELSE
+
+	! Vertikale Falztiefen prüfen und korrigieren.
+	s=0 : j=2
+	FOR i=1 TO dk_panel_folding_nmbr
+		IF gs_leaf_thk - dk_panel_folding_dimensions[i][j] < tlr OR dk_panel_folding_dimensions[i][j] - s < tlr  THEN
+			dk_panel_folding_dimensions[i][j] = i * gs_leaf_thk / (dk_panel_folding_nmbr+1)
+			IF dk_panel_folding_dimensions[i][j] - s < tlr  THEN
+				dk_panel_folding_dimensions[i][j] = s + (gs_leaf_thk - s)/(dk_panel_folding_nmbr-(i-1)+1)
+				ENDIF
+			PARAMETERS dk_panel_folding_dimensions[i][j] = dk_panel_folding_dimensions[i][j]
+			ENDIF
+		s = dk_panel_folding_dimensions[i][j]
+		NEXT i
+	! Horizontale Falzbreiten prüfen und korrigieren.
+	IF dk_panel_folding_dimensions[dki_Mittelfalz1][1] < tlr THEN
+		dk_panel_folding_dimensions[dki_Mittelfalz1][1] = 0.015
+		PARAMETERS dk_panel_folding_dimensions[dki_Mittelfalz1][1] = dk_panel_folding_dimensions[dki_Mittelfalz1][1]
+		ENDIF
+	s=0 : j=1
+	FOR i=2 TO dk_panel_folding_nmbr
+		IF dk_panel_folding_dimensions[dki_Mittelfalz1][1] - dk_panel_folding_dimensions[i][j] < tlr OR dk_panel_folding_dimensions[i][j]-s < tlr THEN
+			dk_panel_folding_dimensions[i][j] = (i-1) * dk_panel_folding_dimensions[dki_Mittelfalz1][1] / (dk_panel_folding_nmbr)
+			IF dk_panel_folding_dimensions[i][j]-s < tlr THEN
+				dk_panel_folding_dimensions[i][j] = s + (dk_panel_folding_dimensions[dki_Mittelfalz1][1] - s)/(dk_panel_folding_nmbr-(i-1))
+				ENDIF
+			PARAMETERS dk_panel_folding_dimensions[i][j] = dk_panel_folding_dimensions[i][j]
+			ENDIF
+		s = dk_panel_folding_dimensions[i][j]
+		NEXT i
+
+	ENDIF
+
+
+! »»» Profilbreiten + Abstände - GANGFLÜGEL
+
+IF bs_door_leafs > 0  THEN
+
+	IF dk_panel_segments THEN
+
+		stand = 0 : GOSUB "initialize"
+
+		mFeld = 0.05  !MIN(LeafX/10, LeafY/10)
+		mRahmen = MIN( 0.02, LeafX/2, LeafY/MAX(1,LPS) )
+
+		! Profile zu schmal
+		IF dk_leafFrWidthVertical < tlr THEN
+			dk_leafFrWidthVertical = mRahmen : PARAMETERS dk_leafFrWidthVertical = dk_leafFrWidthVertical
+			ENDIF
+		IF dk_leafFrWidthHorizontal < tlr THEN
+			dk_leafFrWidthHorizontal = mRahmen : PARAMETERS dk_leafFrWidthHorizontal = dk_leafFrWidthHorizontal
+			ENDIF
+		IF leafFrWidthLeft < mRahmen THEN
+			leafFrWidthLeft = mRahmen : PARAMETERS leafFrWidthLeft = leafFrWidthLeft
+			ENDIF
+		IF leafFrWidthRight < mRahmen THEN
+			leafFrWidthRight = mRahmen : PARAMETERS leafFrWidthRight = leafFrWidthRight
+			ENDIF
+		IF leafFrWidthBottom < mRahmen THEN
+			leafFrWidthBottom = mRahmen : PARAMETERS leafFrWidthBottom = leafFrWidthBottom
+			ENDIF
+		IF leafFrWidthTop < mRahmen THEN
+			leafFrWidthTop = mRahmen : PARAMETERS leafFrWidthTop = leafFrWidthTop
+			ENDIF
+		IF mullWidth < tlr THEN
+			mullWidth = tlr : PARAMETERS mullWidth = mullWidth
+			ENDIF
+		IF mullThickness < tlr THEN
+			mullThickness = tlr : PARAMETERS mullThickness = mullThickness
+			ENDIF
+
+		! Randprofile vertikal  (Bei allen Segmenten)
+		IF leafFrWidthRight+mFeld+leafFrWidthLeft > LeafX THEN
+			IF leafFrWidthLeft+mFeld+mRahmen > LeafX THEN
+				leafFrWidthLeft = LeafX-(mFeld+mRahmen) : PARAMETERS leafFrWidthLeft = leafFrWidthLeft
+				ENDIF
+			IF leafFrWidthLeft+mFeld+leafFrWidthRight>LeafX THEN
+				leafFrWidthRight = LeafX-(mFeld+leafFrWidthLeft) : PARAMETERS leafFrWidthRight = leafFrWidthRight
+				ENDIF
+			ENDIF
+		! Randprofile horizontal  (Bei allen Segmenten)
+		s = mFeld*LPS + mRahmen*(LPS-1)
+		IF leafFrWidthBottom+s+leafFrWidthTop > LeafY THEN
+			IF leafFrWidthTop+s+mRahmen > LeafY THEN
+				leafFrWidthTop = LeafY-(s+mRahmen) : PARAMETERS leafFrWidthTop = leafFrWidthTop
+				ENDIF
+			IF leafFrWidthTop+s+leafFrWidthBottom > LeafY THEN
+				leafFrWidthBottom = LeafY-(s+leafFrWidthTop) : PARAMETERS leafFrWidthBottom = leafFrWidthBottom
+				ENDIF
+			ENDIF
+
+		! Riegelbreiten zu breit
+		s = mFeld*LPS + dk_leafFrWidthHorizontal*(LPS-1)
+		IF LPS > 1 AND leafFrWidthBottom+s+leafFrWidthTop > LeafY THEN
+			dk_leafFrWidthHorizontal = (LeafY-(leafFrWidthBottom+mFeld*LPS+leafFrWidthTop))/(LPS-1)
+			PARAMETERS dk_leafFrWidthHorizontal = dk_leafFrWidthHorizontal
+			ENDIF
+		! Unterer Riegel zu niedrig?
+		IF LPS > 1 AND dk_panel_division_bottom-dk_leafFrWidthHorizontal/2-mFeld < leafFrWidthBottom THEN
+			dk_panel_division_bottom = leafFrWidthBottom+mFeld+dk_leafFrWidthHorizontal/2 : PARAMETERS dk_panel_division_bottom = dk_panel_division_bottom 
+			ENDIF
+		! Unterer Riegel zu hoch?
+		s = (LeafY-leafFrWidthTop)*(LPS<3) + (LPS=3)*MAX(dk_panel_division_top-dk_leafFrWidthHorizontal/2, leafFrWidthBottom+mFeld*2+dk_leafFrWidthHorizontal)
+		IF LPS > 1 AND dk_panel_division_bottom+dk_leafFrWidthHorizontal/2+mFeld > s THEN
+			dk_panel_division_bottom = s-mFeld-dk_leafFrWidthHorizontal/2 : PARAMETERS dk_panel_division_bottom = dk_panel_division_bottom 
+			ENDIF
+		! Oberer Riegel zu niedrig?
+		IF LPS > 2 AND dk_panel_division_top-dk_leafFrWidthHorizontal/2-mFeld < dk_panel_division_bottom+dk_leafFrWidthHorizontal/2 THEN
+			dk_panel_division_top = dk_panel_division_bottom+mFeld+dk_leafFrWidthHorizontal : PARAMETERS dk_panel_division_top = dk_panel_division_top 
+			ENDIF
+		! Oberer Riegel zu hoch?
+		IF LPS > 2 AND dk_panel_division_top+dk_leafFrWidthHorizontal/2+mFeld > LeafY-leafFrWidthTop THEN
+			dk_panel_division_top = LeafY-leafFrWidthTop-mFeld-dk_leafFrWidthHorizontal/2 : PARAMETERS dk_panel_division_top = dk_panel_division_top 
+			ENDIF
+
+		! Platz für "Klassisch"
+		s = leafFrWidthBottom
+		IF LPS = 2 THEN s = dk_panel_division_bottom+dk_leafFrWidthHorizontal/2
+		IF LPS = 3 THEN s = dk_panel_division_top   +dk_leafFrWidthHorizontal/2
+		IF LPS AND (BITTEST(dk_mainpanel_design,6) OR BITTEST(dk_mainpanel_design,7)) AND LeafY - leafFrWidthTop - dk_arch_height < s+mFeld THEN  ! Zwei Felder
+			dk_arch_height = MAX(0, LeafY - leafFrWidthTop - mFeld - s) : PARAMETERS dk_arch_height = dk_arch_height 
+			ENDIF
+
+		! Teilungsanzahl beschränken vertikal
+		n = INT( (LeafX - (leafFrWidthRight+leafFrWidthLeft) - mFeld) / (dk_leafFrWidthVertical+mFeld) + tlr )
+		IF LPS AND dk_panel_division[1][2] > n THEN
+			dk_panel_division[1][2] = n : PARAMETERS dk_panel_division[1][2] = dk_panel_division[1][2]
+			ENDIF
+		IF LPS>1 AND dk_panel_division[2][2] > n THEN
+			dk_panel_division[2][2] = n : PARAMETERS dk_panel_division[2][2] = dk_panel_division[2][2]
+			ENDIF
+		IF LPS>2 AND dk_panel_division[3][2] > n THEN
+			dk_panel_division[3][2] = n : PARAMETERS dk_panel_division[3][2] = dk_panel_division[3][2]
+			ENDIF
+
+		! Teilungsanzahl beschränken horizontal
+		IF LPS THEN ! Hauptfeld
+			s = (leafFrWidthBottom)*(LPS=1) + (LPS=2)*(dk_panel_division_bottom+dk_leafFrWidthHorizontal/2) + (LPS=3)*(dk_panel_division_top+dk_leafFrWidthHorizontal/2)
+			n = MAX( 0, INT( (LeafY - LFWT - mFeld - s ) / (dk_leafFrWidthHorizontal+mFeld) + tlr ))
+			IF dk_panel_division[1][1] > n THEN
+				dk_panel_division[1][1] = n : PARAMETERS dk_panel_division[1][1] = dk_panel_division[1][1]
+				ENDIF
+			ENDIF
+		IF LPS>1 THEN ! Brüstungsfeld
+			n = MAX( 0, INT( ((dk_panel_division_bottom-dk_leafFrWidthHorizontal/2) - mFeld - leafFrWidthBottom) / (dk_leafFrWidthHorizontal+mFeld) + tlr ))
+			IF dk_panel_division[2][1] > n THEN
+				dk_panel_division[2][1] = n : PARAMETERS dk_panel_division[2][1] = dk_panel_division[2][1]
+				ENDIF
+			ENDIF
+		IF LPS>2 THEN ! Mittelfeld
+			s = (LPS=3)*(dk_panel_division_top+dk_leafFrWidthHorizontal/2)
+			n = MAX( 0, INT( ( (dk_panel_division_top-dk_leafFrWidthHorizontal/2) - mFeld - (dk_panel_division_bottom+dk_leafFrWidthHorizontal/2) ) / (dk_leafFrWidthHorizontal+mFeld) + tlr ))
+			IF dk_panel_division[3][1] > n THEN
+				dk_panel_division[3][1] = n : PARAMETERS dk_panel_division[3][1] = dk_panel_division[3][1]
+				ENDIF
+			ENDIF
+
+		! Sprossenteilung passt noch?
+		GOSUB "initialize"
+		GOSUB "posDivisions"
+		mFeld = MIN(0.02,mullWidthX,mullWidthY)  !MIN(LeafX/10, LeafY/10)
+
+		IF LPS>0 THEN
+			! Hauptfeld
+			n = MAX( 0, INT( (LPDD[1][2] - mFeld) / mullWidthX ))
+			IF dk_panel_bar[1][2] > n THEN
+				dk_panel_bar[1][2] = n : PARAMETERS dk_panel_bar[1][2] = dk_panel_bar[1][2]
+				ENDIF
+			n = MAX( 0, INT( (LPDD[1][1] - mFeld) / mullWidthY ))
+			IF dk_panel_bar[1][1] > n THEN
+				dk_panel_bar[1][1] = n : PARAMETERS dk_panel_bar[1][1] = dk_panel_bar[1][1]
+				ENDIF
+			ENDIF
+		IF LPS > 1 THEN
+			! Brüstungsfeld
+			n = MAX( 0, INT( (LPDD[2][2] - mFeld) / mullWidthX ))
+			IF dk_panel_bar[2][2] > n THEN
+				dk_panel_bar[2][2] = n : PARAMETERS dk_panel_bar[2][2] = dk_panel_bar[2][2]
+				ENDIF
+			n = MAX( 0, INT( (LPDD[2][1] - mFeld) / mullWidthY ))
+			IF dk_panel_bar[2][1] > n THEN
+				dk_panel_bar[2][1] = n : PARAMETERS dk_panel_bar[2][1] = dk_panel_bar[2][1]
+				ENDIF
+			ENDIF
+		IF LPS > 2 THEN
+			! Mittelfeld
+			n = MAX( 0, INT( (LPDD[3][2] - mFeld) / mullWidthX ))
+			IF dk_panel_bar[3][2] > n THEN
+				dk_panel_bar[3][2] = n : PARAMETERS dk_panel_bar[3][2] = dk_panel_bar[3][2]
+				ENDIF
+			n = MAX( 0, INT( (LPDD[3][1] - mFeld) / mullWidthY ))
+			IF dk_panel_bar[3][1] > n THEN
+				dk_panel_bar[3][1] = n : PARAMETERS dk_panel_bar[3][1] = dk_panel_bar[3][1]
+				ENDIF
+			ENDIF
+
+		GOSUB "calcLeafWeight" : PARAMETERS dk_estimatedWeight = weight
+
+		ELSE
+
+		GOSUB "initialize"
+		GOSUB "posDivisions"
+		GOSUB "calcLeafWeight" : PARAMETERS dk_estimatedWeight = weight
+
+		ENDIF
+
+	ENDIF
+
+! »»» Profilbreiten + Abstände - STANDFLÜGEL
+
+IF bs_door_leafs > 1  THEN
+	
+	IF dk_panel_segments2 THEN
+
+		stand = 1 : GOSUB "initialize"
+		mRahmen = MIN( mRahmen, LeafX/2, LeafY/MAX(1,LPS) )
+
+		! Profile zu schmal
+		IF dk_leafFrWidthVertical2 < tlr THEN
+			dk_leafFrWidthVertical2 = mRahmen : PARAMETERS dk_leafFrWidthVertical2 = dk_leafFrWidthVertical2
+			ENDIF
+		IF dk_leafFrWidthHorizontal2 < tlr THEN
+			dk_leafFrWidthHorizontal2 = mRahmen : PARAMETERS dk_leafFrWidthHorizontal2 = dk_leafFrWidthHorizontal2
+			ENDIF
+		IF leafFrWidthLeft2 < mRahmen THEN
+			leafFrWidthLeft2 = mRahmen : PARAMETERS leafFrWidthLeft2 = leafFrWidthLeft2
+			ENDIF
+		IF leafFrWidthRight2 < mRahmen THEN
+			leafFrWidthRight2 = mRahmen : PARAMETERS leafFrWidthRight2 = leafFrWidthRight2
+			ENDIF
+		IF leafFrWidthBottom2 < mRahmen THEN
+			leafFrWidthBottom2 = mRahmen : PARAMETERS leafFrWidthBottom2 = leafFrWidthBottom2
+			ENDIF
+		IF leafFrWidthTop2 < mRahmen THEN
+			leafFrWidthTop2 = mRahmen : PARAMETERS leafFrWidthTop2 = leafFrWidthTop2
+			ENDIF
+		IF mullWidth2 < tlr THEN
+			mullWidth2 = tlr : PARAMETERS mullWidth2 = mullWidth2
+			ENDIF
+		IF mullThickness2 < tlr THEN
+			mullThickness2 = tlr : PARAMETERS mullThickness2 = mullThickness2
+			ENDIF
+
+		! Randprofile vertikal  (Bei allen Segmenten)
+		IF leafFrWidthRight2+mFeld+leafFrWidthLeft2 > LeafX THEN
+			IF leafFrWidthLeft2+mFeld+mRahmen > LeafX THEN
+				leafFrWidthLeft2 = LeafX-(mFeld+mRahmen) : PARAMETERS leafFrWidthLeft2 = leafFrWidthLeft2
+				ENDIF
+			IF leafFrWidthLeft2+mFeld+leafFrWidthRight2>LeafX THEN
+				leafFrWidthRight2 = LeafX-(mFeld+leafFrWidthLeft2) : PARAMETERS leafFrWidthRight2 = leafFrWidthRight2
+				ENDIF
+			ENDIF
+		! Randprofile horizontal  (Bei allen Segmenten)
+		s = mFeld*LPS + mRahmen*(LPS-1)
+		IF leafFrWidthBottom2+s+leafFrWidthTop2 > LeafY THEN
+			IF leafFrWidthTop2+s+mRahmen > LeafY THEN
+				leafFrWidthTop2 = LeafY-(s+mRahmen) : PARAMETERS leafFrWidthTop2 = leafFrWidthTop2
+				ENDIF
+			IF leafFrWidthTop2+s+leafFrWidthBottom2 > LeafY THEN
+				leafFrWidthBottom2 = LeafY-(s+leafFrWidthTop2) : PARAMETERS leafFrWidthBottom2 = leafFrWidthBottom2
+				ENDIF
+			ENDIF
+
+		! Riegelbreiten zu breit
+		s = mFeld*LPS + dk_leafFrWidthHorizontal2*(LPS-1)
+		IF LPS > 1 AND leafFrWidthBottom2+s+leafFrWidthTop2 > LeafY THEN
+			dk_leafFrWidthHorizontal2 = (LeafY-(leafFrWidthBottom2+mFeld*LPS+leafFrWidthTop2))/(LPS-1)
+			PARAMETERS dk_leafFrWidthHorizontal2 = dk_leafFrWidthHorizontal2
+			ENDIF
+		! Unterer Riegel zu niedrig?
+		IF LPS > 1 AND dk_panel_division_bottom2-dk_leafFrWidthHorizontal2/2-mFeld < leafFrWidthBottom2 THEN
+			dk_panel_division_bottom2 = leafFrWidthBottom2+mFeld+dk_leafFrWidthHorizontal2/2 : PARAMETERS dk_panel_division_bottom2 = dk_panel_division_bottom2 
+			ENDIF
+		! Unterer Riegel zu hoch?
+		s = (LeafY-leafFrWidthTop2)*(LPS<3) + (LPS=3)*MAX(dk_panel_division_top2-dk_leafFrWidthHorizontal2/2, leafFrWidthBottom2+mFeld*2+dk_leafFrWidthHorizontal2)
+		IF LPS > 1 AND dk_panel_division_bottom2+dk_leafFrWidthHorizontal2/2+mFeld > s THEN
+			dk_panel_division_bottom2 = s-mFeld-dk_leafFrWidthHorizontal2/2 : PARAMETERS dk_panel_division_bottom2 = dk_panel_division_bottom2 
+			ENDIF
+		! Oberer Riegel zu niedrig?
+		IF LPS > 2 AND dk_panel_division_top2-dk_leafFrWidthHorizontal2/2-mFeld < dk_panel_division_bottom2+dk_leafFrWidthHorizontal2/2 THEN
+			dk_panel_division_top2 = dk_panel_division_bottom2+mFeld+dk_leafFrWidthHorizontal2 : PARAMETERS dk_panel_division_top2 = dk_panel_division_top2 
+			ENDIF
+		! Oberer Riegel zu hoch?
+		IF LPS > 2 AND dk_panel_division_top2+dk_leafFrWidthHorizontal2/2+mFeld > LeafY-leafFrWidthTop2 THEN
+			dk_panel_division_top2 = LeafY-leafFrWidthTop2-mFeld-dk_leafFrWidthHorizontal2/2 : PARAMETERS dk_panel_division_top2 = dk_panel_division_top2 
+			ENDIF
+
+		! Platz für "Klassisch"
+		s = leafFrWidthBottom2
+		IF LPS = 2 THEN s = dk_panel_division_bottom2+dk_leafFrWidthHorizontal2/2
+		IF LPS = 3 THEN s = dk_panel_division_top2   +dk_leafFrWidthHorizontal2/2
+		IF LPS AND (BITTEST(dk_mainpanel_design2,6) OR BITTEST(dk_mainpanel_design2,7)) AND LeafY - leafFrWidthTop2 - dk_arch_height2 < s+mFeld THEN  ! Zwei Felder
+			dk_arch_height2 = MAX(0, LeafY - leafFrWidthTop2 - mFeld - s) : PARAMETERS dk_arch_height2 = dk_arch_height2 
+			ENDIF
+
+		! Teilungsanzahl beschränken vertikal
+		n = INT( (LeafX - (leafFrWidthRight2+leafFrWidthLeft2) - mFeld) / (dk_leafFrWidthVertical2+mFeld) + tlr )
+		IF LPS AND dk_panel_division2[1][2] > n THEN
+			dk_panel_division2[1][2] = n : PARAMETERS dk_panel_division2[1][2] = dk_panel_division2[1][2]
+			ENDIF
+		IF LPS>1 AND dk_panel_division2[2][2] > n THEN
+			dk_panel_division2[2][2] = n : PARAMETERS dk_panel_division2[2][2] = dk_panel_division2[2][2]
+			ENDIF
+		IF LPS>2 AND dk_panel_division2[3][2] > n THEN
+			dk_panel_division2[3][2] = n : PARAMETERS dk_panel_division2[3][2] = dk_panel_division2[3][2]
+			ENDIF
+
+		! Teilungsanzahl beschränken horizontal
+		IF LPS THEN ! Hauptfeld
+			s = (leafFrWidthBottom2)*(LPS=1) + (LPS=2)*(dk_panel_division_bottom2+dk_leafFrWidthHorizontal2/2) + (LPS=3)*(dk_panel_division_top2+dk_leafFrWidthHorizontal2/2)
+			n = MAX( 0, INT( (LeafY - LFWT - mFeld - s ) / (dk_leafFrWidthHorizontal2+mFeld) + tlr ))
+			IF dk_panel_division2[1][1] > n THEN
+				dk_panel_division2[1][1] = n : PARAMETERS dk_panel_division2[1][1] = dk_panel_division2[1][1]
+				ENDIF
+			ENDIF
+		IF LPS>1 THEN ! Brüstungsfeld
+			n = MAX( 0, INT( ((dk_panel_division_bottom2-dk_leafFrWidthHorizontal2/2) - mFeld - leafFrWidthBottom2) / (dk_leafFrWidthHorizontal2+mFeld) + tlr ))
+			IF dk_panel_division2[2][1] > n THEN
+				dk_panel_division2[2][1] = n : PARAMETERS dk_panel_division2[2][1] = dk_panel_division2[2][1]
+				ENDIF
+			ENDIF
+		IF LPS>2 THEN ! Mittelfeld
+			s = (LPS=3)*(dk_panel_division_top2+dk_leafFrWidthHorizontal2/2)
+			n = MAX( 0, INT( ( (dk_panel_division_top2-dk_leafFrWidthHorizontal2/2) - mFeld - (dk_panel_division_bottom2+dk_leafFrWidthHorizontal2/2) ) / (dk_leafFrWidthHorizontal2+mFeld) + tlr ))
+			IF dk_panel_division2[3][1] > n THEN
+				dk_panel_division2[3][1] = n : PARAMETERS dk_panel_division2[3][1] = dk_panel_division2[3][1]
+				ENDIF
+			ENDIF
+
+		! Sprossenteilung passt noch?
+		GOSUB "initialize"
+		GOSUB "posDivisions"
+		mFeld = MIN(0.02,mullWidthX,mullWidthY)  !MIN(LeafX/10, LeafY/10)
+
+		IF LPS>0 THEN
+			! Hauptfeld
+			n = MAX( 0, INT( (LPDD[1][2] - mFeld) / mullWidthX ))
+			IF dk_panel_bar2[1][2] > n THEN
+				dk_panel_bar2[1][2] = n : PARAMETERS dk_panel_bar2[1][2] = dk_panel_bar2[1][2]
+				ENDIF
+			n = MAX( 0, INT( (LPDD[1][1] - mFeld) / mullWidthY ))
+			IF dk_panel_bar2[1][1] > n THEN
+				dk_panel_bar2[1][1] = n : PARAMETERS dk_panel_bar2[1][1] = dk_panel_bar2[1][1]
+				ENDIF
+			ENDIF
+		IF LPS > 1 THEN
+			! Brüstungsfeld
+			n = MAX( 0, INT( (LPDD[2][2] - mFeld) / mullWidthX ))
+			IF dk_panel_bar2[2][2] > n THEN
+				dk_panel_bar2[2][2] = n : PARAMETERS dk_panel_bar2[2][2] = dk_panel_bar2[2][2]
+				ENDIF
+			n = MAX( 0, INT( (LPDD[2][1] - mFeld) / mullWidthY ))
+			IF dk_panel_bar2[2][1] > n THEN
+				dk_panel_bar2[2][1] = n : PARAMETERS dk_panel_bar2[2][1] = dk_panel_bar2[2][1]
+				ENDIF
+			ENDIF
+		IF LPS > 2 THEN
+			! Mittelfeld
+			n = MAX( 0, INT( (LPDD[3][2] - mFeld) / mullWidthX ))
+			IF dk_panel_bar2[3][2] > n THEN
+				dk_panel_bar2[3][2] = n : PARAMETERS dk_panel_bar2[3][2] = dk_panel_bar2[3][2]
+				ENDIF
+			n = MAX( 0, INT( (LPDD[3][1] - mFeld) / mullWidthY ))
+			IF dk_panel_bar2[3][1] > n THEN
+				dk_panel_bar2[3][1] = n : PARAMETERS dk_panel_bar2[3][1] = dk_panel_bar2[3][1]
+				ENDIF
+			ENDIF
+
+		GOSUB "calcLeafWeight" : PARAMETERS dk_estimatedWeight2 = weight
+
+		ELSE
+
+		stand = 1 : GOSUB "initialize"
+		GOSUB "posDivisions"
+		GOSUB "calcLeafWeight" : PARAMETERS dk_estimatedWeight2 = weight
+		
+		ENDIF
+
+	ENDIF
+
+! »»» Position Füllung zulässig?
+
+IF dk_panel_segments + dk_panel_segments2 * (bs_door_leafs > 1) THEN
+
+	! Gangflügel maximale Füllungsdicke und ob Sprossen
+	maxFillThick = 0
+	maxFillThickM = 0
+	isbar = 0
+	FOR i = 1 TO dk_panel_segments * (bs_door_leafs > 0)
+		IF dk_panel_bar[i][1] + dk_panel_bar[i][2] > 0 THEN
+			isbar = 1
+			maxFillThickM = MAX( maxFillThickM, dk_panel_filling_thk[i])
+			ELSE
+			maxFillThick = MAX( maxFillThick, dk_panel_filling_thk[i])
+			ENDIF
+		NEXT i
+
+	! Standflügel maximale Füllungsdicke und ob Sprossen
+	maxFillThick2 = 0
+	maxFillThickM2 = 0
+	isbar2 = 0
+	FOR i = 1 TO dk_panel_segments2 * (bs_door_leafs > 1)
+		IF dk_panel_bar2[i][1] + dk_panel_bar2[i][2] > 0 THEN
+			isbar2 = 1
+			maxFillThickM2 = MAX( maxFillThickM2, dk_panel_filling_thk2[i])
+			ELSE
+			maxFillThick2 = MAX( maxFillThick2, dk_panel_filling_thk2[i])
+			ENDIF
+		NEXT i
+
+	! Prüfung Position dazu
+
+	sts = 0
+
+	IF dk_filling_position = 0 THEN
+
+		! mittige Ausrichtung
+		maxFillingPosition = ( gs_leaf_thk - MAX(maxFillThick, maxFillThick2, MAX(maxFillThickM, maxFillThick2M) + 2 * mullThickness * isbar) ) / 2
+		IF dk_panel_fill_offset > maxFillingPosition THEN
+			sts = 1 : dk_panel_fill_offset = maxFillingPosition
+			ENDIF
+		IF dk_panel_fill_offset < -maxFillingPosition THEN
+			sts = 1 : dk_panel_fill_offset = -maxFillingPosition
+			ENDIF
+
+		ELSE
+
+		! Von Blattoberfläche aus
+		maxFillingPosition = gs_leaf_thk - MAX(maxFillThick, maxFillThick2, MAX(maxFillThickM, maxFillThick2M) + mullThickness * isbar)
+		IF dk_panel_fill_offset > maxFillingPosition THEN
+			sts = 1 : dk_panel_fill_offset = maxFillingPosition
+			ENDIF
+		IF dk_panel_fill_offset < mullThickness * isbar THEN
+			sts = 1 : dk_panel_fill_offset = mullThickness * isbar
+			ENDIF
+
+		ENDIF
+
+	IF sts THEN PARAMETERS dk_panel_fill_offset = dk_panel_fill_offset
+
+	ELSE
+
+	LOCK "dk_filling_position", "dk_panel_fill_offset"
+
+	ENDIF
+
+! »»» Kantenausbildung
+
+IF dk_panel_bandings = "-" OR dk_panel_bandings = "K" THEN
+	LOCK "dk_leaf_bandings_width"
+	ELSE
+	IF dk_panel_bandings = "A" THEN
+		IF dk_leaf_bandings_width < maxFalzBreite THEN
+			dk_leaf_bandings_width = maxFalzBreite
+			PARAMETERS dk_leaf_bandings_width = dk_leaf_bandings_width
+			ENDIF
+		ELSE
+		IF dk_leaf_bandings_width < 0 THEN
+			dk_leaf_bandings_width = 0
+			PARAMETERS dk_leaf_bandings_width = dk_leaf_bandings_width
+			ENDIF
+		ENDIF
+	ENDIF
+
+IF dk_panel_bandings = "-" THEN
+	LOCK "bs_panel_surface_KA",  "bs_panel_colour_KA"
+	LOCK "bs_panel_surface2_KA", "bs_panel_colour2_KA"
+	ENDIF
+
+! »»» Elektrifizierung setzen (Bit 2)
+! IF 1=1 THEN
+! 	bs_door_electrified = BITSET(bs_door_electrified, 2)
+! 	ELSE
+! 	bs_door_electrified = BITSET(bs_door_electrified, 2, 0)
+! 	ENDIF
+! PARAMETERS bs_door_electrified = bs_door_electrified
+
+
+! =============================================================================
+! VALUES
+! =============================================================================
+
+! ----------------------------------- PARAMETER VALUE LIST [ECD.panel] (start)
+
+VALUES "bs_door_leafs" 0, 1, 2
+VALUES "gs_leaf_thk" 0.01, 0.03, 0.035, 0.04, 0.045, 0.05, 0.06, CUSTOM
+VALUES "bs_leaf_overhang" 0.015, 0.0165, 0.018, 0.021, 0.022, 0.03, CUSTOM
+VALUES "dk_panel_bandings" "-", "E", "V", "A", "K"
+VALUES "dk_leaf_bandings_width" 0.01, 0.035, 0.1, CUSTOM
+VALUES "bs_panel_surface_BS" "NA", "AN", "BE", "FU", "EL", "HP", "XX", CUSTOM
+VALUES "bs_panel_surface_BGS" "NA", "AN", "BE", "FU", "EL", "HP", "XX", CUSTOM
+VALUES "bs_panel_surface_KA" "NA", "AN", "BE", "FU", "EL", "HP", "KU", "AB", "PU", "XX", CUSTOM
+VALUES "bs_panel_surface2_BS" "NA", "AN", "BE", "FU", "EL", "HP", "XX", CUSTOM
+VALUES "bs_panel_surface2_BGS" "NA", "AN", "BE", "FU", "EL", "HP", "XX", CUSTOM
+VALUES "bs_panel_surface2_KA" "NA", "AN", "BE", "FU", "EL", "HP", "KU", "AB", "PU", "XX", CUSTOM
+VALUES{2} "dk_panel_folding_nmbr" 0, "stumpf", 1, "einfach", 2, "zweifach", 3, "dreifach"
+VALUES "bs_panel_type" "VB", "RF", "RP"
+VALUES "bs_panel_material" "HO", "ST", "AL", "GL", "KU"
+VALUES{2} "dk_panel_folding_ancor" 1, "am Falz", 2, "am Spiegel", 3, "frei"
+VALUES{2} "dk_panel_segments" 0, "ohne Teilung", 1, "Hauptfeld", 2, "2 Felder", 3, "3 Felder"
+VALUES{2} "dk_mainpanel_design" 0, "einfach", 2, "Kreis", 4, "Raute", 64, "klassisch 1", 128, "klassisch 2"
+VALUES "dk_panel_filling" "G1", "G2", "G3", "PL", "K1", "K2"
+VALUES{2} "dk_panel_segments2" 0, "ohne Teilung", 1, "Hauptfeld", 2, "2 Felder", 3, "3 Felder"
+VALUES{2} "dk_mainpanel_design2" 0, "einfach", 2, "Kreis", 4, "Raute", 64, "klassisch 1", 128, "klassisch 2"
+VALUES "dk_panel_filling2" "G1", "G2", "G3", "PL", "K1", "K2"
+VALUES "dk_open_leaf" 0, 10, 15, 30, 45, 60, 90, CUSTOM
+VALUES{2} "dk_filling_position" 0, "mittig", 1, "Distanz von Bandgegenseite"
+VALUES "gapHeightUnderPanel" 0.005, 0.01, 0.02, CUSTOM
+VALUES "bs_spyhole" 0, 1, 2
+VALUES{2} "iDoorPanelType" 1, "Typ 1", 2, "Typ 2", 3, "Typ 3", 4, "Typ 4", 5, "Typ 5", 6, "Typ 6", 7, "Typ 7",
+	8, "Typ 8", 9, "Typ 9", 10, "Typ 10", 11, "Typ 11", 12, "Typ 12", 13, "Typ 13", 14, "Typ 14",
+	15, "Typ 15", 16, "Typ 16", 17, "Typ 17", 18, "Typ 18", 19, "Typ 19", 20, "Typ 20",
+	21, "Typ 21", 22, "Typ 22", 23, "Typ 23", 24, "Typ 24", 25, "Typ 25", 26, "Typ 26",
+	27, "individuell"
+VALUES{2} "iDoorPanelType2" 1, "Typ 1", 2, "Typ 2", 3, "Typ 3", 4, "Typ 4", 5, "Typ 5", 6, "Typ 6", 7, "Typ 7",
+	8, "Typ 8", 9, "Typ 9", 10, "Typ 10", 11, "Typ 11", 12, "Typ 12", 13, "Typ 13", 14, "Typ 14",
+	15, "Typ 15", 16, "Typ 16", 17, "Typ 17", 18, "Typ 18", 19, "Typ 19", 20, "Typ 20",
+	21, "Typ 21", 22, "Typ 22", 23, "Typ 23", 24, "Typ 24", 25, "Typ 25", 26, "Typ 26",
+	27, "individuell"
+
+! --------------------------------------------------------------- PARAMETER VALUE LISTS (end)
+
+IF bs_leaf_oversize < 0.009 AND bs_leaf_oversize # 0 THEN
+	PUT bs_leaf_oversize, 0.009
+	ELSE
+	PUT 0.009
+	IF bs_leaf_oversize < 0.013 AND bs_leaf_oversize > 0.009 THEN
+		PUT bs_leaf_oversize, 0.013
+		ELSE
+		PUT 0.013
+		IF bs_leaf_oversize > 0.013 THEN PUT bs_leaf_oversize
+		ENDIF
+	ENDIF
+VALUES "bs_leaf_oversize" 0, GET(nsp), CUSTOM
+
+VALUES "dk_panel_division" 0,1,2,3,4,5, RANGE [0, ] STEP 0,1, CUSTOM
+VALUES "dk_panel_bar" 0,1,2,3,4,5, RANGE [0, ] STEP 0,1, CUSTOM
+
+VALUES "dk_panel_division2" 0,1,2,3,4,5, RANGE [0, ] STEP 0,1, CUSTOM
+VALUES "dk_panel_bar2" 0,1,2,3,4,5, RANGE [0, ] STEP 0,1, CUSTOM
+
+	! VALUES "bs_panel_type" "1",
+	!   "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9" , "10", "11", "12", "13", "14", "15", "16", "17", 
+	!   "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33"
+
+
+! --------------------------------------------------------------- xxx
+
+END bs_door_electrified
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"predefinedLeafs":
+
+	! --------------------------------------------------------------- Alles auf "0"
+	! ### Teilung / Design
+	dk_panel_segments        = 0
+	dk_mainpanel_design      = 0
+	dk_panel_filling[1]      = "PL"
+	dk_panel_filling[2]      = "PL"
+	dk_panel_filling[3]      = "PL"
+	leafFrWidthLeft          = 0.16
+	leafFrWidthRight         = 0.16
+	leafFrWidthBottom        = 0.22
+	leafFrWidthTop           = 0.16
+	dk_arch_height           = 0
+	dk_leafFrWidthHorizontal = 0.16
+	dk_leafFrWidthVertical   = 0.16
+	! ### Fülliungen / felder
+	dk_panel_division_bottom = 0.85
+	dk_panel_division_top    = 1.30
+	dk_panel_division[1][1]  = 0 :  dk_panel_division[1][2] = 0
+	dk_panel_division[2][1]  = 0 :  dk_panel_division[2][2] = 0
+	dk_panel_division[3][1]  = 0 :  dk_panel_division[3][2] = 0
+	dk_panel_filling_thk[1]  = 0.015
+	dk_panel_filling_thk[2]  = 0.015
+	dk_panel_filling_thk[3]  = 0.015
+	dk_panel_bar[1][1]       = 0 : dk_panel_bar[1][2] = 0
+	dk_panel_bar[2][1]       = 0 : dk_panel_bar[2][2] = 0
+	dk_panel_bar[3][1]       = 0 : dk_panel_bar[3][2] = 0
+	mullWidth                = 0.022
+	mullThickness            = 0.0125
+	! ### Konturstift
+	! dk_cont_pens[dka_frame_penC2] = dk_cont_pens[]
+	! dk_cont_pens[dka_frame_penC3] = dk_cont_pens[]
+	! dk_cont_pens[dka_panel_penC2] = dk_cont_pens[]
+	! dk_cont_pens[dka_panel_penC3] = dk_cont_pens[]
+	! ### chraffurstifte
+	! dk_fill_pens[dka_frame_penF] = dk_fill_pens[]
+	! dk_fill_pens[dka_side1_penF] = dk_fill_pens[]
+	! dk_fill_pens[dka_side2_penF] = dk_fill_pens[]
+	! dk_fill_pens[dka_panel_penF] = dk_fill_pens[]
+	dk_fill_pens[dka_panelfill1_penF] = dk_fill_pens[dka_panel_penF]
+	dk_fill_pens[dka_panelfill2_penF] = dk_fill_pens[dka_panel_penF]
+	dk_fill_pens[dka_panelfill3_penF] = dk_fill_pens[dka_panel_penF]
+	! dk_fill_pens[dka_topview_penF] = dk_fill_pens[]
+	! ### Hintergrundstifte
+	! dk_bkg_pens[dka_frame_penB] = dk_bkg_pens[]
+	! dk_bkg_pens[dka_side1_penB] = dk_bkg_pens[]
+	! dk_bkg_pens[dka_side2_penB] = dk_bkg_pens[]
+	! dk_bkg_pens[dka_panel_penB] = dk_bkg_pens[]
+	dk_bkg_pens[dka_panelfill1_penB] = dk_bkg_pens[dka_panel_penB]
+	dk_bkg_pens[dka_panelfill2_penB] = dk_bkg_pens[dka_panel_penB]
+	dk_bkg_pens[dka_panelfill3_penB] = dk_bkg_pens[dka_panel_penB]
+	! dk_bkg_pens[dka_topview_penB] = dk_bkg_pens[]
+	! ### Schraffuren
+	! dk_fills[dka_frame_fill] = dk_fills[]
+	! dk_fills[dka_side1_fill] = dk_fills[]
+	! dk_fills[dka_side2_fill] = dk_fills[]
+	! dk_fills[dka_panel_fill] = dk_fills[]
+	dk_fills[dka_panelfill1_fill] = dk_fills[dka_panel_fill]
+	dk_fills[dka_panelfill2_fill] = dk_fills[dka_panel_fill]
+	dk_fills[dka_panelfill3_fill] = dk_fills[dka_panel_fill]
+	! dk_fills[dka_topview_fill] = dk_fills[]
+	! ### Materialien
+	! dk_materials[dka_frame_mat_BS] = dk_materials[]
+	! dk_materials[dka_frame_mat_BGS] = dk_materials[]
+	! dk_materials[dka_side1_mat_BS] = dk_materials[]
+	! dk_materials[dka_side1_mat_BGS] = dk_materials[]
+	! dk_materials[dka_side2_mat_BS] = dk_materials[]
+	! dk_materials[dka_side2_mat_BGS] = dk_materials[]
+	! dk_materials[dka_fan_mat_BS] = dk_materials[]
+	! dk_materials[dka_fan_mat_BGS] = dk_materials[]
+	! dk_materials[dka_panel_mat_BS] = dk_materials[]
+	dk_materials[dka_panel_mat_BGS] = dk_materials[dka_panel_mat_BS]
+	! dk_materials[dka_panelfill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+	dk_materials[dka_panelfill1_mat_BGS] = dk_materials[dka_panelfill1_mat_BS]
+	dk_materials[dka_panelfill2_mat_BS] = dk_materials[dka_panel_mat_BS]
+	dk_materials[dka_panelfill2_mat_BGS] = dk_materials[dka_panelfill2_mat_BS]
+	dk_materials[dka_panelfill3_mat_BS] = dk_materials[dka_panel_mat_BS]
+	dk_materials[dka_panelfill3_mat_BGS] = dk_materials[dka_panelfill3_mat_BS]
+
+
+	! --------------------------------------------------------------- Nach Typen
+
+	IF iDoorPanelType = 1 THEN
+		sts = 1
+		ENDIF
+
+	IF iDoorPanelType = 2 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments = 1
+		! ### Materialien
+		dk_materials[dka_panelfill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panelfill1_mat_BGS] = dk_materials[dka_panelfill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType=3 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 1
+		! ### Fülliungen / felder
+		dk_panel_division[1][1]  = 0 :  dk_panel_division[1][2] = 1
+		! ### Materialien
+		dk_materials[dka_panelfill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panelfill1_mat_BGS] = dk_materials[dka_panelfill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType=4 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 2
+		! ### Fülliungen / felder
+		dk_panel_division[1][1]  = 0 :  dk_panel_division[1][2] = 1
+		dk_panel_division[2][1]  = 0 :  dk_panel_division[2][2] = 1
+		! ### Materialien
+		dk_materials[dka_panelfill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panelfill1_mat_BGS] = dk_materials[dka_panelfill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType=5 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 2
+		! ### Materialien
+		dk_materials[dka_panelfill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panelfill1_mat_BGS] = dk_materials[dka_panelfill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType=6 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 2
+		dk_mainpanel_design      = 64 ! klassisch 1
+		dk_panel_filling[1]      = "G1"
+		dk_arch_height           = 0.08
+		ENDIF
+
+	IF iDoorPanelType=7 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 2
+		dk_panel_filling[1]      = "G1"
+		! ### Fülliungen / felder
+		dk_panel_bar[1][1]       = 1 : dk_panel_bar[1][2] = 1
+		ENDIF
+
+	IF iDoorPanelType=8 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 1
+		dk_panel_filling[1]      = "G1"
+		leafFrWidthBottom        = 0.9
+		! ### Fülliungen / felder
+		dk_panel_bar[1][1]       = 2 : dk_panel_bar[1][2] = 1
+		ENDIF
+
+	IF iDoorPanelType=9 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 2
+		dk_mainpanel_design      = 64 ! klassisch 1
+			dk_arch_height           = 0.08
+		! ### Materialien
+		dk_materials[dka_panelfill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panelfill1_mat_BGS] = dk_materials[dka_panelfill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType=10 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 2
+		dk_panel_filling[1]      = "G1"
+		! ### Fülliungen / felder
+		dk_panel_division_bottom = LeafHeight - leafFrWidthTop - (0.9 - leafFrWidthLeft - leafFrWidthRight - dk_leafFrWidthVertical) - dk_leafFrWidthHorizontal/2
+		dk_panel_division[2][1]  = 2 :  dk_panel_division[2][2] = 1
+		dk_panel_bar[1][1]       = 0 : dk_panel_bar[1][2] = 1
+		ENDIF
+
+	IF iDoorPanelType=11 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 2
+		dk_panel_filling[2]      = "K2"
+		! ### Fülliungen / felder
+		dk_panel_division[1][1]  = 0 :  dk_panel_division[1][2] = 1
+		dk_panel_division[2][1]  = 0 :  dk_panel_division[2][2] = 1
+		! ### Materialien
+		dk_materials[dka_panelfill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panelfill1_mat_BGS] = dk_materials[dka_panelfill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType=12 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 3
+		dk_panel_filling[2]      = "K2"
+		dk_panel_filling[3]      = "K2"
+		! ### Fülliungen / felder
+		dk_panel_division_top    = LeafHeight - leafFrWidthTop - (0.9 - leafFrWidthLeft - leafFrWidthRight - dk_leafFrWidthVertical) - dk_leafFrWidthHorizontal/2
+		dk_panel_division[1][1]  = 0 :  dk_panel_division[1][2] = 1
+		dk_panel_division[2][1]  = 0 :  dk_panel_division[2][2] = 1
+		dk_panel_division[3][1]  = 0 :  dk_panel_division[3][2] = 1
+		! ### Materialien
+		dk_materials[dka_panelfill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panelfill1_mat_BGS] = dk_materials[dka_panelfill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType=13 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 3
+		! ### Materialien
+		dk_materials[dka_panelfill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panelfill1_mat_BGS] = dk_materials[dka_panelfill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType=14 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 2
+		dk_panel_filling[1]      = "G1"
+		! ### Fülliungen / felder
+		dk_panel_bar[1][1]       = 2 : dk_panel_bar[1][2] = 1
+		ENDIF
+
+	IF iDoorPanelType=15 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 1
+		dk_panel_filling[1]      = "G1"
+		! ### Fülliungen / felder
+		dk_panel_bar[1][1]       = 2 : dk_panel_bar[1][2] = 0
+		ENDIF
+
+	IF iDoorPanelType=16 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 2
+		dk_panel_filling[1]      = "G1"
+		dk_leafFrWidthVertical   = 0.1
+		! ### Fülliungen / felder
+		dk_panel_division[1][1]  = 0 :  dk_panel_division[1][2] = 2
+		dk_panel_division[2][1]  = 0 :  dk_panel_division[2][2] = 2
+		ENDIF
+
+	IF iDoorPanelType=17 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 2
+		dk_panel_filling[1]      = "G1"
+		ENDIF
+
+	IF iDoorPanelType=18 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 1
+		dk_panel_filling[1]      = "G1"
+		ENDIF
+
+	IF iDoorPanelType=19 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 1
+		dk_panel_filling[1]      = "G1"
+		! ### Fülliungen / felder
+		dk_panel_bar[1][1]       = 3 : dk_panel_bar[1][2] = 2
+		ENDIF
+
+	IF iDoorPanelType=20 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 1
+		dk_panel_filling[1]      = "G1"
+		! ### Fülliungen / felder
+		dk_panel_bar[1][1]       = 4 : dk_panel_bar[1][2] = 2
+		ENDIF
+
+	IF iDoorPanelType=21 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 2
+		dk_panel_filling[1]      = "G1"
+		! ### Fülliungen / felder
+		dk_panel_division[2][1]  = 0 :  dk_panel_division[2][2] = 1
+		dk_panel_bar[1][1]       = 3 : dk_panel_bar[1][2] = 2
+		ENDIF
+
+	IF iDoorPanelType=22 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 1
+		dk_panel_filling[1]      = "K2"
+		! ### Fülliungen / felder
+		dk_panel_division[1][1]  = 3 :  dk_panel_division[1][2] = 1
+		! ### Materialien
+		dk_materials[dka_panelfill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panelfill1_mat_BGS] = dk_materials[dka_panelfill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType=23 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 1
+		dk_panel_filling[1]      = "K2"
+		! ### Fülliungen / felder
+		dk_panel_division[1][1]  = 2 :  dk_panel_division[1][2] = 1
+		! ### Materialien
+		dk_materials[dka_panelfill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panelfill1_mat_BGS] = dk_materials[dka_panelfill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType=24 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 1
+		dk_panel_filling[1]      = "G1"
+		dk_leafFrWidthVertical   = 0.1
+		dk_leafFrWidthHorizontal = 0.1
+		! ### Fülliungen / felder
+		dk_panel_division[1][1]  = 3 :  dk_panel_division[1][2] = 1
+		ENDIF
+
+	IF iDoorPanelType=25 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 1
+		dk_mainpanel_design      = 2
+		dk_panel_filling[1]      = "G1"
+		leafFrWidthTop           = 0.25
+		leafFrWidthBottom        = LeafHeight - leafFrWidthTop - 0.30
+		! ### NUR VOLLBLATT!
+		bs_panel_type = "VB" : PARAMETERS bs_panel_type = bs_panel_type
+		ENDIF
+
+	IF iDoorPanelType=26 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 1
+		dk_panel_filling[1]      = "G1"
+		leafFrWidthBottom        = 0.7
+		dk_leafFrWidthVertical   = 0.1
+		dk_leafFrWidthHorizontal = 0.1
+		! ### Fülliungen / felder
+		dk_panel_division[1][1]  = 2 :  dk_panel_division[1][2] = 1
+		ENDIF
+
+	IF iDoorPanelType=99 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments        = 0
+		dk_mainpanel_design      = 0
+		dk_panel_filling[1]      = "PL"
+		dk_panel_filling[2]      = "PL"
+		dk_panel_filling[3]      = "PL"
+		leafFrWidthLeft          = 0.16
+		leafFrWidthRight         = 0.16
+		leafFrWidthBottom        = 0.16
+		leafFrWidthTop           = 0.16
+		dk_arch_height           = 0
+		dk_leafFrWidthHorizontal = 0.16
+		dk_leafFrWidthVertical   = 0.16
+		! ### Fülliungen / felder
+		dk_panel_division_bottom = 0.75
+		dk_panel_division_top    = 1.25
+		dk_panel_division[1][1]  = 0 :  dk_panel_division[1][2] = 0
+		dk_panel_division[2][1]  = 0 :  dk_panel_division[2][2] = 0
+		dk_panel_division[3][1]  = 0 :  dk_panel_division[3][2] = 0
+		dk_panel_filling_thk[1]  = 0.015
+		dk_panel_filling_thk[2]  = 0.015
+		dk_panel_filling_thk[3]  = 0.015
+		dk_panel_bar[1][1]       = 0 : dk_panel_bar[1][2] = 0
+		dk_panel_bar[2][1]       = 0 : dk_panel_bar[2][2] = 0
+		dk_panel_bar[3][1]       = 0 : dk_panel_bar[3][2] = 0
+		mullWidth                = 0.022
+		mullThickness            = 0.0125
+		! ### Schraffurstifte
+		dk_fill_pens[dka_panelfill1_penF] = dk_fill_pens[dka_panel_penF]
+		dk_fill_pens[dka_panelfill2_penF] = dk_fill_pens[dka_panel_penF]
+		dk_fill_pens[dka_panelfill3_penF] = dk_fill_pens[dka_panel_penF]
+		! ### Hintergrundstifte
+		dk_bkg_pens[dka_panelfill1_penB] = dk_bkg_pens[dka_panel_penB]
+		dk_bkg_pens[dka_panelfill2_penB] = dk_bkg_pens[dka_panel_penB]
+		dk_bkg_pens[dka_panelfill3_penB] = dk_bkg_pens[dka_panel_penB]
+		! ### Schraffuren
+		dk_fills[dka_panelfill1_fill] = dk_fills[dka_panel_fill]
+		dk_fills[dka_panelfill2_fill] = dk_fills[dka_panel_fill]
+		dk_fills[dka_panelfill3_fill] = dk_fills[dka_panel_fill]
+		! ### Materialien
+		dk_materials[dka_panel_mat_BGS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panelfill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panelfill1_mat_BGS] = dk_materials[dka_panelfill1_mat_BS]
+		dk_materials[dka_panelfill2_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panelfill2_mat_BGS] = dk_materials[dka_panelfill2_mat_BS]
+		dk_materials[dka_panelfill3_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panelfill3_mat_BGS] = dk_materials[dka_panelfill3_mat_BS]
+		ENDIF
+
+RETURN
+
+"predefinedLeafs2":
+
+	! --------------------------------------------------------------- Alles auf "0"
+
+	! ### Teilung / Design
+	dk_panel_segments2        = 0
+	dk_mainpanel_design2      = 0
+	dk_panel_filling2[1]      = "PL"
+	dk_panel_filling2[2]      = "PL"
+	dk_panel_filling2[3]      = "PL"
+	leafFrWidthLeft2          = 0.16
+	leafFrWidthRight2         = 0.16
+	leafFrWidthBottom2        = 0.22
+	leafFrWidthTop2           = 0.16
+	dk_arch_height2           = 0
+	dk_leafFrWidthHorizontal2 = 0.16
+	dk_leafFrWidthVertical2   = 0.16
+	! ### Fülliungen / felder
+	dk_panel_division_bottom2 = 0.85
+	dk_panel_division_top2    = 1.30
+	dk_panel_division2[1][1]  = 0 :  dk_panel_division2[1][2] = 0
+	dk_panel_division2[2][1]  = 0 :  dk_panel_division2[2][2] = 0
+	dk_panel_division2[3][1]  = 0 :  dk_panel_division2[3][2] = 0
+	dk_panel_filling_thk2[1]  = 0.015
+	dk_panel_filling_thk2[2]  = 0.015
+	dk_panel_filling_thk2[3]  = 0.015
+	dk_panel_bar2[1][1]       = 0 : dk_panel_bar2[1][2] = 0
+	dk_panel_bar2[2][1]       = 0 : dk_panel_bar2[2][2] = 0
+	dk_panel_bar2[3][1]       = 0 : dk_panel_bar2[3][2] = 0
+	mullWidth2                = 0.022
+	mullThickness2            = 0.0125
+	! ### Falz
+	dk_panel_folding_nmbr             = 1
+	dk_panel_folding_dimensions[1][1] = gs_vb : dk_panel_folding_dimensions[1][2] = 0
+	dk_panel_folding_dimensions[2][1] = 0     : dk_panel_folding_dimensions[2][2] = 0
+	dk_panel_folding_dimensions[3][1] = 0     : dk_panel_folding_dimensions[3][2] = gs_vt
+	! ### Schraffurstifte
+	dk_fill_pens[dka_panel2fill1_penF] = dk_fill_pens[dka_panel_penF]
+	dk_fill_pens[dka_panel2fill2_penF] = dk_fill_pens[dka_panel_penF]
+	dk_fill_pens[dka_panel2fill3_penF] = dk_fill_pens[dka_panel_penF]
+	! ### Hintergrundstifte
+	dk_bkg_pens[dka_panel2fill1_penB] = dk_bkg_pens[dka_panel_penB]
+	dk_bkg_pens[dka_panel2fill2_penB] = dk_bkg_pens[dka_panel_penB]
+	dk_bkg_pens[dka_panel2fill3_penB] = dk_bkg_pens[dka_panel_penB]
+	! ### Schraffuren
+	dk_fills[dka_panel2fill1_fill] = dk_fills[dka_panel_fill]
+	dk_fills[dka_panel2fill2_fill] = dk_fills[dka_panel_fill]
+	dk_fills[dka_panel2fill3_fill] = dk_fills[dka_panel_fill]
+	! ### Materialien
+	dk_materials[dka_panel2_mat_BS] = dk_materials[dka_panel_mat_BS]
+	dk_materials[dka_panel2_mat_BGS] = dk_materials[dka_panel_mat_BS]
+	! dk_materials[dka_panel2fill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+	dk_materials[dka_panel2fill1_mat_BGS] = dk_materials[dka_panel2fill1_mat_BS]
+	dk_materials[dka_panel2fill2_mat_BS] = dk_materials[dka_panel_mat_BS]
+	dk_materials[dka_panel2fill2_mat_BGS] = dk_materials[dka_panel2fill2_mat_BS]
+	dk_materials[dka_panel2fill3_mat_BS] = dk_materials[dka_panel_mat_BS]
+	dk_materials[dka_panel2fill3_mat_BGS] = dk_materials[dka_panel2fill3_mat_BS]
+
+
+	! --------------------------------------------------------------- Nach Typen
+
+	IF iDoorPanelType2=1 THEN
+		sts = 1
+		ENDIF
+
+	IF iDoorPanelType2=2 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 1
+		! ### Materialien
+		dk_materials[dka_panel2fill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panel2fill1_mat_BGS] = dk_materials[dka_panel2fill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType2=3 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 1
+		! ### Fülliungen / felder
+		dk_panel_division2[1][1]  = 0 :  dk_panel_division2[1][2] = 1
+		! ### Materialien
+		dk_materials[dka_panel2fill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panel2fill1_mat_BGS] = dk_materials[dka_panel2fill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType2=4 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 2
+		! ### Fülliungen / felder
+		dk_panel_division2[1][1]  = 0 :  dk_panel_division2[1][2] = 1
+		dk_panel_division2[2][1]  = 0 :  dk_panel_division2[2][2] = 1
+		! ### Materialien
+		dk_materials[dka_panel2fill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panel2fill1_mat_BGS] = dk_materials[dka_panel2fill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType2=5 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 2
+		! ### Materialien
+		dk_materials[dka_panel2fill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panel2fill1_mat_BGS] = dk_materials[dka_panel2fill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType2=6 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 2
+		dk_mainpanel_design2      = 64 ! klassisch 1
+		dk_panel_filling2[1]      = "G1"
+		dk_arch_height2           = 0.08
+		ENDIF
+
+	IF iDoorPanelType2=7 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 2
+		dk_panel_filling2[1]      = "G1"
+		! ### Fülliungen / felder
+		dk_panel_bar2[1][1]       = 1 : dk_panel_bar2[1][2] = 1
+		ENDIF
+
+	IF iDoorPanelType2=8 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 1
+		dk_panel_filling2[1]      = "G1"
+		leafFrWidthBottom2        = 0.9
+		! ### Fülliungen / felder
+		dk_panel_bar2[1][1]       = 2 : dk_panel_bar2[1][2] = 1
+		ENDIF
+
+	IF iDoorPanelType2=9 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 2
+		dk_mainpanel_design2      = 64 ! klassisch 1
+			dk_arch_height2           = 0.08
+		! ### Materialien
+		dk_materials[dka_panel2fill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panel2fill1_mat_BGS] = dk_materials[dka_panel2fill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType2=10 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 2
+		dk_panel_filling2[1]      = "G1"
+		! ### Fülliungen / felder
+		dk_panel_division_bottom2 = LeafHeight - leafFrWidthTop - (0.9 - leafFrWidthLeft - leafFrWidthRight - dk_leafFrWidthVertical) - dk_leafFrWidthHorizontal/2
+		dk_panel_division2[2][1]  = 2 :  dk_panel_division2[2][2] = 1
+		dk_panel_bar2[1][1]       = 0 : dk_panel_bar2[1][2] = 1
+		ENDIF
+
+	IF iDoorPanelType2=11 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 2
+		dk_panel_filling2[2]      = "K2"
+		! ### Fülliungen / felder
+		dk_panel_division2[1][1]  = 0 :  dk_panel_division2[1][2] = 1
+		dk_panel_division2[2][1]  = 0 :  dk_panel_division2[2][2] = 1
+		! ### Materialien
+		dk_materials[dka_panel2fill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panel2fill1_mat_BGS] = dk_materials[dka_panel2fill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType2=12 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 3
+		dk_panel_filling2[2]      = "K2"
+		dk_panel_filling2[3]      = "K2"
+		! ### Fülliungen / felder
+		dk_panel_division_top2    = LeafHeight - leafFrWidthTop - (0.9 - leafFrWidthLeft - leafFrWidthRight - dk_leafFrWidthVertical) - dk_leafFrWidthHorizontal/2
+		dk_panel_division2[1][1]  = 0 :  dk_panel_division2[1][2] = 1
+		dk_panel_division2[2][1]  = 0 :  dk_panel_division2[2][2] = 1
+		dk_panel_division2[3][1]  = 0 :  dk_panel_division2[3][2] = 1
+		! ### Materialien
+		dk_materials[dka_panel2fill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panel2fill1_mat_BGS] = dk_materials[dka_panel2fill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType2=13 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 3
+		! ### Materialien
+		dk_materials[dka_panel2fill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panel2fill1_mat_BGS] = dk_materials[dka_panel2fill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType2=14 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 2
+		dk_panel_filling2[1]      = "G1"
+		! ### Fülliungen / felder
+		dk_panel_bar2[1][1]       = 2 : dk_panel_bar2[1][2] = 1
+		ENDIF
+
+	IF iDoorPanelType2=15 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 1
+		dk_panel_filling2[1]      = "G1"
+		! ### Fülliungen / felder
+		dk_panel_bar2[1][1]       = 2 : dk_panel_bar2[1][2] = 0
+		ENDIF
+
+	IF iDoorPanelType2=16 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 2
+		dk_panel_filling2[1]      = "G1"
+		dk_leafFrWidthVertical2   = 0.1
+		! ### Fülliungen / felder
+		dk_panel_division2[1][1]  = 0 :  dk_panel_division2[1][2] = 2
+		dk_panel_division2[2][1]  = 0 :  dk_panel_division2[2][2] = 2
+		ENDIF
+
+	IF iDoorPanelType2=17 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 2
+		dk_panel_filling2[1]      = "G1"
+		ENDIF
+
+	IF iDoorPanelType2=18 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 1
+		dk_panel_filling2[1]      = "G1"
+		ENDIF
+
+	IF iDoorPanelType2=19 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 1
+		dk_panel_filling2[1]      = "G1"
+		! ### Fülliungen / felder
+		dk_panel_bar2[1][1]       = 3 : dk_panel_bar2[1][2] = 2
+		ENDIF
+
+	IF iDoorPanelType2=20 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 1
+		dk_panel_filling2[1]      = "G1"
+		! ### Fülliungen / felder
+		dk_panel_bar2[1][1]       = 4 : dk_panel_bar2[1][2] = 2
+		ENDIF
+
+	IF iDoorPanelType2=21 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 2
+		dk_panel_filling2[1]      = "G1"
+		! ### Fülliungen / felder
+		dk_panel_division2[2][1]  = 0 :  dk_panel_division2[2][2] = 1
+		dk_panel_bar2[1][1]       = 3 : dk_panel_bar2[1][2] = 2
+		ENDIF
+
+	IF iDoorPanelType2=22 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 1
+		dk_panel_filling2[1]      = "K2"
+		! ### Fülliungen / felder
+		dk_panel_division2[1][1]  = 3 :  dk_panel_division2[1][2] = 1
+		! ### Materialien
+		dk_materials[dka_panel2fill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panel2fill1_mat_BGS] = dk_materials[dka_panel2fill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType2=23 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 1
+		dk_panel_filling2[1]      = "K2"
+		! ### Fülliungen / felder
+		dk_panel_division2[1][1]  = 2 :  dk_panel_division2[1][2] = 1
+		! ### Materialien
+		dk_materials[dka_panel2fill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panel2fill1_mat_BGS] = dk_materials[dka_panel2fill1_mat_BS]
+		ENDIF
+
+	IF iDoorPanelType2=24 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 1
+		dk_panel_filling2[1]      = "G1"
+		dk_leafFrWidthVertical2   = 0.1
+		dk_leafFrWidthHorizontal2 = 0.1
+		! ### Fülliungen / felder
+		dk_panel_division2[1][1]  = 3 :  dk_panel_division2[1][2] = 1
+		ENDIF
+
+	IF iDoorPanelType2=25 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 1
+		dk_mainpanel_design2      = 2
+		dk_panel_filling2[1]      = "G1"
+		leafFrWidthTop2           = 0.25
+		leafFrWidthBottom2        = LeafHeight - leafFrWidthTop - 0.30
+		! ### NUR VOLLBLATT!
+		bs_panel_type = "VB" : PARAMETERS bs_panel_type = bs_panel_type
+		ENDIF
+
+	IF iDoorPanelType2=26 THEN
+		sts = 1
+		! ### Teilung / Design
+		dk_panel_segments2        = 1
+		dk_panel_filling2[1]      = "G1"
+		leafFrWidthBottom2        = 0.7
+		dk_leafFrWidthVertical2   = 0.1
+		dk_leafFrWidthHorizontal2 = 0.1
+		! ### Fülliungen / felder
+		dk_panel_division2[1][1]  = 2 :  dk_panel_division2[1][2] = 1
+		ENDIF
+
+	IF iDoorPanelType2=99 THEN
+		! ### Schraffurstifte
+		dk_fill_pens[dka_panel2fill1_penF] = dk_fill_pens[dka_panel_penF]
+		dk_fill_pens[dka_panel2fill2_penF] = dk_fill_pens[dka_panel_penF]
+		dk_fill_pens[dka_panel2fill3_penF] = dk_fill_pens[dka_panel_penF]
+		! ### Hintergrundstifte
+		dk_bkg_pens[dka_panel2fill1_penB] = dk_bkg_pens[dka_panel_penB]
+		dk_bkg_pens[dka_panel2fill2_penB] = dk_bkg_pens[dka_panel_penB]
+		dk_bkg_pens[dka_panel2fill3_penB] = dk_bkg_pens[dka_panel_penB]
+		! ### Schraffuren
+		dk_fills[dka_panel2fill1_fill] = dk_fills[dka_panel_fill]
+		dk_fills[dka_panel2fill2_fill] = dk_fills[dka_panel_fill]
+		dk_fills[dka_panel2fill3_fill] = dk_fills[dka_panel_fill]
+		! ### Materialien
+		dk_materials[dka_panel2fill1_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panel2fill1_mat_BGS] = dk_materials[dka_panel2fill1_mat_BS]
+		dk_materials[dka_panel2fill2_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panel2fill2_mat_BGS] = dk_materials[dka_panel2fill2_mat_BS]
+		dk_materials[dka_panel2fill3_mat_BS] = dk_materials[dka_panel_mat_BS]
+		dk_materials[dka_panel2fill3_mat_BGS] = dk_materials[dka_panel2fill3_mat_BS]
+		sts = 1
+		ENDIF
+
+RETURN
+

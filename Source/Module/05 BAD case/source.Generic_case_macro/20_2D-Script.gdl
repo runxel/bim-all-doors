@@ -1,0 +1,5 @@
+
+IF NOT( BITTEST(macro_runtype,4) ) THEN END
+
+! PROJECT2 4,270,2
+

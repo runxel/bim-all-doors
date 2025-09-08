@@ -1,0 +1,3169 @@
+
+IF NOT( BITTEST(macro_runtype,5) ) THEN END
+
+! ---------------------------------------------------------------------- !
+
+show_hot = 1					! Initialisierung Variable: werden Hotspots angezeigt oder nicht ?
+								! (es werden PUT-Stacks für Profile und deren Hotspots verwendet)
+cutti = 0						! Initialisierung Variable: werden Schnitte durchgeführt oder nicht?
+_transom_move = 0				! Initialisierung Variable: Verschiebung Kämpfer in Längsrichtung
+
+poly_mat2 = dk_materials[dka_side2_mat_BGS]	! Initialisierung Variable
+IF C_ < tlr THEN C_ = 0.365		! Das war nur Entwicklungsintern, damit die Wandstärke nicht 0 wird
+mat_rot = 19 					! Dummy-Kugel: nur Entwicklungsintern
+
+! ---------- Variable auf "EIN" setzen, wenn kein Seitenlicht vorh.
+
+IF gs_sidelight_right = 0 THEN dk_sidelight_transom1 = 1
+IF gs_sidelight_left = 0  THEN dk_sidelight_transom2 = 1
+
+! ---------------------------------------------------------------------- !
+! -------------- Oberlichtteilungen
+
+! ..... Setze bs_fanlight_division = "wie Türöffnung" auf nur 1 Seite, wenn nur 1 Seitenteil vorh. ist
+! ...... Anmerkung Beister: Das ist kritisch, weil das auch im PS wirksam ist und die Auswahl verfälschen kann!
+
+IF bs_door_sidelight = "L" THEN 
+	IF bs_fanlight_division = 12 THEN bs_fanlight_division = 4
+ENDIF
+
+IF bs_door_sidelight = "R" THEN 
+	IF bs_fanlight_division = 12 THEN bs_fanlight_division = 8
+ENDIF
+
+IF bs_door_sidelight = "-" THEN 
+	IF bs_fanlight_division = 12 THEN bs_fanlight_division = 0
+	IF bs_fanlight_division = 8 THEN bs_fanlight_division = 0
+	IF bs_fanlight_division = 4 THEN bs_fanlight_division = 0
+ENDIF
+
+
+! -------------- ...
+
+bs_spiegel_br_bs = bs_spiegel_br_bs + gs_vb
+bs_spiegel_br_ob_bs = bs_spiegel_br_ob_bs + gs_vb
+
+js_fanlight_division_left = 0
+js_fanlight_division_right = 0
+js_fanlight_division_sym = 0
+js_fanlight_division_asym = 0
+
+IF BITTEST(bs_fanlight_division,0) THEN js_fanlight_division_sym = 1 
+IF BITTEST(bs_fanlight_division,1) THEN js_fanlight_division_asym = 1
+IF BITTEST(bs_fanlight_division,2) THEN js_fanlight_division_left = 1
+IF BITTEST(bs_fanlight_division,3) THEN js_fanlight_division_right = 1 
+IF BITTEST(bs_fanlight_division,4) THEN js_fanlight_division_not = 1 
+
+
+_kaempferlaenge = ac_wallhole_width - (dk_LOD >= 300) * gs_tolerance_left - (dk_LOD >= 300) * gs_tolerance_right - gs_sidelight_left * gs_sidelight_width_left - gs_sidelight_right * gs_sidelight_width_right\
+					-  (NOT(gs_sidelight_left) AND NOT(gs_sidelight_right)) * (gs_frame_width_left + gs_frame_width_right)\
+					- (_framewidth_left - _framewidth_post_right)* (gs_sidelight_right AND NOT(gs_sidelight_left))\
+					- (_framewidth_right - _framewidth_post_left)* (gs_sidelight_left AND NOT(gs_sidelight_right)) 
+
+
+! -------------- Einheitliche Materialien
+IF GLOB_MODPAR_NAME = "dk_materials" AND dk_LOI < 5 THEN
+	dka_frame_mat_BGS 	= dka_frame_mat_BS
+	dka_side1_mat_BS 	= unifyingMaterial
+	dka_side1_mat_BGS 	= unifyingMaterial
+	dka_side2_mat_BS 	= unifyingMaterial
+	dka_side2_mat_BGS 	= unifyingMaterial
+	dka_fan_mat_BS 		= unifyingMaterial
+	dka_fan_mat_BGS 	= unifyingMaterial
+	ENDIF
+
+
+! ---------------------------------------------------------------------- !
+! -------- 3 D  -  S c r i p t ----------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+MULx -1
+ADD offsetFrameCenter, 0, offsetFrameSurfaceBS
+ROTx -90 * (macro_runtype > 0)
+MULy - 1
+
+PEN dk_cont_pens[dka_frame_penC3]
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+LOD_3D = dk_LOD						! wird vom Hauptobjekt übergeben
+
+IF LOD_3D > 399 THEN _glas_plus = gs_vb ELSE _glas_plus = 0
+
+GOSUB "LOD_" + STR(LOD_3D, 1, 0)
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+! H O T S P O T S    3 D   E D I T A B L E
+
+! KÄMPFERHÖHE
+
+	IF gs_door_transom THEN
+		HOTSPOT 0, 0, -0.1, 				htspt, ac_egress_height, 3			: htspt = htspt + 1
+		HOTSPOT 0, 0, 	0, 					htspt, ac_egress_height, 1 + 128	: htspt = htspt + 1
+		HOTSPOT 0, 0, ac_egress_height, 	htspt, ac_egress_height, 2			: htspt = htspt + 1		
+	ENDIF
+
+! ......................... !
+
+! Seitenfeld rechts
+
+	IF gs_sidelight_right AND gs_sidelight_left THEN
+		ADD -clearingFrameCenter + frame_out_dims_x/2, _frame_thk_post - gs_ub_st2, 0
+		HOTSPOT 0.1, 						0, 0,	htspt, gs_sidelight_width_right, 3			: htspt = htspt + 1
+		HOTSPOT 0, 							0, 0,	htspt, gs_sidelight_width_right, 1 + 128	: htspt = htspt + 1
+		HOTSPOT -gs_sidelight_width_right,	0, 0, 	htspt, gs_sidelight_width_right, 2			: htspt = htspt + 1		
+		DEL 1
+	ENDIF
+
+! ......................... !
+
+! Durchgangsbreite
+
+	IF gs_sidelight_right AND gs_sidelight_left THEN
+		ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right, _frame_thk_post - gs_ub_st2, 0
+		HOTSPOT 0.1, 				0, 0,	htspt, ac_egress_width, 3			: htspt = htspt + 1
+		HOTSPOT 0, 					0, 0,	htspt, ac_egress_width, 1 + 128		: htspt = htspt + 1
+		HOTSPOT -ac_egress_width,	0, 0, 	htspt, ac_egress_width, 2			: htspt = htspt + 1		
+		DEL 1
+	ENDIF
+
+! ......................... !
+
+! Durchgangsbreite
+
+	IF gs_sidelight_right  AND NOT(gs_sidelight_left) THEN
+		ADD -clearingFrameCenter - frame_out_dims_x/2 + _framewidth_left, _frame_thk_post - gs_ub_st2, 0
+		HOTSPOT -0.1, 				0, 0,	htspt, ac_egress_width, 3			: htspt = htspt + 1
+		HOTSPOT 0, 					0, 0,	htspt, ac_egress_width, 1 + 128		: htspt = htspt + 1
+		HOTSPOT ac_egress_width,	0, 0, 	htspt, ac_egress_width, 2			: htspt = htspt + 1		
+		DEL 1
+	ENDIF
+
+! ......................... !
+
+! Durchgangsbreite
+
+	IF gs_sidelight_left AND NOT(gs_sidelight_right) THEN
+		ADD -clearingFrameCenter + frame_out_dims_x/2 - _framewidth_right, _frame_thk_post - gs_ub_st2, 0
+		HOTSPOT 0.1, 				0, 0,	htspt, ac_egress_width, 3			: htspt = htspt + 1
+		HOTSPOT 0, 					0, 0,	htspt, ac_egress_width, 1 + 128		: htspt = htspt + 1
+		HOTSPOT -ac_egress_width,	0, 0, 	htspt, ac_egress_width, 2			: htspt = htspt + 1		
+		DEL 1
+	ENDIF
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+WHILE NSP DO			! Buffer leeren, weil letzte Zeile nicht genutzt wird
+	www_sub = GET(1)
+ENDWHILE
+
+DEL 4
+
+END  offsetFrameSurfaceBGS,
+		facingLintelBS, facingLintelBGS,
+		frame2wallSurfaceBS, frame2wallSurfaceBGS, htspt
+
+! ---------------------------- E N D ----------------------------------- !
+! ---------------------------------------------------------------------- !
+! ---------------------------- SUBS ------------------------------------ !
+
+1: ! D U M M Y   S P H E R E
+
+	MATERIAL mat_rot
+	SPHERE 0.01
+	!HOTSPOT 0, 0, 0 , htspt : htspt = htspt + 1
+
+RETURN
+
+2: ! S I N G L E   H O T S P O T
+
+	HOTSPOT 0, 0, 0, htspt : htspt = htspt + 1
+
+RETURN
+
+3: ! M I C R O - S P H E R E
+
+	MATERIAL mat_rot
+	!SPHERE 0.01
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+
+"LOD_100":
+
+	! H I E R    G I B T     E S     K E I N E     E L E M E N T E
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ----------------------  L  O  D    2  0  0  -------------------------- !
+! ---------------------------------------------------------------------- !
+
+"LOD_200":			! Nur 2 Folien mit Dicke und Abstand tlr
+
+	ausschnitt = ac_egress_width + NOT(gs_sidelight_right) * gs_frame_width_right +  NOT(gs_sidelight_left) * gs_frame_width_left
+	ausschnitt = ausschnitt + gs_vb * NOT(gs_sidelight_right AND gs_sidelight_left)
+	ausschnitt = ausschnitt + NOT(gs_sidelight_right) * gs_tolerance_right + NOT(gs_sidelight_left) * gs_tolerance_left
+	IF oberLichtBlende # 1 THEN ausschnitt_hoehe = ac_wallhole_height ELSE ausschnitt_hoehe = ac_egress_height
+
+	ADDx - clearingFrameCenter 
+
+	IF gs_sidelight_left AND NOT(gs_sidelight_right) 		THEN ADDx -frame_out_dims_x/2 + gs_sidelight_width_left + gs_tolerance_left 
+	IF gs_sidelight_right AND NOT(gs_sidelight_left) 		THEN ADDx -frame_out_dims_x/2
+	IF gs_sidelight_left AND gs_sidelight_right 			THEN ADDx -frame_out_dims_x/2 + gs_sidelight_width_left + gs_tolerance_left 
+	IF NOT(gs_sidelight_left) AND NOT(gs_sidelight_right) 	THEN ADDx -frame_out_dims_x/2 
+
+	ROTx 90
+	CUTPOLY 4,
+	0, 0,
+	ausschnitt, 0,
+	ausschnitt, ausschnitt_hoehe,
+	0, ausschnitt_hoehe
+	DEL 2
+
+	MATERIAL dk_materials[dka_frame_mat_BS]
+	ROTx 90
+	PRISM_ 4, symbolicTHK,
+	- frame_out_dims_x/2, 0, 15,
+	- frame_out_dims_x/2, ac_wallhole_height, 15,
+	  frame_out_dims_x/2, ac_wallhole_height, 15,
+	  frame_out_dims_x/2, 0, 15
+	DEL 1	
+
+	MATERIAL dk_materials[dka_frame_mat_BGS]
+	ROTx 90
+	ADDz - symbolicTHK
+	PRISM_ 4, symbolicTHK,
+	- frame_out_dims_x/2, 0, 15,
+	- frame_out_dims_x/2, ac_wallhole_height, 15,
+	  frame_out_dims_x/2, ac_wallhole_height, 15,
+	  frame_out_dims_x/2, 0, 15
+	DEL 2
+
+	CUTEND
+
+	DEL 1
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ----------------------  L  O  D    3  0  0  -------------------------- !
+! ---------------------------------------------------------------------- !
+
+"LOD_300":
+
+
+	kont_typ 		= 7
+	poly_cont 		= dk_cont_pens[dka_frame_penC2]
+	poly_fill 		= dk_fills[dka_frame_fill] 
+	poly_fill_pen 	= dk_fill_pens[dka_frame_penF] 
+	poly_bg_pen 	= dk_bkg_pens[dka_frame_penB] 
+
+	poly_x 			= _framewidth_left
+	poly_y 			= gs_vt 
+	poly_height		= frame_out_dims_z 
+	poly_z1			= _frame_width_upper					! Höhe/Länge des durch CUTPLANE abzuziehenden oberem Anschlussstückes 			
+	poly_z2 		= 0
+
+	IF dk_frametype  = "BZ" THEN poly_yi = frame_out_dims_y 
+	IF dk_frametype  = "UZ" THEN poly_yi = frame_out_dims_y + gs_ub_st2
+
+	schraffurtyp		= dk_fills[dka_frame_fill]			
+	schraffurstift 		= dk_fill_pens[dka_frame_penF]		
+	hintergrundstift	= dk_bkg_pens[dka_frame_penB]		
+	konturenstift		= dk_cont_pens[dka_frame_penC2]		
+	poly_mat			= dk_materials[dka_frame_mat_BS]	
+
+	_ro_plus			= gs_tolerance_upper * NOT(gs_door_transom)		! Rahmenbreite oben breiter, da es in dem LOD keine Toleranz gibt
+
+	! -------- Z a r g e   B a n d s e i t e
+
+	ADD -clearingFrameCenter - frame_out_dims_x/2, 0, 0
+	GOSUB "LOD_300_frame"
+	DEL 1
+
+	poly_x 			= _framewidth_right
+	poly_z2 		= 0
+	ADD -clearingFrameCenter + frame_out_dims_x/2, 0, 0
+	MULx -1
+	GOSUB "LOD_300_frame"
+	DEL 2
+
+	poly_x 			= _frame_width_upper + _ro_plus
+	poly_height		= frame_out_dims_x - NOT(_oben_gehrung) * (_framewidth_right + _framewidth_left)
+	poly_z1			= _framewidth_right					! Höhe/Länge des durch CUTPLANE abzuziehenden oberem Anschlussstückes 	
+	poly_z2			= _framewidth_left					! Höhe/Länge des durch CUTPLANE abzuziehenden unterem Anschlussstückes 
+	show_hot 		= 0
+	ADD -clearingFrameCenter - frame_out_dims_x/2 + NOT(_oben_gehrung) * _framewidth_left, 0, frame_out_dims_z
+	ROTy 90
+	GOSUB "LOD_300_frame"
+	DEL 2
+
+	! -------- Z a r g e   B a n d g e g e n s e i t e
+
+	poly_x 			= _framewidth_left
+	poly_y 			= frame_out_dims_y - gs_vt
+	poly_height		= frame_out_dims_z	
+	poly_mat		= dk_materials[dka_frame_mat_BGS]	
+	poly_z1			= _frame_width_upper					! Höhe/Länge des durch CUTPLANE abzuziehenden oberem Anschlussstückes
+	ADDy gs_vt
+
+	ADD -clearingFrameCenter - frame_out_dims_x/2, 0, 0
+	poly_z2 = 0
+	GOSUB "LOD_300_frame"
+	DEL 1
+
+	poly_x 			= _framewidth_right
+	poly_z2 		= 0
+	ADD -clearingFrameCenter + frame_out_dims_x/2, 0, 0
+	MULx -1
+	GOSUB "LOD_300_frame"
+	DEL 2
+
+	poly_x 			= _frame_width_upper + _ro_plus
+	poly_height		= frame_out_dims_x  - NOT(_oben_gehrung) * (_framewidth_right + _framewidth_left)
+	poly_z1			= _framewidth_right					! Höhe/Länge des durch CUTPLANE abzuziehenden oberem Anschlussstückes 	
+	poly_z2			= _framewidth_left					! Höhe/Länge des durch CUTPLANE abzuziehenden unterem Anschlussstückes 
+	show_hot 		= 0
+	ADD -clearingFrameCenter - frame_out_dims_x/2 + NOT(_oben_gehrung) * _framewidth_left, 0, frame_out_dims_z
+	ROTy 90
+	GOSUB "LOD_300_frame"
+	DEL 2
+
+	! ----------------------------------------------------------------- !
+	DEL 1				! gs_vt
+
+	GOSUB "Fuellung_300"
+
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+	! -------- K Ä M P F E R    B a n d s e i t e
+
+	IF gs_door_transom THEN		
+		poly_y 			= gs_vt	
+		poly_mat		= dk_materials[dka_frame_mat_BS]
+		
+		IF gs_sidelight_left AND dk_sidelight_transom2 THEN		! Kämpfer links, wenn vorh.
+			_abzug_oben		= 0
+			poly_x 			= _frame_width_transom
+			poly_height		= gs_sidelight_width_left - _framewidth_left - _framewidth_post_left  + gs_tolerance_left
+			ADDz poly_x + ac_egress_height
+			ADDx -clearingFrameCenter - frame_out_dims_x/2  + _framewidth_left 
+			cutti = 0
+			GOSUB "LOD_350_riegel_BS_2"
+			DEL 2
+		ENDIF
+
+		IF gs_sidelight_right AND dk_sidelight_transom1 THEN		! Kämpfer rechts, wenn vorh.
+			_abzug_oben		= 0
+			poly_x 			= _frame_width_transom
+			poly_height		= gs_sidelight_width_right - _framewidth_right - _framewidth_post_right + gs_tolerance_right
+			ADDz poly_x + ac_egress_height
+			ADDx -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right + _framewidth_post_right - gs_tolerance_right
+			cutti = 0
+			GOSUB "LOD_350_riegel_BS_2"
+			DEL 2
+		ENDIF
+
+		IF bs_inner_frame # 2 THEN									! Kämpfer mitte BS, wenn keine Oberblende
+			_abzug_oben		= 0
+			poly_x 			= _frame_width_transom
+			poly_height		= _kaempferlaenge + (gs_sidelight_right AND gs_sidelight_left) * (_framewidth_post_right + _framewidth_post_left)
+			ADDz poly_x + ac_egress_height
+			ADDx -clearingFrameCenter - frame_out_dims_x/2  + gs_sidelight_left * gs_sidelight_width_left + NOT(gs_sidelight_left) * _framewidth_left \
+				 - _framewidth_post_left * (gs_sidelight_left AND NOT(gs_sidelight_right))\
+				 - ( _framewidth_post_left  ) * (gs_sidelight_left AND gs_sidelight_right)  + gs_tolerance_left
+			cutti = 1
+			GOSUB "LOD_350_riegel_BS"
+			DEL 2
+		ENDIF
+
+	ENDIF
+
+	! -------- P F O S T E N   B a n d s e i t e
+
+	IF gs_door_transom THEN
+		poly_height = ac_egress_height + _frame_width_transom
+		_abzug_oben = _frame_width_transom
+	ELSE
+		poly_height = frame_out_dims_z - _frame_width_upper - _ro_plus
+		_abzug_oben = 0
+	ENDIF
+	poly_mat		= dk_materials[dka_frame_mat_BS]	
+	poly_y = gs_vt	
+
+	IF gs_sidelight_left THEN 
+		_sidelight_width = gs_sidelight_width_left 
+		_framewidth = _framewidth_left
+		poly_x = _framewidth_post_left 
+		ADD -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_width_left - poly_x + gs_tolerance_left , 0, 0
+		GOSUB "LOD_350_sidepost_BS"
+		DEL 1
+	ENDIF
+
+	IF gs_sidelight_right THEN 
+		_sidelight_width = gs_sidelight_width_right + gs_tolerance_right
+		_framewidth = _framewidth_right
+		poly_x = _framewidth_post_right
+		ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right + poly_x  - gs_tolerance_right, 0, 0
+		MULx -1
+		GOSUB "LOD_350_sidepost_BS"
+		DEL 2
+	ENDIF
+
+	IF gs_door_transom AND bs_inner_frame # 2 AND cutti = 1 THEN CUTEND
+
+	! -------- P F O S T E N   O B E N   B a n d s e i t e
+
+	IF gs_door_transom THEN
+		poly_height = frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom 
+		_abzug_oben = 0
+
+		poly_mat		= dk_materials[dka_frame_mat_BS]	
+		poly_y = gs_vt
+
+		IF js_fanlight_division_left THEN 
+			_sidelight_width = gs_sidelight_width_left
+			_framewidth = _framewidth_left
+			poly_x = _framewidth_post_left
+			ADD -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_width_left - poly_x + gs_tolerance_left, 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+		ENDIF
+
+		IF js_fanlight_division_right THEN 
+			_sidelight_width = gs_sidelight_width_right
+			_framewidth = _framewidth_right
+			poly_x = _framewidth_post_right
+			ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right - gs_tolerance_right , 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+		ENDIF
+
+		IF js_fanlight_division_sym THEN
+			_framewidth = dk_post_width_upper
+			poly_x = dk_post_width_upper
+			ADD -poly_x/2, 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+		ENDIF
+
+		IF js_fanlight_division_asym THEN
+			_framewidth = dk_post_width_upper
+			poly_x = dk_post_width_upper
+			ADD -clearingFrameCenter - frame_out_dims_x/2, 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+		ENDIF
+
+	ENDIF
+
+	! -------- R I E G E L    B a n d s e i t e
+
+	cutti = 0
+	_abzug_oben		= 0
+	poly_x 			= _frame_width_bottom_sl  
+	poly_y 			= gs_vt	
+	poly_mat		= dk_materials[dka_frame_mat_BS]	
+	poly_height		= gs_sidelight_width_left - _framewidth_left - _framewidth_post_left + gs_tolerance_left
+	ADD -clearingFrameCenter - frame_out_dims_x/2 + _framewidth_left, 0 , poly_x
+	poly_ys			= gs_vt - bs_sidelight_filling_thk2								! Stärke der Seitenteilfüllung links
+	IF gs_sidelight_left THEN GOSUB "LOD_350_riegel_unten_BS"
+	DEL 1
+
+	poly_height		= gs_sidelight_width_right - _framewidth_right - _framewidth_post_right  + gs_tolerance_right
+	ADD -clearingFrameCenter + frame_out_dims_x/2 + _framewidth_post_right - gs_sidelight_width_right - gs_tolerance_right, 0 , poly_x
+	poly_ys			= gs_vt - bs_sidelight_filling_thk1								! Stärke der Seitenteilfüllung rechts
+	IF gs_sidelight_right THEN GOSUB "LOD_350_riegel_unten_BS"
+	DEL 1
+
+	! ---------------------------------------------------------------------- !
+	! B A N D G E G E N S E I T E
+										poly_y = frame_out_dims_y - gs_vt
+	! ---------------------------------------------------------------------- !
+	
+	ADDy gs_vt	
+
+
+	! -------- K Ä M P F E R    B a n d g e g e n s e i t e
+
+	IF gs_door_transom THEN	
+		ADDy - gs_vt								
+
+		poly_mat		= dk_materials[dka_frame_mat_BGS]								
+	
+		IF gs_sidelight_left AND dk_sidelight_transom2 THEN		! Kämpfer links, wenn vorh.
+			_abzug_oben		= 0
+			poly_x 			= _frame_width_transom
+			poly_height		= gs_sidelight_width_left - _framewidth_left - _framewidth_post_left + gs_tolerance_left
+			ADDz poly_x + ac_egress_height
+			ADD -clearingFrameCenter - frame_out_dims_x/2  + _framewidth_left, gs_vt , 0 
+			cutti = 0
+			GOSUB "LOD_350_riegel"
+			DEL 2
+		ENDIF
+
+		IF gs_sidelight_right AND dk_sidelight_transom1 THEN		! Kämpfer rechts, wenn vorh.
+			_abzug_oben		= 0
+			poly_x 			= _frame_width_transom
+			poly_height		= gs_sidelight_width_right - _framewidth_right - _framewidth_post_right + gs_tolerance_right
+			ADDz poly_x + ac_egress_height
+			ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right + _framewidth_post_right - gs_tolerance_right, gs_vt , 0 
+			cutti = 0
+			GOSUB "LOD_350_riegel"
+			DEL 2
+		ENDIF
+
+		IF bs_inner_frame # 2 THEN									! Kämpfer mitte BGS, wenn keine Oberblende
+			_abzug_oben		= 0
+			poly_x 			= _frame_width_transom
+			poly_height		= _kaempferlaenge + (gs_sidelight_right AND gs_sidelight_left) * (_framewidth_post_right + _framewidth_post_left)  
+			ADDz poly_x + ac_egress_height
+
+
+			ADD -clearingFrameCenter - frame_out_dims_x/2  + gs_sidelight_left * gs_sidelight_width_left + NOT(gs_sidelight_left) * _framewidth_left \
+				 - _framewidth_post_left * (gs_sidelight_left AND NOT(gs_sidelight_right)) \
+				 - ( _framewidth_post_left  ) * (gs_sidelight_left AND gs_sidelight_right) + gs_tolerance_left, gs_vt , 0 
+
+			cutti = 1
+			GOSUB "LOD_350_riegel"
+			DEL 2
+		ENDIF
+
+		DEL 1
+	ENDIF
+
+	! -------- P F O S T E N   B a n d g e g e n s e i t e
+	IF gs_door_transom THEN
+		poly_height = ac_egress_height + _frame_width_transom
+		_abzug_oben = _frame_width_transom
+	ELSE
+		poly_height = frame_out_dims_z - _frame_width_upper - _ro_plus
+		_abzug_oben = 0
+	ENDIF
+	poly_mat		= dk_materials[dka_frame_mat_BGS]	
+
+	IF gs_sidelight_left THEN 
+		_sidelight_width = gs_sidelight_width_left
+		_framewidth = _framewidth_left
+		poly_x = _framewidth_post_left
+		ADD -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_width_left - poly_x + gs_tolerance_left, 0, 0
+		GOSUB "LOD_350_sidepost"
+		DEL 1
+	ENDIF
+
+	IF gs_sidelight_right THEN 
+		_sidelight_width = gs_sidelight_width_right
+		_framewidth = _framewidth_right
+		poly_x = _framewidth_post_right
+		ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right + poly_x - gs_tolerance_right, 0, 0
+		MULx -1
+		GOSUB "LOD_350_sidepost"
+		DEL 2
+	ENDIF
+
+	IF gs_door_transom AND bs_inner_frame # 2 AND cutti THEN  CUTEND
+
+	! IF NOT(gs_door_transom) THEN
+	! 	IF gs_sidelight_left THEN 
+	! 		IF _frame_thk_post > poly_yi THEN
+	! 			!poly_y = - poly_yi + _frame_thk_post
+	! 			ADD -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_width_left - poly_x, poly_yi - gs_vt, frame_out_dims_z - _frame_width_upper 
+	! 			poly_height = _frame_width_upper
+	! 			GOSUB "LOD_350_sidepost"
+	! 			DEL 1
+	! 		ENDIF
+	! 	ENDIF
+	
+	! 	IF gs_sidelight_right THEN 
+	! 		IF _frame_thk_post > poly_yi THEN
+	! 			!poly_y = - poly_yi + _frame_thk_post
+	! 			ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right, poly_yi - gs_vt, frame_out_dims_z - _frame_width_upper 
+	! 			poly_height = _frame_width_upper
+	! 			GOSUB "LOD_350_sidepost"
+	! 			DEL 1
+	! 		ENDIF
+	! 	ENDIF
+	! ENDIF
+
+	! -------- P F O S T E N   O B E N   B a n d g e g e n s e i t e
+
+	IF gs_door_transom THEN
+		poly_height = frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom
+
+		_abzug_oben = 0!_frame_width_transom
+
+		poly_mat		= dk_materials[dka_frame_mat_BGS]	
+
+		IF js_fanlight_division_left THEN 
+			_sidelight_width = gs_sidelight_width_left
+			_framewidth = _framewidth_left
+			poly_x = _framewidth_post_left
+			ADD -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_width_left - poly_x + gs_tolerance_left, 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+
+			! Variablen für Pfosten hinter Obergurt
+			IF dk_frametype = "BZ" OR dk_frametype = "UZ" THEN 
+				_my_frame_thk = frameThickness   ! gs_frame_thk ... by Beister
+				_my_ueb = gs_ub_st2 * 2
+			ENDIF
+			IF dk_frametype = "EZ" OR dk_frametype = "RR" THEN 
+				IF NOT(dk_different_frame_thk) THEN 
+					_my_frame_thk = frameThickness   ! gs_frame_thk ... by Beister
+				ELSE
+					_my_frame_thk = dk_frame_thk_EZ
+				ENDIF
+				IF dk_frametype = "EZ" THEN _my_ueb = 0
+				IF dk_frametype = "RR" THEN _my_ueb = 0
+			ENDIF
+
+			! Pfosten hinter Obergurt
+			IF _frame_thk_post > _my_frame_thk + _my_ueb THEN
+				!poly_y = _frame_thk_post - ( _my_frame_thk + _my_ueb )
+				ADD -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_width_left - poly_x + gs_tolerance_left, poly_yi - gs_vt + _my_ueb , poly_height + ac_egress_height + _frame_width_transom
+				poly_height = _frame_width_upper + gs_ub_st1 * (dk_frametype # "EZ")
+				GOSUB "LOD_350_sidepost"
+				DEL 1
+			ENDIF
+
+		ENDIF
+
+		poly_height = frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom
+
+		IF js_fanlight_division_right THEN 
+			_sidelight_width = gs_sidelight_width_right
+			_framewidth = _framewidth_right
+			poly_x = _framewidth_post_right
+			ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right - gs_tolerance_right, 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+
+			! Variablen für Pfosten hinter Obergurt
+			IF dk_frametype = "BZ" OR dk_frametype = "UZ" THEN 
+				_my_frame_thk = frameThickness   ! gs_frame_thk ... by Beister
+				_my_ueb = gs_ub_st2 * 2
+			ENDIF
+			IF dk_frametype = "EZ" OR dk_frametype = "RR" THEN 
+				IF NOT(dk_different_frame_thk) THEN 
+					_my_frame_thk = frameThickness   ! gs_frame_thk ... by Beister
+				ELSE
+					_my_frame_thk = dk_frame_thk_EZ
+				ENDIF
+				IF dk_frametype = "EZ" THEN _my_ueb = 0
+				IF dk_frametype = "RR" THEN _my_ueb = 0
+			ENDIF
+
+			! Pfosten hinter Obergurt
+
+			IF _frame_thk_post > _my_frame_thk + _my_ueb THEN
+				!poly_y = _frame_thk_post - ( _my_frame_thk + _my_ueb )
+				ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right - gs_tolerance_right, poly_yi - gs_vt + _my_ueb, poly_height + ac_egress_height + _frame_width_transom
+				poly_height = _frame_width_upper + gs_ub_st1 * (dk_frametype # "EZ")
+				GOSUB "LOD_350_sidepost"
+				DEL 1
+			ENDIF
+
+		ENDIF
+
+		poly_height = frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom
+
+		IF js_fanlight_division_sym THEN
+			_framewidth = dk_post_width_upper
+			poly_x = dk_post_width_upper
+			ADD -poly_x/2, 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+		ENDIF
+
+		IF js_fanlight_division_asym THEN
+			_framewidth = dk_post_width_upper
+			poly_x = dk_post_width_upper
+			ADD -clearingFrameCenter - frame_out_dims_x/2, 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+		ENDIF
+
+	ENDIF
+
+	! -------- R I E G E L    B a n d g e g e n s e i t e
+
+	ADDy - gs_vt
+
+	poly_x 			= _frame_width_bottom_sl
+	poly_mat		= dk_materials[dka_frame_mat_BGS]	
+	poly_height		= gs_sidelight_width_left - _framewidth_left - _framewidth_post_left + gs_tolerance_left
+	ADD -clearingFrameCenter - frame_out_dims_x/2 + _framewidth_left, gs_vt , poly_x
+	IF gs_sidelight_left THEN GOSUB "LOD_350_riegel_unten"
+	DEL 1
+
+	poly_height		= gs_sidelight_width_right - _framewidth_right - _framewidth_post_right + gs_tolerance_right
+	ADD -clearingFrameCenter + frame_out_dims_x/2 + _framewidth_post_right - gs_sidelight_width_right - gs_tolerance_right, gs_vt  , poly_x
+	IF gs_sidelight_right GOSUB "LOD_350_riegel_unten"
+	DEL 1
+
+	DEL 1
+
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+	DEL 1
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+"Fuellung_300":
+
+	ADDy gs_vt
+
+	! ----------- F Ü L L U N G --------------------------------------- !
+
+	poly_x1 = gs_sidelight_width_left - _framewidth_left - _framewidth_post_left + gs_tolerance_left					! Breite linkes Seitenteil
+	poly_x2 = gs_sidelight_width_right - _framewidth_right	- _framewidth_post_right									! Breite rechtes Seitenteil
+	poly_x3 = frame_out_dims_x - _framewidth_left - _framewidth_right													! Breite gesamt
+	poly_x4 = poly_x3 - gs_sidelight_width_right + _framewidth_right + _framewidth_post_left - gs_tolerance_right	! Breite von links bis A.K. rechtes Seitenteil
+
+	poly_y1 = ac_egress_height																! Durchgangshöhe bei Oberlicht
+	poly_y2 = frame_out_dims_z - ac_egress_height - _frame_width_upper						! Höhe Oberlicht
+	poly_y3 = frame_out_dims_z - _framewidth_left - _framewidth_left						! Höhe Gesamt bei Oberlicht
+	poly_z1 =  bs_sidelight_filling_thk1/2													! Füllungsstärke
+
+
+	ADD -clearingFrameCenter - frame_out_dims_x/2 + _framewidth_left, 0, _frame_width_bottom_sl
+	ROTx 90
+
+
+	IF NOT(gs_door_transom) THEN
+
+		IF gs_sidelight_left THEN
+
+			MATERIAL dk_materials[dka_side2_mat_BGS]
+			GOSUB "fill_LOD300_1"
+			ADDz poly_z1
+			MATERIAL dk_materials[dka_side2_mat_BS]
+			GOSUB "fill_LOD300_1"
+			DEL 1		
+	
+		ENDIF
+	
+		IF gs_sidelight_right THEN
+
+			MATERIAL dk_materials[dka_side1_mat_BGS]
+			GOSUB "fill_LOD300_2"
+			ADDz poly_z1
+			MATERIAL dk_materials[dka_side1_mat_BS]
+			GOSUB "fill_LOD300_2"
+			DEL 1	
+	
+		ENDIF
+
+	ENDIF
+
+	IF gs_door_transom THEN
+
+
+		IF NOT(gs_sidelight_left) AND NOT(gs_sidelight_right) THEN
+			MATERIAL dk_materials[dka_side2_mat_BGS]
+			GOSUB "fill_LOD300_4"
+			ADDz poly_z1
+			MATERIAL dk_materials[dka_side2_mat_BS]
+			GOSUB "fill_LOD300_4"
+			DEL 1		
+		ENDIF
+
+		IF NOT(gs_sidelight_left) AND gs_sidelight_right THEN		
+			MATERIAL dk_materials[dka_side2_mat_BGS]
+			GOSUB "fill_LOD300_6"
+			ADDz poly_z1
+			MATERIAL dk_materials[dka_side1_mat_BS]
+			GOSUB "fill_LOD300_6"
+			DEL 1
+		ENDIF
+
+		IF gs_sidelight_left AND NOT(gs_sidelight_right) THEN 
+			MATERIAL dk_materials[dka_side1_mat_BGS]
+			GOSUB "fill_LOD300_5"
+			ADDz poly_z1
+			MATERIAL dk_materials[dka_side2_mat_BS]
+			GOSUB "fill_LOD300_5"
+			DEL 1
+		ENDIF
+
+		IF gs_sidelight_left AND  gs_sidelight_right THEN
+			MATERIAL dk_materials[dka_side2_mat_BGS]
+			GOSUB "fill_LOD300_7"
+			ADDz poly_z1
+			MATERIAL dk_materials[dka_side2_mat_BS]
+			GOSUB "fill_LOD300_7"
+			DEL 1		
+		ENDIF
+
+	ENDIF
+
+	DEL 2
+
+	DEL 1
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+	
+	"LOD_300_frame":
+	
+		GOSUB "LOD_300_frame_PUT"
+		GOSUB "PRISM_"
+	
+		! ......................... !
+	
+		IF show_hot THEN
+			GOSUB "LOD_300_frame_PUT"	
+			GOSUB "HOTSPOTS_3D_FRAME"
+		ENDIF
+
+	RETURN
+
+		! -------------------------------------------------------------- !
+	
+		"LOD_300_frame_PUT":
+
+			PUT	0, 			0, 		15,
+				poly_x, 	0, 		15,
+				poly_x,   	poly_y, 15,
+				0,   		poly_y, 15,
+				0, 			0, 		-1
+
+		RETURN
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+
+
+! ---------------------------------------------------------------------- !
+! ----------------------  L  O  D    3  5  0  -------------------------- !
+! ---------------------------------------------------------------------- !
+
+"LOD_350":
+
+	ADDx 0   !-gs_tolerance_left + gs_tolerance_right		! ????????????? oder -clearingFrameCenter
+
+	bs_folding_nmbr = 0
+
+	GOSUB "LOD_500"
+
+	DEL 1   ! ?????????????
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ----------------------  L  O  D    4  0  0  -------------------------- !
+! ---------------------------------------------------------------------- !
+
+"LOD_400":
+
+	bs_folding_nmbr = (bs_folding_nmbr > 0)
+
+	GOSUB "LOD_500"
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ----------------------  L  O  D    5  0  0  -------------------------- !
+! ---------------------------------------------------------------------- !
+
+"LOD_500":		! LOD 350, 400 + 500
+
+	kont_typ 		= 7
+	poly_cont 		= dk_cont_pens[dka_frame_penC2]
+	poly_fill 		= dk_fills[dka_frame_fill] 
+	poly_fill_pen 	= dk_fill_pens[dka_frame_penF] 
+	poly_bg_pen 	= dk_bkg_pens[dka_frame_penB] 
+
+	poly_x 			= _framewidth_left
+	poly_y 			= gs_vt
+	poly_height		= frame_out_dims_z + gs_ub_st1
+	poly_z1			= _frame_width_upper					! Höhe/Länge des durch CUTPLANE abzuziehenden oberem Anschlussstückes 			
+	poly_z2 		= 0
+
+	poly_x1 		= gs_ub_st1								! seitlicher Überstand X
+	poly_x2 		= gs_fuge								! Luft Zarge zu Wand X
+	poly_x3 		= bs_spiegel_br_bs						! Spiegelbreite BS X
+	poly_x4 		= gs_vb									! Falzbreite X
+	poly_x5 		= bs_spiegel_br_bgs						! Spiegelbreite BGS X
+
+	poly_y1 		= gs_ub_st2								! seitlicher Überstand Y 
+	poly_yt 		= 0.01									! Stärke der seitlichen Blockzargen-Nippel (Hard-Codiert)  ### TODO prüfen FRANK
+	poly_y4 		= gs_vt									! Falztiefe Y
+
+	_oeffnung_x 	= frame_out_dims_x - gs_sidelight_right * gs_sidelight_width_right - gs_sidelight_left * gs_sidelight_width_left \
+						- NOT(gs_sidelight_right) * _framewidth_right - NOT(gs_sidelight_left) * _framewidth_left
+	_oeffnung_y 	= (NOT(gs_door_transom) OR bs_inner_frame = 2) * (frame_out_dims_z - _frame_width_upper) + (gs_door_transom AND bs_inner_frame # 2) * ac_egress_height
+	_falz_x			= _oeffnung_x + 2 * gs_vb
+	_falz_y			= _oeffnung_y + 1 * gs_vb
+
+	IF dk_frametype  = "BZ" THEN poly_yi = frame_out_dims_y 
+	IF dk_frametype  = "UZ" THEN poly_yi = frame_out_dims_y + gs_ub_st2
+
+	IF dk_frametype  = "EZ" OR dk_frametype  = "RR" THEN
+		poly_yi = frameThickness   ! by Beister
+		! IF dk_different_frame_thk THEN poly_yi = dk_frame_thk_EZ ELSE poly_yi = gs_frame_thk 
+	ENDIF
+
+	_korrektur_350		= 0
+	_ro_plus_o			= gs_tolerance_upper * (LOD_3D < 399) * NOT(gs_door_transom)				! Rahmenbreite oben breiter, da es in dem LOD 350 keine Toleranz gibt
+	_ro_plus_l			= gs_tolerance_left * (LOD_3D < 399) * NOT(gs_door_transom)				! Rahmenbreite links breiter, da es in dem LOD 350 keine Toleranz gibt
+	_ro_plus_r			= gs_tolerance_right * (LOD_3D < 399) * NOT(gs_door_transom)				! Rahmenbreite rechts breiter, da es in dem LOD 350 keine Toleranz gibt
+
+
+	! ---------------------------------------------------------------------- !
+
+	schraffurtyp		= dk_fills[dka_frame_fill]			
+	schraffurstift 		= dk_fill_pens[dka_frame_penF]		
+	hintergrundstift	= dk_bkg_pens[dka_frame_penB]		
+	konturenstift		= dk_cont_pens[dka_frame_penC2]		
+	poly_mat			= dk_materials[dka_frame_mat_BS]	
+
+
+	! ......................... !
+
+	! Mehrfachfalze
+	poly_x8 		= dk_folding_dimensions[1][2]	! Breite doppelter Falz
+	poly_y8 		= dk_folding_dimensions[1][1]	! Tiefe doppeleter Falz
+	poly_x9 		= dk_folding_dimensions[2][2]	! Breite Falz 2 dreifacher Falz
+	poly_y9 		= dk_folding_dimensions[2][1]	! Tiefe Falz 2 dreifacher Falz
+
+	IF LOD_3D > 399 THEN
+		IF bs_folding_nmbr = 2 THEN		
+			GOSUB "Doppelfalz"		
+
+		ENDIF										
+		IF bs_folding_nmbr = 3 THEN		GOSUB "Dreifachfalz"		
+	ENDIF
+
+	IF dk_frametype = "BZ" OR dk_frametype  = "RR" THEN 
+		poly_z_fuge = (dk_frametype  = "BZ") * (gs_ub_st2 - 0.01) * (gs_fuge > tlr)
+		ADDy - poly_z_fuge
+		poly_z_fuge = gs_vt - (dk_frametype  = "BZ") * 0.01 * (gs_fuge > tlr)
+		IF LOD_3D > 350 THEN GOSUB "Fugenfuellung"
+		DEL 1
+	ENDIF
+
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+	! --- B A N D S E I T E
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+
+	! ---- C U T P O L Y   W A N D N U T   U Z / EZ  O B E N   L O D  >  3 0 0 -- !
+
+	IF LOD_3D > 300 AND dk_frametype = "EZ" OR dk_frametype = "UZ" THEN
+
+		ROTz 90
+		ROTx 90
+		ADD 0, frame_out_dims_z, 0
+	
+		CUTPOLYa 4, 1 ,0,
+		0, 	0,			15,
+		C_ - wall_shell_thk_2 - wall_shell_thk_1, 0,			15,
+		C_ - wall_shell_thk_2 - wall_shell_thk_1, MAX(bs_spiegel_br_ob_bgs, bs_spiegel_br_ob_bs),	15,
+		0, 	MAX(bs_spiegel_br_ob_bgs, bs_spiegel_br_ob_bs),	15	
+
+		DEL 3
+
+	ENDIF
+
+	! ---- C U T P O L Y   W A N D N U T   U Z / EZ  L I N K S  L O D  >  3 0 0 -- !
+
+	IF LOD_3D > 300 AND dk_frametype = "EZ" OR dk_frametype = "UZ" THEN
+
+		ADD -clearingFrameCenter - frame_out_dims_x/2, 0, 0
+		ROTz 90
+	
+		CUTPOLYa 4, 1 ,0,
+		0, 	0,			15,
+		C_ - wall_shell_thk_2 - wall_shell_thk_1, 0,			15,
+		C_ - wall_shell_thk_2 - wall_shell_thk_1, MAX(bs_spiegel_br_bgs, bs_spiegel_br_bs),	15,
+		0, 	MAX(bs_spiegel_br_bgs, bs_spiegel_br_bs),	15	
+
+		DEL 2
+
+	ENDIF
+
+	! ---- C U T P O L Y   W A N D N U T   U Z / EZ  R E C H T S  L O D  >  3 0 0 -- !
+
+	IF LOD_3D > 300 AND dk_frametype = "EZ" OR dk_frametype = "UZ" THEN
+
+		ADD -clearingFrameCenter + frame_out_dims_x/2, 0, 0
+		MULx - 1
+		ROTz 90
+
+	
+		CUTPOLYa 4, 1 ,0,
+		0, 	0,			15,
+		C_ - wall_shell_thk_2 - wall_shell_thk_1, 0,			15,
+		C_ - wall_shell_thk_2 - wall_shell_thk_1, MAX(bs_spiegel_br_bgs, bs_spiegel_br_bs),	15,
+		0, 	MAX(bs_spiegel_br_bgs, bs_spiegel_br_bs),	15	
+
+		DEL 3
+
+	ENDIF
+
+	! ---------------------------------------------------------------------- !
+
+	GROUP "Bandseite"
+
+
+	! -------- C U T P O L Y   W A N D N U T   B Z ------------------------- !
+
+	IF LOD_3D > 399 AND dk_frametype = "BZ" THEN 
+
+		cut_02 = (ABS(poly_x2) > tlr)   ! = 1 Korrektur Beister
+		ADD  -clearingFrameCenter - frame_out_dims_x/2, -0.1 - poly_y1 + poly_yt  , 0
+		ROTx 90
+
+		IF cut_02 THEN
+			mask = 23
+			CUTPOLYa 9, 1, -0.1,
+			0, 								0, 							mask,
+			poly_x2, 						0,							mask,
+			poly_x2, 						frame_out_dims_z - poly_x2, mask,
+			frame_out_dims_x  - poly_x2, 	frame_out_dims_z - poly_x2, mask,
+			frame_out_dims_x  - poly_x2, 	0, 							mask,
+			frame_out_dims_x, 				0,							mask,
+			frame_out_dims_x, 				frame_out_dims_z,			mask,
+			0, 								frame_out_dims_z,			mask,
+			0,								0,							mask,
+			0, 0,  1
+	
+		ENDIF
+	
+		DEL 2
+
+	ENDIF
+
+	! -------- C U T P O L Y   F A L Z   B S ------------------------------- !
+
+	IF LOD_3D > 399 THEN
+		ADD  -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_left * gs_sidelight_width_left + _framewidth_left * NOT(gs_sidelight_left * gs_sidelight_width_left) - gs_vb, -poly_y1, 0
+		ROTx 90
+
+		CUTPOLYa 5, 1 , 0,
+		0, 			0, 			1,
+		_falz_x, 	0,			1, 
+		_falz_x, 	_falz_y, 	1,
+		0, 			_falz_y, 	1,
+		0, 			0,			 1	
+
+		DEL 2
+	ENDIF
+
+
+	! ---------------------------------------------------------------------- !
+
+	! -------- Z a r g e   B a n d s e i t e ------------------------------- !
+
+	ADD -clearingFrameCenter - frame_out_dims_x/2, 0, 0
+
+	poly_ys			= gs_vt - bs_sidelight_filling_thk2								! Stärke der Seitenteilfüllung links
+	IF gs_door_transom = 0 OR (gs_door_transom = 1 AND gs_sidelight_left = 1) THEN poly_height = frame_out_dims_z + gs_ub_st1 
+	IF gs_door_transom = 1 AND gs_sidelight_left = 0 					THEN poly_height = ac_egress_height + gs_vb
+	poly_cut_height = frame_out_dims_z
+	poly_height = poly_cut_height + gs_ub_st1 * (NOT(_oben_laenger)) + (bs_spiegel_br_ob_bs - poly_x) * (_oben_gehrung OR _oben_laenger) 
+	poly_x = _framewidth_left  + _ro_plus_l
+	_korrektur_350	= _ro_plus_o
+	GOSUB "PRISM_CUTPLANE"
+	GOSUB "LOD_350_frame_BS"
+	DEL 1
+
+	poly_x 			= _framewidth_right  + _ro_plus_r
+	poly_z2 		= 0
+	poly_ys			= gs_vt - bs_sidelight_filling_thk1								! Stärke der Seitenteilfüllung rechts
+	ADD -clearingFrameCenter + frame_out_dims_x/2, 0, 0
+	MULx -1
+	_korrektur_350	= _ro_plus_o
+	GOSUB "PRISM_CUTPLANE"
+	GOSUB "LOD_350_frame_BS" 
+	DEL 2
+
+	_korrektur_350	= _ro_plus_o
+
+	poly_x 			= _frame_width_upper  + _ro_plus_o
+	poly_cut_height	= frame_out_dims_x - NOT(_oben_gehrung) * (_framewidth_right + _framewidth_left) 
+	poly_height 	= poly_cut_height  + (poly_x3 - poly_x) * 2 * _oben_gehrung 
+	IF dk_frametype = "UZ" OR dk_frametype = "EZ" THEN poly_x3 = bs_spiegel_br_ob_bs
+	poly_z1			= _framewidth_right					! Höhe/Länge des durch CUTPLANE abzuziehenden oberem Anschlussstückes 	
+	poly_z2			= _framewidth_left					! Höhe/Länge des durch CUTPLANE abzuziehenden unterem Anschlussstückes 
+	show_hot 		= 0
+	ADD -clearingFrameCenter - frame_out_dims_x/2 + NOT(_oben_gehrung) * _framewidth_left + _ro_plus_l, 0, frame_out_dims_z
+	ROTy 90
+	GOSUB "PRISM_CUTPLANE"
+	ADDz - (poly_x3 - poly_x) * _oben_gehrung
+	GOSUB "LOD_350_frame_BS"
+	DEL 1
+	DEL 2
+
+	_korrektur_350	= _ro_plus_l 
+
+
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+	! F A L L U N T E R S C H E I D U N G   L Ä N G E / L A G E  K Ä M P F E R
+
+	_panel_index = 1		! Index des Panelmaterials, Fills, Pens
+	
+	IF dk_sidelight_transom1 = 0 AND gs_sidelight_right  THEN  !Abzug rechts
+		_abzug_transom_right = gs_sidelight_width_right - _framewidth_post_right - _framewidth_right
+	ELSE
+		_abzug_transom_right = 0
+	ENDIF
+	
+	IF dk_sidelight_transom2 = 0 AND gs_sidelight_left THEN  !Abzug links	
+		_abzug_transom_left = gs_sidelight_width_left - _framewidth_post_left - _framewidth_left
+	ELSE
+		_abzug_transom_left = 0
+	ENDIF 
+	
+	_transom_length = frame_out_dims_x - _framewidth_right - _framewidth_left - _abzug_transom_right - _abzug_transom_left
+
+
+	_korrektur_350	= 0 
+
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+
+	ADDy -gs_ub_st2					! KO_TRAFO 031
+
+	! ......................... !
+	! -------- K Ä M P F E R    B a n d s e i t e
+
+	IF gs_door_transom THEN		
+		poly_y 			= gs_vt	
+		poly_mat		= dk_materials[dka_frame_mat_BS]
+		
+		IF gs_sidelight_left AND dk_sidelight_transom2 THEN		! Kämpfer links, wenn vorh.
+			_abzug_oben		= 0
+			poly_x 			= _frame_width_transom
+			poly_height		= gs_sidelight_width_left - _framewidth_left - _framewidth_post_left + gs_tolerance_left * (dk_LOD = 350)
+			ADDz poly_x + ac_egress_height
+			ADDx -clearingFrameCenter - frame_out_dims_x/2  + _framewidth_left 
+			cutti = 0
+			GOSUB "LOD_350_riegel_BS_2"
+			DEL 2
+		ENDIF
+
+		IF gs_sidelight_right AND dk_sidelight_transom1 THEN		! Kämpfer rechts, wenn vorh.
+			_abzug_oben		= 0
+			poly_x 			= _frame_width_transom
+			poly_height		= gs_sidelight_width_right - _framewidth_right - _framewidth_post_right + gs_tolerance_right * (dk_LOD = 350)
+			ADDz poly_x + ac_egress_height
+			ADDx -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right + _framewidth_post_right - gs_tolerance_right * (dk_LOD = 350)
+			cutti = 0
+			GOSUB "LOD_350_riegel_BS_2"
+			DEL 2
+		ENDIF
+
+		IF bs_inner_frame # 2 THEN									! Kämpfer mitte BS, wenn keine Oberblende
+			_abzug_oben		= 0
+			poly_x 			= _frame_width_transom 
+			poly_height		= _kaempferlaenge + (gs_sidelight_right AND gs_sidelight_left) * (_framewidth_post_right + _framewidth_post_left) \
+								+ (dk_LOD = 350) * gs_tolerance_left * (gs_sidelight_right AND NOT(gs_sidelight_left)) + (dk_LOD = 350) * gs_tolerance_right * (gs_sidelight_left  AND NOT(gs_sidelight_right))
+			ADDz poly_x + ac_egress_height
+			ADDx -clearingFrameCenter - frame_out_dims_x/2  + gs_sidelight_left * gs_sidelight_width_left + NOT(gs_sidelight_left) * _framewidth_left \
+				 - _framewidth_post_left * (gs_sidelight_left AND NOT(gs_sidelight_right))  \
+				 - ( _framewidth_post_left  ) * (gs_sidelight_left AND gs_sidelight_right)  +  (dk_LOD = 350) * gs_tolerance_left * (gs_sidelight_left )
+			cutti = 1
+			GOSUB "LOD_350_riegel_BS"
+			DEL 2
+		ENDIF
+
+	ENDIF
+
+	! ......................... !						! Pfosten
+	! -------- P F O S T E N   B a n d s e i t e
+
+	IF gs_door_transom THEN
+		poly_height = ac_egress_height + _frame_width_transom
+		_abzug_oben = _frame_width_transom
+	ELSE
+		poly_height = frame_out_dims_z - _frame_width_upper -  _ro_plus_o
+		_abzug_oben = 0
+	ENDIF
+	poly_mat		= dk_materials[dka_frame_mat_BS]	
+	poly_y = gs_vt	
+
+	IF gs_sidelight_left THEN 
+		_sidelight_width = gs_sidelight_width_left
+		_framewidth = _framewidth_left
+		poly_x = _framewidth_post_left  
+		ADD -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_width_left - poly_x + gs_vb * (dk_LOD < 350) + (dk_LOD = 350) * gs_tolerance_left, 0, 0
+		GOSUB "LOD_350_sidepost_BS"
+		DEL 1
+	ENDIF
+
+	IF gs_sidelight_right THEN 
+		_sidelight_width = gs_sidelight_width_right
+		_framewidth = _framewidth_right
+		poly_x = _framewidth_post_right 
+		ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right + poly_x - gs_vb * (dk_LOD < 350) - (dk_LOD = 350) * gs_tolerance_right , 0, 0
+		MULx -1
+		GOSUB "LOD_350_sidepost_BS"
+		DEL 2
+	ENDIF
+
+	IF gs_door_transom AND bs_inner_frame # 2 AND cutti = 1 THEN CUTEND
+
+	! ......................... !						! Pfosten
+	! -------- P F O S T E N   O B E N   B a n d s e i t e
+
+	IF gs_door_transom THEN
+		poly_height = frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom
+		_abzug_oben = 0
+
+		poly_mat		= dk_materials[dka_frame_mat_BS]	
+		poly_y = gs_vt
+
+		IF js_fanlight_division_left THEN 
+			_sidelight_width = gs_sidelight_width_left
+			_framewidth = _framewidth_left
+			poly_x = _framewidth_post_left
+			ADD -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_width_left - poly_x +  (gs_tolerance_left) * (dk_LOD = 350), 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+		ENDIF
+
+		IF js_fanlight_division_right THEN 
+			_sidelight_width = gs_sidelight_width_right
+			_framewidth = _framewidth_right
+			poly_x = _framewidth_post_right
+			ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right - gs_tolerance_right * (dk_LOD = 350), 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+		ENDIF
+
+		IF js_fanlight_division_sym THEN
+			_framewidth = dk_post_width_upper
+			poly_x = dk_post_width_upper
+			ADD -poly_x/2, 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+		ENDIF
+
+		IF js_fanlight_division_asym THEN
+			_framewidth = dk_post_width_upper
+			poly_x = dk_post_width_upper
+			ADD -clearingFrameCenter - frame_out_dims_x/2, 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+		ENDIF
+
+	ENDIF
+
+
+
+	! ......................... !						! Riegel Seitefelder unten
+
+	! -------- R I E G E L    B a n d s e i t e
+
+	cutti = 0
+	_abzug_oben		= 0
+	poly_x 			= _frame_width_bottom_sl 
+	poly_y 			= gs_vt	
+	poly_mat		= dk_materials[dka_frame_mat_BS]	
+	poly_height		= gs_sidelight_width_left - _framewidth_left - _framewidth_post_left + gs_vb * (dk_LOD < 350) + (dk_LOD = 350) * gs_tolerance_left
+	ADD -clearingFrameCenter - frame_out_dims_x/2 + _framewidth_left, 0 , poly_x
+	poly_ys			= gs_vt - bs_sidelight_filling_thk2								! Stärke der Seitenteilfüllung links
+	IF gs_sidelight_left THEN GOSUB "LOD_350_riegel_unten_BS"
+	DEL 1
+
+! ### WIP
+
+	poly_height		= gs_sidelight_width_right - _framewidth_right - _framewidth_post_right + gs_vb * (dk_LOD < 350) +  (dk_LOD = 350) * gs_tolerance_right
+	ADD - clearingFrameCenter + frame_out_dims_x/2 + _framewidth_post_right - gs_sidelight_width_right - (dk_LOD = 350) * gs_tolerance_right, 0 , poly_x
+	poly_ys			= gs_vt - bs_sidelight_filling_thk1								! Stärke der Seitenteilfüllung rechts
+	IF gs_sidelight_right THEN GOSUB "LOD_350_riegel_unten_BS"
+	DEL 1
+
+
+
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+
+	DEL 1															! KO_TRAFO 031
+
+	IF LOD_3D > 399 AND dk_frametype = "BZ" AND cut_02 THEN CUTEND
+
+	IF LOD_3D > 399 THEN CUTEND
+
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+
+	ENDGROUP
+
+	GROUP "Verglasung"
+		IF LOD_3D > 399 THEN GOSUB "Fuellung"
+	ENDGROUP
+
+	RESULT_01 = SUBGROUP ("Bandseite", "Verglasung")
+
+	PLACEGROUP RESULT_01
+
+	IF LOD_3D > 399 THEN GOSUB "Fuellung"
+
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+	! --- B A N D G E G E N S E I T E
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+		poly_y1 		= gs_ub_st2
+	! ---------------------------------------------------------------------- !
+	! -------- C U T P O L Y   W A N D N U T   B Z ------------------------- !
+
+	IF LOD_3D > 399 AND dk_frametype = "BZ" THEN 
+
+		cut_02 = (ABS(poly_x2) > tlr)   ! = 1 Korrektur Beister
+
+		ADD -clearingFrameCenter - frame_out_dims_x/2, frame_out_dims_y  + poly_y1 - poly_yt - 0.01 , 0
+		ROTx 90
+		
+		IF cut_02 THEN
+			mask = 23
+			CUTPOLYa 9, 1, 0.01,
+			0, 								0, 							mask,
+			poly_x2, 						0,							mask,
+			poly_x2, 						frame_out_dims_z - poly_x2, mask,
+			frame_out_dims_x  - poly_x2, 	frame_out_dims_z - poly_x2, mask,
+			frame_out_dims_x  - poly_x2, 	0, 							mask,
+			frame_out_dims_x, 				0,							mask,
+			frame_out_dims_x, 				frame_out_dims_z,			mask,
+			0, 								frame_out_dims_z,			mask,
+			0,								0,							mask,
+			0, 0, -1
+		ENDIF
+	
+		DEL 2
+
+	ENDIF
+
+	! -------- C U T P O L Y   Z I E R F A L Z   B G S --------------------- !
+
+	IF LOD_3D > 399 AND dk_design_folding_depth  > 0 THEN
+
+		_zier_falz_x	= frame_out_dims_x - _framewidth_left - _framewidth_right  + 2 * gs_vb
+		_zier_falz_y	= frame_out_dims_z - _frame_width_upper + 1 * gs_vb
+
+		IF dk_frametype  = "BZ" THEN poly_zf = frame_out_dims_y 
+		IF dk_frametype  = "UZ" THEN poly_zf = frame_out_dims_y 
+		IF dk_frametype  = "EZ" THEN
+			poly_zf = frameThickness - gs_ub_st2 * 2   ! by Beister
+			! IF dk_different_frame_thk THEN poly_zf = dk_frame_thk_EZ - gs_ub_st2 * 2
+			! IF NOT(dk_different_frame_thk) THEN poly_zf = gs_frame_thk - gs_ub_st2 * 2
+		ENDIF
+		IF dk_frametype  = "RR" THEN poly_zf = dk_frame_thk_EZ + 1					! AUSSERHALB, da nicht verfügbar bei RR
+
+
+		ADD -clearingFrameCenter - frame_out_dims_x/2 + _framewidth_left - gs_vb, \
+				poly_zf + gs_ub_st2 - dk_design_folding_depth + 0.01 , 0		
+	
+		ROTx 90
+
+		mask = 23
+		CUTPOLYa 5, 1 , -0.01,
+		0, 				0, 				mask,
+		_zier_falz_x, 	0,				mask, 
+		_zier_falz_x, 	_zier_falz_y, 	mask,
+		0, 				_zier_falz_y, 	mask,
+		0, 				0,				mask,
+		0,	0,	-1	
+
+		DEL 2
+	ENDIF
+
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+
+	! -------- Z a r g e   B a n d g e g e n s e i t e
+
+	poly_x 			= _framewidth_left
+	poly_y 			= poly_yi - gs_vt
+	poly_cut_height	= frame_out_dims_z 
+	poly_height		= poly_cut_height	+ gs_ub_st1
+	poly_mat		= dk_materials[dka_frame_mat_BGS]	
+	poly_z1			= _frame_width_upper					! Höhe/Länge des durch CUTPLANE abzuziehenden oberem Anschlussstückes
+
+	IF dk_frametype  = "BZ" OR dk_frametype  = "RR" THEN 
+		poly_z_fuge = (dk_frametype  = "BZ") * (gs_ub_st2 + 0.01) * (gs_fuge > tlr)
+		ADDy gs_vt
+		poly_z_fuge = poly_y - poly_z_fuge
+		IF LOD_3D > 350 THEN GOSUB "Fugenfuellung"
+		DEL 1
+	ENDIF
+
+	IF dk_frametype = "EZ" THEN
+		ADDz frame_out_dims_z
+		CUTPLANE
+		DEL 1
+	ENDIF
+
+	poly_cut_height = frame_out_dims_z 
+	poly_height = poly_cut_height + gs_ub_st1 * (NOT(_oben_laenger)) + (bs_spiegel_br_ob_bgs - poly_x) * (_oben_gehrung OR _oben_laenger) 
+					
+
+	ADDy gs_vt - gs_ub_st2						! ADD 001
+
+	poly_z2 		= 0
+	ADD -clearingFrameCenter - frame_out_dims_x/2, 0, 0
+	_korrektur_350	= _ro_plus_o 
+	GOSUB "PRISM_CUTPLANE"
+	GOSUB "LOD_350_frame_BGS"
+	DEL 1
+
+	poly_x 			= _framewidth_right
+	poly_z2 		= 0
+	ADD -clearingFrameCenter + frame_out_dims_x/2, 0, 0
+	MULx -1
+	_korrektur_350	= _ro_plus_o 
+	GOSUB "PRISM_CUTPLANE"
+	GOSUB "LOD_350_frame_BGS"
+	DEL 2
+
+	IF dk_frametype = "EZ" THEN CUTEND
+
+	_korrektur_350	= 0
+	poly_x 			= _frame_width_upper  + _ro_plus_o
+	IF dk_frametype = "UZ"  THEN poly_x5 = bs_spiegel_br_ob_bgs
+	poly_cut_height	= frame_out_dims_x  - NOT(_oben_gehrung) * (_framewidth_right + _framewidth_left)
+	poly_height		= poly_cut_height	+ (poly_x3 - poly_x) * 2 * _oben_gehrung
+	poly_z1			= _framewidth_right					! Höhe/Länge des durch CUTPLANE abzuziehenden oberem Anschlussstückes 	
+	poly_z2			= _framewidth_left					! Höhe/Länge des durch CUTPLANE abzuziehenden unterem Anschlussstückes 
+	show_hot 		= 0
+	ADD -clearingFrameCenter - frame_out_dims_x/2 + NOT(_oben_gehrung) * _framewidth_left   , 0, frame_out_dims_z
+	ROTy 90
+	GOSUB "PRISM_CUTPLANE"
+	ADDz - (poly_x3 - poly_x) * _oben_gehrung
+	GOSUB "LOD_350_frame_BGS"
+	DEL 1
+	DEL 2
+
+	_korrektur_350	= 0
+	! ---------------------------------------------------------------------- !
+
+	IF LOD_3D > 399 AND dk_design_folding_depth  > 0 THEN CUTEND
+
+	! -------- K Ä M P F E R    B a n d g e g e n s e i t e
+
+	IF gs_door_transom THEN	
+		ADDy - gs_vt								
+
+		poly_y 			= - gs_vt + _frame_thk_transom	
+		poly_mat		= dk_materials[dka_frame_mat_BGS]								
+	
+		IF gs_sidelight_left AND dk_sidelight_transom2 THEN		! Kämpfer links, wenn vorh.
+			_abzug_oben		= 0
+			poly_x 			= _frame_width_transom
+			poly_height		= gs_sidelight_width_left - _framewidth_left - _framewidth_post_left + gs_tolerance_left * (dk_LOD = 350)
+			ADDz poly_x + ac_egress_height
+			ADD -clearingFrameCenter - frame_out_dims_x/2  + _framewidth_left, gs_vt , 0 
+			cutti = 0
+			GOSUB "LOD_350_riegel"
+			DEL 2
+		ENDIF
+
+		IF gs_sidelight_right AND dk_sidelight_transom1 THEN		! Kämpfer rechts, wenn vorh.
+			_abzug_oben		= 0
+			poly_x 			= _frame_width_transom
+			poly_height		= gs_sidelight_width_right - _framewidth_right - _framewidth_post_right + gs_tolerance_right * (dk_LOD = 350)
+			ADDz poly_x + ac_egress_height 
+			ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right + _framewidth_post_right - gs_tolerance_right * (dk_LOD = 350), gs_vt , 0 
+			cutti = 0
+			GOSUB "LOD_350_riegel"
+			DEL 2
+		ENDIF
+
+		IF bs_inner_frame # 2 THEN									! Kämpfer mitte BGS, wenn keine Oberblende
+			_abzug_oben		= 0
+			poly_x 			= _frame_width_transom
+			poly_height		= _kaempferlaenge + (gs_sidelight_right AND gs_sidelight_left) * (_framewidth_post_right + _framewidth_post_left)
+			ADDz poly_x + ac_egress_height
+
+
+			ADD -clearingFrameCenter - frame_out_dims_x/2  + gs_sidelight_left * gs_sidelight_width_left + NOT(gs_sidelight_left) * _framewidth_left \
+				 - _framewidth_post_left * (gs_sidelight_left AND NOT(gs_sidelight_right))  \
+				 - ( _framewidth_post_left  ) * (gs_sidelight_left AND gs_sidelight_right) +  (dk_LOD = 350) * gs_tolerance_left, gs_vt , 0 
+
+			cutti = 1
+			GOSUB "LOD_350_riegel"
+			DEL 2
+		ENDIF
+
+		DEL 1
+	ENDIF
+
+	! ---------------------------------------------------------------------- !
+
+	! -------- P F O S T E N   B a n d g e g e n s e i t e
+
+	IF gs_door_transom THEN
+		poly_height = ac_egress_height + _frame_width_transom
+		_abzug_oben = _frame_width_transom
+	ELSE
+		poly_height = frame_out_dims_z - _frame_width_upper -  _ro_plus_0
+		_abzug_oben = 0
+	ENDIF
+	poly_mat		= dk_materials[dka_frame_mat_BGS]	
+	poly_y = - gs_vt + _frame_thk_post 
+
+	IF gs_sidelight_left THEN 
+		_sidelight_width = gs_sidelight_width_left
+		_framewidth = _framewidth_left
+		poly_x = _framewidth_post_left 
+		ADD -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_width_left - poly_x + gs_vb * (dk_LOD < 350) +(dk_LOD = 350) * gs_tolerance_left, 0, 0
+		GOSUB "LOD_350_sidepost"
+		DEL 1
+	ENDIF
+
+	IF gs_sidelight_right THEN 
+		_sidelight_width = gs_sidelight_width_right
+		_framewidth = _framewidth_right
+		poly_x = _framewidth_post_right 
+		ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right + poly_x - gs_vb * (dk_LOD < 350) - (dk_LOD = 350) * gs_tolerance_right , 0, 0
+		MULx -1
+		GOSUB "LOD_350_sidepost"
+		DEL 2
+	ENDIF
+
+	IF gs_door_transom AND bs_inner_frame # 2 AND cutti THEN  CUTEND
+
+	IF NOT(gs_door_transom) THEN
+		IF gs_sidelight_left THEN 
+			IF _frame_thk_post > poly_yi THEN
+				poly_y = - poly_yi + _frame_thk_post
+				ADD -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_width_left - poly_x + (dk_LOD = 350) * gs_tolerance_left, poly_yi - gs_vt, frame_out_dims_z - _frame_width_upper 
+				poly_height = _frame_width_upper
+				GOSUB "LOD_350_sidepost"
+				DEL 1
+			ENDIF
+		ENDIF
+	
+		IF gs_sidelight_right THEN 
+			IF _frame_thk_post > poly_yi THEN
+				poly_y = - poly_yi + _frame_thk_post
+				ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right - (dk_LOD = 350) * gs_tolerance_right, poly_yi - gs_vt, frame_out_dims_z - _frame_width_upper 
+				poly_height = _frame_width_upper
+				GOSUB "LOD_350_sidepost"
+				DEL 1
+			ENDIF
+		ENDIF
+	ENDIF
+
+	! ---------------------------------------------------------------------- !
+
+	! -------- P F O S T E N   O B E N   B a n d g e g e n s e i t e
+
+	IF gs_door_transom THEN
+		poly_height = frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom
+
+		_abzug_oben = 0!_frame_width_transom
+
+		poly_mat		= dk_materials[dka_frame_mat_BGS]	
+		IF bs_fanlight_division < 4 THEN
+			poly_y = - gs_vt + dk_post_thk_upper
+		ELSE
+			poly_y = - gs_vt + _frame_thk_post 
+		ENDIF
+
+		IF js_fanlight_division_left THEN 
+			_sidelight_width = gs_sidelight_width_left
+			_framewidth = _framewidth_left
+			poly_x = _framewidth_post_left
+			ADD -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_width_left - poly_x + gs_tolerance_left * (dk_LOD = 350), 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+
+			! Variablen für Pfosten hinter Obergurt
+			IF dk_frametype = "BZ" OR dk_frametype = "UZ" THEN 
+				_my_frame_thk = frameThickness   ! gs_frame_thk ... by Beister
+				_my_ueb = gs_ub_st2 * 2
+			ENDIF
+			IF dk_frametype = "EZ" OR dk_frametype = "RR" THEN 
+				IF NOT(dk_different_frame_thk) THEN 
+					_my_frame_thk = frameThickness   ! gs_frame_thk ... by Beister
+				ELSE
+					_my_frame_thk = dk_frame_thk_EZ
+				ENDIF
+				IF dk_frametype = "EZ" THEN _my_ueb = 0
+				IF dk_frametype = "RR" THEN _my_ueb = 0
+			ENDIF
+
+			! Pfosten hinter Obergurt
+			IF _frame_thk_post > _my_frame_thk + _my_ueb THEN
+				poly_y = _frame_thk_post - ( _my_frame_thk + _my_ueb )
+				ADD -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_width_left - poly_x, poly_yi - gs_vt + _my_ueb , poly_height + ac_egress_height + _frame_width_transom
+				poly_height = _frame_width_upper + gs_ub_st1 * (dk_frametype # "EZ")
+				GOSUB "LOD_350_sidepost"
+				DEL 1
+			ENDIF
+
+		ENDIF
+
+		IF bs_fanlight_division < 4 THEN
+			poly_y = - gs_vt + dk_post_thk_upper
+		ELSE
+			poly_y = - gs_vt + _frame_thk_post 
+		ENDIF
+		poly_height = frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom
+
+		IF js_fanlight_division_right THEN 
+			_sidelight_width = gs_sidelight_width_right
+			_framewidth = _framewidth_right
+			poly_x = _framewidth_post_right
+			ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right - gs_tolerance_right * (dk_LOD = 350), 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+
+			! Variablen für Pfosten hinter Obergurt
+			IF dk_frametype = "BZ" OR dk_frametype = "UZ" THEN 
+				_my_frame_thk = frameThickness   ! gs_frame_thk ... by Beister
+				_my_ueb = gs_ub_st2 * 2
+			ENDIF
+			IF dk_frametype = "EZ" OR dk_frametype = "RR" THEN 
+				IF NOT(dk_different_frame_thk) THEN 
+					_my_frame_thk = frameThickness   ! gs_frame_thk ... by Beister
+				ELSE
+					_my_frame_thk = dk_frame_thk_EZ
+				ENDIF
+				IF dk_frametype = "EZ" THEN _my_ueb = 0
+				IF dk_frametype = "RR" THEN _my_ueb = 0
+			ENDIF
+
+			! Pfosten hinter Obergurt
+
+			IF _frame_thk_post > _my_frame_thk + _my_ueb THEN
+				poly_y = _frame_thk_post - ( _my_frame_thk + _my_ueb )
+				ADD -clearingFrameCenter + frame_out_dims_x/2 - gs_sidelight_width_right, poly_yi - gs_vt + _my_ueb, poly_height + ac_egress_height + _frame_width_transom
+				poly_height = _frame_width_upper + gs_ub_st1 * (dk_frametype # "EZ")
+				GOSUB "LOD_350_sidepost"
+				DEL 1
+			ENDIF
+
+		ENDIF
+
+		IF bs_fanlight_division < 4 THEN
+			poly_y = - gs_vt + dk_post_thk_upper
+		ELSE
+			poly_y = - gs_vt + _frame_thk_post
+		ENDIF
+		poly_height = frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom
+
+		IF js_fanlight_division_sym THEN
+			_framewidth = dk_post_width_upper
+			poly_x = dk_post_width_upper
+			ADD -poly_x/2, 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+		ENDIF
+
+		IF js_fanlight_division_asym THEN
+			_framewidth = dk_post_width_upper
+			poly_x = dk_post_width_upper
+			ADD -clearingFrameCenter - frame_out_dims_x/2, 0, ac_egress_height + _frame_width_transom
+			GOSUB "LOD_350_sidepost"
+			DEL 1
+		ENDIF
+
+	ENDIF
+
+
+	! -------- R I E G E L    B a n d g e g e n s e i t e
+
+	ADDy - gs_vt
+
+	poly_x 			= _frame_width_bottom_sl
+	poly_y 			= - gs_vt + _frame_thk_bottom
+	poly_mat		= dk_materials[dka_frame_mat_BGS]	
+	poly_height		= gs_sidelight_width_left - _framewidth_left - _framewidth_post_left + gs_vb * (dk_LOD < 350) +  (dk_LOD = 350) * gs_tolerance_left
+	ADD -clearingFrameCenter - frame_out_dims_x/2 + _framewidth_left, gs_vt , poly_x
+	IF gs_sidelight_left THEN GOSUB "LOD_350_riegel_unten"
+	DEL 1
+
+	poly_height		= gs_sidelight_width_right - _framewidth_right - _framewidth_post_right  +  (dk_LOD = 350) * gs_tolerance_right
+	ADD -clearingFrameCenter + frame_out_dims_x/2 + _framewidth_post_right - gs_sidelight_width_right  - (dk_LOD = 350) * gs_tolerance_right, gs_vt  , poly_x
+	IF gs_sidelight_right GOSUB "LOD_350_riegel_unten"
+	DEL 1
+
+	DEL 1
+
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+
+	IF LOD_3D > 399 AND dk_frametype = "BZ" AND cut_02 THEN CUTEND
+
+	IF LOD_3D > 300 AND dk_frametype = "EZ" OR dk_frametype = "UZ" THEN CUTEND
+	IF LOD_3D > 300 AND dk_frametype = "EZ" OR dk_frametype = "UZ" THEN CUTEND
+	IF LOD_3D > 300 AND dk_frametype = "EZ" OR dk_frametype = "UZ" THEN CUTEND
+
+	! ---------------------------------------------------------------------- !
+
+	! HOTSPOTS AN DEN OBEREN ECKEN
+	! ADD -frame_out_dims_x/2, 0, frame_out_dims_z : GOSUB 2 : DEL 1
+	! ADD -frame_out_dims_x/2, poly_yi, frame_out_dims_z : GOSUB 2 : DEL 1
+	! ADD  frame_out_dims_x/2, 0, frame_out_dims_z : GOSUB 2 : DEL 1
+	! ADD  frame_out_dims_x/2, poly_yi, frame_out_dims_z : GOSUB 2 : DEL 1
+
+	! ADD -frame_out_dims_x/2 + _framewidth_left, 0, frame_out_dims_z - _frame_width_upper : GOSUB 2 : DEL 1
+	! ADD -frame_out_dims_x/2 + _framewidth_left, poly_yi, frame_out_dims_z - _frame_width_upper : GOSUB 2 : DEL 1
+	! ADD  frame_out_dims_x/2 - _framewidth_right, 0, frame_out_dims_z - _frame_width_upper : GOSUB 2 : DEL 1
+	! ADD  frame_out_dims_x/2 - _framewidth_right, poly_yi, frame_out_dims_z - _frame_width_upper : GOSUB 2 : DEL 1
+
+	! ---------------------------------------------------------------------- !
+
+	DEL 1
+
+	! ---------------------------------------------------------------------- !
+
+	IF LOD_3D < 399 THEN GOSUB "Fuellung"
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ------------ L O D   3 5 0 +   B A U T E I L    S U B S -------------- !
+! ---------------------------------------------------------------------- !
+
+	"LOD_350_frame_BS":
+
+		
+		GOSUB "LOD_" + STR(LOD_3D , 1, 0) + "_frame_BS_PUT_" + dk_frametype
+		GOSUB "PRISM_"
+	
+		! ......................... !
+	
+		IF show_hot THEN
+			GOSUB "LOD_" + STR(LOD_3D , 1, 0) + "_frame_BS_PUT_" + dk_frametype
+			GOSUB "HOTSPOTS_3D_FRAME"
+		ENDIF
+
+	RETURN
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+
+		"LOD_350_frame_BS_PUT":
+
+			PUT	0, 			0, 		15,
+				poly_x, 	0, 		15,
+				poly_x,   	poly_y, 15,
+				0,   		poly_y, 15,
+				0, 			0, 		-1
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+	
+		"LOD_350_frame_BS_PUT_EZ":
+
+			PUT	0, 			0, 					15,
+				- poly_x1,	0,					15,
+				- poly_x1, 	-poly_y1,			15,
+				poly_x, 	-poly_y1, 			15,
+				poly_x,   	-poly_y1 + poly_y, 			15,
+				0,   		-poly_y1 + poly_y, 			15,
+				0, 			0, 					-1
+		RETURN
+
+		! -------------------------------------------------------------- !
+		"LOD_500_frame_BS_PUT_EZ":
+			GOSUB 		"LOD_400_frame_BS_PUT_EZ"
+		RETURN
+	
+		"LOD_400_frame_BS_PUT_EZ":
+
+			PUT	poly_x - poly_x3,	-poly_y1,			15,
+				poly_x - poly_x3, 	-poly_y1 +  poly_y,	15,
+				poly_x, 			-poly_y1 +  poly_y, 15,
+				poly_x, 			-poly_y1, 			15,
+				poly_x - poly_x3,  	-poly_y1,			- 1
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+	
+		"LOD_350_frame_BS_PUT_BZ":
+
+			PUT	0, 			-poly_y1, 		15,
+				poly_x, 	-poly_y1, 		15,
+				poly_x,   	-poly_y1 + poly_y, 		15,
+				0,   		-poly_y1 + poly_y, 		15,
+				0, 			-poly_y1, 		-1
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+	
+		"LOD_500_frame_BS_PUT_BZ":
+			GOSUB "LOD_400_frame_BS_PUT_BZ"
+		RETURN
+
+		"LOD_400_frame_BS_PUT_BZ":
+
+			PUT	0, 			-poly_y1, 		15,
+				poly_x, 	-poly_y1, 		15,
+				poly_x,   	-poly_y1 + poly_y, 		15,
+				0,   		-poly_y1 + poly_y, 		15,
+				0, 			-poly_y1, 		-1
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+	
+		"LOD_350_frame_BS_PUT_UZ":
+
+
+			PUT	- poly_x1,	-poly_y1,				15,
+				- poly_x1, 	0,						15,
+				0,			0,						15,
+				0, 			-poly_y1 +  poly_y, 	15,
+				poly_x, 	-poly_y1 +  poly_y, 	15,
+				poly_x, 	-poly_y1, 				15,
+				- poly_x1,  -poly_y1,				- 1
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+
+		"LOD_500_frame_BS_PUT_UZ":
+			GOSUB 		"LOD_400_frame_BS_PUT_UZ":
+		RETURN
+	
+		"LOD_400_frame_BS_PUT_UZ":
+
+			PUT	poly_x - poly_x3,	-poly_y1,			15,
+				poly_x - poly_x3, 	-poly_y1 +  poly_y,	15,
+				poly_x, 			-poly_y1 +  poly_y, 15,
+				poly_x, 			-poly_y1, 			15,
+				poly_x - poly_x3,  	-poly_y1,			- 1
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+	
+		"LOD_350_frame_BS_PUT_RR":
+
+			PUT	0, 			0, 		15,
+				poly_x, 	0, 		15,
+				poly_x,   	poly_y, 15,
+				0,   		poly_y, 15,
+				0, 			0, 		-1
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+		"LOD_500_frame_BS_PUT_RR":
+			GOSUB 		"LOD_400_frame_BS_PUT_RR"
+		RETURN
+	
+		"LOD_400_frame_BS_PUT_RR":
+
+			PUT	0, 			0, 		15,
+				poly_x, 	0, 		15,
+				poly_x,   	poly_y, 15,
+				0,   		poly_y, 15,
+				0, 			0, 		-1
+
+		RETURN
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+	
+	"LOD_350_frame_BGS":
+		GOSUB "LOD_" + STR(LOD_3D , 1, 0) + "_frame_BGS_PUT_" + dk_frametype
+		GOSUB "PRISM_"
+
+		!SPHERE 0.01
+		! ......................... !
+
+		IF show_hot THEN
+			GOSUB "LOD_" + STR(LOD_3D , 1, 0) + "_frame_BGS_PUT_" + dk_frametype	
+			GOSUB "HOTSPOTS_3D_FRAME"
+		ENDIF
+
+	RETURN
+
+		! -------------------------------------------------------------- !
+	
+		"LOD_350_frame_BGS_PUT":
+
+			PUT	0, 			0, 		15,
+				poly_x, 	0, 		15,
+				poly_x,   	poly_y, 15,
+				0,   		poly_y, 15,
+				0, 			0, 		-1
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+	
+		"LOD_350_frame_BGS_PUT_EZ":
+
+			PUT	0, 			0, 		15,
+				poly_x, 	0, 		15,
+				poly_x,   	poly_y, 15,
+				0,   		poly_y, 15,
+				0, 			0, 		-1
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+	
+		"LOD_500_frame_BGS_PUT_EZ":
+			GOSUB 		"LOD_400_frame_BGS_PUT_EZ"
+		RETURN
+
+		"LOD_400_frame_BGS_PUT_EZ":
+
+			PUT	0, 			0, 		15,
+				poly_x, 	0, 		15,
+				poly_x,   	poly_y, 15,
+				0,   		poly_y, 15,
+				0, 			0, 		-1
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+	
+		"LOD_350_frame_BGS_PUT_BZ":
+
+
+			PUT	0, 			0, 		15,
+				poly_x, 	0, 		15,
+				poly_x,   	poly_y + poly_y1*2, 15,
+				0,   		poly_y + poly_y1*2, 15,
+				0, 			0, 		-1
+
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+	
+		"LOD_500_frame_BGS_PUT_BZ":
+			GOSUB 		"LOD_400_frame_BGS_PUT_BZ"
+		RETURN
+		
+
+		"LOD_400_frame_BGS_PUT_BZ":
+
+			PUT	0, 			0, 		15,
+				poly_x, 	0, 		15,
+				poly_x,   	poly_y + poly_y1*2, 15,
+				0,   		poly_y + poly_y1*2, 15,
+				0, 			0, 		-1
+
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+	
+		"LOD_350_frame_BGS_PUT_UZ":
+
+			PUT	0, 			0, 					15,
+				poly_x, 	0, 					15,
+				poly_x,   	poly_y + poly_y1, 	15,
+				- poly_x1,	poly_y + poly_y1, 	15,
+				- poly_x1,  poly_y, 			15,
+				0,			poly_y, 			15,
+				0, 			0, 					-1
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+	
+		"LOD_500_frame_BGS_PUT_UZ":
+			GOSUB 		"LOD_400_frame_BGS_PUT_UZ":
+		RETURN
+		
+		"LOD_400_frame_BGS_PUT_UZ":
+
+			PUT	poly_x - poly_x5, 	0, 					15,
+				poly_x, 			0, 					15,
+				poly_x,   			poly_y + poly_y1, 	15,
+				poly_x - poly_x5,	poly_y + poly_y1, 	15,
+				poly_x - poly_x5, 	0, 					-1
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+	
+		"LOD_350_frame_BGS_PUT_RR":
+
+			PUT	0, 			0, 		15,
+				poly_x, 	0, 		15,
+				poly_x,   	poly_y, 15,
+				0,   		poly_y, 15,
+				0, 			0, 		-1
+
+		RETURN
+
+		! -------------------------------------------------------------- !
+		"LOD_500_frame_BGS_PUT_RR":
+			GOSUB 	"LOD_400_frame_BGS_PUT_RR"
+		RETURN
+			
+		"LOD_400_frame_BGS_PUT_RR":
+
+			PUT	0, 			0, 		15,
+				poly_x, 	0, 		15,
+				poly_x,   	poly_y, 15,
+				0,   		poly_y, 15,
+				0, 			0, 		-1
+
+		RETURN
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+	
+	"LOD_350_frame_PUT":
+
+		PUT	0, 			0, 		15,
+			poly_x, 	0, 		15,
+			poly_x,   	poly_y, 15,
+			0,   		poly_y, 15,
+			0, 			0, 		-1
+
+	RETURN
+
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+	
+	"LOD_350_riegel":
+
+		ROTy 90
+
+		GOSUB "LOD_350_frame_PUT"
+		GOSUB "Riegel"
+
+		! ......................... !
+	
+		GOSUB "LOD_350_frame_PUT"	
+		GOSUB "HOTSPOTS_3D_unten"
+
+		GOSUB "LOD_350_frame_PUT"	
+		GOSUB "HOTSPOTS_3D_oben"
+
+		! ......................... !
+
+		IF bs_inner_frame # 2 AND cutti THEN 
+			GOSUB "LOD_350_frame_PUT"	
+			GOSUB "CUTPOLY_riegel"
+		ENDIF
+
+		DEL 1
+
+	RETURN
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+	
+	"LOD_350_riegel_BS":
+		
+		GOSUB "LOD_350_riegel"
+
+	RETURN
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+	
+	"LOD_350_riegel_BS_2":
+		
+		GOSUB "LOD_350_riegel"
+
+	RETURN
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+	
+	"LOD_350_riegel_unten":
+
+		ROTy 90
+
+		GOSUB "LOD_350_frame_PUT"
+		GOSUB "Riegel"
+
+		! ......................... !
+	
+		GOSUB "LOD_350_frame_PUT"	
+		GOSUB "HOTSPOTS_3D_unten"
+
+		GOSUB "LOD_350_frame_PUT"	
+		GOSUB "HOTSPOTS_3D_oben"
+
+		DEL 1
+
+	RETURN
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+	
+	"LOD_350_riegel_unten_BS":
+
+		GOSUB "LOD_350_riegel_unten"
+
+	RETURN
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+
+	"LOD_350_sidepost":
+		GOSUB "LOD_350_frame_PUT"
+		GOSUB "Pfosten"
+
+		! ......................... !
+	
+		GOSUB "LOD_350_frame_PUT"	
+		GOSUB "HOTSPOTS_3D_unten"
+
+		GOSUB "LOD_350_frame_PUT"	
+		GOSUB "HOTSPOTS_3D_oben"
+
+	RETURN
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+
+	"LOD_350_sidepost_BS":
+
+		GOSUB "LOD_350_sidepost"
+	
+	RETURN
+
+! ---------------------------------------------------------------------- !
+"CUTPOLY_riegel":
+
+	CUTPOLYa NSP/3, 1, 0, GET(NSP)
+
+	WHILE NSP DO			! Buffer leeren für alle Fälle
+		www_sub = GET(1)
+	ENDWHILE
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+"PRISM_CUTPLANE":
+
+	MATERIAL poly_mat
+
+	IF _oben_gehrung THEN
+		ADDx poly_x
+		ADDz poly_cut_height - poly_z1 - _korrektur_350
+
+		GOSUB "CUTPLANE_O"
+		DEL 2
+
+		IF ABS(poly_z2) > 0 THEN
+			ADDx poly_x
+			ADDz poly_z2
+			GOSUB "CUTPLANE_U"
+			DEL 2
+		ENDIF
+	ENDIF
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+"PRISM_":
+
+	SECT_FILL schraffurtyp, hintergrundstift, schraffurstift, konturenstift	
+	MATERIAL poly_mat
+
+	! IF _oben_gehrung THEN
+	! 	ADDx poly_x
+	! 	ADDz poly_cut_height - poly_z1
+
+	! 	GOSUB "CUTPLANE_O"
+	! 	DEL 2
+
+	! 	IF ABS(poly_z2) > 0 THEN
+	! 		ADDx poly_x
+	! 		ADDz poly_z2
+	! 		GOSUB "CUTPLANE_U"
+	! 		DEL 2
+	! 	ENDIF
+	! ENDIF
+
+	SECT_FILL schraffurtyp, hintergrundstift, schraffurstift, konturenstift	
+	MATERIAL poly_mat
+	PRISM_ NSP/3, poly_height, GET(NSP)
+	BODY - 1
+
+	IF _oben_gehrung THEN
+		IF ABS(poly_z2) > 0 THEN CUTEND
+		CUTEND
+	ENDIF
+
+
+	WHILE NSP DO			! Buffer leeren für alle Fälle
+		www_sub = GET(1)
+	ENDWHILE
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+"CUTPLANE_O":
+
+	ROTz 90
+	CUTPLANE{2} 45, 1
+	BODY - 1
+	DEL 1
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+"CUTPLANE_U":
+
+	ROTz 90
+	CUTPLANE{2} -225, 1
+	BODY - 1
+	DEL 1
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+"Riegel":
+
+
+	SECT_FILL schraffurtyp, hintergrundstift, schraffurstift, konturenstift	
+	MATERIAL poly_mat
+	BODY - 1
+	PRISM_ NSP/3, poly_height, GET(NSP)
+	BODY - 1
+
+	WHILE NSP DO			! Buffer leeren für alle Fälle
+		www_sub = GET(1)
+	ENDWHILE
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+"Pfosten":
+
+	SECT_FILL schraffurtyp, hintergrundstift, schraffurstift, konturenstift	
+	MATERIAL poly_mat
+	PRISM_ NSP/3, poly_height, GET(NSP)
+	BODY - 1
+
+	WHILE NSP DO			! Buffer leeren für alle Fälle
+		www_sub = GET(1)
+	ENDWHILE
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+"HOTSPOTS_3D_unten":
+
+	FOR i_sub = 1 TO NSP/3 - 1
+	
+		ADD GET(1), GET(1), 0
+		HOTSPOT  0, 0, 0, htspt + GET(1) - 15
+		GOSUB 3
+		DEL 1
+		htspt = htspt + 1
+	NEXT i_Sub	
+
+	WHILE NSP DO			! Buffer leeren, weil letzte Zeile nicht genutzt wird
+		www_sub = GET(1)
+	ENDWHILE
+		
+RETURN
+
+! ---------------------------------------------------------------------- !
+"HOTSPOTS_3D_oben":
+
+	FOR i_sub = 1 TO NSP/3 - 1
+	
+		ADD GET(1), GET(1), poly_height - _abzug_oben
+		HOTSPOT  0, 0, 0, htspt + GET(1) - 15
+		GOSUB 3
+		DEL 1
+		htspt = htspt + 1
+	NEXT i_Sub	
+
+	WHILE NSP DO			! Buffer leeren, weil letzte Zeile nicht genutzt wird
+		www_sub = GET(1)
+	ENDWHILE
+		
+RETURN
+
+! ---------------------------------------------------------------------- !
+"HOTSPOTS_3D_FRAME":
+
+	FOR i_sub = 1 TO NSP/3 - 1
+	
+		ADD GET(1), GET(1), 0
+		HOTSPOT  0, 0, 0, htspt + GET(1) - 15
+		GOSUB 3
+		DEL 1
+		htspt = htspt + 1
+	NEXT i_Sub	
+
+	WHILE NSP DO			! Buffer leeren, weil letzte Zeile nicht genutzt wird
+		www_sub = GET(1)
+	ENDWHILE
+		
+RETURN
+
+! ---------------------------------------------------------------------- !
+"GLAS":
+
+	poly_cont_pen 	= dk_cont_pens[dka_frame_penC2]
+
+	IF _panel_index = 1 THEN  ! RECHTS
+		poly_fill 		= dk_fills[dka_side1_fill] 
+		poly_fill_pen 	= dk_fill_pens[dka_side1_penF]
+		poly_bg_pen 	= dk_bkg_pens[dka_side1_penB]
+	ENDIF
+
+	IF _panel_index = 2  THEN  ! LINKS
+		poly_fill 		= dk_fills[dka_side2_fill] 
+		poly_fill_pen 	= dk_fill_pens[dka_side2_penF]
+		poly_bg_pen 	= dk_bkg_pens[dka_side2_penB]
+	ENDIF
+
+	IF _panel_index = 3  THEN
+		poly_fill 		= dk_fills[dka_fan_fill] 
+		poly_fill_pen 	= dk_fill_pens[dka_fan_penF]
+		poly_bg_pen 	= dk_bkg_pens[dka_fan_penB]
+	ENDIF
+
+	poly_y_sub = poly_y
+
+	GOSUB "GLAS_" + STR(lod_3D, 1, 0)
+
+RETURN
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+
+"GLAS_350":
+
+	GOSUB "GLAS_400"
+
+RETURN
+
+"GLAS_400":
+
+	SECT_FILL poly_fill, poly_bg_pen, poly_fill_pen, 	poly_cont_pen
+
+	MATERIAL poly_mat
+	GOSUB "LOD_glas_400_PUT"
+	ADDz - _glas_plus
+	PRISM_ NSP/3, poly_height + _glas_plus * 2, GET(NSP)
+	BODY -1
+	DEL 1
+
+	MATERIAL poly_mat2
+	GOSUB "LOD_glas_400_PUT"
+	ADD 0, poly_y_sub, - _glas_plus
+	PRISM_ NSP/3, poly_height + _glas_plus * 2, GET(NSP)
+	BODY -1
+	DEL 1
+
+RETURN
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+	
+	"LOD_glas_400_PUT":
+
+		PUT	-_glas_plus, 			0, 		15,
+			poly_x + _glas_plus, 	0, 		15,
+			poly_x + _glas_plus,   	poly_y_sub, 15,
+			- _glas_plus,   		poly_y_sub, 15,
+			- _glas_plus, 			0, 		-1
+
+	RETURN
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+
+"GLAS_500":
+
+	IF dk_sidelight_filling[2] = "G1" OR  dk_sidelight_filling[2] = "PL" THEN glis = 1
+	IF dk_sidelight_filling[2] = "G2" THEN glis = 2
+	IF dk_sidelight_filling[2] = "G3" THEN glis = 3
+
+	SECT_FILL poly_fill, poly_bg_pen, poly_fill_pen, 	poly_cont_pen
+
+	IF glis = 1 THEN
+
+		MATERIAL poly_mat
+		GOSUB "LOD_glas_500_PUT"
+		ADDz - _glas_plus
+		PRISM_ NSP/3, poly_height + _glas_plus * 2, GET(NSP)
+		BODY -1
+		DEL 1
+		
+		MATERIAL poly_mat2
+		GOSUB "LOD_glas_500_PUT"
+		ADD 0, poly_y_sub, - _glas_plus
+		PRISM_ NSP/3, poly_height + _glas_plus * 2, GET(NSP)
+		BODY -1
+		DEL 1
+
+	ENDIF
+
+	IF glis = 2 THEN
+
+		zwischenraum = 2 * poly_y_sub
+		poly_y_sub = MIN(0.006, 2 * poly_y_sub/3)
+		zwischenraum = zwischenraum - 2*poly_y_sub
+
+		MATERIAL poly_mat
+		GOSUB "LOD_glas_500_PUT"
+		ADDz - _glas_plus
+		PRISM_ NSP/3, poly_height + _glas_plus * 2, GET(NSP)
+		BODY -1
+		DEL 1
+		
+		MATERIAL poly_mat2
+		GOSUB "LOD_glas_500_PUT"
+		ADD 0, poly_y_sub + zwischenraum, - _glas_plus
+		PRISM_ NSP/3, poly_height + _glas_plus * 2, GET(NSP)
+		BODY -1
+		DEL 1
+
+	ENDIF
+
+	IF glis = 3 THEN
+
+		! poly_y_sub = 2 * poly_y_sub/5
+
+		zwischenraum = 2 * poly_y_sub
+		poly_y_sub = MIN(0.006, 2 * poly_y_sub/5)
+		zwischenraum = (zwischenraum - 3*poly_y_sub)/2
+
+		MATERIAL poly_mat
+		GOSUB "LOD_glas_500_PUT"
+		ADDz - _glas_plus
+		PRISM_ NSP/3, poly_height + _glas_plus * 2, GET(NSP)
+		BODY -1
+		DEL 1
+		
+		MATERIAL poly_mat2
+		GOSUB "LOD_glas_500_PUT"
+		ADD 0, poly_y_sub + zwischenraum, - _glas_plus
+		PRISM_ NSP/3, poly_height + _glas_plus * 2, GET(NSP)
+		BODY -1
+		DEL 1
+
+		MATERIAL poly_mat2
+		GOSUB "LOD_glas_500_PUT"
+		ADD 0, 2 * ( poly_y_sub + zwischenraum ), - _glas_plus
+		PRISM_ NSP/3, poly_height + _glas_plus * 2, GET(NSP)
+		BODY -1
+		DEL 1
+
+	ENDIF
+
+RETURN
+
+	! ------------------------------------------------------------------ !
+	! ------------------------------------------------------------------ !
+	
+	"LOD_glas_500_PUT":
+
+		PUT	-_glas_plus, 			0, 		15,
+			poly_x + _glas_plus, 	0, 		15,
+			poly_x + _glas_plus,   	poly_y_sub, 15,
+			- _glas_plus,   		poly_y_sub, 15,
+			- _glas_plus, 			0, 		-1
+
+	RETURN
+
+! ---------------------------------------------------------------------- !
+"Fuellung":
+
+
+	! Fallunterscheidungen Material
+
+	IF bs_door_sidelight = "L"  OR bs_door_sidelight = "LR" THEN
+		IF (dk_sidelight_transom2 = 0 	AND js_fanlight_division_left = 0) AND (dk_sidelight_transom1 = 0 AND js_fanlight_division_right = 0) \
+										AND (bs_fanlight_division # 1 AND bs_fanlight_division # 2 )      THEN
+			_panel_mat_right_BS  = dk_materials[dka_side2_mat_BS]
+			_panel_mat_right_BGS = dk_materials[dka_side2_mat_BGS]
+			_panel_thk_right = bs_sidelight_filling_thk2/2
+			_panel_index = 2
+		ELSE
+			_panel_mat_right_BS  = dk_materials[dka_side1_mat_BS]
+			_panel_mat_right_BGS = dk_materials[dka_side1_mat_BGS]
+			_panel_thk_right = bs_sidelight_filling_thk1/2
+			_panel_index = 1
+		ENDIF
+
+		IF gs_door_transom = 0 AND bs_door_sidelight = "LR"    THEN			! ### CHECK 17.10.18
+			_panel_mat_right_BS  = dk_materials[dka_side1_mat_BS]
+			_panel_mat_right_BGS = dk_materials[dka_side1_mat_BGS]
+			_panel_thk_right = bs_sidelight_filling_thk2/2
+			_panel_index = 2
+		ENDIF
+
+
+		_panel_mat_left_BS  = dk_materials[dka_side2_mat_BS]
+		_panel_mat_left_BGS = dk_materials[dka_side2_mat_BGS]
+		_panel_thk_left = bs_sidelight_filling_thk2/2
+		_panel_index = 2
+	ELSE
+		IF (dk_sidelight_transom2 = 0 AND js_fanlight_division_left = 0) AND (dk_sidelight_transom1 = 0 AND js_fanlight_division_right = 0) THEN
+			_panel_mat_left_BS  = dk_materials[dka_side1_mat_BS]
+			_panel_mat_left_BGS = dk_materials[dka_side1_mat_BGS]
+			_panel_thk_left = bs_sidelight_filling_thk1/2
+			_panel_index = 1
+		ELSE
+			_panel_mat_left_BS  = dk_materials[dka_side2_mat_BS]
+			_panel_mat_left_BGS = dk_materials[dka_side2_mat_BGS]
+			_panel_thk_left = bs_sidelight_filling_thk2/2
+			_panel_index = 2
+		ENDIF
+
+		_panel_mat_right_BS  = dk_materials[dka_side1_mat_BS]
+		_panel_mat_right_BGS = dk_materials[dka_side1_mat_BGS]
+		_panel_thk_right = bs_sidelight_filling_thk1/2
+		_panel_index = 1
+
+	ENDIF
+
+
+	! V E R G L A S U N G  /  F Ü L L U N G
+
+	! L I N K S
+
+	ADDy - gs_ub_st2											! KO_TRAFO 033
+
+	IF gs_sidelight_left THEN 
+		poly_x 			= gs_sidelight_width_left - _framewidth_left - _framewidth_post_left   + gs_vb * (dk_LOD < 350)  +  (dk_LOD = 350) * gs_tolerance_left
+		poly_y 			= _panel_thk_left
+		poly_mat		= _panel_mat_left_BS	
+		IF gs_door_transom AND dk_sidelight_transom2 = 1 THEN 
+			poly_height		= ac_egress_height - _frame_width_bottom_sl 
+		ELSE
+			poly_height		= frame_out_dims_z - _frame_width_upper - _frame_width_bottom_sl
+		ENDIF
+
+		poly_mat		= dk_materials[dka_side2_mat_BS]
+		poly_mat2		= dk_materials[dka_side2_mat_BGS]
+
+		ADD -clearingFrameCenter - frame_out_dims_x/2 + _framewidth_left, gs_vt - poly_y * 2, _frame_width_bottom_sl
+		GOSUB "GLAS"
+		DEL 1
+
+		! ---------------------------------------------------------------------- !
+		! ---------------------------------------------------------------------- !
+		poly_x = 0
+
+		IF gs_door_transom THEN
+			IF dk_sidelight_transom2 = 0 AND js_fanlight_division_left = 0 THEN
+				poly_mat		= _panel_mat_left_BS	
+				IF bs_fanlight_division = 0		THEN 
+					poly_x = _transom_length  - gs_vb * 4 * (lod_3D > 351) - (lod_3D = 350) * (gs_tolerance_right + gs_tolerance_left) * (dk_sidelight_transom1 = 0)
+				ENDIF
+				IF bs_fanlight_division = 1		THEN poly_x = frame_out_dims_x/2 - gs_sidelight_width_left + _framewidth_post_left - dk_post_width_upper/2
+				IF bs_fanlight_division = 2 	THEN poly_x = bs_famlight_asym_x - gs_sidelight_width_left + _framewidth_post_left
+				IF bs_fanlight_division = 8 	THEN poly_x = frame_out_dims_x - gs_sidelight_width_right -gs_sidelight_width_left + _framewidth_post_left - gs_vb * 2 * (lod_3D > 399)
+	
+				poly_height		= frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom
+
+				_transom_move = - frame_out_dims_x/2  + gs_sidelight_width_left - _framewidth_post_left + gs_vb * 2 * (lod_3D > 399)   ! ### 25.08.17
+
+				poly_mat2		= _panel_mat_left_BGS	
+				ADD _transom_move  +  (dk_LOD = 350) * gs_tolerance_left - clearingFrameCenter , gs_vt - poly_y * 2, ac_egress_height + _frame_width_transom
+				GOSUB "GLAS"
+				DEL 1
+
+			ENDIF
+		ENDIF
+
+	ENDIF
+
+	! R E C H T S
+	_move_x = 0
+
+	IF gs_sidelight_right THEN
+		poly_x 			= gs_sidelight_width_right - _framewidth_right - _framewidth_post_right + gs_vb * (dk_LOD < 350)  +  (dk_LOD = 350) * gs_tolerance_right
+		poly_y 			= _panel_thk_right
+		poly_mat		= _panel_mat_right_BS	
+		IF gs_door_transom AND dk_sidelight_transom1 = 1 THEN 
+			poly_height		= ac_egress_height - _frame_width_bottom_sl
+		ELSE
+			poly_height		= frame_out_dims_z - _frame_width_upper - _frame_width_bottom_sl
+		ENDIF
+
+		poly_mat2		= _panel_mat_right_BGS
+		ADD -clearingFrameCenter + frame_out_dims_x/2 + _framewidth_post_right - gs_sidelight_width_right - (dk_LOD = 350) * gs_tolerance_right, gs_vt - poly_y * 2, _frame_width_bottom_sl
+		GOSUB "GLAS"
+		DEL 1
+
+		IF gs_door_transom AND ( dk_sidelight_transom1 = 1 OR dk_sidelight_transom2 =1 OR bs_fanlight_division > 0 ) THEN
+			poly_x = 0
+
+			IF 	(dk_sidelight_transom1 = 0 AND bs_fanlight_division = 0 AND dk_sidelight_transom2 # 0)	THEN		
+				poly_mat		= dk_materials[dka_side1_mat_BS]
+				_panel_index = 1 	
+					poly_x	= _transom_length - gs_vb * 2 * (LOD_3D > 399) -  (dk_LOD = 350) * gs_tolerance_right
+					_move_x = - frame_out_dims_x/2	+ _framewidth_left	- clearingFrameCenter
+			ENDIF
+	
+			IF 	(dk_sidelight_transom1 = 0 AND dk_sidelight_transom2 = 0 AND (bs_fanlight_division >1))	THEN		
+				poly_mat		= dk_materials[dka_side1_mat_BS]	
+				_panel_index = 1 
+
+				IF bs_fanlight_division = 1 AND bs_door_sidelight  # "R" THEN 	
+					poly_x	= frame_out_dims_x/2 -  gs_sidelight_width_right - dk_post_width_upper/2 + _framewidth_post_right
+					_move_x = -gs_sidelight_width_left + _framewidth_post_left + frame_out_dims_x/2 + dk_post_width_upper/2 
+				ENDIF
+	
+				IF bs_fanlight_division = 1 AND bs_door_sidelight  = "R" THEN 	
+					poly_x	= frame_out_dims_x/2 -  gs_sidelight_width_right - dk_post_width_upper/2 + _framewidth_post_right 
+					_move_x = frame_out_dims_x/2	 - _framewidth_left + dk_post_width_upper/2
+				ENDIF
+	
+				IF bs_fanlight_division = 4 THEN 	
+					poly_x	= frame_out_dims_x -  gs_sidelight_width_right - gs_sidelight_width_left + _framewidth_post_right
+					_move_x = _framewidth_post_left 
+				ENDIF
+	
+			ENDIF
+	
+			IF 	(dk_sidelight_transom1 = 0 AND (bs_fanlight_division = 4))	THEN
+				_move_x =  - frame_out_dims_x/2 + gs_sidelight_width_left 		
+				poly_mat		= dk_materials[dka_side1_mat_BS]	
+				_panel_index = 1 
+				poly_x	= frame_out_dims_x -  gs_sidelight_width_right - gs_sidelight_width_left + _framewidth_post_right - gs_vb * 2 * (LOD_3D > 399) 
+				poly_x = poly_x -  (dk_LOD = 350) * (gs_tolerance_right + gs_tolerance_left)/ 2
+			ENDIF
+	
+			IF 	(dk_sidelight_transom1 = 0 AND dk_sidelight_transom2 = 0 AND (bs_fanlight_division = 0)) AND bs_door_sidelight # "LR"	THEN		
+				poly_mat		= dk_materials[dka_side1_mat_BS]	
+				_panel_index = 1 
+				poly_x	= frame_out_dims_x -  gs_sidelight_width_right - _framewidth_left + _framewidth_post_right  - gs_vb * 2 * (LOD_3D > 399)
+				_move_x = - frame_out_dims_x/2 + _framewidth_left 
+			ENDIF
+	
+				poly_height		= frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom
+	
+				poly_mat2		= dk_materials[dka_side1_mat_BGS]	
+				_panel_index = 1 
+
+				ADD _transom_move + _move_x , gs_vt - poly_y * 2 , ac_egress_height + _frame_width_transom
+				IF poly_x > 0 THEN GOSUB "GLAS"
+				DEL 1
+	
+		ENDIF
+
+	ENDIF
+
+	! ---------------------------------------------------------------------- !
+	! ---------------------------------------------------------------------- !
+
+	! O B E N
+
+	_panel_index = 3
+	_panel_mat_top_BS = dk_materials[dka_fan_mat_BS]
+	_panel_mat_top_BGS = dk_materials[dka_fan_mat_BGS]
+	_panel_thk_top = bs_fanlight_filling_thk/2
+
+	IF dk_sidelight_transom1 = 0 AND dk_sidelight_transom2 = 0 THEN
+		_panel_index = 1
+		_panel_mat_top_BS  = dk_materials[dka_side1_mat_BS]
+		_panel_mat_top_BGS = dk_materials[dka_side1_mat_BGS]
+		_panel_thk_top = bs_sidelight_filling_thk1/2
+	ENDIF
+
+	IF dk_sidelight_transom2 = 0 THEN
+		_panel_index = 2
+		_panel_mat_top_BS  = dk_materials[dka_side2_mat_BS]
+		_panel_mat_top_BGS = dk_materials[dka_side2_mat_BGS]
+		_panel_thk_top = bs_sidelight_filling_thk2/2
+	ENDIF
+	IF	bs_door_sidelight = "R" AND dk_sidelight_transom2  = 0 THEN
+		_panel_index = 1
+		_panel_mat_top_BS = dk_materials[dka_fan_mat_BS]
+		_panel_mat_top_BGS = dk_materials[dka_fan_mat_BGS]
+		_panel_thk_top = bs_fanlight_filling_thk/2
+	ENDIF
+
+	! ---------------------------------------------------------------------- !
+
+	poly_y = bs_fanlight_filling_thk/2
+
+	IF gs_door_transom THEN  ! AND ( dk_sidelight_transom1 = 1 OR dk_sidelight_transom2 =1 OR bs_fanlight_division > 0 ) 
+
+		IF gs_sidelight_left = 0 AND gs_sidelight_right = 0 AND bs_fanlight_division = 0 AND bs_inner_frame # 2 THEN
+
+			! Oberlicht über Tür OHNE Seitenfelder
+
+			poly_x = _kaempferlaenge
+			poly_height		= frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom
+
+			poly_mat		= dk_materials[dka_fan_mat_BS]
+			poly_mat2		= dk_materials[dka_fan_mat_BGS]	
+			_panel_index = 3	
+			ADD -clearingFrameCenter  - frame_out_dims_x/2 + _framewidth_left, gs_vt - poly_y * 2, ac_egress_height + _frame_width_transom
+			! GOSUB "GLAS"																						! #### CHECK 17.10.18
+			DEL 1
+
+		ENDIF
+
+		IF dk_sidelight_transom2 = 1 AND bs_door_sidelight  = "LR" AND dk_sidelight_transom1 = 0 AND bs_fanlight_division  = 0 THEN ! ### Check last value
+			poly_x = frame_out_dims_x - gs_sidelight_width_right  - gs_vb * 2 * (LOD_3D > 399)
+			_transom_move = - frame_out_dims_x/2 + _framewidth_left
+
+			poly_height		= frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom
+			poly_y = bs_sidelight_filling_thk1/2
+			poly_mat		= dk_materials[dka_side1_mat_BS]	
+			poly_mat2		= dk_materials[dka_side1_mat_BGS]	
+			_panel_index = 1
+
+			ADD _transom_move, gs_vt - poly_y * 2 - poly_y1, ac_egress_height + _frame_width_transom
+			! IF poly_x  > 0 THEN GOSUB "GLAS"																	! #### CHECK 17.10.18
+			DEL 1
+	
+		ENDIF
+
+		IF js_fanlight_division_right AND bs_inner_frame # 2 THEN _transom_move = - frame_out_dims_x/2 + _framewidth_left
+
+		! ---------------------------------------------------------------------- !
+
+		! 1 . T E I L   V O N   L I N K S
+
+		IF dk_sidelight_transom2 = 1 OR (bs_door_sidelight = "R" AND dk_sidelight_transom2 = 0) THEN
+
+			poly_x = 0
+			! ......................... !
+			IF bs_fanlight_division = 0 AND bs_inner_frame # 2	THEN 
+				_transom_move = - frame_out_dims_x/2 +  _framewidth_left
+				IF dk_sidelight_transom1 = 1 THEN poly_x = frame_out_dims_x - _framewidth_right - _framewidth_left
+				IF dk_sidelight_transom2 = 1 AND bs_door_sidelight  = "L" THEN poly_x = frame_out_dims_x - _framewidth_right - _framewidth_left
+			ENDIF
+			! ......................... !
+			IF bs_fanlight_division = 1		THEN 
+				_transom_move = - frame_out_dims_x/2 +  _framewidth_left
+				poly_x = frame_out_dims_x/2 - _framewidth_left - dk_post_width_upper/2										! Symmetrisch
+				_panel_mat_top_BS = dk_materials[dka_fan_mat_BS]
+				_panel_mat_top_BGS = dk_materials[dka_fan_mat_BGS]
+				_panel_thk_top = bs_fanlight_filling_thk/2
+			ENDIF
+			! ......................... !
+			IF bs_fanlight_division = 2		THEN 
+				_transom_move = - frame_out_dims_x/2 +  _framewidth_left
+				poly_x = - _framewidth_left + bs_famlight_asym_x 																! aSymmetrisch
+			ENDIF
+			! ......................... !
+			IF bs_fanlight_division = 4  THEN 
+				_transom_move = - frame_out_dims_x/2 +  _framewidth_left
+				poly_x = gs_sidelight_width_left - _framewidth_left - _framewidth_post_left 
+			ENDIF
+			! ......................... !
+			IF bs_fanlight_division = 8 AND bs_inner_frame # 2 THEN poly_x = frame_out_dims_x - gs_sidelight_width_right - _framewidth_left  
+			! ......................... !
+			IF bs_fanlight_division = 12	THEN 
+				_transom_move = - frame_out_dims_x/2 +  _framewidth_left 
+				poly_x = gs_sidelight_width_left - _framewidth_left - _framewidth_post_left 
+			ENDIF
+			! ......................... !
+
+			poly_height		= frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom
+			poly_y = _panel_thk_top
+			poly_mat		= _panel_mat_top_BS	
+			poly_mat2		= _panel_mat_top_BGS	
+			ADD _transom_move - clearingFrameCenter, gs_vt - poly_y * 2, ac_egress_height + _frame_width_transom 
+			IF bs_fanlight_division > 0 THEN poly_x = poly_x +	(dk_LOD = 350) * (gs_tolerance_left + gs_tolerance_right)
+						!	poly_x = poly_x -  (dk_LOD = 350) * ((gs_tolerance_right - gs_tolerance_left)/2)
+			IF poly_x  > 0 THEN GOSUB "GLAS"
+			DEL 1
+
+		ENDIF
+
+		! ---------------------------------------------------------------------- !
+
+		! 2 . T E I L   V O N   L I N K S
+
+		_panel_mat_top_BS = dk_materials[dka_fan_mat_BS]
+		_panel_mat_top_BGS = dk_materials[dka_fan_mat_BGS]
+		_panel_thk_top = bs_fanlight_filling_thk/2
+
+		IF dk_sidelight_transom1 = 0 AND bs_fanlight_division = 1 THEN
+			_panel_mat_top_BS  = dk_materials[dka_side1_mat_BS]
+			_panel_mat_top_BGS = dk_materials[dka_side1_mat_BGS]
+			_panel_thk_top = bs_sidelight_filling_thk1/2
+		ENDIF
+
+		poly_x 			= 0
+		poly_y 			= _panel_thk_top
+		poly_mat		= _panel_mat_top_BS	
+
+		IF bs_fanlight_division = 2		THEN 
+			poly_x = frame_out_dims_x - _framewidth_right - bs_famlight_asym_x - dk_post_width_upper							! aSymmetrisch
+			IF dk_sidelight_transom1 = 0 THEN poly_x = 0
+			_transom_move = - frame_out_dims_x /2 + bs_famlight_asym_x  + dk_post_width_upper
+		ENDIF
+
+		IF bs_fanlight_division = 4	 AND bs_inner_frame # 2	THEN 																! ### MAY CHECK
+			poly_x = frame_out_dims_x - _framewidth_right - gs_sidelight_width_left \
+						+ (dk_LOD = 350) * (gs_tolerance_right - gs_tolerance_left) / 2 										! nur Links
+			_transom_move = - frame_out_dims_x /2 + gs_sidelight_width_left 
+			IF dk_sidelight_transom1 = 0 THEN poly_x = 0
+			IF bs_door_sidelight = "L" THEN poly_x =  frame_out_dims_x - gs_sidelight_width_left - _framewidth_right \
+						+ (dk_LOD = 350) * (- gs_tolerance_left + gs_tolerance_right) / 2
+		ENDIF
+
+		IF bs_fanlight_division = 8 AND dk_sidelight_transom1	THEN 
+			poly_x = gs_sidelight_width_right - _framewidth_right - _framewidth_post_right + (dk_LOD = 350) * gs_tolerance_right 
+																																! nur Rechts
+			_transom_move = frame_out_dims_x /2 - gs_sidelight_width_right + _framewidth_post_right \
+							- (dk_LOD = 350) * (gs_tolerance_right + gs_tolerance_left) / 2
+		ENDIF
+
+		IF bs_fanlight_division = 12		THEN 
+			IF bs_inner_frame # 2 THEN poly_x = frame_out_dims_x - gs_sidelight_width_right - gs_sidelight_width_left 		! beide, wie unten
+			_transom_move = - frame_out_dims_x /2 + gs_sidelight_width_left 
+		ENDIF
+
+		IF bs_fanlight_division = 1		THEN 
+			IF dk_sidelight_transom1 		THEN poly_x = frame_out_dims_x/2 - _framewidth_right - dk_post_width_upper/2				! Symmetrisch
+			IF bs_door_sidelight = "L" THEN poly_x = frame_out_dims_x/2 - _framewidth_right - dk_post_width_upper/2	
+			IF NOT(dk_sidelight_transom1) THEN 
+				poly_x = frame_out_dims_x/2 - gs_sidelight_width_right + _framewidth_post_right - dk_post_width_upper/2 - gs_vb * 2 * (LOD_3D > 399)
+				poly_x = poly_x  -  (dk_LOD = 350) * gs_tolerance_right 
+				poly_y = bs_sidelight_filling_thk1/2
+			ENDIF
+			_transom_move 	= dk_post_width_upper/2
+			poly_x = poly_x +  (dk_LOD = 350) * (gs_tolerance_right - gs_tolerance_left) / 2 
+		ENDIF
+
+		poly_height		= frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom
+
+		ADD _transom_move, gs_vt - poly_y * 2, ac_egress_height + _frame_width_transom 
+		poly_mat2		= _panel_mat_top_BGS
+		IF poly_x  > 0 THEN GOSUB "GLAS"
+
+		DEL 1
+
+		! ---------------------------------------------------------------------- !
+
+		! 3 . T E I L   V O N   L I N K S
+
+		poly_mat		= _panel_mat_top_BS	
+		poly_x 			= 0
+		IF bs_fanlight_division = 12 AND dk_sidelight_transom1	THEN 
+			poly_x = gs_sidelight_width_right 	 - 		_framewidth_right	 - _framewidth_post_right +	(dk_LOD = 350) * gs_tolerance_right					! beide, wie unten
+			_transom_move = frame_out_dims_x /2 - gs_sidelight_width_right +  _framewidth_post_right
+		ENDIF
+
+		poly_height		= frame_out_dims_z - ac_egress_height - _frame_width_upper - _frame_width_transom
+		poly_mat2		= _panel_mat_top_BGS
+		ADD _transom_move  - clearingFrameCenter -	(dk_LOD = 350) * gs_tolerance_right, gs_vt - poly_y * 2, ac_egress_height + _frame_width_transom 
+		IF poly_x  > 0 THEN GOSUB "GLAS"
+		DEL 1
+
+	ENDIF
+	
+	_transom_move = 0
+
+	DEL 1											! KO_TRAFO 033
+
+RETURN
+
+
+! ---------------------------------------------------------------------- !
+"Doppelfalz":
+
+
+	DIM x_g[6]: DIM y_g[6]
+
+	x_g[1] = 0										:		y_g[1] = -1
+	x_g[2] = 0										:		y_g[2] = 0
+	x_g[3] = 0										:		y_g[3] = _oeffnung_y + gs_vb - poly_x8
+	x_g[4] = _oeffnung_x + 2 * (gs_vb - poly_x8)	:		y_g[4] = _oeffnung_y + gs_vb - poly_x8
+	x_g[5] = _oeffnung_x + 2 * (gs_vb - poly_x8)	:		y_g[5] = 0
+	x_g[6] = _oeffnung_x + 2 * (gs_vb - poly_x8)	:		y_g[6] = -1
+
+	GOSUB "tube_4eck~"
+
+RETURN
+
+"tube_4eck~":
+
+	PUT			poly_x8 * 2 - poly_x4, 			0, 			0,		!Profil
+				poly_x8, 						0, 			0,
+				poly_x8, 						poly_y8, 	0,	
+				poly_x8 * 2 - poly_x4, 			poly_y8, 	0,
+				poly_x8 * 2 - poly_x4, 			0, 			0	
+
+	profpoints=NSP/3
+	!-----------------------------
+	PUT			x_g[1],			y_g[1],			0,		0	!Phantom 1
+	PUT			x_g[2],			y_g[2],			0,		0	!Punkt 1
+	PUT			x_g[3],			y_g[3],			0,		0	!Punkt 2
+	PUT			x_g[4],			y_g[4],			0,		0	!Punkt 3
+	PUT			x_g[5],			y_g[5],			0,		0	!Punkt 4
+	PUT			x_g[6],			y_g[6],			0,		0	!Phantom 2
+
+	pathpoints = (NSP - profpoints * 3) / 4
+	!-------------------------------
+
+
+	ADD -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_left * gs_sidelight_width_left - gs_vb + poly_x8  + _framewidth_left * NOT(gs_sidelight_left), -poly_y1 + gs_vt, 0
+	ROTx 90
+
+	BODY -1
+	SECT_FILL schraffurtyp, hintergrundstift, schraffurstift, konturenstift	
+	MATERIAL dk_materials[dka_frame_mat_BS]
+	TUBE profpoints, pathpoints, 1 + 2 + 4 + 8 + 16 + 32,
+	GET (NSP)
+	BODY -1
+
+	DEL 2
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+"Dreifachfalz":
+	
+	DIM x_g[6]: DIM y_g[6]
+
+	x_g[1] = 0												:		y_g[1] = -1
+	x_g[2] = 0												:		y_g[2] = 0
+	x_g[3] = 0												:		y_g[3] = _oeffnung_y 
+	x_g[4] = _oeffnung_x + 0 * (gs_vb - poly_x8 - poly_x9)	:		y_g[4] = _oeffnung_y 
+	x_g[5] = _oeffnung_x + 0 * (gs_vb - poly_x8 - poly_x9)	:		y_g[5] = 0
+	x_g[6] = _oeffnung_x + 0 * (gs_vb - poly_x8 - poly_x9)	:		y_g[6] = -1
+
+	GOSUB "tube_6eck~"
+
+	RETURN
+
+	"tube_6eck~":
+
+
+	PUT			poly_x8, 				0, 					0,		! Profil
+				poly_x8, 				poly_y8, 			0,		! Kante
+				poly_x8 + poly_x9, 		poly_y8, 			0,		! Kante
+				poly_x8 + poly_x9, 		poly_y9 + poly_y8, 	0,	
+				poly_x4, 				poly_y9 + poly_y8, 			0,
+				poly_x4, 				0, 			0,
+				poly_x8, 				0, 					0	
+
+	profpoints=NSP/3
+	!-----------------------------
+	PUT			x_g[1],			y_g[1],			0,		0	!Phantom 1
+	PUT			x_g[2],			y_g[2],			0,		0	!Punkt 1
+	PUT			x_g[3],			y_g[3],			0,		0	!Punkt 2
+	PUT			x_g[4],			y_g[4],			0,		0	!Punkt 3
+	PUT			x_g[5],			y_g[5],			0,		0	!Punkt 4
+	PUT			x_g[6],			y_g[6],			0,		0	!Phantom 2
+
+	pathpoints = (NSP - profpoints * 3) / 4
+	!-------------------------------
+
+	ADD -clearingFrameCenter - frame_out_dims_x/2 + gs_sidelight_left * gs_sidelight_width_left + _framewidth_left * NOT(gs_sidelight_left), -poly_y1 + gs_vt, 0
+	!CYLIND 1,0.001
+
+	ROTx 90
+
+
+	BODY -1
+	SECT_FILL schraffurtyp, hintergrundstift, schraffurstift, konturenstift	
+	MATERIAL dk_materials[dka_frame_mat_BS]
+	TUBE profpoints, pathpoints, 1 + 2 + 4 + 8 + 16 + 32,
+	GET (NSP)
+	BODY -1
+
+	DEL 2
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+"fill_LOD300_1":
+
+	PUT 0, 			0, 			15,
+		poly_x1, 	0, 			15,
+		poly_x1, 	poly_y3, 	15,
+		0, 			poly_y3, 	15,
+		0,			0,			-1
+
+	PRISM_ NSP/3, poly_z1, GET(NSP)
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+"fill_LOD300_2":
+
+	PUT poly_x4, 	0, 			15,
+		poly_x3, 	0, 			15,
+		poly_x3, 	poly_y3, 	15,
+		poly_x4, 	poly_y3, 	15,
+		poly_x4,	0,			-1
+
+	PRISM_ NSP/3, poly_z1, GET(NSP)
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+"fill_LOD300_4":
+
+	IF bs_inner_frame # 2 THEN 
+
+		PUT 0, 			poly_y1, 	15,
+			poly_x3, 	poly_y1, 	15,
+			poly_x3, 	poly_y3, 	15,
+			0, 			poly_y3, 	15,
+			0,			poly_y1,	-1
+
+		PRISM_ NSP/3, poly_z1, GET(NSP)
+
+	ENDIF
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+"fill_LOD300_6":
+
+	IF bs_inner_frame # 2 THEN 
+		PUT 0, 			poly_y1, 	15,
+			poly_x4, 	poly_y1, 	15,
+			poly_x4, 	0, 			15,
+			poly_x3, 	0, 			15,
+			poly_x3, 	poly_y3, 	15,
+			0, 			poly_y3, 	15,
+			0,			poly_y1,	-1
+
+	ELSE
+
+		PUT poly_x4, 	poly_y1, 	15,
+			poly_x4, 	0, 			15,
+			poly_x3, 	0, 			15,
+			poly_x3, 	poly_y3, 	15,
+			poly_x4, 	poly_y3, 	15,
+			poly_x4,	poly_y1,	-1
+
+	ENDIF
+
+	PRISM_ NSP/3, poly_z1, GET(NSP)
+
+RETURN
+
+
+
+! ---------------------------------------------------------------------- !
+"fill_LOD300_7":
+
+	IF bs_inner_frame # 2 THEN 
+		PUT 0, 			0, 			15,
+			poly_x1, 	0, 			15,
+			poly_x1, 	poly_y1, 	15,
+			poly_x4, 	poly_y1, 	15,
+			poly_x4, 	0, 			15,
+			poly_x3, 	0, 			15,
+			poly_x3, 	poly_y3, 	15,
+			0, 			poly_y3, 	15,
+			0,			0,			-1
+
+		PRISM_ NSP/3, poly_z1, GET(NSP)
+	ELSE
+
+
+		PUT poly_x4, 	poly_y1, 	15,
+			poly_x4, 	0, 			15,
+			poly_x3, 	0, 			15,
+			poly_x3, 	poly_y3, 	15,
+			poly_x4, 	poly_y3, 	15,
+			poly_x4,	poly_y1,	-1
+
+		PRISM_ NSP/3, poly_z1, GET(NSP)
+
+		PUT 0, 			0, 			15,
+			poly_x1, 	0, 			15,
+			poly_x1, 	poly_y1, 	15,
+			poly_x1, 	poly_y3, 	15,
+			0, 			poly_y3, 	15,
+			0,			0,			-1
+
+		PRISM_ NSP/3, poly_z1, GET(NSP)
+
+	ENDIF
+	
+RETURN
+
+! ---------------------------------------------------------------------- !
+
+"fill_LOD300_5":
+
+	IF bs_inner_frame # 2 THEN 
+
+		PUT 0, 			0, 			15,
+			poly_x1, 	0, 			15,
+			poly_x1, 	poly_y1, 	15,
+			poly_x3, 	poly_y1, 	15,
+			poly_x3, 	poly_y3, 	15,
+			0, 			poly_y3, 	15,
+			0,			0,			-1
+
+	ELSE
+
+		PUT 0, 			0, 			15,
+			poly_x1, 	0, 			15,
+			poly_x1, 	poly_y1, 	15,
+			poly_x1, 	poly_y3, 	15,
+			0, 			poly_y3, 	15,
+			0,			0,			-1
+
+	ENDIF
+
+	PRISM_ NSP/3, poly_z1, GET(NSP)
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+"Fugenfuellung":
+
+abst_li = gs_tolerance_left
+abst_re = gs_tolerance_right
+abst_ob = gs_tolerance_upper
+
+	PUT -ac_wallhole_width / 2, 0,
+		-ac_wallhole_width / 2, ac_wallhole_height,
+		 ac_wallhole_width / 2, ac_wallhole_height,
+		 ac_wallhole_width / 2, 0,
+		 ac_wallhole_width / 2 - abst_re, 0,
+		 ac_wallhole_width / 2 - abst_re, ac_wallhole_height - abst_ob,
+		-ac_wallhole_width / 2 + abst_li, ac_wallhole_height - abst_ob,
+		-ac_wallhole_width / 2 + abst_li, 0,
+		-ac_wallhole_width / 2, 0
+
+	MATERIAL poly_mat
+	SECT_FILL dk_fills[dka_gap_filling_fill], dk_bkg_pens[dka_gap_filling_penB], dk_fill_pens[dka_gap_filling_penF], konturenstift	
+
+	ROTx 90
+	ADDx -offsetFrameCenter
+	PRISM NSP/2, - poly_z_fuge, GET(NSP)
+	DEL 2
+
+RETURN
+
+! ---------------------------------------------------------------------- !
+! ---------------------------------------------------------------------- !
+
+
+

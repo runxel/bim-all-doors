@@ -1,0 +1,112 @@
+! ------------------------------------------------------------------------[ Module development settings ]
+
+IF macro_runtype = 0 THEN
+	VALUES{2} "macro_runtype" 0, "IDLE", 1,"handshake page hirarchy", 2,"handshake page names", 3,"CALL UI page", 5,"return element values", 10,"rebuilt VALUE lists"
+	ENDIF
+
+
+! =============================================================================
+! PLAUSIBILITY
+! =============================================================================
+
+! ----------------------------------------------------------------- Parameterabhängigkeiten
+
+! »»» Wechselfunktion nur bei Fallen-Riegelschloss
+IF gs_han_pos < 0.046 AND GLOB_MODPAR_NAME = "gs_han_pos" AND bs_control_side = "-" THEN
+	bs_case_distance = 0.092
+	PARAMETERS bs_case_distance = bs_case_distance
+	ENDIF
+
+IF gs_han_pos2 < 0.046 AND GLOB_MODPAR_NAME = "gs_han_pos2" AND bs_control_side = "-" THEN
+	bs_case_distance2 = 0.092
+	PARAMETERS bs_case_distance2 = bs_case_distance2
+	ENDIF
+
+! »»» Wechselfunktion nur bei Fallen-Riegelschloss
+IF bs_lock_type = "FA" THEN
+	bs_access_control_type = "-"
+	bs_lock_type = "FR"
+	bs_lock_panic = 0 : bs_lock_change = 0 : bs_selflocking = 0 : bs_lock_master = 0
+	bs_lock_barrel = "-"
+	PARAMETERS	bs_access_control_type = bs_access_control_type,
+				bs_lock_panic	= bs_lock_panic,
+				bs_lock_change	= bs_lock_change,
+				bs_selflocking	= bs_selflocking,
+				bs_lock_master	= bs_lock_master,
+				bs_lock_barrel	= bs_lock_barrel
+	LOCK "bs_lock_system", "bs_locking_side", 
+		"bs_access_control_type", 
+		"bs_lock_panic", "bs_lock_change", 
+		"bs_selflocking", "bs_lock_master", "bs_lock_barrel"
+	ENDIF
+
+! »»» Panik- und Wechsel	funktion ohne Falle nicht möglich
+IF bs_lock_type = "RI" THEN
+	bs_lock_panic = 0 : bs_lock_change = 0
+	PARAMETERS	bs_lock_panic = bs_lock_panic, bs_lock_change = bs_lock_change
+	LOCK "bs_lock_panic", "bs_lock_change"
+	ENDIF
+
+! »»» Wechselfunktion nur bei Fallen-Riegelschloss
+IF bs_lock_change = 1 AND bs_lock_type # "FR" THEN
+	bs_lock_type = "FR"
+	PARAMETERS bs_lock_type = bs_lock_type
+	ENDIF
+
+! »»» Elektrifizierung setzen (Bit 5)
+IF bs_lock_electric = 1 THEN
+	bs_door_electrified = BITSET(bs_door_electrified, 5)
+	ELSE
+	bs_door_electrified = BITSET(bs_door_electrified, 5, 0)
+	ENDIF
+PARAMETERS bs_door_electrified = bs_door_electrified
+
+! »»» Einflügelig
+IF bs_door_leafs < 2 THEN
+	PARAMETERS bs_lock_SF = 2
+	LOCK "bs_lock_SF"
+	ENDIF
+
+! =============================================================================
+! VALUES
+! =============================================================================
+
+! ----------------------------------- PARAMETER VALUE LIST [ECD.hinge] (start)
+
+VALUES "bs_access_control_type" "-", " ", "M", "S", "K", "C", "F", "B", "X"
+VALUES "bs_lock_type" "XX", "FR", "FA", "RI", "RF"
+VALUES "bs_lock_system" "1f", "2f", "3f"
+VALUES "bs_case_material" " ", "ST", "ES", "AL", "MS", "XX", CUSTOM
+VALUES "bs_case_surface" " ", "-", "B", "S", "T", "P", "N", "L", "V", "Z", "C", "E", "T", "G", "X", CUSTOM
+VALUES "bs_latch_plate" "R", "K", "U", "W"
+VALUES "gs_han_pos" 0.02, 0.055, 0.06, 0.065, 0.03, 0.035, 0.04, 0.045, CUSTOM
+VALUES "bs_case_hole" 0.08, CUSTOM
+VALUES "bs_case_distance" 0.09, 0.072, 0.078, 0.092, CUSTOM
+VALUES "gs_han_pos2" 0.02, 0.055, 0.06, 0.065, 0.03, 0.035, 0.04, 0.045, CUSTOM
+VALUES "bs_case_hole2" 0.08, CUSTOM
+VALUES "bs_case_distance2" 0.09, 0.072, 0.078, 0.092, CUSTOM
+VALUES{2} "bs_lock_panic" 0, "nein", 1, "ja", 2, "unbestimmt"
+VALUES{2} "bs_lock_change" 0, "nein", 1, "ja", 2, "unbestimmt"
+VALUES{2} "bs_selflocking" 0, "nein", 1, "ja", 2, "unbestimmt"
+VALUES{2} "bs_lock_SF" 0, "nein", 1, "ja", 2, "unbestimmt"
+VALUES{2} "bs_lock_master" 0, "nein", 1, "ja", 2, "unbestimmt"
+VALUES "bs_lock_barrel" "-", "PZ", "RZ", "OZ", "BB", "WC"
+VALUES "bs_locking_side" "ZS", "BS", "BGS"
+VALUES "bs_lock_electric" 0, 1, 2, CUSTOM
+VALUES{2} "bs_lock_opener" 0, "nein", 1, "ja", 2, "unbestimmt"
+VALUES "develop" 0, 1, 2, 3, 4, 5, 6, 7, 8
+
+! --------------------------------------------------------------- PARAMETER VALUE LISTS (end)
+
+! ---------------------------------------------------------------------- !
+
+END bs_door_electrified, bs_door_external_button
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+

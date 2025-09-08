@@ -1,0 +1,488 @@
+
+! ######################################
+!
+! BIM-all-doors - DOOR SYSTEM
+!
+! Module: Hinge Macro
+!
+! Manufacturer: common
+! Linie: common
+!
+! © 2018 BY DORMAKABA
+! 
+! ######################################
+
+
+! =============================================================================
+! GLOBAL SETTINGS
+! =============================================================================
+
+! »»» Arrays
+DIM clr1[], clr2[][], UI_page_subs[]
+DIM UI_page_names[], UI_page_icons[], UI_page_type[]
+
+! »»» Constants
+tlr = 0.00001  !»» accurancy
+version = 1.56 !»» Objektversion
+txt = ""	   !»»  Text für alles
+checkTXT = ""  !»»  Text für Prüfungen
+
+! »»» Localization
+sprache = language  !»»  Deutsch
+
+! »»» Common keywords
+IF sprache = 1 THEN
+
+	commonKey = "unspezifiziert" 
+	naKey = "[-]"  !"undefiniert" 
+	noKey = "nein" 
+	yesKey = "ja"
+
+	ELSE
+
+	commonKey = "unspecific"
+	naKey = "[-]"  !"common"
+	noKey = "no"
+	yesKey = "yes"
+
+	ENDIF
+
+
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (start)
+
+! --------- PRODUCT PARAMETERS
+
+! --------- DEFAULT VALUE ARRAYS
+
+! --------- dk_folding_dimensions[i][…]
+	dki_Falz1 = 1
+	dki_Falz2 = 2
+! --------- dk_panel_folding_dimensions[i][…]
+	dki_Mittelfalz1 = 1
+	dki_Mittelfalz2 = 2
+	dki_Mittelfalz3 = 3
+! --------- dk_open_leaf[i][…]
+	dka_leaf_angle2D = 1
+	dka_leaf2_angle2D = 2
+	dka_leaf_angleSA = 3
+	dka_leaf2_angleSA = 4
+	dka_leaf_angle3D = 5
+	dka_leaf2_angle3D = 6
+! --------- dk_cont_pens[i][…]
+	dka_handle_penC2 = 1
+	dka_handle_penC3 = 2
+	dka_frame_penC2 = 3
+	dka_frame_penC3 = 4
+	dka_panel_penC2 = 5
+	dka_panel_penC3 = 6
+	dka_opline2D = 7
+	dka_oplineSA = 8
+	dka_opline3D = 9
+	dka_topview_penC2 = 10
+	dka_penC = 11
+	dka_penC = 12
+	dka_penC = 13
+	dka_penC = 14
+	dka_penC = 15
+! --------- dk_fill_pens[i][…]
+	dka_handle_penF = 1
+	dka_frame_penF = 2
+	dka_side1_penF = 3
+	dka_side2_penF = 4
+	dka_panel_penF = 5
+	dka_panelfill1_penF = 6
+	dka_panelfill2_penF = 7
+	dka_panelfill3_penF = 8
+	dka_panel2fill1_penF = 9
+	dka_panel2fill2_penF = 10
+	dka_panel2fill3_penF = 11
+	dka_topview_penF = 12
+	dka_penF = 13
+	dka_penF = 14
+	dka_penF = 15
+! --------- dk_bkg_pens[i][…]
+	dka_handle_penB = 1
+	dka_frame_penB = 2
+	dka_side1_penB = 3
+	dka_side2_penB = 4
+	dka_panel_penB = 5
+	dka_panelfill1_penB = 6
+	dka_panelfill2_penB = 7
+	dka_panelfill3_penB = 8
+	dka_panel2fill1_penB = 9
+	dka_panel2fill2_penB = 10
+	dka_panel2fill3_penB = 11
+	dka_topview_penB = 12
+	dka_penB = 13
+	dka_penB = 14
+	dka_penB = 15
+! --------- dk_fills[i][…]
+	dka_handle_fill = 1
+	dka_frame_fill = 2
+	dka_side1_fill = 3
+	dka_side2_fill = 4
+	dka_panel_fill = 5
+	dka_panelfill1_fill = 6
+	dka_panelfill2_fill = 7
+	dka_panelfill3_fill = 8
+	dka_panel2fill1_fill = 9
+	dka_panel2fill2_fill = 10
+	dka_panel2fill3_fill = 11
+	dka_topview_fill = 12
+	dka_fill = 13
+	dka_fill = 14
+	dka_fill = 15
+! --------- dk_materials[i][…]
+	dka_handle_mat = 1
+	dka_plate_mat = 2
+	dka_frame_mat_BS = 3
+	dka_frame_mat_BGS = 4
+	dka_side1_mat_BS = 5
+	dka_side1_mat_BGS = 6
+	dka_side2_mat_BS = 7
+	dka_side2_mat_BGS = 8
+	dka_fan_mat_BS = 9
+	dka_fan_mat_BGS = 10
+	dka_panel_mat_BS = 11
+	dka_panel_mat_BGS = 12
+	dka_panelfill1_mat_BS = 13
+	dka_panelfill1_mat_BGS = 14
+	dka_panelfill2_mat_BS = 15
+	dka_panelfill2_mat_BGS = 16
+	dka_panelfill3_mat_BS = 17
+	dka_panelfill3_mat_BGS = 18
+	dka_panel2_mat_BS = 19
+	dka_panel2_mat_BGS = 20
+	dka_panel2fill1_mat_BS = 21
+	dka_panel2fill1_mat_BGS = 22
+	dka_panel2fill2_mat_BS = 23
+	dka_panel2fill2_mat_BGS = 24
+	dka_panel2fill3_mat_BS = 25
+	dka_panel2fill3_mat_BGS = 26
+	dka_panel_bandings_mat = 27
+	dka_panel2_bandings_mat = 28
+	dka_hinge_mat = 29
+	dka_closer_mat = 30
+	dka_automation_mat = 31
+	dka_grip_mat_BS1 = 32
+	dka_grip_mat_BS2 = 33
+	dka_grip_mat_BGS1 = 34
+	dka_grip_mat_BGS2 = 35
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (end)
+
+! ----------------------------------- MULTILINGUAL TEXT [ECD.hinge] (start)
+
+! --------- RESET array variables
+	DIM uiTXT[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		uiTXT[1] = "BÄNDER"
+		uiTXT[2] = " ... Drehpunkt + Abmessungen"
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF language = 4 THEN
+		uiTXT[1] = "HINGE"
+		uiTXT[2] = " … center of rotation + dimensions"
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+! ------------------------------------------------------------------------[ Umgebungszustände ]
+
+! »»» Überfälzt?
+IF bs_leaf_oversize < tlr OR bs_leaf_overhang < tlr THEN stumpf = 1 ELSE stumpf = 0
+
+! »»» Darstellung als Rollenband?
+rolle = 1
+IF bs_hinge_type = "VD" THEN rolle = 0
+
+! »»» Türart
+holz = ( bs_panel_material = "H" AND bs_frame_material = "HZ" )
+GOSUB "checkDoorSystem"
+
+! »»» Separater Aufruf der Flügel?
+stand = BITTEST(macro_runtype,2)
+
+
+! ------------------------------------------------------------------------[ Bandbezugslinien - Abstände ]
+
+! »»» Bandbezugslinien ermitteln
+
+IF bs_hinge_DIN THEN
+
+	hinge_pos1 = 0.237  ! +0.004  ! BA oben (1)
+	hinge_posU = 0.309  ! BA unten (minimal)
+
+	leaf_height_class 	= ac_leaf_height - (1-stumpf) * bs_leaf_oversize
+	! leaf_height_class 	= 1.61 + 0.125 * INT( (leaf_height_class - 1.61) / 0.125 )  ! Rastern
+	! hinge_pos2 			= leaf_height_class - hinge_pos1 - hinge_posU  ! Türhöhe der Klasse vorher - BA
+
+	leaf_height_class 	= ac_leaf_height - (1-stumpf) * bs_leaf_oversize
+	leaf_height_class 	= INT( (leaf_height_class - 2.11) / 0.125 )  ! Rastern
+	hinge_pos2 			= 1.56 + 0.125 * leaf_height_class  ! Türhöhe der Klasse vorher
+
+	ELSE
+
+	hinge_pos1 = bs_hinge_pos1
+	hinge_pos2 = bs_hinge_pos2
+
+	ENDIF
+
+! Tabelle für Bandbezugslinien nach DIN 18268 und 18101
+	! k = VARDIM1(bs_hinge2_distance)
+	! hinge_pos2 = bs_hinge2_distance[k][2]
+
+	! FOR i = k TO 1 STEP -1
+	! 	IF ac_leaf_height - (1-stumpf)*bs_leaf_oversize < bs_hinge2_distance[i][1] AND i > 1 THEN
+	! 		hinge_pos2 = bs_hinge2_distance[i-1][2]
+	! 		ELSE
+	! 		i=0
+	! 		ENDIF
+	! 	NEXT i
+
+
+! =============================================================================
+! Defiition UI-Seiten / LoI
+! =============================================================================
+
+!  UI_page_type =  -2 > sub of ROOT, -1 > sub of last, 1 > sub of first macro page
+
+seiten = 0
+
+IF dk_LOI = 5 THEN
+	seiten = 1
+	UI_page_names[seiten] = uiTXT[1]  ! "BÄNDER"
+	UI_page_icons[seiten] = "dk_title_hinge 18x18.png"
+	UI_page_type[seiten]  = -1
+	UI_page_subs[seiten]  = 6100
+	ENDIF
+
+IF dk_LOI = 6 THEN
+	seiten = 1
+	UI_page_names[seiten] = uiTXT[1]  ! "BÄNDER"
+	UI_page_icons[seiten] = "dk_title_hinge 18x18.png"
+	UI_page_type[seiten]  = -1
+	UI_page_subs[seiten]  = 6000
+
+	seiten = seiten + 1
+	UI_page_names[seiten] = uiTXT[2]  ! " ... Drehpunkt + Abmessungen"
+	UI_page_icons[seiten] = "dk_title_hinge_dimensions 18x18.png"
+	UI_page_type[seiten]  = 1
+	UI_page_subs[seiten]  = 6300
+	ENDIF
+
+! =============================================================================
+! FEHLERARRAY
+! =============================================================================
+
+! »»» Fehlermeldungen initialisieren
+DIM errorQ[]
+errorI = 0
+errorQ[1] = ""
+
+IF GLOB_PREVIEW_MODE THEN
+
+	txt = ""
+	! IF macro_runtype=256 THEN txt = "BÄNDER: "
+
+	! »»» Material zu Türtyp
+	sts =	((bs_hinge_type = "E2" OR bs_hinge_type = "E3") AND (bs_panel_material # "HO")) OR \
+			((bs_hinge_type = "K2" OR bs_hinge_type = "K3") AND ((bs_panel_material # "ST" AND bs_panel_material # "AL") OR (bs_frame_material # "ST" AND bs_frame_material # " AL"))) OR \
+			((bs_hinge_type = "FB") AND holz)
+	IF sts THEN
+		errorI = errorI+1 : errorQ[errorI] = txt + "Bandtyp passt nicht zu Tür-/Zargenmaterial. "
+		ELSE
+		checkTXT = bs_hinge_type
+		GOSUB "check4fit"
+		IF sts THEN
+			errorI = errorI+1 : errorQ[errorI] = txt + "Bandtyp passt nicht zu Türkonstruktionstyp. "
+			ENDIF
+		ENDIF
+		
+	! »»» Material zu Brandschutz
+	IF (bs_hinge_material # "ES" AND bs_hinge_material # "ST") AND bs_demand_FireResistance = 1 THEN
+		IF bs_hinge_material = "AL" THEN
+			errorI = errorI+1 : errorQ[errorI] = txt + "Keine Aluminumbänder bei Brandschutzanforderung. "
+			ELSE
+			errorI = errorI+1 : errorQ[errorI] = txt + "Bandmaterial auf Brandschutz prüfen. "
+			ENDIF
+		ENDIF
+		
+	! »»» Anzahl Bänder
+	IF bs_hinge_nmbr < 3 THEN
+		IF MAX(gs_SecondLeaf_w, ac_leaf_width) - tlr > 1.0 + 2*bs_leaf_oversize*NOT(stumpf) THEN
+			errorI = errorI+1 : errorQ[errorI] = txt + "Nur 2 Bänder bei der Flügelbreite (>1,0m) zu wenig. "
+			ELSE
+			IF ac_leaf_height - tlr > 2.15  THEN
+				errorI = errorI+1 : errorQ[errorI] = txt + "Nur 2 Bänder bei der Flügelhöhe (>2,15m) zu wenig. "
+				ENDIF
+			ENDIF
+		ENDIF
+		
+	! »»» Zulässiges Gewicht
+	IF bs_door_leafs > 0 THEN
+		leafWidth	= ac_leaf_width
+		leafWeight	= dk_estimatedWeight
+		GOSUB "checkWeight"
+		IF Breitenfaktor + Hoehenfaktor > 2.0+tlr AND Bandbelastung > 100 THEN
+			errorI = errorI+1 : errorQ[errorI] = txt + "Bandbelastung Gangflügel (" + str(Bandbelastung,1,0) + "kp) könnte kritisch sein. "
+			ENDIF
+		ENDIF
+	IF bs_door_leafs > 1 THEN
+		leafWidth	= gs_SecondLeaf_w
+		leafWeight	= dk_estimatedWeight2
+		GOSUB "checkWeight"
+		IF Breitenfaktor + Hoehenfaktor > 2.0+tlr AND Bandbelastung > 100 THEN
+			errorI = errorI+1 : errorQ[errorI] = txt + "Bandbelastung Standflügel (" + str(Bandbelastung,1,0) + "kp) könnte kritisch sein. "
+			ENDIF
+		ENDIF
+
+	! sts = 1+2+8 : GOSUB "debuginfo"
+	ENDIF
+
+! =============================================================================
+! question - answer mode  / HANDSHAKE
+! =============================================================================
+
+IF macro_runtype = 1   THEN END UI_page_type   ! »»» return UI page hirarchy
+IF macro_runtype = 2   THEN END UI_page_names  ! »»» return UI page names
+IF macro_runtype = 4   THEN END UI_page_icons  ! »»» return UI page picts
+IF macro_runtype = 256 THEN END errorQ  ! »»» Fehlermeldung
+
+! IF macro_runtype = 64 AND errorI > 0 THEN
+!	 txt = ""
+!	 FOR i=1 TO errorI
+!		 txt=txt+errorQ[i]+"\n"+"\n"
+!		 NEXT i
+!	 PRINT txt
+!	 ENDIF
+
+! =============================================================================
+! LOD - Level of Detail
+! =============================================================================
+
+
+! ------------------------------------------------------------------------[ ... ]
+
+GOTO "masterend"
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+! »»» Errorcontent:
+"debuginfo":
+	IF BITTEST(sts,0) THEN txt = "Falscher Wandanschluss " ELSE txt=""
+	IF BITTEST(sts,1) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "Anschlag"
+	IF BITTEST(sts,2) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "Nicht bündig mit Zarge"
+	IF BITTEST(sts,3) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "Leibungstiefe"
+	IF BITTEST(sts,4) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "Türbreite"
+	IF BITTEST(sts,5) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "sonstiges"
+	IF txt # "" THEN txt = " ("+txt+")"
+	RETURN
+
+! »»» Türtypenabhängigkeiten
+"checkDoorSystem":
+	doorSystem = "" 	! bs_frame_material nicht berücksichtigt
+						! = "ST" "HO" "AL "KP" "AP" SP"
+
+	IF dk_frametype = "BZ" THEN
+		IF bs_frame_material = "ST" THEN
+			doorSystem = "ST"
+			ELSE
+			doorSystem = "HO"
+			ENDIF
+		ELSE
+		IF dk_frametype = "UZ" THEN
+			IF bs_frame_material = "HO" THEN
+				doorSystem = "HO"
+				ELSE
+				IF bs_frame_material = "AL" THEN
+					doorSystem = "AL"
+					ELSE
+					doorSystem = "ST"
+					ENDIF
+				ENDIF
+			ELSE
+			IF dk_frametype = "EZ" THEN
+				IF bs_frame_material = "HO" THEN
+					doorSystem = "HO"
+					ELSE
+					IF bs_frame_material = "AL" THEN
+						doorSystem = "AL"
+						ELSE
+						doorSystem = "ST"
+						ENDIF
+					ENDIF
+				ELSE
+				IF dk_frametype = "RR" THEN
+					IF bs_frame_material = "KU" THEN
+						doorSystem = "KP"
+						ELSE
+						IF bs_frame_material = "AL" THEN
+							doorSystem = "AP"
+							ELSE
+							doorSystem = "SP"
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+
+	RETURN
+
+! »»» Prüfung, ob Bandtyp zu Türsystem passt
+"check4fit":
+	! checkTXT = bs_hinge_type
+	sts = 1
+
+	IF doorSystem = "" OR checkTXT = "-" THEN
+		sts = 0
+		ELSE
+		IF doorSystem = "HO" AND STRSTR("O2|O3|E2|E3|PA|FB|VD", checkTXT) THEN
+			sts = 0
+			ELSE
+			IF doorSystem = "ST" AND STRSTR("O2|O3|K2|K3|VD", checkTXT) THEN
+				sts = 0
+				ELSE
+				IF doorSystem = "AL" AND STRSTR("O2|O3|VD", checkTXT) THEN
+					sts = 0
+					ELSE
+					IF doorSystem = "SP" AND STRSTR("ZB|PT|VD", checkTXT) THEN
+						sts = 0
+						ELSE
+						IF doorSystem = "AP" AND STRSTR("K2|K3|PT|VD", checkTXT) THEN
+							sts = 0
+							ELSE
+							IF doorSystem = "KP" AND STRSTR("PT", checkTXT) THEN
+								sts = 0
+								ENDIF
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+
+	RETURN
+
+! »»» Zulssiges Gewicht
+"checkWeight":
+	Breitenlastzuschlag	= 0.01  ! Herstellerabhängig. Bis zu 1,5% = 0.015
+	Breitenfaktor		= MAX( 1, 1 + (leafWidth*1000 - 1000) / 10 * Breitenlastzuschlag)
+	Hoehenfaktor		= 1.435 / MAX(tlr,hinge_pos2)
+	! Formfaktor			= Breitenfaktor * Hoehenfaktor
+	Ausstattungsfaktor	= 1 + MAX(0.37 * (bs_closer_type # "-"), 0.5 * (bs_automation_type # "-"))   ! * 1.5 * (tuerstopper OR feststeller)
+	Bandbelastung		= leafWeight * MAX(1, Breitenfaktor * Hoehenfaktor * Ausstattungsfaktor)
+	RETURN
+
+"masterend":

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Symbol IsArchivable="false" IsPlaceable="true" MigrationValue="Normal" Owner="1196638531" Signature="1196644685" UNID="{1B4B070D-60F9-4B92-8BF0-E7FBF175B024}-{96F47F10-3DBA-412D-BE82-3A38BF5D9B09}" Version="36">
+<Symbol IsArchivable="false" IsPlaceable="false" MigrationValue="Normal" Owner="1196638531" Signature="1196644685" UNID="{1B4B070D-60F9-4B92-8BF0-E7FBF175B024}-{96F47F10-3DBA-412D-BE82-3A38BF5D9B09}" Version="36">
   <Ancestry SectVersion="1" SectionFlags="0" SubIdent="0" Template="false">
     <UNID>{F938E33A-329D-4A36-BE3E-85E126820996}-{A3B0AF3A-5916-490C-9C6A-B6BD047EF925}</UNID>
     <UNID>{103E8D2C-8230-42E1-9597-46F84CCE28C0}-{532B42DA-E2F0-4525-AE80-38E8A91A4E3F}</UNID>
@@ -26,11 +26,10 @@
     <!-- insert:90_Parameters.xml -->
   </ParamSection>
   <Copyright SectVersion="1" SectionFlags="0" SubIdent="0">
-    <Author>©2018 dormakaba, written by Frank Beister, Hamburg, Germany</Author>
+    <Author>originally by Frank Beister, Hamburg, Germany</Author>
     <License>
-      <Type>Commercial</Type>
-      <Version>
-      </Version>
+      <Type>CC0</Type>
+      <Version>1.0</Version>
     </License>
   </Copyright>
   <Keywords SectVersion="1" SectionFlags="0" SubIdent="0"><![CDATA[Stoßgriffmodul für dormakaba generische Tür]]></Keywords>
