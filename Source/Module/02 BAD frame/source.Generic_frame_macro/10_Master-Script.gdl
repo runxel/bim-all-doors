@@ -8,9 +8,12 @@
 ! Manufacturer: common
 ! Linie: common
 !
-! © 2018 BY DORMAKABA / WRITTEN BY JOCHEN SÜHLO
+! (p) 2018-2021 BY DORMAKABA / WRITTEN BY FRANK BEISTER
+! openSource by CCO1.0 license since 2025
+!
+! https://github.com/dormakaba/bim-all-doors
 ! 
-! ######################################
+! #############################################################################
 
 ! =============================================================================
 ! GLOBAL SETTINGS
@@ -24,7 +27,7 @@ DIM UI_page_names[], UI_page_icons[], UI_page_type[]
 ! »»» Constants
 
 tlr = 0.00001 	!»» accurancy
-version = 1.57 	!»» Objektversion
+version = 1.90 	!»» Objektversion
 txt = ""	  	!»»  Text für alles
 last_change_macro = "16.04.19"
 

@@ -792,7 +792,7 @@ UIpage_masterparent = -1
 ! #### Dialoginitialisierung
 
 IF ABS(version - versionStamp) < tlr THEN txt = "" ELSE txt = " / v"+str("%^.2",versionStamp)
-UI_DIALOG uiTXT[1] + " (v"+str("%^.2",version) + txt + ")"
+UI_DIALOG uiTXT[1] + " (v"+str("%^.2",version) + txt + " ©2021 dormakaba)"
 UI_CURRENT_PAGE gs_ui_current_page
 
 
