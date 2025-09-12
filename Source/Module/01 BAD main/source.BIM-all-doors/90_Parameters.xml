@@ -4013,7 +4013,7 @@
                <ParFlg_Hidden />
                <ParFlg_Child />
          </Flags>
-         <Value>1.63</Value>
+         <Value>1.90</Value>
      </RealNum>
      <Integer Name="gs_ui_current_page">
          <Description><![CDATA["Aktuelle UI-Seite"]]></Description>

@@ -1,0 +1,1286 @@
+! =============================================================================
+! GLOBAL SETTINGS
+! =============================================================================
+
+!------------------------------------------------------------------ [ Sprache ]
+
+! ----------------------------------- MULTILINGUAL TEXT [DORMAKABA OGRO] (start)
+
+! --------- RESET array variables
+	DIM babel[]
+	DIM bubble[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		babel[1] = "Produktserie:"
+		babel[2] = "Typ:"
+		babel[3] = "Modell:"
+		babel[4] = "Braille:"
+		babel[5] = "Ausrichtung:"
+		babel[6] = "Bandseite"
+		babel[7] = "Bandgegenseite"
+		babel[8] = "Abdeckung"
+		babel[9] = "Standflügel"
+		babel[10] = "Griff / Knauf"
+		babel[11] = "Griff / Knauf:"
+		babel[12] = "Griff / Knauf:"
+		babel[13] = "Ausführung:"
+		babel[14] = "Dornmaß:"
+		babel[15] = "Höhe Griffachse:"
+		babel[16] = "Lochung:"
+		babel[17] = "Montageseite:"
+		babel[18] = "Türschild:"
+		babel[19] = "Füllung 2D:"
+		babel[20] = "Kontur 2D/3D:"
+		babel[21] = "Stift Füllung 2D:"
+		babel[22] = "Stift Kontur 2D/3D:"
+		babel[23] = "Textur Abdeckung:"
+		babel[24] = "Textur Griff:"
+		babel[25] = "... Ausführung:"
+		babel[26] = "... Dornmaß:"
+		babel[27] = "... Höhe Griffachse:"
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF language = 4 THEN
+		babel[1] = "Product serie:"
+		babel[2] = "Type:"
+		babel[3] = "Modell:"
+		babel[4] = "Braille:"
+		babel[5] = "Ausrichtung:"
+		babel[6] = "Bandseite"
+		babel[7] = "Bandgegenseite"
+		babel[8] = "Abdeckung"
+		babel[9] = "Standflügel"
+		babel[10] = "Griff / Knauf"
+		babel[11] = "Griff / Knauf:"
+		babel[12] = "Griff / Knauf:"
+		babel[13] = "Ausführung:"
+		babel[14] = "Dornmaß:"
+		babel[15] = "Höhe Griffachse:"
+		babel[16] = "Lochung:"
+		babel[17] = "Montageseite:"
+		babel[18] = "Türschild:"
+		babel[19] = "Füllung 2D:"
+		babel[20] = "Kontur 2D/3D:"
+		babel[21] = "Stift Füllung 2D:"
+		babel[22] = "Stift Kontur 2D/3D:"
+		babel[23] = "Textur Abdeckung:"
+		babel[24] = "Textur Griff:"
+		babel[25] = "... Ausführung:"
+		babel[26] = "... Dornmaß:"
+		babel[27] = "... Höhe Griffachse:"
+		ENDIF
+
+! --------- User Interface - Tooltip text (Deutsch)
+	IF language = 1 THEN
+		bubble[1] = "Produktgruppe"
+		bubble[2] = "DORMAKABA Beschläge"
+		bubble[3] = "Griffmodell Bandseite"
+		bubble[4] = "Griffmodell Bandgegenseite"
+		bubble[5] = "Griffmodell Standflügel"
+		bubble[6] = "Grifftyp Bandseite"
+		bubble[7] = "Grifftyp Bandgegenseite"
+		bubble[8] = "Grifftyp Standflügel"
+		bubble[9] = "Abdeckung Bandseite"
+		bubble[10] = "Abdeckung Bandgegenseite"
+		bubble[11] = "Abdeckung Standflügel"
+		bubble[12] = "Ausrichtung Drücker Bandseite"
+		bubble[13] = "Ausrichtung Drücker Bandgegenseite"
+		bubble[14] = "Ausrichtung Drücker Standflügel"
+		bubble[15] = "Lochung Abdeckung Bandseite"
+		bubble[16] = "Lochung Abdeckung Bandgegenseite"
+		bubble[17] = "Lochung Abdeckung Standflügel"
+		bubble[18] = "Material Abdeckung Bandseite"
+		bubble[19] = "Material Abdeckung Bandgegenseite"
+		bubble[20] = "Material Abdeckung Standflügel"
+		bubble[21] = "Material Drücker Bandseite"
+		bubble[22] = "Material Drücker Bandgegenseite"
+		bubble[23] = "Material Drücker Standflügel"
+		bubble[24] = "Oberfläche Abdeckung Bandseite"
+		bubble[25] = "Oberfläche Abdeckung Bandgegenseite"
+		bubble[26] = "Oberfläche Abdeckung Standflügel"
+		bubble[27] = "Oberfläche Drücker Bandseite"
+		bubble[28] = "Oberfläche Drücker Bandgegenseite"
+		bubble[29] = "Oberfläche Drücker Standflügel"
+		bubble[30] = "optionale Braille-Beschriftung"
+		bubble[31] = "Braillebeschriftung des Griffes (Bandseite)"
+		bubble[32] = "Braillebeschriftung des Griffes BGS"
+		bubble[33] = "Griff am Standflügel auf Band(gegen)seite"
+		bubble[34] = "Griffhöhe Gangflügel"
+		bubble[35] = "Griffhöhe Standflügel"
+		bubble[36] = "Brandschutzeignung"
+		bubble[37] = "Form Fluchtweg-geignet"
+		bubble[38] = "Eignung für hygienische Anforderungen"
+		bubble[39] = "Lochabstand Gangflügel"
+		bubble[40] = "Lochabstand Standflügel"
+		bubble[41] = "3D-Material Griff"
+		bubble[42] = "3D-Material Schild+Zubehör"
+		bubble[43] = "Stift (opake) Füllschraffur 2D"
+		bubble[44] = "Stift Kontur Türgriff 2D+3D"
+		ENDIF
+! --------- User Interface - Tooltip text (Englisch)
+	IF language = 4 THEN
+		bubble[1] = "Produktgruppe"
+		bubble[2] = "DORMAKABA Beschläge"
+		bubble[3] = "Griffmodell Bandseite"
+		bubble[4] = "Griffmodell Bandgegenseite"
+		bubble[5] = "Griffmodell Standflügel"
+		bubble[6] = "Grifftyp Bandseite"
+		bubble[7] = "Grifftyp Bandgegenseite"
+		bubble[8] = "Grifftyp Standflügel"
+		bubble[9] = "Abdeckung Bandseite"
+		bubble[10] = "Abdeckung Bandgegenseite"
+		bubble[11] = "Abdeckung Standflügel"
+		bubble[12] = "Ausrichtung Drücker Bandseite"
+		bubble[13] = "Ausrichtung Drücker Bandgegenseite"
+		bubble[14] = "Ausrichtung Drücker Standflügel"
+		bubble[15] = "Lochung Abdeckung Bandseite"
+		bubble[16] = "Lochung Abdeckung Bandgegenseite"
+		bubble[17] = "Lochung Abdeckung Standflügel"
+		bubble[18] = "Material Abdeckung Bandseite"
+		bubble[19] = "Material Abdeckung Bandgegenseite"
+		bubble[20] = "Material Abdeckung Standflügel"
+		bubble[21] = "Material Drücker Bandseite"
+		bubble[22] = "Material Drücker Bandgegenseite"
+		bubble[23] = "Material Drücker Standflügel"
+		bubble[24] = "Oberfläche Abdeckung Bandseite"
+		bubble[25] = "Oberfläche Abdeckung Bandgegenseite"
+		bubble[26] = "Oberfläche Abdeckung Standflügel"
+		bubble[27] = "Oberfläche Drücker Bandseite"
+		bubble[28] = "Oberfläche Drücker Bandgegenseite"
+		bubble[29] = "Oberfläche Drücker Standflügel"
+		bubble[30] = "optionale Braille-Beschriftung"
+		bubble[31] = "Braillebeschriftung des Griffes (Bandseite)"
+		bubble[32] = "Braillebeschriftung des Griffes BGS"
+		bubble[33] = "Griff am Standflügel auf Band(gegen)seite"
+		bubble[34] = "Griffhöhe Gangflügel"
+		bubble[35] = "Griffhöhe Standflügel"
+		bubble[36] = "Brandschutzeignung"
+		bubble[37] = "Form Fluchtweg-geignet"
+		bubble[38] = "Eignung für hygienische Anforderungen"
+		bubble[39] = "Lochabstand Gangflügel"
+		bubble[40] = "Lochabstand Standflügel"
+		bubble[41] = "3D-Material Griff"
+		bubble[42] = "3D-Material Schild+Zubehör"
+		bubble[43] = "Stift (opake) Füllschraffur 2D"
+		bubble[44] = "Stift Kontur Türgriff 2D+3D"
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+
+!-------------------------------------------- [ Standardelemente aller Seiten ]
+
+! »»» Standardwerte
+
+DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[] ! Arrays für diskrete Auswahlen UI_INFIELD{4}
+
+! =============================================================================
+! Dialogstart
+! =============================================================================
+
+
+! ------------------------------------------------------------------------[ Dialog start in development environment ]
+
+IF macro_runtype > 255 THEN END
+
+IF macro_runtype # 128 THEN
+
+	UI_DIALOG "DORMA OGRO Handles", 444,266
+
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ 1. Seite ]
+
+s = 1
+IF  seiten > 0 THEN
+	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ 2. Seite ]
+
+s = 2
+IF  seiten > 1 THEN
+	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ 3. Seite ]
+
+s = 3
+IF  seiten > 2 THEN
+	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+	ENDIF
+
+
+
+! =============================================================================
+! Dialogende
+! =============================================================================
+
+END
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"devshow":
+	UI_STYLE 1,2
+	UI_OUTFIELD "[HANDLE v" + str("%^.2",version) + "]"  , 60,0,100,15, 4
+	UI_STYLE 0,0
+
+	i = -1 : s = 20
+	i = i+1 :	UI_INFIELD{3} "bs_handle_model",	475,i*s, 45,19  UI_TOOLTIP "bs_handle_model"
+				UI_INFIELD{3} "bs_handle_model2",	525,i*s, 45,19  UI_TOOLTIP "bs_handle_model2"
+				UI_INFIELD{3} "bs_handle_model3",	575,i*s, 45,19  UI_TOOLTIP "bs_handle_model3"
+	i = i+1 :	UI_INFIELD{3} "bs_doorplate1",	475,i*s, 45,19  UI_TOOLTIP "bs_doorplate1"
+				UI_INFIELD{3} "bs_doorplate2",	525,i*s, 45,19  UI_TOOLTIP "bs_doorplate2"
+				UI_INFIELD{3} "bs_doorplate3",	575,i*s, 45,19  UI_TOOLTIP "bs_doorplate3"
+	i = i+1 :	UI_INFIELD{3} "bs_access_control_system",	475,i*s, 145,19  UI_TOOLTIP "bs_access_control_system"
+	i = i+1 :	UI_INFIELD{3} "bs_control_side",	        475,i*s, 95,19  UI_TOOLTIP "bs_control_side"
+				ui_outfield bs_acs_function, 575,i*s, 45,15  UI_TOOLTIP "bs_acs_function"
+	i = i+1 :	ui_outfield bs_acs_handles,		 475,i*s, 45,15  UI_TOOLTIP "bs_acs_handles"
+				ui_outfield bs_door_electrified, 525,i*s, 45,15  UI_TOOLTIP "bs_door_electrified"
+	RETURN
+
+"devSELECTION":
+	FOR i= 1 TO VARDIM1(UIpicIdxArray)
+		ui_outfield UIpicIdxArray[i],   0,260+i*15,140,15
+		ui_outfield UItextArray[i]  , 150,260+i*15,140,15
+		ui_outfield UIvaluesArray[i], 300,260+i*15,140,15
+		NEXT i
+	RETURN
+
+"error2tooltip":
+	IF errorI > 0 THEN txt = errorQ[1] ELSE txt = ""
+	FOR i=2 TO errorI : txt = txt + errorQ[i] + "  " : NEXT i
+	IF STRLEN(txt) > 80 THEN txt = STRSUB(txt,1,77) + "..."
+	RETURN
+
+! =============================================================================
+! Auswahloptionen
+! =============================================================================
+
+! ------------------------------------------------------------------------[ dynamische Auswahloptionen GRIFFE BANDSEITE ]
+
+"SELECT_gs_handle_type":
+	IF bs_handle_product_line="OGRO by ARCHITECTS" THEN
+		j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+		j=j+1 : UIpicIdxArray[j] = 1 : UItextArray[j] = "Aus" : UIvaluesArray[j] = "-"
+		j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = "Drücker" : UIvaluesArray[j] = "DR"
+		ELSE
+		GOSUB "VALUES_gs_handle_type"
+		ENDIF
+	RETURN
+
+! »»» Verfügbare Materialien
+
+"SELECT_bs_handle_material":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	IF selectedBS>0 THEN
+		UIpicIdxArray = UIhandleMatPic : UItextArray  = UIhandleMatText : UIvaluesArray  = UIhandleMatVal
+		ENDIF
+	IF selectedBS<1 OR j = 1 THEN GOSUB "VALUES_bs_handle_material"
+	sts = 1
+	RETURN
+
+! »»» Verfügbare Oberflächen
+
+"SELECT_bs_handle_surface":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	IF selectedBS>0 THEN
+		UIpicIdxArray = UIhandleSurfPic : UItextArray  = UIhandleSurfText : UIvaluesArray  = UIhandleSurfVal
+		j = vardim1(UIhandleSurfVal)
+		ENDIF
+	IF selectedBS<1 OR j = 1 THEN GOSUB "VALUES_bs_handle_surface"
+	sts = 1
+	RETURN
+
+! ------------------------------------------------------------------------[ dynamische Auswahloptionen GRIFFE BANDGEGENSEITE ]
+
+"SELECT_gs_handle_type2":
+	IF bs_handle_product_line="OGRO by ARCHITECTS" OR bs_demand_EscapeRoute = 1 THEN
+		j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+		j=j+1 : UIpicIdxArray[j] = 1 : UItextArray[j] = "Aus" : UIvaluesArray[j] = "-"
+		j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = "Drücker" : UIvaluesArray[j] = "DR"
+		ELSE
+		GOSUB "VALUES_gs_handle_type2"
+		ENDIF
+	RETURN
+
+! »»» Verfügbare Materialien
+
+"SELECT_bs_handle_material2":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	IF selectedBGS>0 THEN
+		UIpicIdxArray = UIhandleMatPic2 : UItextArray  = UIhandleMatText2 : UIvaluesArray  = UIhandleMatVal2
+		ENDIF
+	IF selectedBGS<1 OR j = 1 THEN GOSUB "VALUES_bs_handle_material2"
+	sts = 1
+	RETURN
+
+! »»» Verfügbare Oberflächen
+
+"SELECT_bs_handle_surface2":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	IF selectedBGS>0 THEN
+		UIpicIdxArray = UIhandleSurfPic2 : UItextArray  = UIhandleSurfText2 : UIvaluesArray  = UIhandleSurfVal2
+		ENDIF
+	IF selectedBGS<1 OR j = 1 THEN GOSUB "VALUES_bs_handle_surface2"
+	sts = 1
+	RETURN
+
+! ------------------------------------------------------------------------[ dynamische Auswahloptionen GRIFFE STANDFLÜGEL ]
+
+"SELECT_gs_handle_type3":
+	! IF bs_handle_product_line="OGRO by ARCHITECTS" THEN
+		j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+		j=j+1 : UIpicIdxArray[j] = 1 : UItextArray[j] = "Aus" : UIvaluesArray[j] = "-"
+		j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = "Drücker" : UIvaluesArray[j] = "DR"
+	!	 ELSE
+	!	 j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	!	 j=j+1 : UIpicIdxArray[j] = 1 : UItextArray[j] = "Aus" : UIvaluesArray[j] = "-"
+	!	 j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = "Drücker" : UIvaluesArray[j] = "DR"
+	!	 j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = "Knopf drehbar" : UIvaluesArray[j] = "KD"
+	!	 ENDIF
+	RETURN
+
+! »»» Verfügbare Materialien
+
+"SELECT_bs_handle_material3":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	IF selectedSF>0 THEN
+		UIpicIdxArray = UIhandleMatPic3 : UItextArray  = UIhandleMatText3 : UIvaluesArray  = UIhandleMatVal3
+		ENDIF
+	IF selectedSF<1 OR j = 1 THEN GOSUB "VALUES_bs_handle_material3"
+	sts = 1
+	! »»»
+	! Vorbereitet, um Sondermaterialien zu Unterscheiden. Fehlt:
+	! - Prüfung, Ob Auswahlliste (stst=1) oder Eingabefeld (sts=0)
+	! - Alternative Eingabefelder
+	RETURN
+
+! »»» Verfügbare Oberflächen
+
+"SELECT_bs_handle_surface3":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	IF selectedSF>0 THEN
+		UIpicIdxArray = UIhandleSurfPic3 : UItextArray  = UIhandleSurfText3 : UIvaluesArray  = UIhandleSurfVal3
+		ENDIF
+	IF selectedSF<1 OR j = 1 THEN GOSUB "VALUES_bs_handle_surface3"
+	sts = 1
+	RETURN
+
+! ------------------------------------------------------------------------[ dynamische Auswahloptionen SCHILDER BANDSEITE ]
+
+! »»» Verfügbare Schilder
+
+"SELECT_bs_doorplate1":
+	DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	sts = (dk_LoI > 4)
+	! Griff nicht spezifiziert oder aus: Dann Standardwerte
+	! IF selectedBS<1 OR gs_handle_type = "-" THEN : sts=0 : ELSE : IF bs_handle_model="-" THEN sts=0 : ENDIF
+	UIpicIdxArray = UIplateModelPic : UItextArray = UIplateModelText : UIvaluesArray = UIplateModelVal
+	IF NOT(sts) THEN GOSUB "VALUES_bs_doorplate1"  ! LOI fragt nicht alles ab, dann alles Standardwerte als Textliste
+	RETURN
+
+! »»» Standardschilder
+
+"VALUES_bs_doorplate1":
+"VALUES_bs_doorplate2":
+"VALUES_bs_doorplate3":
+	FOR j = 1 TO VARDIM1(UIvaluesArray)
+		IF UIvaluesArray[j] = "650x + 6612" THEN UItextArray[j] = "Rosetten"
+		IF UIvaluesArray[j] = "650x + 7122" THEN UItextArray[j] = "Rosetten"
+		IF UIvaluesArray[j] = "650x + 7123" THEN UItextArray[j] = "Rosetten (Metallschild)"
+		IF UIvaluesArray[j] = "650x" THEN UItextArray[j] = "Rosette (Griffloch)"
+		IF UIvaluesArray[j] = "6612" THEN UItextArray[j] = "Rosette (Schloß)"
+		IF UIvaluesArray[j] = "7122" THEN UItextArray[j] = "Rosette WC (Schloß)"
+		IF UIvaluesArray[j] = "7123" THEN UItextArray[j] = "Rosette WC (Schloß/Metallschild)"
+		IF UIvaluesArray[j] = "705x K" THEN UItextArray[j] = "Kurzschild rund"
+		IF UIvaluesArray[j] = "706x K" THEN UItextArray[j] = "Kurzschild eckig"
+		IF UIvaluesArray[j] = "702x L" THEN UItextArray[j] = "Langschild rund"
+		IF UIvaluesArray[j] = "701x L" THEN UItextArray[j] = "Langschild eckig"
+		IF UIvaluesArray[j] = "7601" THEN UItextArray[j] = "Breitschild"
+		IF UIvaluesArray[j] = "662x + 6679" THEN UItextArray[j] = "Rosetten rund"
+		IF UIvaluesArray[j] = "661x + 6676" THEN UItextArray[j] = "Rosetten eckig"
+		IF UIvaluesArray[j] = "662x" THEN UItextArray[j] = "Rosette rund (Griffloch)"
+		IF UIvaluesArray[j] = "661x" THEN UItextArray[j] = "Rosette eckig (Griffloch)"
+		IF UIvaluesArray[j] = "6679" THEN UItextArray[j] = "Rosette rund (Schloß)"
+		IF UIvaluesArray[j] = "6676" THEN UItextArray[j] = "Rosette eckig (Schloß)"
+		IF UIvaluesArray[j] = "ZL 65xx Tchoban" THEN UItextArray[j] = "Rosetten"
+		IF UIvaluesArray[j] = "ZL 65xx Forstner" THEN UItextArray[j] = "Rosetten"
+		NEXT j
+	RETURN
+
+
+! »»» Verfügbare Lochungen
+
+"SELECT_bs_closure1":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=1 : UIpicIdxArray[j] = 1 : UItextArray[j] = "Blindschild" : UIvaluesArray[j] = "-"
+
+	! »»» Lochung vorgesehen?
+	sts=-1
+	IF selectedPlateBS<1 OR bs_doorplate1="-" THEN
+		ELSE
+		FOR m=1 TO VARDIM2(lochung)
+			IF lochung[selectedPlateBS][m] THEN sts=ABS(sts)
+			NEXT m
+		ENDIF
+
+	! »»» Griffspezifische Auswahl?
+	IF sts>0 THEN
+		IF selectedBS<1 THEN
+			sts=0
+			ELSE
+			IF bs_handle_model="-" THEN sts=0
+			ENDIF
+		ENDIF
+
+	IF sts>0 THEN
+		IF lochung[selectedBS][dki_Profilzylinder] THEN : j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = "Profilzylinder" : UIvaluesArray[j] = "PZ" : ENDIF
+		IF lochung[selectedBS][dki_Rundzylinder]   THEN : j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = "Rundzylinder" :   UIvaluesArray[j] = "RZ" : ENDIF
+		IF lochung[selectedBS][dki_Ovalzylinder]   THEN : j=j+1 : UIpicIdxArray[j] = 6 : UItextArray[j] = "Ovallochung" :	UIvaluesArray[j] = "OZ" : ENDIF
+		IF doorTYPE # 1 THEN
+			IF lochung[selectedBS][dki_Buntbart]   THEN : j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = "Buntbart" :	   UIvaluesArray[j] = "BB" : ENDIF
+			IF lochung[selectedBS][dki_LochungCH]  THEN : j=j+1 : UIpicIdxArray[j] = 5 : UItextArray[j] = "Kegellochung" :	 UIvaluesArray[j] = "CH" : ENDIF
+			IF lochung[selectedBS][dki_WC]		   THEN : j=j+1 : UIpicIdxArray[j] = 7 : UItextArray[j] = "WC-Schaubild" :   UIvaluesArray[j] = "WCS" : ENDIF
+			IF lochung[selectedBS][dki_WC]		   THEN : j=j+1 : UIpicIdxArray[j] = 8 : UItextArray[j] = "WC-Knebel" :	  UIvaluesArray[j] = "WCK" : ENDIF
+			ENDIF
+		ELSE
+		IF sts=0 THEN GOSUB "VALUES_bs_closure1" ELSE UItextArray[j] = "Aus"
+		ENDIF
+
+	RETURN
+
+! »»» Verfügbare Materialien
+
+"SELECT_bs_plate_material":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	IF selectedBS>0 THEN
+		UIpicIdxArray = UIplateMatPic : UItextArray  = UIplateMatText : UIvaluesArray  = UIplateMatVal
+		ENDIF
+	IF selectedBS<1 OR j = 1 THEN GOTO "VALUES_bs_doorplate_material1"
+	sts = 1
+	RETURN
+
+! »»» Verfügbare Oberflächen
+
+"SELECT_bs_plate_surface":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	IF selectedBS>0 THEN
+		UIpicIdxArray = UIplateSurfPic : UItextArray  = UIplateSurfText : UIvaluesArray  = UIplateSurfVal
+		ENDIF
+	IF selectedBS<1 OR j = 1 THEN GOSUB "VALUES_bs_doorplate_surface1"
+	sts = 1
+	RETURN
+
+
+! ------------------------------------------------------------------------[ dynamische Auswahloptionen SCHILDER BANDGEGENSEITE ]
+
+! »»» Verfügbare Schilder
+
+"SELECT_bs_doorplate2":
+	DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	sts = (dk_LoI > 4)
+	! IF selectedBGS<1 OR gs_handle_type2 = "-" THEN : sts=0 : ELSE : IF bs_handle_model2="-" THEN sts=0 : ENDIF
+	UIpicIdxArray = UIplateModelPic2 : UItextArray = UIplateModelText2 : UIvaluesArray = UIplateModelVal2
+	IF NOT(sts) THEN GOSUB "VALUES_bs_doorplate2"  ! Griff nicht spezifiziert oder aus: Dann Standardwerte
+	RETURN
+
+! »»» Verfügbare Lochungen
+
+"SELECT_bs_closure2":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=1 : UIpicIdxArray[j] = 1 : UItextArray[j] = "Blindschild" : UIvaluesArray[j] = "-"
+
+	! »»» Lochung vorgesehen?
+	sts=-1
+	IF selectedPlateBGS<1 OR bs_doorplate2="-" THEN
+		ELSE
+		FOR m=1 TO VARDIM2(lochung)
+			IF lochung[selectedPlateBGS][m] THEN sts=ABS(sts)
+			NEXT m
+		ENDIF
+
+	! »»» Griffspezifische Auswahl?
+	IF sts>0 THEN
+		IF selectedBGS<1 THEN
+			sts=0
+			ELSE
+			IF bs_handle_model2="-" THEN sts=0
+			ENDIF
+		ENDIF
+
+	IF sts>0 THEN
+		IF lochung[selectedBGS][dki_Profilzylinder] THEN : j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = "Profilzylinder" : UIvaluesArray[j] = "PZ" : ENDIF
+		IF lochung[selectedBGS][dki_Rundzylinder]   THEN : j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = "Rundzylinder" :   UIvaluesArray[j] = "RZ" : ENDIF
+		IF lochung[selectedBGS][dki_Ovalzylinder]   THEN : j=j+1 : UIpicIdxArray[j] = 6 : UItextArray[j] = "Ovallochung" :	UIvaluesArray[j] = "OZ" : ENDIF
+		IF doorTYPE # 1 THEN
+			IF lochung[selectedBGS][dki_Buntbart]	THEN : j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = "Buntbart" :	   UIvaluesArray[j] = "BB" : ENDIF
+			IF lochung[selectedBGS][dki_LochungCH]	THEN : j=j+1 : UIpicIdxArray[j] = 5 : UItextArray[j] = "Kegellochung" :	 UIvaluesArray[j] = "CH" : ENDIF
+			IF lochung[selectedBGS][dki_WC]			THEN : j=j+1 : UIpicIdxArray[j] = 7 : UItextArray[j] = "WC-Schaubild" :   UIvaluesArray[j] = "WCS" : ENDIF
+			IF lochung[selectedBGS][dki_WC]			THEN : j=j+1 : UIpicIdxArray[j] = 8 : UItextArray[j] = "WC-Knebel" :	  UIvaluesArray[j] = "WCK" : ENDIF
+			ENDIF
+		ELSE
+		IF sts=0 THEN GOSUB "VALUES_bs_closure2" ELSE UItextArray[j] = "Aus"
+		ENDIF
+	RETURN
+
+! »»» Verfügbare Materialien
+
+"SELECT_bs_plate_material2":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	IF selectedBGS>0 THEN
+		UIpicIdxArray = UIplateMatPic2 : UItextArray  = UIplateMatText2 : UIvaluesArray  = UIplateMatVal2
+		ENDIF
+	IF selectedBGS<1 OR j = 1 THEN GOSUB "VALUES_bs_doorplate_material2"
+	sts = 1
+	RETURN
+
+! »»» Verfügbare Oberflächen
+
+"SELECT_bs_plate_surface2":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	IF selectedBGS>0 THEN
+		UIpicIdxArray = UIplateSurfPic2 : UItextArray  = UIplateSurfText2 : UIvaluesArray  = UIplateSurfVal2
+		ENDIF
+	IF selectedBGS<1 OR j = 1 THEN GOSUB "VALUES_bs_doorplate_surface2"
+	sts = 1
+	RETURN
+
+
+! ------------------------------------------------------------------------[ dynamische Auswahloptionen SCHILDER STANDFLÜGEL ]
+
+! »»» Verfügbare Schilder
+
+"SELECT_bs_doorplate3":
+	DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	sts = (dk_LoI > 4)
+	! IF selectedSF<1 OR gs_handle_type3 = "-" THEN : sts=0 : ELSE : IF bs_handle_model3="-" THEN sts=0 : ENDIF
+	UIpicIdxArray = UIplateModelPic3 : UItextArray = UIplateModelText3 : UIvaluesArray = UIplateModelVal3
+	IF NOT(sts) THEN GOSUB "VALUES_bs_doorplate3"  ! Griff nicht spezifiziert oder aus: Dann Standardwerte
+	RETURN
+
+! »»» Verfügbare Lochungen
+
+"SELECT_bs_closure3":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=1 : UIpicIdxArray[j] = 1 : UItextArray[j] = "Blindschild" : UIvaluesArray[j] = "-"
+
+	! »»» Lochung vorgesehen?
+	sts=-1
+	IF selectedPlateSF<1 OR bs_doorplate3="-" THEN
+		ELSE
+		FOR m=1 TO VARDIM2(lochung)
+			IF lochung[selectedPlateSF][m] THEN sts=ABS(sts)
+			NEXT m
+		ENDIF
+
+	! »»» Griffspezifische Auswahl?
+	IF sts>0 THEN
+		IF selectedSF<1 THEN
+			sts=0
+			ELSE
+			IF bs_handle_model3="-" THEN sts=0
+			ENDIF
+		ENDIF
+
+	IF sts>0 THEN
+		IF lochung[selectedSF][dki_Profilzylinder] THEN : j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = "Profilzylinder" : UIvaluesArray[j] = "PZ" : ENDIF
+		IF lochung[selectedSF][dki_Rundzylinder]   THEN : j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = "Rundzylinder" :   UIvaluesArray[j] = "RZ" : ENDIF
+		IF lochung[selectedSF][dki_Ovalzylinder]   THEN : j=j+1 : UIpicIdxArray[j] = 6 : UItextArray[j] = "Ovallochung" :	UIvaluesArray[j] = "OZ" : ENDIF
+		IF doorTYPE # 1 THEN
+			IF lochung[selectedSF][dki_Buntbart]   THEN : j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = "Buntbart" :	   UIvaluesArray[j] = "BB" : ENDIF
+			IF lochung[selectedSF][dki_LochungCH]  THEN : j=j+1 : UIpicIdxArray[j] = 5 : UItextArray[j] = "Kegellochung" :	 UIvaluesArray[j] = "CH" : ENDIF
+			ENDIF
+		ELSE
+		IF sts=0 THEN GOSUB "VALUES_bs_closure3" ELSE UItextArray[j] = "Aus"
+		ENDIF	
+	RETURN
+
+! »»» Verfügbare Materialien
+
+"SELECT_bs_plate_material3":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	IF selectedSF>0 THEN
+		UIpicIdxArray = UIplateMatPic3 : UItextArray  = UIplateMatText3 : UIvaluesArray  = UIplateMatVal3
+		ENDIF
+	IF selectedSF<1 OR j = 1 THEN GOSUB "VALUES_bs_doorplate_material3"
+	sts = 1
+	RETURN
+
+! »»» Verfügbare Oberflächen
+
+"SELECT_bs_plate_surface3":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	IF selectedSF>0 THEN
+		UIpicIdxArray = UIplateSurfPic3 : UItextArray  = UIplateSurfText3 : UIvaluesArray  = UIplateSurfVal3
+		ENDIF
+	IF selectedSF<1 OR j = 1 THEN GOSUB "VALUES_bs_doorplate_surface3"
+	sts = 1
+	RETURN
+
+
+! ------------------------------------------------------------------------[ statische Auswahloptionen ]
+
+! ----------------------------------- PARAMETER / INFIELD VALUE LIST [DORMAKABA OGRO] (start)
+
+"VALUES_gs_handle_type":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Drücker" : UIvaluesArray[j] = "DR"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Knopf" : UIvaluesArray[j] = "KF"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Knopf drehbar" : UIvaluesArray[j] = "KD"
+	RETURN
+
+"VALUES_gs_handle_type2":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Drücker" : UIvaluesArray[j] = "DR"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Knopf" : UIvaluesArray[j] = "KF"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Knopf drehbar" : UIvaluesArray[j] = "KD"
+	RETURN
+
+"VALUES_gs_handle_type3":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Drücker" : UIvaluesArray[j] = "DR"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Knopf drehbar" : UIvaluesArray[j] = "KD"
+	RETURN
+
+"VALUES_gs_handle_side3":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Bandgegenseite" : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Bandseite" : UIvaluesArray[j] = 1
+	RETURN
+
+"VALUES_bs_handle_orientation":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "waagrecht" : UIvaluesArray[j] = "W"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "senkrecht aufwärts" : UIvaluesArray[j] = "So"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "senkrecht abwärts" : UIvaluesArray[j] = "Su"
+	RETURN
+
+"VALUES_bs_handle_orientation2":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "waagrecht" : UIvaluesArray[j] = "W"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "senkrecht aufwärts" : UIvaluesArray[j] = "So"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "senkrecht abwärts" : UIvaluesArray[j] = "Su"
+	RETURN
+
+"VALUES_bs_handle_orientation3":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "waagrecht" : UIvaluesArray[j] = "W"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "senkrecht aufwärts" : UIvaluesArray[j] = "So"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "senkrecht abwärts" : UIvaluesArray[j] = "Su"
+	RETURN
+
+"VALUES_bs_handle_material":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Stahl" : UIvaluesArray[j] = "ST"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Edelstahl" : UIvaluesArray[j] = "ES"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aluminium" : UIvaluesArray[j] = "AL"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Messing" : UIvaluesArray[j] = "MS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Nylon" : UIvaluesArray[j] = "NY"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Kompositmaterial" : UIvaluesArray[j] = "KO"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sondermaterial" : UIvaluesArray[j] = "XX"
+	RETURN
+
+"VALUES_bs_handle_material2":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Stahl" : UIvaluesArray[j] = "ST"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Edelstahl" : UIvaluesArray[j] = "ES"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aluminium" : UIvaluesArray[j] = "AL"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Messing" : UIvaluesArray[j] = "MS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Nylon" : UIvaluesArray[j] = "NY"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Kompositmaterial" : UIvaluesArray[j] = "KO"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sondermaterial" : UIvaluesArray[j] = "XX"
+	RETURN
+
+"VALUES_bs_handle_material3":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Stahl" : UIvaluesArray[j] = "ST"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Edelstahl" : UIvaluesArray[j] = "ES"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aluminium" : UIvaluesArray[j] = "AL"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Messing" : UIvaluesArray[j] = "MS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Nylon" : UIvaluesArray[j] = "NY"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Kompositmaterial" : UIvaluesArray[j] = "KO"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sondermaterial" : UIvaluesArray[j] = "XX"
+	RETURN
+
+"VALUES_bs_handle_surface":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbehandelt" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gebürstet" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Geschliffen" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Getrommelt" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Poliert" : UIvaluesArray[j] = "P"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lackiert" : UIvaluesArray[j] = "L"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Pulverbeschichtet" : UIvaluesArray[j] = "V"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verzinkt" : UIvaluesArray[j] = "Z"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vernickelt" : UIvaluesArray[j] = "N"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verchromt" : UIvaluesArray[j] = "C"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vergoldet" : UIvaluesArray[j] = "G"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Eloxiert" : UIvaluesArray[j] = "E"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Titanisiert" : UIvaluesArray[j] = "I"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sonderoberfläche" : UIvaluesArray[j] = "X"
+	RETURN
+
+"VALUES_bs_handle_surface2":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbehandelt" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gebürstet" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Geschliffen" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Getrommelt" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Poliert" : UIvaluesArray[j] = "P"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lackiert" : UIvaluesArray[j] = "L"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Pulverbeschichtet" : UIvaluesArray[j] = "V"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verzinkt" : UIvaluesArray[j] = "Z"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vernickelt" : UIvaluesArray[j] = "N"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verchromt" : UIvaluesArray[j] = "C"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vergoldet" : UIvaluesArray[j] = "G"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Eloxiert" : UIvaluesArray[j] = "E"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Titanisiert" : UIvaluesArray[j] = "I"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sonderoberfläche" : UIvaluesArray[j] = "X"
+	RETURN
+
+"VALUES_bs_handle_surface3":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbehandelt" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gebürstet" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Geschliffen" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Getrommelt" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Poliert" : UIvaluesArray[j] = "P"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lackiert" : UIvaluesArray[j] = "L"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Pulverbeschichtet" : UIvaluesArray[j] = "V"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verzinkt" : UIvaluesArray[j] = "Z"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vernickelt" : UIvaluesArray[j] = "N"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verchromt" : UIvaluesArray[j] = "C"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vergoldet" : UIvaluesArray[j] = "G"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Eloxiert" : UIvaluesArray[j] = "E"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Titanisiert" : UIvaluesArray[j] = "I"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sonderoberfläche" : UIvaluesArray[j] = "X"
+	RETURN
+
+"VALUES_bs_closure1":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Blindschild" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Profilzylinder" : UIvaluesArray[j] = "PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rundzylinder" : UIvaluesArray[j] = "RZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Ovalzylinder" : UIvaluesArray[j] = "OZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Kegellochung" : UIvaluesArray[j] = "CH"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Buntbart" : UIvaluesArray[j] = "BB"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "WC-Schaubild" : UIvaluesArray[j] = "WCS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "WC-Knebel" : UIvaluesArray[j] = "WCK"
+	RETURN
+
+"VALUES_bs_closure2":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Blindschild" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Profilzylinder" : UIvaluesArray[j] = "PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rundzylinder" : UIvaluesArray[j] = "RZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Ovalzylinder" : UIvaluesArray[j] = "OZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Kegellochung" : UIvaluesArray[j] = "CH"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Buntbart" : UIvaluesArray[j] = "BB"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "WC-Schaubild" : UIvaluesArray[j] = "WCS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "WC-Knebel" : UIvaluesArray[j] = "WCK"
+	RETURN
+
+"VALUES_bs_closure3":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Blindschild" : UIvaluesArray[j] = "-"
+	RETURN
+
+"VALUES_bs_doorplate_material1":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Stahl" : UIvaluesArray[j] = "ST"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Edelstahl" : UIvaluesArray[j] = "ES"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aluminium" : UIvaluesArray[j] = "AL"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Messing" : UIvaluesArray[j] = "MS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Nylon" : UIvaluesArray[j] = "NY"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Kompositmaterial" : UIvaluesArray[j] = "KO"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sondermaterial" : UIvaluesArray[j] = "XX"
+	RETURN
+
+"VALUES_bs_doorplate_material2":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Stahl" : UIvaluesArray[j] = "ST"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Edelstahl" : UIvaluesArray[j] = "ES"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aluminium" : UIvaluesArray[j] = "AL"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Messing" : UIvaluesArray[j] = "MS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Nylon" : UIvaluesArray[j] = "NY"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Kompositmaterial" : UIvaluesArray[j] = "KO"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sondermaterial" : UIvaluesArray[j] = "XX"
+	RETURN
+
+"VALUES_bs_doorplate_material3":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Stahl" : UIvaluesArray[j] = "ST"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Edelstahl" : UIvaluesArray[j] = "ES"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aluminium" : UIvaluesArray[j] = "AL"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Messing" : UIvaluesArray[j] = "MS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Nylon" : UIvaluesArray[j] = "NY"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Kompositmaterial" : UIvaluesArray[j] = "KO"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sondermaterial" : UIvaluesArray[j] = "XX"
+	RETURN
+
+"VALUES_bs_doorplate_surface1":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbehandelt" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gebürstet" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Geschliffen" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Getrommelt" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Poliert" : UIvaluesArray[j] = "P"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lackiert" : UIvaluesArray[j] = "L"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Pulverbeschichtet" : UIvaluesArray[j] = "V"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verzinkt" : UIvaluesArray[j] = "Z"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vernickelt" : UIvaluesArray[j] = "N"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verchromt" : UIvaluesArray[j] = "C"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vergoldet" : UIvaluesArray[j] = "G"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Eloxiert" : UIvaluesArray[j] = "E"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Titanisiert" : UIvaluesArray[j] = "I"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sonderoberfläche" : UIvaluesArray[j] = "X"
+	RETURN
+
+"VALUES_bs_doorplate_surface2":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbehandelt" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gebürstet" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Geschliffen" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Getrommelt" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Poliert" : UIvaluesArray[j] = "P"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lackiert" : UIvaluesArray[j] = "L"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Pulverbeschichtet" : UIvaluesArray[j] = "V"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verzinkt" : UIvaluesArray[j] = "Z"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vernickelt" : UIvaluesArray[j] = "N"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verchromt" : UIvaluesArray[j] = "C"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vergoldet" : UIvaluesArray[j] = "G"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Eloxiert" : UIvaluesArray[j] = "E"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Titanisiert" : UIvaluesArray[j] = "I"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sonderoberfläche" : UIvaluesArray[j] = "X"
+	RETURN
+
+"VALUES_bs_doorplate_surface3":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbehandelt" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gebürstet" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Geschliffen" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Getrommelt" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Poliert" : UIvaluesArray[j] = "P"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lackiert" : UIvaluesArray[j] = "L"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Pulverbeschichtet" : UIvaluesArray[j] = "V"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verzinkt" : UIvaluesArray[j] = "Z"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vernickelt" : UIvaluesArray[j] = "N"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verchromt" : UIvaluesArray[j] = "C"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vergoldet" : UIvaluesArray[j] = "G"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Eloxiert" : UIvaluesArray[j] = "E"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Titanisiert" : UIvaluesArray[j] = "I"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sonderoberfläche" : UIvaluesArray[j] = "X"
+	RETURN
+
+! --------------------------------------------------------------- PARAMETER / INFIELD VALUE LIST (end)
+
+! ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 255 ->
+
+! ------------------------------------------------------------- MAIN PAGE [ 1000 ]
+	1000:   ! #### SEITE 1 - Unspezifische Einstellungen LOI bis Entwurf
+	GOSUB 9900
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[6], 82,37 , 118,15, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[7], 204,37 , 118,15, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[9], 326,37 , 118,15, 2+4*(bs_door_leafs<2)
+	UI_STYLE 0,0
+	UI_SEPARATOR -1,196, 445,196
+	UI_OUTFIELD babel[20], 82,214 , 81,16, 0+0
+	UI_OUTFIELD babel[19], 82,235 , 81,16, 0+0
+	UI_OUTFIELD babel[24], 222,214 , 102,16, 0+0
+	UI_OUTFIELD babel[23], 222,235 , 102,16, 0+0
+	UI_INFIELD{3} dk_fill_pens[dka_handle_penF], 165,231 , 35,22 UI_TOOLTIP bubble[43]
+	UI_INFIELD{3} dk_cont_pens[dka_handle_penC2], 165,208 , 35,22 UI_TOOLTIP bubble[44]
+	UI_INFIELD{3} dk_materials[dka_handle_mat], 326,208 , 36,22 UI_TOOLTIP bubble[41]
+	UI_INFIELD{3} dk_materials[dka_plate_mat], 326,231 , 36,22 UI_TOOLTIP bubble[42]
+	UI_OUTFIELD babel[11], 0,66 , 80,15, 0+0
+	UI_OUTFIELD babel[5], 0,97 , 80,15, 0+0
+	UI_OUTFIELD babel[18], 0,128 , 80,15, 0+0
+	UI_OUTFIELD babel[16], 0,160 , 80,15, 0+0
+	GOSUB "SELECT_gs_handle_type"
+	UI_INFIELD{3} "gs_handle_type", 82,59 , 118,26, 2, 6, 4, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[6]   !»» "dk_handle_type 72x18.png"
+	GOSUB "VALUES_bs_handle_orientation"
+	UI_INFIELD{3} "bs_handle_orientation", 82,90 , 118,26, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[12]
+	GOSUB "SELECT_bs_doorplate1"
+	UI_INFIELD{3} "bs_doorplate1", 82,121 , 118,26, 2, "", 999, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[9]
+	GOSUB "SELECT_bs_closure1"
+	UI_INFIELD{3} "bs_closure1", 82,152 , 118,26, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[15]
+	GOSUB "SELECT_gs_handle_type2"
+	UI_INFIELD{3} "gs_handle_type2", 204,59 , 118,26, 2, 6, 4, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[7]   !»» "dk_handle_type 72x18.png"
+	GOSUB "VALUES_bs_handle_orientation2"
+	UI_INFIELD{3} "bs_handle_orientation2", 204,90 , 118,26, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[13]
+	GOSUB "SELECT_bs_doorplate2"
+	UI_INFIELD{3} "bs_doorplate2", 204,121 , 118,26, 2, "", 999, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[10]
+	GOSUB "SELECT_bs_closure2"
+	UI_INFIELD{3} "bs_closure2", 204,152 , 118,26, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[16]
+	GOSUB "SELECT_gs_handle_type3"
+	UI_INFIELD{3} "gs_handle_type3", 326,59 , 82,26, 2, 6, 4, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[8]   !»» "dk_handle_type 72x18.png"
+	GOSUB "VALUES_bs_handle_orientation3"
+	UI_INFIELD{3} "bs_handle_orientation3", 326,90 , 118,26, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[14]
+	GOSUB "SELECT_bs_doorplate3"
+	UI_INFIELD{3} "bs_doorplate3", 326,121 , 118,26, 2, "", 999, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[11]
+	GOSUB "SELECT_bs_closure3"
+	UI_INFIELD{3} "bs_closure3", 326,152 , 118,26, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[17]
+	UI_INFIELD{3} "gs_handle_side3", 410,59 , 34,26, 9, 7, 2, 1, 25, 18, 25, 18, 2,"Bandeseite",1, 1,"Bandgegenseite",0 UI_TOOLTIP bubble[33]   !»» "dk_side 50x18.png"
+	UI_PICT_BUTTON UI_LINK, "", 11, 422,-5 , 22,22, 0, "http://www.dorma.com/de/de/oeffnen_schliessen/beschlagtechnik/premium_beschlaege_en/index-162-3417-3462.html" UI_TOOLTIP bubble[2]   !»» "uiTab_Info.png"
+	RETURN
+! ------------------------------------------------------------- MAIN PAGE [ 1100 ]
+	1100:   ! #### SEITE 1- LOI Entwurf Gangflügel
+	GOSUB 9900
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[6], 110,18 , 165,15, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[7], 279,18 , 165,15, 2+0
+	UI_STYLE 0,0
+	UI_SEPARATOR -1,218, 445,218
+	UI_OUTFIELD babel[20], 91,227 , 81,12, 0+0
+	UI_OUTFIELD babel[19], 91,248 , 81,12, 0+0
+	UI_OUTFIELD babel[24], 234,227 , 102,12, 0+0
+	UI_OUTFIELD babel[23], 234,248 , 102,12, 0+0
+	UI_INFIELD{3} dk_fill_pens[dka_handle_penF], 177,244 , 35,22 UI_TOOLTIP bubble[43]
+	UI_INFIELD{3} dk_cont_pens[dka_handle_penC2], 177,221 , 35,22 UI_TOOLTIP bubble[44]
+	UI_INFIELD{3} dk_materials[dka_handle_mat], 338,221 , 36,22 UI_TOOLTIP bubble[41]
+	UI_INFIELD{3} dk_materials[dka_plate_mat], 338,244 , 36,22 UI_TOOLTIP bubble[42]
+	UI_OUTFIELD babel[27], 0,60 , 110,15, 0+0
+	UI_OUTFIELD babel[25], 0,83 , 110,15, 0+0
+	UI_OUTFIELD babel[12], 0,36 , 110,15, 0+0
+	UI_OUTFIELD babel[5], 0,106 , 110,15, 0+0
+	UI_OUTFIELD babel[18], 0,129 , 110,15, 0+0
+	UI_OUTFIELD babel[25], 0,152 , 110,15, 0+0
+	UI_OUTFIELD babel[26], 0,175 , 110,15, 0+0
+	UI_OUTFIELD babel[16], 0,198 , 110,15, 0+0
+	GOSUB "SELECT_gs_handle_type"
+	UI_INFIELD{3} "gs_handle_type", 110,33 , 165,22, 2, 6, 4, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[6]   !»» "dk_handle_type 72x18.png"
+	GOSUB "SELECT_bs_handle_material"
+	UI_INFIELD{3} "bs_handle_material", 110,80 , 80,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+	GOSUB "SELECT_bs_handle_surface"
+	UI_INFIELD{3} "bs_handle_surface", 195,80 , 80,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[27]
+	GOSUB "VALUES_bs_handle_orientation"
+	UI_INFIELD{3} "bs_handle_orientation", 110,103 , 165,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[12]
+	GOSUB "SELECT_bs_doorplate1"
+	UI_INFIELD{3} "bs_doorplate1", 110,126 , 165,20, 2, "", 999, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[9]
+	GOSUB "SELECT_bs_plate_material"
+	IF sts THEN
+		UI_INFIELD{3} "bs_plate_material1", 110,149 , 80,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[18]
+		ENDIF
+	GOSUB "SELECT_bs_plate_surface"
+	IF sts THEN
+		UI_INFIELD{3} "bs_plate_surface1", 195,149 , 80,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[24]
+		ENDIF
+	GOSUB "SELECT_bs_closure1"
+	UI_INFIELD{3} "bs_closure1", 110,195 , 165,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[15]
+	GOSUB "SELECT_gs_handle_type2"
+	UI_INFIELD{3} "gs_handle_type2", 279,33 , 165,22, 2, 6, 4, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[7]   !»» "dk_handle_type 72x18.png"
+	GOSUB "SELECT_bs_handle_material2"
+	UI_INFIELD{3} "bs_handle_material2", 279,80 , 80,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[22]
+	GOSUB "SELECT_bs_handle_surface2"
+	UI_INFIELD{3} "bs_handle_surface2", 364,80 , 80,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[28]
+	GOSUB "VALUES_bs_handle_orientation2"
+	UI_INFIELD{3} "bs_handle_orientation2", 279,103 , 165,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[13]
+	GOSUB "SELECT_bs_doorplate2"
+	UI_INFIELD{3} "bs_doorplate2", 279,126 , 165,20, 2, "", 999, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[10]
+	GOSUB "SELECT_bs_plate_material2"
+	IF sts THEN
+		UI_INFIELD{3} "bs_plate_material2", 279,149 , 80,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[19]
+		ENDIF
+	GOSUB "SELECT_bs_plate_surface2"
+	IF sts THEN
+		UI_INFIELD{3} "bs_plate_surface2", 364,149 , 80,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[25]
+		ENDIF
+	GOSUB "SELECT_bs_closure2"
+	UI_INFIELD{3} "bs_closure2", 279,195 , 165,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[16]
+	UI_PICT_BUTTON UI_LINK, "", 11, 422,-5 , 22,22, 0, "http://www.dorma.com/de/de/oeffnen_schliessen/beschlagtechnik/premium_beschlaege_en/index-162-3417-3462.html" UI_TOOLTIP bubble[2]   !»» "uiTab_Info.png"
+	UI_INFIELD{3} "gs_han_height", 231,58 , 90,19 UI_TOOLTIP bubble[34]
+	UI_INFIELD{3} "gs_han_pos", 231,172 , 90,19 UI_TOOLTIP bubble[39]
+	RETURN
+! ------------------------------------------------------------- MAIN PAGE [ 1200 ]
+	1200:   ! #### SEITE 2 - LOI ENtwurf Standflügel
+	GOSUB 9900
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[9], 212,18 , 118,15, 2+4*(bs_door_leafs<2)
+	UI_STYLE 0,0
+	UI_SEPARATOR -1,218, 445,218
+	UI_OUTFIELD babel[20], 91,227 , 81,12, 0+0
+	UI_OUTFIELD babel[19], 91,248 , 81,12, 0+0
+	UI_OUTFIELD babel[24], 234,227 , 102,12, 0+0
+	UI_OUTFIELD babel[23], 234,248 , 102,12, 0+0
+	UI_INFIELD{3} dk_fill_pens[dka_handle_penF], 177,244 , 35,22 UI_TOOLTIP bubble[43]
+	UI_INFIELD{3} dk_cont_pens[dka_handle_penC2], 177,221 , 35,22 UI_TOOLTIP bubble[44]
+	UI_INFIELD{3} dk_materials[dka_handle_mat], 338,221 , 36,22 UI_TOOLTIP bubble[41]
+	UI_INFIELD{3} dk_materials[dka_plate_mat], 338,244 , 36,22 UI_TOOLTIP bubble[42]
+	UI_OUTFIELD babel[27], 0,60 , 110,15, 0+0
+	UI_OUTFIELD babel[25], 0,83 , 110,15, 0+0
+	UI_OUTFIELD babel[12], 0,36 , 110,15, 0+0
+	UI_OUTFIELD babel[5], 0,106 , 110,15, 0+0
+	UI_OUTFIELD babel[18], 0,129 , 110,15, 0+0
+	UI_OUTFIELD babel[25], 0,152 , 110,15, 0+0
+	UI_OUTFIELD babel[26], 0,175 , 110,15, 0+0
+	UI_OUTFIELD babel[16], 0,198 , 110,15, 0+0
+	GOSUB "SELECT_gs_handle_type3"
+	UI_INFIELD{3} "gs_handle_type3", 177,33 , 145,22, 2, 6, 4, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[8]   !»» "dk_handle_type 72x18.png"
+	GOSUB "SELECT_bs_handle_material3"
+	UI_INFIELD{3} "bs_handle_material3", 177,80 , 87,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[23]
+	GOSUB "SELECT_bs_handle_surface3"
+	UI_INFIELD{3} "bs_handle_surface3", 270,80 , 87,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[29]
+	GOSUB "VALUES_bs_handle_orientation3"
+	UI_INFIELD{3} "bs_handle_orientation3", 177,103 , 180,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[14]
+	GOSUB "SELECT_bs_doorplate3"
+	UI_INFIELD{3} "bs_doorplate3", 177,126 , 180,20, 2, "", 999, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[11]
+	GOSUB "SELECT_bs_plate_material3"
+	IF sts THEN
+		UI_INFIELD{3} "bs_plate_material3", 177,149 , 87,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[20]
+		ENDIF
+	GOSUB "SELECT_bs_plate_surface3"
+	IF sts THEN
+		UI_INFIELD{3} "bs_plate_surface3", 270,149 , 87,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[26]
+		ENDIF
+	GOSUB "SELECT_bs_closure3"
+	UI_INFIELD{3} "bs_closure3", 177,195 , 180,20, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[17]
+	UI_INFIELD{3} "gs_handle_side3", 323,33 , 34,22, 9, 7, 2, 1, 25, 18, 25, 18, 2,"Bandseite",1, 1,"Bandgegenseite",0 UI_TOOLTIP bubble[33]   !»» "dk_side 50x18.png"
+	UI_PICT_BUTTON UI_LINK, "", 11, 422,-5 , 22,22, 0, "http://www.dorma.com/de/de/oeffnen_schliessen/beschlagtechnik/premium_beschlaege_en/index-162-3417-3462.html" UI_TOOLTIP bubble[2]   !»» "uiTab_Info.png"
+	UI_INFIELD{3} "gs_han_height2", 231,58 , 90,19 UI_TOOLTIP bubble[35]
+	UI_INFIELD{3} "gs_han_pos2", 231,172 , 90,19 UI_TOOLTIP bubble[40]
+	RETURN
+! ------------------------------------------------------------- MAIN PAGE [ 1300 ]
+	1300:   ! #### SEITE 1 - LOI Ausführung Gangflügel Bandseite
+	GOSUB 9900
+	UI_OUTFIELD babel[22], 79,227 , 110,15, 0+0
+	UI_OUTFIELD babel[21], 79,248 , 110,15, 0+0
+	UI_OUTFIELD babel[24], 264,227 , 110,15, 0+0
+	UI_OUTFIELD babel[23], 264,248 , 110,15, 0+0
+	UI_OUTFIELD babel[15], 79,203 , 110,15, 0+0
+	UI_OUTFIELD babel[14], 264,203 , 110,15, 0+0
+	UI_INFIELD{3} dk_fill_pens[dka_handle_penF], 193,244 , 65,22 UI_TOOLTIP bubble[43]
+	UI_INFIELD{3} dk_cont_pens[dka_handle_penC2], 193,221 , 65,22 UI_TOOLTIP bubble[44]
+	UI_INFIELD{3} dk_materials[dka_handle_mat], 379,221 , 65,22 UI_TOOLTIP bubble[41]
+	UI_INFIELD{3} dk_materials[dka_plate_mat], 379,244 , 65,22 UI_TOOLTIP bubble[42]
+	UI_INFIELD{3} "gs_han_height", 193,200 , 65,19 UI_TOOLTIP bubble[34]
+	UI_INFIELD{3} "gs_han_pos", 379,200 , 65,19 UI_TOOLTIP bubble[39]
+	UI_INFIELD{3} "bs_handle_product_line", 79,18 , 205,19 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} "bs_handle_model", 78,79 , 189,69, 2, 8, 104, 13, 80, 44, 80, 44, UIhandleModelPic, UIhandleModelText, UIhandleModelVal UI_TOOLTIP bubble[3]   !»» "OGRO Handles 640x572.png"
+	UI_INFIELD{3} "bs_handle_braille", 79,150 , 207,19 UI_TOOLTIP bubble[31]
+	GOSUB "SELECT_gs_handle_type"
+	UI_INFIELD{3} "gs_handle_type", 78,55 , 102,22, 2, 6, 4, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[6]   !»» "dk_handle_type 72x18.png"
+	GOSUB "SELECT_bs_handle_material"
+	IF sts THEN
+		UI_INFIELD{3} "bs_handle_material", 78,171 , 102,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+		ENDIF
+	GOSUB "SELECT_bs_handle_surface"
+	IF sts THEN
+		UI_INFIELD{3} "bs_handle_surface", 185,171 , 102,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[27]
+		ENDIF
+	GOSUB "VALUES_bs_handle_orientation"
+	UI_INFIELD{3} "bs_handle_orientation", 185,55 , 102,22, 2, "", 3, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[12]
+	GOSUB "SELECT_bs_doorplate1"
+	IF gs_handle_type = "-" THEN UI_INFIELD{3} "bs_doorplate1", 298,55 , 70,93, 2, 10, 112, 8, 55, 80, 55, 80, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[9]   !»» "OGRO PlatesNoHole 770x640.png"
+	IF gs_handle_type # "-" THEN UI_INFIELD{3} "bs_doorplate1", 298,55 , 70,93, 2, 9, 112, 8, 55, 80, 55, 80, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[9]   !»» "OGRO Plates 770x640.png"
+	GOSUB "SELECT_bs_plate_material"
+	IF sts THEN
+		UI_INFIELD{3} "bs_doorplate_material1", 298,171 , 70,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[18]
+		ENDIF
+	GOSUB "SELECT_bs_plate_surface"
+	IF sts THEN
+		UI_INFIELD{3} "bs_doorplate_surface1", 374,171 , 70,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[24]
+		ENDIF
+	GOSUB "SELECT_bs_closure1"
+	UI_INFIELD{3} "bs_closure1", 374,55 , 70,93, 2, 13, 8, 1, 25, 60, 25, 60, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[15]   !»» "OGRO PlatesHole 200x60.png"
+	UI_OUTFIELD babel[4], 0,153 , 78,15, 0+0
+	UI_OUTFIELD babel[13], 0,175 , 78,15, 0+0
+	UI_OUTFIELD babel[3], 0,113 , 78,15, 0+0
+	UI_OUTFIELD babel[2], 0,59 , 78,15, 0+0
+	UI_OUTFIELD babel[1], 0,21 , 78,15, 0+0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[10], 78,40 , 209,15, 2+0
+	UI_STYLE 0,0
+	UI_OUTFIELD babel[8], 298,40 , 146,15, 2+0
+	UI_STYLE 0,0
+	UI_SEPARATOR 271,80, 287,97
+	UI_SEPARATOR 271,97, 287,114
+	UI_SEPARATOR 271,114, 287,131
+	UI_SEPARATOR 271,131, 287,148
+	IF selectedBS AND kategorien[MAX(1,selectedBS)][dki_Brandschutz] THEN UI_PICT "dk_ui_handle_eligibility_F 13x14.png", 272,81 , 13,14, 1 UI_TOOLTIP bubble[36]
+	IF selectedBS AND kategorien[MAX(1,selectedBS)][dki_FluchtRettung] THEN UI_PICT "dk_ui_handle_eligibility_E 13x14.png", 272,98 , 13,14, 1 UI_TOOLTIP bubble[37]
+	IF selectedBS AND eigenschaften[MAX(1,selectedBS)][dki_Brailleschrift] THEN UI_PICT "dk_ui_handle_eligibility_B 13x14.png", 272,115 , 13,14, 1 UI_TOOLTIP bubble[30]
+	IF selectedBS AND kategorien[MAX(1,selectedBS)][dki_Hygiene] THEN UI_PICT "dk_ui_handle_eligibility_H 13x14.png", 272,132 , 13,14, 1 UI_TOOLTIP bubble[38]
+	UI_PICT_BUTTON UI_LINK, "", 11, 422,-5 , 22,22, 0, "http://www.dorma.com/de/de/oeffnen_schliessen/beschlagtechnik/premium_beschlaege_en/index-162-3417-3462.html" UI_TOOLTIP bubble[2]   !»» "uiTab_Info.png"
+	UI_SEPARATOR 0,195, 445,195
+	UI_SEPARATOR 292,56, 292,193
+	RETURN
+! ------------------------------------------------------------- MAIN PAGE [ 1400 ]
+	1400:   ! #### SEITE 1 - LOI Ausführung Gangflügel Bandgegenseite
+	GOSUB 9900
+	UI_OUTFIELD babel[22], 79,227 , 110,15, 0+0
+	UI_OUTFIELD babel[21], 79,248 , 110,15, 0+0
+	UI_OUTFIELD babel[24], 264,227 , 110,15, 0+0
+	UI_OUTFIELD babel[23], 264,248 , 110,15, 0+0
+	UI_OUTFIELD babel[15], 79,203 , 110,15, 0+0
+	UI_OUTFIELD babel[14], 264,203 , 110,15, 0+0
+	UI_INFIELD{3} dk_fill_pens[dka_handle_penF], 193,244 , 65,22 UI_TOOLTIP bubble[43]
+	UI_INFIELD{3} dk_cont_pens[dka_handle_penC2], 193,221 , 65,22 UI_TOOLTIP bubble[44]
+	UI_INFIELD{3} dk_materials[dka_handle_mat], 379,221 , 65,22 UI_TOOLTIP bubble[41]
+	UI_INFIELD{3} dk_materials[dka_plate_mat], 379,244 , 65,22 UI_TOOLTIP bubble[42]
+	UI_INFIELD{3} "gs_han_height", 193,200 , 65,19 UI_TOOLTIP bubble[34]
+	UI_INFIELD{3} "gs_han_pos", 379,200 , 65,19 UI_TOOLTIP bubble[39]
+	UI_OUTFIELD babel[13], 0,175 , 78,15, 0+0
+	UI_OUTFIELD babel[3], 0,113 , 78,15, 0+0
+	UI_OUTFIELD babel[2], 0,59 , 78,15, 0+0
+	UI_OUTFIELD babel[1], 0,21 , 78,15, 0+0
+	UI_INFIELD{3} "bs_handle_product_line", 79,18 , 205,19 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} "bs_handle_model2", 78,79 , 189,69, 2, 8, 104, 13, 80, 44, 80, 44, UIhandleModelPic2, UIhandleModelText2, UIhandleModelVal2 UI_TOOLTIP bubble[4]   !»» "OGRO Handles 640x572.png"
+	UI_INFIELD{3} "bs_handle_braille2", 79,150 , 207,19 UI_TOOLTIP bubble[32]
+	GOSUB "SELECT_gs_handle_type2"
+	UI_INFIELD{3} "gs_handle_type2", 78,55 , 102,22, 2, 6, 4, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[7]   !»» "dk_handle_type 72x18.png"
+	GOSUB "SELECT_bs_handle_material2"
+	IF sts THEN
+		UI_INFIELD{3} "bs_handle_material2", 78,171 , 102,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[22]
+		ENDIF
+	GOSUB "SELECT_bs_handle_surface2"
+	IF sts THEN
+		UI_INFIELD{3} "bs_handle_surface2", 185,171 , 102,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[28]
+		ENDIF
+	GOSUB "VALUES_bs_handle_orientation2"
+	UI_INFIELD{3} "bs_handle_orientation2", 185,55 , 102,22, 2, "", 3, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[13]
+	GOSUB "SELECT_bs_doorplate2"
+	IF gs_handle_type2 # "-" THEN UI_INFIELD{3} "bs_doorplate2", 298,55 , 70,93, 2, 9, 112, 8, 55, 80, 55, 80, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[10]
+	IF gs_handle_type2 = "-" THEN UI_INFIELD{3} "bs_doorplate2", 298,55 , 70,93, 2, 10, 112, 8, 55, 80, 55, 80, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[10]
+	GOSUB "SELECT_bs_plate_material2"
+	IF sts THEN
+		UI_INFIELD{3} "bs_doorplate_material2", 298,171 , 70,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[19]
+		ENDIF
+	GOSUB "SELECT_bs_plate_surface2"
+	IF sts THEN
+		UI_INFIELD{3} "bs_doorplate_surface2", 374,171 , 70,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[25]
+		ENDIF
+	GOSUB "SELECT_bs_closure2"
+	UI_INFIELD{3} "bs_closure2", 374,55 , 70,93, 2, 13, 8, 1, 25, 60, 25, 60, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[16]   !»» "OGRO PlatesHole 200x60.png"
+	UI_OUTFIELD babel[4], 0,153 , 78,15, 0+0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[10], 78,40 , 209,15, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[8], 298,40 , 146,15, 2+0
+	UI_STYLE 0,0   !»» ""
+	UI_SEPARATOR 271,80, 287,97
+	UI_SEPARATOR 271,97, 287,114
+	UI_SEPARATOR 271,114, 287,131
+	UI_SEPARATOR 271,131, 287,148
+	IF selectedBGS AND kategorien[MAX(1,selectedBGS)][dki_Brandschutz] THEN UI_PICT "dk_ui_handle_eligibility_F 13x14.png", 272,81 , 13,14, 1 UI_TOOLTIP bubble[36]
+	IF selectedBGS AND kategorien[MAX(1,selectedBGS)][dki_FluchtRettung] THEN UI_PICT "dk_ui_handle_eligibility_E 13x14.png", 272,98 , 13,14, 1 UI_TOOLTIP bubble[37]
+	IF selectedBGS AND eigenschaften[MAX(1,selectedBGS)][dki_Brailleschrift] THEN UI_PICT "dk_ui_handle_eligibility_B 13x14.png", 272,115 , 13,14, 1 UI_TOOLTIP bubble[30]
+	IF selectedBGS AND kategorien[MAX(1,selectedBGS)][dki_Hygiene] THEN UI_PICT "dk_ui_handle_eligibility_H 13x14.png", 272,132 , 13,14, 1 UI_TOOLTIP bubble[38]
+	UI_PICT_BUTTON UI_LINK, "", 11, 422,-5 , 22,22, 0, "http://www.dorma.com/de/de/oeffnen_schliessen/beschlagtechnik/premium_beschlaege_en/index-162-3417-3462.html" UI_TOOLTIP bubble[2]   !»» "uiTab_Info.png"
+	UI_SEPARATOR 0,195, 445,195
+	UI_SEPARATOR 292,56, 292,193
+	RETURN
+! ------------------------------------------------------------- MAIN PAGE [ 1500 ]
+	1500:   ! #### SEITE 1 - LOI Ausführung Standflügel
+	GOSUB 9900
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[10], 78,39 , 209,14, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[8], 298,39 , 146,14, 2+0
+	UI_STYLE 0,0
+	UI_OUTFIELD babel[22], 79,227 , 110,15, 0+0
+	UI_OUTFIELD babel[21], 79,248 , 110,15, 0+0
+	UI_OUTFIELD babel[24], 264,227 , 110,15, 0+0
+	UI_OUTFIELD babel[23], 264,248 , 110,15, 0+0
+	UI_OUTFIELD babel[15], 79,203 , 110,15, 0+0
+	UI_OUTFIELD babel[14], 264,203 , 110,15, 0+0
+	UI_INFIELD{3} dk_fill_pens[dka_handle_penF], 193,244 , 65,22 UI_TOOLTIP bubble[43]
+	UI_INFIELD{3} dk_cont_pens[dka_handle_penC2], 193,221 , 65,22 UI_TOOLTIP bubble[44]
+	UI_INFIELD{3} dk_materials[dka_handle_mat], 379,221 , 65,22 UI_TOOLTIP bubble[41]
+	UI_INFIELD{3} dk_materials[dka_plate_mat], 379,244 , 65,22 UI_TOOLTIP bubble[42]
+	UI_INFIELD{3} "gs_han_height2", 193,200 , 65,19 UI_TOOLTIP bubble[35]
+	UI_INFIELD{3} "gs_han_pos2", 379,200 , 65,19 UI_TOOLTIP bubble[40]
+	UI_OUTFIELD babel[13], 0,175 , 78,15, 0+0
+	UI_OUTFIELD babel[3], 0,111 , 78,15, 0+0
+	UI_OUTFIELD babel[2], 0,57 , 78,15, 0+0
+	UI_OUTFIELD babel[1], 0,22 , 78,15, 0+0
+	UI_INFIELD{3} "bs_handle_product_line", 79,18 , 205,20 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} "bs_handle_model3", 78,77 , 189,69, 2, 8, 104, 13, 80, 44, 80, 44, UIhandleModelPic3, UIhandleModelText3, UIhandleModelVal3 UI_TOOLTIP bubble[5]   !»» "OGRO Handles 640x572.png"
+	GOSUB "SELECT_gs_handle_type3"
+	UI_INFIELD{3} "gs_handle_type3", 78,53 , 102,22, 2, 6, 4, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[8]   !»» "dk_handle_type 72x18.png"
+	GOSUB "SELECT_bs_handle_material3"
+	IF sts THEN
+		UI_INFIELD{3} "bs_handle_material3", 78,171 , 102,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[23]
+		ENDIF
+	GOSUB "SELECT_bs_handle_surface3"
+	IF sts THEN
+		UI_INFIELD{3} "bs_handle_surface3", 185,171 , 102,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[29]
+		ENDIF
+	GOSUB "VALUES_bs_handle_orientation3"
+	UI_INFIELD{3} "bs_handle_orientation3", 185,53 , 102,22, 2, "", 3, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[14]
+	GOSUB "SELECT_bs_doorplate3"
+	IF gs_handle_type3 # "-" THEN UI_INFIELD{3} "bs_doorplate3", 298,53 , 70,93, 2, 9, 112, 8, 55, 80, 55, 80, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[11]   !»» "OGRO Plates 770x640.png"
+	IF gs_handle_type3 = "-" THEN UI_INFIELD{3} "bs_doorplate3", 298,53 , 70,93, 2, 10, 112, 8, 55, 80, 55, 80, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[11]   !»» "OGRO PlatesNoHole 770x640.png"
+	GOSUB "SELECT_bs_plate_material3"
+	IF sts THEN
+		UI_INFIELD{3} "bs_doorplate_material3", 298,171 , 70,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[20]
+		ENDIF
+	GOSUB "SELECT_bs_plate_surface3"
+	IF sts THEN
+		UI_INFIELD{3} "bs_doorplate_surface3", 374,171 , 70,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[26]
+		ENDIF
+	GOSUB "SELECT_bs_closure3"
+	UI_INFIELD{3} "bs_closure3", 374,53 , 70,93, 2, 13, 8, 1, 25, 60, 25, 60, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[17]   !»» "OGRO PlatesHole 200x60.png"
+	UI_OUTFIELD babel[17], 0,151 , 78,15, 0+0
+	UI_INFIELD{3} "gs_handle_side3", 78,148 , 102,22, 2, 7, 2, 1, 25, 18, 25, 18, 2,"Bandseite",1, 1,"Bandgegenseite",0 UI_TOOLTIP bubble[33]   !»» "dk_side 50x18.png"
+	UI_SEPARATOR 271,78, 287,95
+	UI_SEPARATOR 271,95, 287,112
+	UI_SEPARATOR 271,112, 287,129
+	UI_SEPARATOR 271,129, 287,146
+	IF selectedSF AND kategorien[MAX(1,selectedSF)][dki_Brandschutz] THEN UI_PICT "dk_ui_handle_eligibility_F 13x14.png", 272,79 , 13,14, 1 UI_TOOLTIP bubble[36]
+	IF selectedSF AND kategorien[MAX(1,selectedSF)][dki_FluchtRettung] THEN UI_PICT "dk_ui_handle_eligibility_E 13x14.png", 272,96 , 13,14, 1 UI_TOOLTIP bubble[37]
+	IF selectedSF AND eigenschaften[MAX(1,selectedSF)][dki_Brailleschrift] THEN UI_PICT "dk_ui_handle_eligibility_B 13x14.png", 272,113 , 13,14, 1 UI_TOOLTIP bubble[30]
+	IF selectedSF AND kategorien[MAX(1,selectedSF)][dki_Hygiene] THEN UI_PICT "dk_ui_handle_eligibility_H 13x14.png", 272,130 , 13,14, 1 UI_TOOLTIP bubble[38]
+	UI_PICT_BUTTON UI_LINK, "", 11, 422,-5 , 22,22, 0, "http://www.dorma.com/de/de/oeffnen_schliessen/beschlagtechnik/premium_beschlaege_en/index-162-3417-3462.html" UI_TOOLTIP bubble[2]   !»» "uiTab_Info.png"
+	UI_SEPARATOR 0,195, 445,195
+	UI_SEPARATOR 292,54, 292,194
+	RETURN
+! -------------------------------------------------------------TITLE [ 9900 ]
+	9900:   ! #### TITEL on all pages
+	IF develop THEN GOSUB "devshow"
+	IF errorI>0 THEN
+		GOSUB "error2tooltip"
+		UI_PICT 12, 36,-2 , 16,16, 1 UI_TOOLTIP txt
+		ENDIF   !»» "dk_attention 16x16.png"
+	UI_STYLE 0,0
+	UI_PICT 1, 280,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 420,15
+	RETURN
+

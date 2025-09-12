@@ -1,0 +1,499 @@
+
+!-------------------------------------------- [ Standardelemente aller Seiten ]
+
+! #### Standardwerte
+
+DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[] ! Arrays für diskrete Auswahlen UI_INFIELD{4}
+
+! ----------------------------------- MULTILINGUAL TEXT [ECD.automation] (start)
+
+! --------- RESET array variables
+	DIM babel[]
+	DIM bubble[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		babel[1] = "Hersteller:"
+		babel[2] = "System:"
+		babel[3] = "SYSTEM:"
+		babel[4] = "Typ Gangflügel:"
+		babel[4] = "Montage:"
+		babel[5] = "Typ Standflügel:"
+		babel[6] = "BS:"
+		babel[7] = "BGS:"
+		babel[8] = "Ansteuerung:"
+		babel[9] = "Darstellung:"
+		babel[10] = "Eigenschaften:"
+		babel[11] = "Oberfläche:"
+		babel[12] = "Material:"
+		babel[13] = "Material/Oberfläche:"
+		babel[14] = "Ist eine Türöffnungsautomatik ausgewählt, ist ein Türschließer nicht wählbar."
+		babel[15] = "Ist eine Türöffnungsautomatik ausgewählt,\nist ein Türschließer nicht wählbar."
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF language = 4 THEN
+		babel[1] = "Manufacturer:"
+		babel[2] = "System:"
+		babel[3] = "SYSTEM:"
+		babel[4] = "Typ Gangflügel:"
+		babel[4] = "Montage:"
+		babel[5] = "Typ Standflügel:"
+		babel[6] = "BS:"
+		babel[7] = "BGS:"
+		babel[8] = "Ansteuerung:"
+		babel[9] = "Darstellung:"
+		babel[10] = "Eigenschaften:"
+		babel[11] = "Oberfläche:"
+		babel[12] = "Material:"
+		babel[13] = "Material/Oberfläche:"
+		babel[14] = "Ist eine Türöffnungsautomatik ausgewählt, ist ein Türschließer nicht wählbar."
+		babel[15] = "Ist eine Türöffnungsautomatik ausgewählt,\nist ein Türschließer nicht wählbar."
+		ENDIF
+
+! --------- User Interface - Tooltip text (Deutsch)
+	IF language = 1 THEN
+		bubble[1] = "Türautomation  Hersteller"
+		bubble[2] = "Produktangabe Türantrieb"
+		bubble[3] = "Position Antrieb"
+		bubble[4] = "Montageart Türantrieb"
+		bubble[5] = "Bandseite"
+		bubble[6] = "Bandgegenseite"
+		bubble[7] = "Ansteuerung Antrieb Bandseite"
+		bubble[8] = "Ansteuerung Antrieb Bandgegenseite"
+		bubble[9] = "maximale Türblattbreite"
+		bubble[10] = "Brandschutzeignung"
+		bubble[11] = "Brandschutzeignung optional"
+		bubble[12] = "Eignung Barrierefreiheit"
+		bubble[13] = "Feststellung"
+		bubble[14] = "Oberfläche Türautomation"
+		bubble[15] = "Schließfolgeregelung"
+		bubble[16] = "Schließkraft (min/max)"
+		bubble[17] = "Türantrieb Material"
+		bubble[18] = "Türantrieb Oberfläche"
+		bubble[19] = "Oberflächenmaterial  für 3D und Rendering"
+		bubble[20] = "Oberflächenmaterial"
+		bubble[21] = "Material Türautomation"
+		bubble[22] = "Konturstift Schnitt / Ansicht"
+		bubble[23] = "Konturstift 3D"
+		bubble[24] = "Homepage Türautomation"
+		ENDIF
+! --------- User Interface - Tooltip text (Englisch)
+	IF language = 4 THEN
+		bubble[1] = "Manufacturer door drive"
+		bubble[2] = "Product of door drive"
+		bubble[3] = "Position door drive"
+		bubble[4] = "Montageart Türantrieb"
+		bubble[5] = "Bandseite"
+		bubble[6] = "Bandgegenseite"
+		bubble[7] = "Ansteuerung Antrieb Bandseite"
+		bubble[8] = "Ansteuerung Antrieb Bandgegenseite"
+		bubble[9] = "maximale Türblattbreite"
+		bubble[10] = "Brandschutzeignung"
+		bubble[11] = "Brandschutzeignung optional"
+		bubble[12] = "Eignung Barrierefreiheit"
+		bubble[13] = "Feststellung"
+		bubble[14] = "Oberfläche Türautomation"
+		bubble[15] = "Schließfolgeregelung"
+		bubble[16] = "Schließkraft (min/max)"
+		bubble[17] = "Türantrieb Material"
+		bubble[18] = "Türantrieb Oberfläche"
+		bubble[19] = "Oberflächenmaterial  für 3D und Rendering"
+		bubble[20] = "Oberflächenmaterial"
+		bubble[21] = "Material Türautomation"
+		bubble[22] = "Konturstift Schnitt / Ansicht"
+		bubble[23] = "Konturstift 3D"
+		bubble[24] = "Homepage Türautomation"
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+
+! =============================================================================
+! Dialogstart
+! =============================================================================
+
+
+! ------------------------------------------------------------------------[ Dialog start in development environment ]
+
+IF macro_runtype # 128 THEN
+
+	UI_DIALOG "DORMA AUTOMATION MACRO", 444,266
+
+	ENDIF
+
+format = "" : sts = REQUEST ("Working_length_unit", "",format)			  !	Format für UI-Outfield -Längenwerte	
+	
+
+! ------------------------------------------------------------------------[ 1. Seite ]
+
+s = 1
+IF  seiten > 0 THEN
+	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ 2. Seite ]
+
+s = 2
+IF  seiten > 1 THEN
+	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+	ENDIF
+
+
+! =============================================================================
+! Dialogende
+! =============================================================================
+
+END
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"devshow":
+	UI_STYLE 1,2
+	UI_OUTFIELD "[AUTOMATION v" + str("%^.2",version) + "]"  , 60,0,100,15, 4
+	UI_STYLE 0,0
+
+	i = -1 : s = 20
+	i = i+1 :	UI_INFIELD{3} "bs_closer_type",				475,i*s, 45,19  UI_TOOLTIP "bs_closer_type"
+				UI_INFIELD{3} "bs_closer_model",			525,i*s, 95,19  UI_TOOLTIP "bs_closer_model"
+	i = i+1 :	UI_INFIELD{3} "bs_closer2",					475,i*s, 45,19  UI_TOOLTIP "bs_closer2"
+				UI_INFIELD{3} "bs_closer_model2",			525,i*s, 95,19  UI_TOOLTIP "bs_closer_model2"
+	i = i+1 :	UI_INFIELD{3} "bs_demand_FireResistance",	475,i*s, 45,19  UI_TOOLTIP "bs_demand_FireResistance"
+	i = i+1 :	UI_OUTFIELD "ACT: " + STR(ACT,1,0),			475,i*s, 45,15  UI_TOOLTIP "Konfiguration"
+				UI_OUTFIELD STR(dk_estimatedWeight,1,0),	525,i*s, 45,15  UI_TOOLTIP "Gewicht GF"
+				UI_OUTFIELD STR(dk_estimatedWeight2,1,0),	575,i*s, 45,15  UI_TOOLTIP "Gewicht SF"
+	i = i+1 :	UI_OUTFIELD STR(1000*offsetFrameSurfaceBGS,1,0),	475,i*s, 45,15  UI_TOOLTIP "offsetFrameSurfaceBGS"
+				UI_OUTFIELD STR(1000*frame2wallSurfaceBGS,1,0),		525,i*s, 45,15  UI_TOOLTIP "frame2wallSurfaceBGS"
+				UI_OUTFIELD STR(1000*frame2wallSurfaceBS,1,0),		575,i*s, 45,15  UI_TOOLTIP "frame2wallSurfaceBS"
+	i = i+1 :	UI_OUTFIELD STR(1000*panel2wallSurfaceBS,1,0),	475,i*s, 45,15  UI_TOOLTIP "panel2wallSurfaceBS"
+				UI_OUTFIELD STR(1000*panel2wallSurfaceBGS,1,0),		525,i*s, 45,15  UI_TOOLTIP "panel2wallSurfaceBGS"
+	i = i+1 :	UI_OUTFIELD STR(1000*SturztiefeBS,1,0),	475,i*s, 45,15  UI_TOOLTIP "SturztiefeBS"
+				UI_OUTFIELD STR(1000*SturztiefeBGS,1,0),		525,i*s, 45,15  UI_TOOLTIP "SturztiefeBGS"
+	i = i+1 :	UI_INFIELD{3} "ac_leaf_width",			475,i*s, 95,19  UI_TOOLTIP "ac_leaf_width"
+	i = i+1 :	UI_INFIELD{3} "gs_SecondLeaf_w",		475,i*s, 95,19  UI_TOOLTIP "gs_SecondLeaf_w"
+				
+	RETURN
+
+"devSELECTION":
+	FOR i= 1 TO VARDIM1(UIpicIdxArray)
+		UI_OUTFIELD UIpicIdxArray[i],   0,260+i*15,140,15
+		UI_OUTFIELD UItextArray[i]  , 150,260+i*15,140,15
+		UI_OUTFIELD UIvaluesArray[i], 300,260+i*15,140,15
+		NEXT i
+	RETURN
+
+! ----------------------------------- PARAMETER / INFIELD VALUE LIST [ECD.automation] (start)
+
+"VALUES_bs_automation_type":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gangflügel" : UIvaluesArray[j] = "GF"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gangflügel mit Schließfolge" : UIvaluesArray[j] = "2E"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Beide Flügel" : UIvaluesArray[j] = "2S"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Beide Flügel (unabhängig)" : UIvaluesArray[j] = "GS"
+	RETURN
+
+"VALUES_bs_automation_material":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Stahl" : UIvaluesArray[j] = "ST"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Edelstahl" : UIvaluesArray[j] = "ES"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aluminium" : UIvaluesArray[j] = "AL"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sondermaterial" : UIvaluesArray[j] = "XX"
+	RETURN
+
+"VALUES_bs_automation_surface":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbehandelt" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vergoldet" : UIvaluesArray[j] = "G"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vernickelt" : UIvaluesArray[j] = "N"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lackiert" : UIvaluesArray[j] = "L"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Pulverbeschichtet" : UIvaluesArray[j] = "V"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verzinkt" : UIvaluesArray[j] = "Z"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verchromt" : UIvaluesArray[j] = "C"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Eloxiert" : UIvaluesArray[j] = "E"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Titanisiert" : UIvaluesArray[j] = "I"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sonderoberfläche" : UIvaluesArray[j] = "X"
+	RETURN
+
+"VALUES_bs_automation_orientation":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = " Bandseite" : UIvaluesArray[j] = "BS"
+	j=j+1 : UIpicIdxArray[j] = 1 : UItextArray[j] = " Bandgegenseite" : UIvaluesArray[j] = "GS"
+	RETURN
+
+"VALUES_bs_automation_activation_BS":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = 1 : UItextArray[j] = " Aus (BS)" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = " Taster (BS)" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = " Schlüssel (BS)" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = " Radar (BS)" : UIvaluesArray[j] = "R"
+	j=j+1 : UIpicIdxArray[j] = 6 : UItextArray[j] = " Taster+Radar (BS)" : UIvaluesArray[j] = "TR"
+	j=j+1 : UIpicIdxArray[j] = 5 : UItextArray[j] = " Schlüssel+Radar (BS)" : UIvaluesArray[j] = "SR"
+	RETURN
+
+"VALUES_bs_automation_activation_BGS":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = 1 : UItextArray[j] = " Aus (BGS)" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = " Taster (BGS)" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = " Schlüssel (BGS)" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = " Radar (BGS)" : UIvaluesArray[j] = "R"
+	j=j+1 : UIpicIdxArray[j] = 6 : UItextArray[j] = " Taster+Radar (BGS)" : UIvaluesArray[j] = "TR"
+	j=j+1 : UIpicIdxArray[j] = 5 : UItextArray[j] = " Schlüssel+Radar (BGS)" : UIvaluesArray[j] = "SR"
+	RETURN
+
+! --------------------------------------------------------------- PARAMETER / INFIELD VALUE LIST (end)
+
+"SELECT_bs_automation_type":
+	IF bs_door_leafs = 2 THEN
+		IF mittelfalz OR bs_demand_FireResistance = 1 THEN
+			j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+			j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = "-"
+			j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gangflügel" : UIvaluesArray[j] = "GF"
+			j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gangflügel mit Schließfolgeregelung" : UIvaluesArray[j] = "2E"
+			j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Beide Flügel" : UIvaluesArray[j] = "2S"
+			ELSE
+			GOSUB "VALUES_bs_automation_type"
+			ENDIF
+		ELSE
+		j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+		j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = "-"
+		IF bs_door_leafs = 1 THEN
+			j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "An" : UIvaluesArray[j] = "GF"
+			ENDIF
+		ENDIF
+	RETURN
+
+"SELECT_bs_automation_material":
+	GOSUB "VALUES_bs_automation_material"
+	sts = 0
+	IF bs_automation_material # "XX" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_automation_material THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_automation_surface":
+	GOSUB "VALUES_bs_automation_surface"
+	sts = 0
+	IF bs_automation_surface # "X" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_automation_surface THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"Antrieb2":
+	txt = ""
+	IF ACT=2 THEN txt = "Türschließer (" + bs_closer_model2 + ")."
+	IF ACT=3 THEN txt = "Elektrohydraulische Schließfolgeregelung (ESR)."
+	IF ACT=5 THEN txt = "Synchroner Antrieb zu Gangflügel."
+	RETURN
+
+! ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 255 ->
+
+! --------------------MAIN SETTINGS [ 7000 ]
+	7000:   ! #### LOI 5 -Grundeinstellungen DORMAKABA  Türautomation
+	GOSUB 9900
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[3], 0,23 , 100,15, 0+0
+	UI_STYLE 0,0
+	GOSUB "SELECT_bs_automation_type"
+	UI_INFIELD{3} "bs_automation_type", 113,19 , 198,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+	IF bs_automation_type = "-" THEN RETURN
+	UI_OUTFIELD babel[8], 0,47 , 73,15, 0+0
+	UI_OUTFIELD babel[4], 325,23 , 60,15, 1+0
+	UI_OUTFIELD babel[6], 113,47 , 31,15, 0+0 UI_TOOLTIP bubble[5]
+	UI_OUTFIELD babel[7], 220,47 , 31,15, 0+0 UI_TOOLTIP bubble[6]
+	UI_OUTFIELD babel[1], 0,77 , 100,15, 0+0
+	IF ACT#2 THEN
+		UI_STYLE 0,2
+		UI_OUTFIELD babel[14], 0,250 , 444,16, 2+0
+		UI_STYLE 0,0
+		ENDIF
+	UI_OUTFIELD babel[13], 0,203 , 110,15, 0+0
+	UI_OUTFIELD babel[9], 0,225 , 110,15, 0+0
+	GOSUB "VALUES_bs_automation_orientation"
+	bitmapIDX = 2 + (oberLichtBlende > 0)
+	UI_INFIELD{3} "bs_automation_orientation", 394,19 , 50,47, 2, bitmapIDX, 8, 1, 35, 35, 35, 35, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[4]   !»» "Dorma_closer_orientation_O 280x35.png"
+	GOSUB "VALUES_bs_automation_activation_BS"
+	UI_INFIELD{3} "bs_automation_activation_BS", 144,42 , 55,24, 2, 4, 6, 1, 36, 18, 36, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[7]
+	GOSUB "VALUES_bs_automation_activation_BGS"
+	UI_INFIELD{3} "bs_automation_activation_BGS", 256,42 , 55,24, 2, 4, 6, 1, 36, 18, 36, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[8]
+	UI_STYLE 0,1
+	UI_INFIELD{3} "bs_automation_manufacturer", 114,74 , 329,19 UI_TOOLTIP bubble[1]
+	UI_STYLE 0,0
+	IF bs_door_leafs >1 THEN
+		txt = babel[4]
+		ELSE
+		txt = "Typ:"
+		ENDIF
+	UI_OUTFIELD txt, 0,104 , 100,15, 0+0
+	
+	UI_OUTFIELD babel[10], 0,128 , 100,15, 0+0
+	UI_SEPARATOR 114,126, 130,143
+	UI_SEPARATOR 133,126, 149,143
+	UI_SEPARATOR 152,126, 168,143
+	UI_SEPARATOR 171,126, 187,143
+	UI_INFIELD{3} "bs_automation_model", 113,98 , 331,24, 2, "", 99, 1, 0, 0, 0, 0, UIautomationModelPic, UIautomationModelText, UIautomationModelVal UI_TOOLTIP bubble[2]
+	IF brandschutz = 1 THEN UI_PICT "dk_ui_handle_eligibility_F 13x14.png", 115,127 , 13,14, 1 UI_TOOLTIP bubble[10]
+	IF brandschutz = 2 THEN UI_PICT 5, 115,127 , 13,14, 1 UI_TOOLTIP bubble[11]
+	IF barrierefreiheit THEN UI_PICT "dk_ui_closer_handicap 13x14.png", 134,127 , 13,14, 1 UI_TOOLTIP bubble[12]
+	IF schliessfolge THEN UI_PICT "dk_ui_closer_order 13x14.png", 153,127 , 13,14, 1 UI_TOOLTIP bubble[15]
+	IF feststellung # "" THEN UI_PICT "dk_ui_closer_break 13x14.png", 172,127 , 13,14, 1 UI_TOOLTIP bubble[13]
+	IF maxKRAFT > 0 THEN
+		UI_STYLE 1,1
+		txt = "EN "+str(minKRAFT,1,0)+"-"+str(maxKRAFT,1,0)
+		UI_OUTFIELD txt, 190,127 , 35,15, 0+0 UI_TOOLTIP bubble[16]
+		UI_STYLE 0,0
+		ENDIF
+	IF maxTB > tlr THEN
+		UI_STYLE 1,1
+		txt ="max. " + str(maxTB * 1000,1,0)+"mm"
+		UI_OUTFIELD txt, 228,127 , 63,15, 0+0 UI_TOOLTIP bubble[9]
+		UI_STYLE 0,0
+		ENDIF
+	IF ACT # 4 THEN
+		GOSUB "Antrieb2"
+		UI_STYLE 0,2
+		UI_OUTFIELD txt, 113,152 , 331,16, 0+0
+		UI_STYLE 0,0
+		IF txt # "" THEN UI_OUTFIELD babel[5], 0,152 , 100,15, 0+0
+		ELSE
+		UI_OUTFIELD babel[5], 0,152 , 100,15, 0+0
+		UI_OUTFIELD babel[10], 0,176 , 100,15, 0+0
+		UI_SEPARATOR 114,174, 130,191
+		UI_SEPARATOR 133,174, 149,191
+		UI_INFIELD{3} "bs_automation_model2", 113,146 , 331,24, 2, "", 99, 1, 0, 0, 0, 0, UIautomation2ModelPic, UIautomation2ModelText, UIautomation2ModelVal UI_TOOLTIP bubble[2]
+		IF barrierefreiheit2 THEN UI_PICT "dk_ui_closer_handicap 13x14.png", 115,175 , 13,14, 1 UI_TOOLTIP bubble[12]
+		IF feststellung2 # "" THEN UI_PICT "dk_ui_closer_break 13x14.png", 134,175 , 13,14, 1 UI_TOOLTIP bubble[13]
+		IF maxKRAFT2 > 0 THEN
+			UI_STYLE 1,1
+			txt = "EN "+str(minKRAFT2,1,0)+"-"+str(maxKRAFT2,1,0)
+			UI_OUTFIELD txt, 152,175 , 35,15, 0+0 UI_TOOLTIP bubble[16]
+			UI_STYLE 0,0
+			ENDIF
+		IF maxTB2 > tlr THEN
+			UI_STYLE 1,1
+			txt ="max. " + str(maxTB2 * 1000,1,0)+"mm"
+			UI_OUTFIELD txt, 190,175 , 63,15, 0+0 UI_TOOLTIP bubble[9]
+			UI_STYLE 0,0
+			ENDIF
+		ENDIF
+	GOSUB "SELECT_bs_automation_material"
+	IF sts THEN
+		UI_INFIELD{3} "bs_automation_material", 113,198 , 163,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+		ENDIF
+	IF not(sts) THEN UI_INFIELD{3} "bs_automation_material", 114,198 , 161,21 UI_TOOLTIP bubble[17]
+	GOSUB "SELECT_bs_automation_surface"
+	IF sts THEN
+		UI_INFIELD{3} "bs_automation_surface", 281,198 , 163,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[18]
+		ENDIF
+	IF not(sts) THEN UI_INFIELD{3} "bs_automation_surface", 282,198 , 162,21 UI_TOOLTIP bubble[14]
+	UI_PICT "ui_list_surface_flat 32x15.png", 111,225 , 32,15, 1 UI_TOOLTIP bubble[20]
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 226,226 , 32,15, 1
+	UI_PICT "ui_list_3DPen_flat 32x15.png", 342,225 , 32,15, 1
+	UI_INFIELD{3} dk_materials[dka_automation_mat], 143,222 , 70,21 UI_TOOLTIP bubble[19]
+	UI_INFIELD{3} dk_cont_pens[dka_automation_penSA], 258,222 , 70,21 UI_TOOLTIP bubble[22]
+	UI_INFIELD{3} dk_cont_pens[dka_automation_penC3], 374,222 , 70,21 UI_TOOLTIP bubble[23]
+	UI_SEPARATOR 0,69, 445,69
+	UI_SEPARATOR 0,194, 445,194
+	IF ACT#2 THEN UI_SEPARATOR 0,246, 445,246
+	RETURN
+! --------------------LOI < 4 SETTINGS [ 7400 ]
+	7400:   ! #### LOI <4 -Grundeinstellungen DORMAKABA  Türautomation
+	GOSUB 9900
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[2], 26,27 , 110,15, 0+0
+	UI_STYLE 0,0
+	GOSUB "SELECT_bs_automation_type"
+	UI_INFIELD{3} "bs_automation_type", 138,22 , 216,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+	IF bs_automation_type = "-" THEN RETURN
+	IF bs_door_leafs >1 THEN
+		txt = "Typ Gangflügel:"
+		ELSE
+		txt = "Typ:"
+		ENDIF
+	UI_OUTFIELD txt, 26,54 , 100,15, 0+0
+	
+	UI_INFIELD{3} "bs_automation_model", 138,48 , 216,24, 2, "", 99, 1, 0, 0, 0, 0, UIautomationModelPic, UIautomationModelText, UIautomationModelVal UI_TOOLTIP bubble[2]
+	IF ACT = 4 THEN
+		UI_OUTFIELD babel[5], 26,83 , 100,15, 0+0
+		
+		UI_INFIELD{3} "bs_automation_model2", 138,77 , 216,24, 2, "", 99, 1, 0, 0, 0, 0, UIautomation2ModelPic, UIautomation2ModelText, UIautomation2ModelVal UI_TOOLTIP bubble[2]
+		ENDIF
+	GOSUB "SELECT_bs_automation_material"
+	IF sts THEN
+		UI_INFIELD{3} "bs_automation_material", 139,131 , 215,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+		ENDIF
+	IF not(sts) THEN UI_INFIELD{3} "bs_automation_material", 140,132 , 214,19 UI_TOOLTIP bubble[21]
+	GOSUB "SELECT_bs_automation_surface"
+	IF sts THEN
+		UI_INFIELD{3} "bs_automation_surface", 139,155 , 215,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[14]
+		ENDIF
+	IF not(sts) THEN UI_INFIELD{3} "bs_automation_surface", 140,156 , 214,19 UI_TOOLTIP bubble[14]
+	UI_INFIELD{3} dk_materials[dka_automation_mat], 169,179 , 185,21 UI_TOOLTIP bubble[19]
+	UI_INFIELD{3} dk_cont_pens[dka_automation_penSA], 169,203 , 75,21 UI_TOOLTIP bubble[22]
+	UI_INFIELD{3} dk_cont_pens[dka_automation_penC3], 279,203 , 75,21 UI_TOOLTIP bubble[23]
+	UI_PICT "ui_list_surface_flat 32x15.png", 137,182 , 32,15, 1 UI_TOOLTIP bubble[20]
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 137,207 , 32,15, 1
+	UI_PICT "ui_list_3DPen_flat 32x15.png", 246,206 , 32,15, 1
+	UI_OUTFIELD babel[12], 26,136 , 110,15, 0+0
+	UI_OUTFIELD babel[11], 26,160 , 110,15, 0+0
+	UI_OUTFIELD babel[9], 26,184 , 110,15, 0+0
+	UI_SEPARATOR 26,125, 355,125
+	IF NOT( bs_door_leafs > 1 AND bs_automation_type # "2S" ) THEN
+		UI_SEPARATOR 26,229, 355,229
+		UI_STYLE 0,2
+		UI_OUTFIELD babel[15], 26,236 , 328,30, 2+0
+		UI_STYLE 0,0
+		ENDIF
+	RETURN
+! --------------------LOI < 3 SETTINGS [ 7600 ]
+	7600:   ! #### LOI <3 -Grundeinstellungen DORMAKABA  Türautomation
+	GOSUB 9900
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[2], 26,27 , 110,15, 0+0
+	UI_STYLE 0,0
+	GOSUB "SELECT_bs_automation_type"
+	UI_INFIELD{3} "bs_automation_type", 138,22 , 216,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+	IF bs_automation_type = "-" THEN RETURN
+	UI_INFIELD{3} dk_cont_pens[dka_automation_penSA], 169,202 , 75,21 UI_TOOLTIP bubble[22]
+	UI_INFIELD{3} dk_cont_pens[dka_automation_penC3], 279,202 , 75,21 UI_TOOLTIP bubble[23]
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 137,206 , 32,15, 1
+	UI_PICT "ui_list_3DPen_flat 32x15.png", 246,205 , 32,15, 1
+	UI_OUTFIELD babel[9], 26,205 , 110,15, 0+0
+	UI_SEPARATOR 26,195, 355,195
+	IF NOT( bs_door_leafs > 1 AND bs_automation_type # "2S" ) THEN
+		UI_SEPARATOR 26,229, 355,229
+		UI_STYLE 0,2
+		UI_OUTFIELD babel[15], 26,236 , 328,30, 2+0
+		UI_STYLE 0,0
+		ENDIF
+	RETURN
+! --------------------TITLE [ 9900 ]
+	9900:   ! #### TITEL on all pages
+	IF develop THEN GOSUB "devshow"
+	UI_STYLE 0,0
+	UI_PICT 1, 280,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 420,15
+	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 422,-5 , 22,22, 0, "https://www.dormakaba.com/de-de/produkte-loesungen/produkte/automatische-tuersysteme/drehtuerantriebe/drehtuerantriebe-397884" UI_TOOLTIP bubble[24]
+	IF errorI>0 THEN
+		txt = ""
+		FOR i=1 TO errorI
+		txt = txt + errorQ[i]
+		NEXT i
+		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
+		ENDIF
+	RETURN

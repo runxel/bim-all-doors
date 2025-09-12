@@ -46,7 +46,7 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 ! --------- User Interface - UI_xxxFIELD text (Deutsch)
 	IF sprache = 1 THEN
 		babel[1] = "PLANUNGSPHASE  /\nKOMPLEXITÄT DER KONFIGURATION:"
-		babel[2] = "BIM-all-doors - Die erweiterbare Komponententür"
+		babel[2] = "bim-all-doors - Die erweiterbare Komponententür"
 		babel[3] = "GRUNDLEGENDE ANFORDERUNGEN AN ..."
 		babel[4] = "Türflügel:"
 		babel[5] = "Ausrichtung:"
@@ -60,8 +60,8 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 		babel[13] = "( ANFORDERUNGEN / SOLL )"
 		babel[14] = "ÜBERWACHUNG TÜRZUSTAND"
 		babel[15] = "MINIMALABMESSUNGEN"
-		babel[16] = "Besuchen sie uns im Internet unter www.bim-all-doors.de\nHier finden sie Anleitungen, die jeweils neueste Version\nund hilfreiches Bonusmaterial:"
-		babel[17] = "DORMAKABA - www.bim-all-doors.de"
+		babel[16] = "Besuchen sie uns im Internet unter www.bim-all-doors.de\noder auf github (https://github.com/dormakaba/bim-all-doors) direkt.\nHier finden sie Anleitungen, die jeweils neueste Version\nund hilfreiches Bonusmaterial:"
+		babel[17] = "www.bim-all-doors.de"
 		babel[18] = "Die funktionalen und Schutzziele dürfen von den Eigenschaften der gewählten Türkomponenten abweichen, wenn die Komponente die Anforderung erfüllt."
 		babel[19] = "Die Schutzziele dürfen von den Eigenschaften der gewählten Türkomponenten abweichen, wenn die Komponente die Anforderung erfüllt."
 		babel[20] = "Brandschutz:"
@@ -210,7 +210,7 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 ! --------- User Interface - UI_xxxFIELD text (Englisch)
 	IF sprache = 4 THEN
 		babel[1] = "PLANNING PHASE  /\n COMPLEXITY OF CONFIGURATION:"
-		babel[2] = "BIM-all-doors - The extendable components door"
+		babel[2] = "bim-all-doors - The extendable components door"
 		babel[3] = "FUNDAMENTAL REQUIREMENTS TO ..."
 		babel[4] = "Door leaves:"
 		babel[5] = "Orientation:"
@@ -224,8 +224,8 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 		babel[13] = "( DEMANDS / LIMITS )"
 		babel[14] = "MONITORING DOOR STATE"
 		babel[15] = "MINIMAL DIMENSIONS"
-		babel[16] = "Besuchen sie uns im Internet unter www.bim-all-doors.de\nHier finden sie Anleitungen, die jeweils neueste Version\nund hilfreiches Bonusmaterial:"
-		babel[17] = "DORMAKABA - www.bim-all-doors.de"
+		babel[16] = "Besuchen sie uns im Internet unter www.bim-all-doors.de\noder auf github (https://github.com/dormakaba/bim-all-doors) direkt.\nHier finden sie Anleitungen, die jeweils neueste Version\nund hilfreiches Bonusmaterial:"
+		babel[17] = "www.bim-all-doors.de"
 		babel[18] = "The functional requirements may differ from properties of the component, if the component fullfills at least the requierements."
 		babel[19] = "The protection requirements can differ from the qualities of the components, if the component fullfills at least the requierements."
 		babel[20] = "Fire protection:"
@@ -2431,12 +2431,12 @@ END
 	UI_PICT 1, 305,-2 , 139,15, 1
 	UI_SEPARATOR 0,15, 445,15
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[2], 11,39 , 420,15, 2+0
+	UI_OUTFIELD babel[2], 11,32 , 420,15, 2+0
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[129], 0,62 , 444,16, 2+0
-	UI_OUTFIELD babel[16], 0,86 , 444,50, 2+0
-	UI_BUTTON UI_LINK, babel[17], 123,193 , 211,20, 0, "http://www.bim-all-doors.de" UI_TOOLTIP bubble[88]
-	UI_OUTFIELD babel[132], 0,139 , 444,50, 2+0
+	UI_OUTFIELD babel[129], 0,55 , 444,16, 2+0
+	UI_OUTFIELD babel[16], 0,76 , 444,70, 2+0
+	UI_OUTFIELD babel[132], 0,153 , 444,36, 2+0
+	UI_BUTTON UI_LINK, babel[17], 123,198 , 211,20, 0, "http://www.bim-all-doors.de" UI_TOOLTIP bubble[88]
 	UI_INFIELD{3} "show_start_screen", 358,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"zur Eingabe",0, 1,"zur Eingabe",1 UI_TOOLTIP bubble[144]
 	UI_INFIELD{3} "show_start_screen", 265,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"Kurzinfo",2, 1,"Kurzinfo",1 UI_TOOLTIP bubble[148]
 	RETURN
@@ -2447,15 +2447,15 @@ END
 	UI_STYLE 0,0
 	UI_PICT 1, 305,-2 , 139,15, 1
 	UI_SEPARATOR 0,15, 445,15
-	UI_OUTFIELD babel[131], 0,26 , 444,28, 0+0
-	UI_OUTFIELD babel[133], 0,56 , 444,42, 0+0
-	UI_OUTFIELD babel[134], 0,100 , 444,28, 0+0
-	UI_OUTFIELD babel[135], 0,130 , 444,28, 0+0
-	UI_OUTFIELD babel[136], 0,160 , 444,42, 0+0
-	UI_OUTFIELD babel[137], 0,204 , 444,28, 0+0
+	UI_OUTFIELD babel[131], 0,19 , 444,32, 0+0
+	UI_OUTFIELD babel[133], 0,51 , 444,50, 0+0
+	UI_OUTFIELD babel[134], 0,101 , 444,32, 0+0
+	UI_OUTFIELD babel[135], 0,133 , 444,32, 0+0
+	UI_OUTFIELD babel[136], 0,165 , 444,50, 0+0
+	UI_OUTFIELD babel[137], 0,215 , 444,32, 0+0
 	UI_INFIELD{3} "show_start_screen", 358,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"zur Eingabe",0, 1,"zur Eingabe",2 UI_TOOLTIP bubble[144]
-	UI_PICT 6, 410,87 , 34,7, 1
-	UI_PICT "dk_attention 16x16.png", 428,214 , 16,16, 1
+	UI_PICT 6, 410,88 , 34,7, 1
+	UI_PICT "dk_attention 16x16.png", 428,222 , 16,16, 1
 	RETURN
 ! ------------------------------------------------------------- TITLE [ 9900 ]
 	9900:   ! #### TITEL on all pages
@@ -2478,7 +2478,6 @@ END
 	UI_SEPARATOR 0,15, 420,15
 	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 422,-5 , 22,22, 0, "http://www.bim-all-doors.de" UI_TOOLTIP "Homepage »BIM-all-doors«"
 	RETURN
-
 
 ! ------------------------------------------------------------- Plausibilitätschecks
 "checkUsableClearance":

@@ -1,0 +1,3030 @@
+! addz -0.2
+! text 0.02, 0, bs_acs_handles
+! print bs_acs_handles
+! del 1
+IF NOT( BITTEST(macro_runtype,5) AND dk_visibleLeaf) OR (noHandle AND noLockPlate) THEN END
+! print "OK"
+! sphere 0.03
+
+drawMODELL = ""
+drawPLATE = ""
+rothandle  = 0
+d=0 : x=0 : y=0
+
+PEN dk_cont_pens[dka_handle_penC2]
+
+matG = dk_materials[dka_handle_mat]
+matP = dk_materials[dka_plate_mat]							
+matS = 10
+
+! =============================================================================
+! Bandseite
+! =============================================================================
+
+IF BITTEST(macro_runtype,0) AND NOT(noPlate AND noLockPlate) THEN  ! Abdeckung
+	MATERIAL matP
+	IF selectedPlateBS < 1  THEN drawPLATE = "" ELSE drawPLATE = bs_doorplate1
+	IF drawPLATE = "-" THEN drawPLATE = "650x + 6612" ! ggf. Standardplatte setzen
+	IF drawPLATE = "" OR BITTEST(macro_runtype,4) THEN
+		ADDy 0
+		ELSE
+		! Abmessungen setzen
+        plateD = abmessung[selectedPlateBS][dki_D]
+        plateX = abmessung[selectedPlateBS][dki_Breite]
+        plateY = abmessung[selectedPlateBS][dki_Tiefe]
+        plateS = abmessung[selectedPlateBS][dki_VersatzX]
+        smth = 15+64
+        IF dk_LOD >350 THEN ra = 0.0005 ELSE ra = 0
+        GOSUB "LoD_plates"
+        IF dk_LOD > 300 THEN
+			ROTx 90
+	        idx1 = 0 : idx2 = 0
+			IF STRSTR("PZ|RZ|OZ|CH|BB|WCK|WCS",bs_closure1) > 0 AND dk_LoD > 349 THEN putCLSR = "clsr-"+bs_closure1 ELSE putCLSR = ""
+        	GOSUB "Model-"+drawPLATE
+        	DEL 1
+        	ENDIF
+		ADDy -plateD
+		ENDIF
+	ELSE
+	ADDy 0
+	ENDIF
+
+IF BITTEST(macro_runtype,0) AND gs_handle_type  # "-" AND NOT(noHandle) THEN  ! Griff
+	MATERIAL matG
+	rothandle = 90*(bs_handle_orientation="Su") - 90*(bs_handle_orientation="So")
+    smth = 15+64
+	ROTy rothandle
+    IF bs_handle_model = "-" OR selectedBS<1 THEN  ! Standardgriff (undefiniert)
+        IF doorTYPE=1 THEN
+            selectedBS = 4 : bs_handle_model = "8100A"
+            ELSE
+            selectedBS = 3 : bs_handle_model = "8100"
+            ENDIF
+        ENDIF
+    d = abmessung[selectedBS][dki_D]
+    x = abmessung[selectedBS][dki_Breite] - d/2
+    y = abmessung[selectedBS][dki_Tiefe]
+    GOSUB "LoD_handles"
+    IF NOT(sts) THEN GOSUB "Model-"+bs_handle_model
+	DEL 1
+	ENDIF
+
+DEL 1
+
+! =============================================================================
+! Bandgegenseite
+! =============================================================================
+
+IF BITTEST(macro_runtype,1) AND NOT(noPlate AND noLockPlate) THEN  ! Abdeckung
+	MATERIAL matP
+	IF selectedPlateBGS < 1 THEN drawPLATE = "" ELSE drawPLATE = bs_doorplate2
+	IF drawPLATE = "-" THEN drawPLATE = "650x + 6612"
+	IF drawPLATE = "" OR BITTEST(macro_runtype,4) THEN
+		ADDy 0
+		ELSE
+		! Abmessungen setzen
+        plateD = abmessung[selectedPlateBGS][dki_D]
+        plateX = abmessung[selectedPlateBGS][dki_Breite]
+        plateY = abmessung[selectedPlateBGS][dki_Tiefe]
+        plateS = abmessung[selectedPlateBGS][dki_VersatzX]
+        smth = 15+64
+        IF dk_LOD >350 THEN ra = 0.0005 ELSE ra = 0
+        GOSUB "LoD_plates"
+        IF dk_LOD > 300 THEN
+			ROTx 90
+	        idx1 = 0 : idx2 = 0
+			IF STRSTR("PZ|RZ|OZ|CH|BB|WCK|WCS",bs_closure2) > 0 THEN putCLSR = "clsr-"+bs_closure2 ELSE putCLSR = ""
+        	GOSUB "Model-"+drawPLATE
+        	DEL 1
+        	ENDIF
+		ADDy -plateD
+		ENDIF
+	ELSE
+	ADDy 0
+	ENDIF
+
+IF BITTEST(macro_runtype,1) AND gs_handle_type2 # "-" AND NOT(noHandle) THEN  ! Griff
+	MATERIAL matG
+	rothandle = 90*(bs_handle_orientation2="Su") - 90*(bs_handle_orientation2="So")
+	ROTy rothandle
+    IF bs_handle_model2 = "-" OR selectedBGS<1 THEN  ! Standardgriff (undefiniert)
+        IF doorTYPE=1 THEN
+            selectedBGS = 4 : bs_handle_model2 = "8100A"
+            ELSE
+            selectedBGS = 3 : bs_handle_model2 = "8100"
+            ENDIF
+        ENDIF
+    d = abmessung[selectedBGS][dki_D]
+    x = abmessung[selectedBGS][dki_Breite] - d/2
+    y = abmessung[selectedBGS][dki_Tiefe]
+    GOSUB "LoD_handles"
+    IF NOT(sts) THEN GOSUB "Model-"+bs_handle_model2
+	DEL 1
+	ENDIF
+
+DEL 1
+
+! =============================================================================
+! Standflügel
+! =============================================================================
+
+IF BITTEST(macro_runtype,2) AND NOT(noPlate AND noLockPlate) THEN  ! Abdeckung
+	MATERIAL matP
+	IF selectedPlateSF < 1 THEN drawPLATE = "" ELSE drawPLATE = bs_doorplate3
+	IF drawPLATE = "-" THEN drawPLATE = "650x + 6612"
+	IF drawPLATE = "" OR BITTEST(macro_runtype,4) THEN
+		ADDy 0
+		ELSE
+        plateD = abmessung[selectedPlateSF][dki_D]
+        plateX = abmessung[selectedPlateSF][dki_Breite]
+        plateY = abmessung[selectedPlateSF][dki_Tiefe]
+        plateS = abmessung[selectedPlateSF][dki_VersatzX]
+        smth = 15+64
+        IF dk_LOD >350 THEN ra = 0.0005 ELSE ra = 0
+        GOSUB "LoD_plates"
+        IF dk_LOD > 300 THEN
+			ROTx 90
+	        idx1 = 0 : idx2 = 0
+        	putCLSR = ""
+        	GOSUB "Model-"+drawPLATE
+        	DEL 1
+        	ENDIF
+		ADDy -plateD
+		ENDIF
+	ELSE
+	ADDy 0
+	ENDIF
+
+IF BITTEST(macro_runtype,2) AND gs_handle_type3 # "-" AND NOT(noHandle) THEN  ! Griff
+	MATERIAL matG
+	rothandle = 90*(bs_handle_orientation3="Su") - 90*(bs_handle_orientation3="So")
+	ROTy rothandle
+    IF bs_handle_model3 = "-" OR selectedSF<1 THEN  ! Standardgriff (undefiniert)
+        IF doorTYPE=1 THEN
+            selectedSF = 4 : bs_handle_model3 = "8100A"
+            ELSE
+            selectedSF = 3 : bs_handle_model3 = "8100"
+            ENDIF
+        ENDIF
+    d = abmessung[selectedSF][dki_D]
+    x = abmessung[selectedSF][dki_Breite] - d/2
+    y = abmessung[selectedSF][dki_Tiefe]
+    GOSUB "LoD_handles"
+    IF NOT(sts) THEN GOSUB "Model-"+bs_handle_model3
+	DEL 1
+	ENDIF
+
+DEL 1
+
+! ------------------------------------------------------------------------- [ Fangpunkte ]
+
+IF sts < 2 AND GLOB_VIEW_TYPE # 2 THEN
+	IF rothandle THEN
+	    ! senkrecht
+	    htspt=ABS(htspt)+1 : HOTSPOT 0,-y,0, htspt
+	    ELSE
+	    ! waagrecht
+	    htspt=htspt+1 : HOTSPOT -d/2,-y,0, htspt
+	    htspt=htspt+1 : HOTSPOT    x,-y,0, htspt
+	    ENDIF
+    ENDIF
+
+! ------------------------------------------------------------------------- [ ENDE ]
+
+END htspt
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+! ------------------------------------------------------------------------[ MODELLE 3D - SCHILDER+ROSETTEN ]
+
+"LoD_plates":
+    IF dk_LOD < 101 THEN GOTO "LoD100P"
+	IF dk_LOD > 100 AND dk_LOD < 201 THEN GOTO "LoD200P"
+	IF dk_LOD > 200 AND dk_LOD < 301 THEN GOTO "LoD300P"
+	IF dk_LOD > 300 AND dk_LOD < 351 THEN GOTO "LoD350P"
+	IF dk_LOD > 350 AND dk_LOD < 401 THEN GOTO "LoD400P"
+    IF dk_LOD > 400 THEN GOTO "LoD500P"
+    RETURN
+
+! »»» Einfache Darstellung
+
+"LoD100P":
+    ADDy 0
+    RETURN
+
+! »»» Reduzierte Darstellung
+
+"LoD200P":
+    ADDy 0
+   	RETURN
+
+"LoD300P":
+    ADDy 0
+    RETURN
+
+! »»» Komplexe Darstellung
+
+"LoD350P":
+	seg=12 : RESOL 12  !24
+    RETURN
+
+"LoD400P":
+	! seg=24 : RESOL 16
+	seg=36 : RESOL 48
+    RETURN
+
+"LoD500P":
+	seg=48 : RESOL 60
+    RETURN
+
+! »»» Wiederkehrende Formen
+
+"Prismenausgabe":
+	IF ra > 0 THEN
+		HPRISM_	matP, matP, matP, matP,
+			idx1, plateD, 45, ra, 1,
+			GET(idx1*3)
+		ELSE
+		PRISM_	idx1, plateD, GET(idx1*3)
+		ENDIF
+	RETURN
+
+"Schloss":
+	idx2 = 0
+	MATERIAL dk_matSchwarz
+	GOSUB putCLSR
+	PRISM_	idx2, plateD*0.75, GET(idx2*3)
+
+	! WC-Schloss Schild
+	IF putCLSR = "clsr-WCS" THEN
+		ADDz plateD
+		PRISM_	2, plateD*0.2,
+			0,0, 900+smth,
+			0.0082,360, 4000+smth2
+		DEL 1
+		ENDIF
+
+	! WC-Schloss Knebel
+	IF putCLSR = "clsr-WCK" THEN
+		MATERIAL matP
+		ADDz plateD
+		PRISM_	2, 0.008,
+			0,0, 900+smth,
+			0.012,360, 4000+smth
+		ADDz 0.008
+		r = 0.0025
+		smth=1+2+8+64
+		HPRISM_	matP, matP, matP, matP,
+			9, 0.015, 0, r, 1,
+			 0.005  ,-0.022+r, 1+8,
+			 0.005  , 0.022-r, smth,
+			 0.005-r, 0.022  , 1000+smth,
+			-0.005+r, 0.022  , smth,
+			-0.005  , 0.022-r, 1000+smth,
+			-0.005  ,-0.022+r, smth,
+			-0.005+r,-0.022  , 1000+smth,
+			 0.005-r,-0.022  , smth,
+			 0.005  ,-0.022+r, 1000+smth
+		DEL 2
+		ENDIF
+	RETURN
+
+"clsr-PZ":
+	PUT 0.005218203717063, 0.0009791727138655, smth, 
+        0, 0.007917390676022, 900+smth, 
+		0, 286.1369307339, 4000+smth, 
+        -0.005212466805051, -0.01208432290015, smth, 
+        0, -0.01189490089931, 900+smth, 
+		0, 175.8398407309, 4000+smth, 
+        0.005218203717063, 0.0009791727138655, -1
+    idx2 = 7
+	MATERIAL matP
+	RETURN
+
+"clsr-RZ":
+	PUT 0,0, 900+smth
+	PUT 0.01,360, 4000+smth
+	idx2 = 2
+	MATERIAL matP
+    RETURN
+
+"clsr-OZ":
+	PUT 0.01, 0.01, smth,
+		0.00, 0.01, 900+smth,
+		0, 180, 4000+smth,
+		-0.01, -0.01, smth,
+		0.00,-0.01, 900+smth,
+		0, 180, 4000+smth,
+		0.01, 0.01, -1
+	idx2 = 7
+	MATERIAL matP
+    RETURN
+
+"clsr-CH":
+	PUT -0.004264686041638, 0.004096665975016, smth, 
+        -0.004264686041638, -0.009206793116687, smth, 
+        0, 0.008852770055544, 900+smth, 
+		0, 26.56467586635, 4000+smth, 
+        0.004261758173656, 0.004096665975016, smth, 
+        0.002758116059429, 0.004096665975016, smth, 
+        0.002758116059429, 0.005601275683911, smth, 
+        0, 0.008850259837962, 900+smth, 
+		0, 279.322962906, 4000+smth, 
+        -0.002760076332743, 0.004096665975016, smth, 
+        -0.004264686041638, 0.004096665975016, -1
+    idx2 = 11
+	MATERIAL matS
+	RETURN
+
+"clsr-BB":
+	PUT 0.003007755483799, 0.003955053772906, smth, 
+		0, 0.007967131337732, 900+smth, 
+		0, 286.2749457793, 4000+smth, 
+        -0.003810884142299, -0.008686570565816, smth, 
+        0, 0.00946411079389, 900+smth, 
+		0, 23.71489327113, 4000+smth, 
+        0.003007755483799, 0.003955053772906, -1
+    idx2 = 7
+	MATERIAL matS
+	RETURN
+	
+"clsr-WCS":
+	PUT 0.008524702544891, 0.01202836283808, smth, 
+        0, 0, 900+smth, 
+        0, 70.66760213476, 4000+smth, 
+        -0.006223375386283, 0.008742411345214, smth, 
+        0, 0, 900+smth, 
+        0, -70.89778179376, 4000+smth,
+        0.006222794829483, 0.008742411345214, smth,
+        0.008524702544891, 0.01202836283808, -1    
+	idx2 = 8
+	RETURN
+
+"clsr-WCK":
+	PUT 0,0, 900+smth,
+		0.0082,360, 4000+smth
+	idx2 = 2
+	RETURN
+
+"putOval":
+	! IF dk_LOD < 350 THEN
+	! 	ELSE
+		PUT plateX/2, plateY2-plateX/2, smth,
+			0, plateY2-plateX/2, 900+smth,
+			0, 180, 4000+smth,
+			-plateX/2, plateY2-plateY+plateX/2, smth,
+			0.00,plateY2-plateY+plateX/2, 900+smth,
+			0, 180, 4000+smth,
+			plateX/2, plateY2-plateX/2, -1
+		idx1 = 7
+		! ENDIF
+	RETURN
+
+"putRounded":
+	IF dk_LOD < 350 OR r < tlr THEN
+		PUT -plateS+plateX, plateY2, 15,
+			-plateS, plateY2, 15,
+			-plateS, plateY2-plateY, 15,
+			-plateS+plateX, plateY2-plateY, 15,
+			-plateS+plateX, plateY2, -1
+		idx1 = 5
+		ELSE
+		PUT -plateS+plateX, plateY2-r, smth,
+			-plateS+plateX-r, plateY2-r, 900+smth,
+			0, 90, 4000+smth,
+			-plateS+r, plateY2, smth,
+			-plateS+r, plateY2-r, 900+smth,
+			0, 90, 4000+smth,
+			-plateS, plateY2-plateY+r, smth,
+			-plateS+r, plateY2-plateY+r, 900+smth,
+			0, 90, 4000+smth,
+			-plateS+plateX-r, plateY2-plateY, smth,
+			-plateS+plateX-r, plateY2-plateY+r, 900+smth,
+			0, 90, 4000+smth,
+			-plateS+plateX, plateY2-r, -1
+		idx1 = 13
+		ENDIF
+	RETURN
+
+
+! »»» Geometrien
+
+"Model-650x + 6612":
+	! obere Rosette
+	PUT 0,0, 900+smth
+	PUT plateX/2,360, 4000+smth
+	idx1 = 2
+	GOSUB "Prismenausgabe"
+
+"Model-6612":
+	! untere Rosette
+	ADDy -bs_case_distance
+	PUT 0,0, 900+smth
+	PUT plateX/2,360, 4000+smth
+	idx1 = 2
+	IF putCLSR # "" THEN  GOSUB putCLSR
+	idx1 = idx1 + idx2
+	GOSUB "Prismenausgabe"
+	IF putCLSR # "" THEN  GOSUB "Schloss"
+	DEL 1
+	RETURN
+
+"Model-650x + 7122":
+    GOTO "Model-650x + 6612"
+    RETURN
+
+"Model-650x + 7123":
+    GOTO "Model-650x + 6612"
+    RETURN
+
+"Model-650x":
+	! obere Rosette
+	PUT 0,0, 900+smth
+	PUT plateX/2,360, 4000+smth
+	idx1 = 2
+	GOSUB "Prismenausgabe"
+    RETURN
+
+"Model-705x K":
+	ADDy -bs_case_distance
+	plateY2 = 0.036 + bs_case_distance
+	GOSUB "putOval"
+	IF putCLSR # "" THEN  GOSUB putCLSR
+	idx1 = idx1 + idx2
+	GOSUB "Prismenausgabe"
+	IF putCLSR # "" THEN  GOSUB "Schloss"
+	DEL 1
+    RETURN
+
+"Model-706x K":
+	ADDy -bs_case_distance
+	plateY2 = 0.036 + bs_case_distance : r=0.0045
+	GOSUB "putRounded"
+	IF putCLSR # "" THEN  GOSUB putCLSR
+	idx1 = idx1 + idx2
+	GOSUB "Prismenausgabe"
+	IF putCLSR # "" THEN  GOSUB "Schloss"
+	DEL 1
+    RETURN
+
+"Model-702x L":
+	ADDy -bs_case_distance
+	plateY2 = 0.0835 + bs_case_distance
+	GOSUB "putOval"
+	IF putCLSR # "" THEN  GOSUB putCLSR
+	idx1 = idx1 + idx2
+	GOSUB "Prismenausgabe"
+	IF putCLSR # "" THEN  GOSUB "Schloss"
+	DEL 1
+    RETURN
+
+"Model-701x L":
+	ADDy -bs_case_distance
+	plateY2 = 0.0835 + bs_case_distance : r=0.0045
+	GOSUB "putRounded"
+	IF putCLSR # "" THEN  GOSUB putCLSR
+	idx1 = idx1 + idx2
+	GOSUB "Prismenausgabe"
+	IF putCLSR # "" THEN  GOSUB "Schloss"
+	DEL 1
+    RETURN
+
+"Model-7601":
+	ADDy -bs_case_distance
+	plateY2 = 0.041 + bs_case_distance : r=0.0255
+	GOSUB "putRounded"
+	IF putCLSR # "" THEN  GOSUB putCLSR
+	idx1 = idx1 + idx2
+	GOSUB "Prismenausgabe"
+	IF putCLSR # "" THEN  GOSUB "Schloss"
+	DEL 1
+    RETURN
+
+"Model-662x + 6679":
+	! obere Rosette
+	plateY2 = plateY/2
+	GOSUB "putOval"
+	GOSUB "Prismenausgabe"
+
+"Model-6679":
+	! untere Rosette
+	ADDy -bs_case_distance
+	plateY2 = plateY/2
+	GOSUB "putOval"
+	IF putCLSR # "" THEN  GOSUB putCLSR
+	idx1 = idx1 + idx2
+	GOSUB "Prismenausgabe"
+	IF putCLSR # "" THEN  GOSUB "Schloss"
+	DEL 1
+    RETURN
+
+"Model-661x + 6676":
+	! obere Rosette
+	plateY2 = plateY/2 : r=0.0045
+	GOSUB "putRounded"
+	GOSUB "Prismenausgabe"
+	IF putCLSR # "" THEN  GOSUB "Schloss"
+
+"Model-6676":
+	! untere Rosette
+	ADDy -bs_case_distance
+	plateY2 = plateY/2 : r=0.0045
+	GOSUB "putRounded"
+	IF putCLSR # "" THEN  GOSUB putCLSR
+	idx1 = idx1 + idx2
+	GOSUB "Prismenausgabe"
+	IF putCLSR # "" THEN  GOSUB "Schloss"
+	DEL 1
+    RETURN
+
+"Model-662x":
+	plateY2 = plateY/2
+	GOSUB "putOval"
+	GOSUB "Prismenausgabe"
+    RETURN
+
+"Model-661x":
+	plateY2 = plateY/2 : r=0.0045
+	GOSUB "putRounded"
+	GOSUB "Prismenausgabe"
+    RETURN
+
+"Model-ZL 65xx Tchoban":
+	! obere Rosette
+	! r = 0.063/2
+	! t  = 0.061
+	! FOR idx1=1 TO 3
+	! 	w = idx1*120
+	! 	PUT COS(w- 30)*t, SIN(w- 30)*t, 900+smth
+	! 	PUT COS(w+ 90)*r, SIN(w+ 90)*r, smth
+	! 	PUT COS(w+210)*r, SIN(w+210)*r, 3000+smth
+	! 	NEXT idx1
+	r = 0.038
+	t  = 0.0692
+	FOR idx1=1 TO 3
+		w = 180+idx1*120
+		PUT COS(w+ 30)*r, SIN(w+ 30)*r, smth
+		PUT COS(w- 90)*t, SIN(w- 90)*t, 900+smth
+		PUT COS(w+120)*r, SIN(w+120)*r, 3000+smth
+		NEXT idx1
+	idx1 = 3 * 3
+	GOSUB "Prismenausgabe"
+
+	! untere Rosette
+	ADDy -bs_case_distance
+	r = 0.038
+	t  = 0.0692
+	FOR idx1=1 TO 3
+		w = idx1*120
+		PUT COS(w+ 30)*r, SIN(w+ 30)*r, smth
+		PUT COS(w- 90)*t, SIN(w- 90)*t, 900+smth
+		PUT COS(w+120)*r, SIN(w+120)*r, 3000+smth
+		NEXT idx1
+	! FOR idx1=1 TO 3
+	! 	w = 180 + idx1*120
+	! 	PUT COS(w+ 90)*r, SIN(w+ 90)*r+s, smth
+	! 	PUT COS(w- 30)*t, SIN(w- 30)*t+s, 900+smth
+	! 	PUT COS(w+210)*r, SIN(w+210)*r+s, 3000+smth
+	! 	NEXT idx1
+	PUT COS(210)*r, SIN(210)*r+s, -1
+	idx1 = 3 * 3 +1
+	! IF putCLSR # "" AND putCLSR # "clsr-WCS" AND putCLSR # "clsr-WCK" THEN  GOSUB putCLSR
+	IF putCLSR # "" THEN  GOSUB putCLSR
+	idx1 = idx1 + idx2
+	GOSUB "Prismenausgabe"
+	IF putCLSR # "" THEN  GOSUB "Schloss"
+	! IF putCLSR # "" AND putCLSR # "clsr-WCS" AND putCLSR # "clsr-WCK" THEN  GOSUB "Schloss"
+	DEL 1
+	RETURN
+
+"Model-ZL 65xx Forstner":
+	smth2=15
+	! obere Rosette
+	PUT  plateS, plateS,  smth2
+	PUT -plateS, plateS,  smth2
+	PUT -plateS, -plateS, smth2
+	PUT  plateS, -plateS, smth2
+	PUT  plateS, plateS,  -1
+	idx1 = 5
+	GOSUB "Prismenausgabe"
+
+	! untere Rosette
+	ADDy -bs_case_distance
+	PUT  plateS, plateS,  smth2
+	PUT -plateS, plateS,  smth2
+	PUT -plateS, -plateS, smth2
+	PUT  plateS, -plateS, smth2
+	PUT  plateS, plateS,  -1
+	idx1 = 5
+	! IF putCLSR # "" AND putCLSR # "clsr-WCS" AND putCLSR # "clsr-WCK" THEN  GOSUB putCLSR
+	IF putCLSR # "" THEN  GOSUB putCLSR
+	idx1 = idx1 + idx2
+	GOSUB "Prismenausgabe"
+	IF putCLSR # "" THEN  GOSUB "Schloss"
+	! IF putCLSR # "" AND putCLSR # "clsr-WCS" AND putCLSR # "clsr-WCK" THEN  GOSUB "Schloss"
+	DEL 1
+	RETURN
+
+! ------------------------------------------------------------------------[ MODELLE 3D - GRIFFE ]
+
+"LoD_handles":
+	sts=0
+    IF dk_LOD < 101 THEN GOTO "LoD100H"
+	IF dk_LOD > 100 AND dk_LOD < 201 THEN GOTO "LoD200H"
+	IF dk_LOD > 200 AND dk_LOD < 301 THEN GOTO "LoD300"
+	IF dk_LOD > 300 AND dk_LOD < 351 THEN GOTO "LoD350"
+	IF dk_LOD > 350 AND dk_LOD < 401 THEN GOTO "LoD400"
+    IF dk_LOD > 400 THEN GOTO "LoD500"
+    RETURN
+
+! »»» Einfache Darstellung (Aus)
+
+"LoD100H":
+	sts=2
+    RETURN
+
+! »»» Reduzierte Darstellung (Linie)
+
+"LoD200H":
+	sts=2
+   	RETURN
+
+"LoD300":
+	sts=1
+    LIN_ 0, 0,0, 0,-y,0
+    LIN_ 0,-y,0, x,-y,0
+    RETURN
+
+! »»» Komplexe Darstellung
+
+"LoD350":
+	sts=1
+	ADDz -d/2
+	PRISM 6,d,
+		-d/2,0,
+		-d/2,-y,
+		x,-y,
+		x,-y+d,
+		d/2,-y+d,
+		d/2,0
+	DEL 1
+    RETURN
+
+"LoD400":
+	! seg=12 : RESOL 12
+	! seg=24 : RESOL 16
+	seg=24 : RESOL 32
+    RETURN
+
+"LoD500":
+	seg=48 : TOLER 0.002 : RESOL 60
+    RETURN
+
+! »»» Ausgabe über Makro
+
+! "Freeform":
+! 	IF drawMODELL # "" THEN  ! Freiformmodelle über Makros
+! 		CALL drawMODELL PARAMETERS htspt = htspt, dk_LOD = dk_LOD, 
+!             x = x, y = y, d = d,
+! 			gs_cont_pen = dk_cont_pens[dka_handle_penC2],
+! 			gs_mat = matG
+! 		ENDIF
+! 	RETURN
+
+
+"FreeformV2R":
+	IF drawMODELL # "" THEN  ! Freiformmodelle über Makros
+		CALL "DORMAKABA_OGRO_handles3D" PARAMETERS KnaufGriffModell = drawMODELL, matG = matG
+		ENDIF
+	RETURN
+
+
+"repetitive":
+	ROTX -90
+	ADDZ -h1
+	GROUP "ogro1"
+	HPRISM_	matG, matG, matG, matG,
+			5, 0.0035, 45, 0.001, 0,
+			0, r, 78,
+			vers, r, 78,
+			vers, -r, 1078,
+			0, -r, 78,
+			0, r, 1078
+	ENDGROUP
+	GROUP "ogro2"
+	MULZ -1
+	HPRISM_	matG, matG, matG, matG,
+			5, 0.0035, 45, 0.001, 0,
+			0, r, 78,
+			vers, r, 78,
+			vers, -r, 1078,
+			0, -r, 78,
+			0, r, 1078
+	DEL 1
+	ENDGROUP
+	GROUP "ogro3"
+	CYLIND h1, r
+	ADD vers, 0, -h2
+	CYLIND h2, r
+	DEL 1
+	ENDGROUP
+	result_1=ADDGROUP("ogro1", "ogro2")
+	result_2=ADDGROUP("ogro3", result_1)
+	PLACEGROUP result_2
+	KILLGROUP "ogro1"
+	KILLGROUP "ogro2"
+	KILLGROUP "ogro3"
+	DEL 2
+	RETURN
+
+
+! »»» Typen  (Knauf) code by vis2real
+
+"Model-3020":
+	GOSUB "Model-8020"
+    RETURN
+
+"Model-3020A":  !...freeform
+	GOSUB "Model-8020A"
+    RETURN
+
+"Model-3025":
+	GOSUB "Model-8025"
+    RETURN
+
+"Model-3025V":  !...freeform
+	GOSUB "Model-8025V"
+    RETURN
+
+"Model-3030":  !...freeform
+	GOSUB "Model-8030"
+    RETURN
+
+"Model-3030V":  !...freeform
+	GOSUB "Model-8030V"
+    RETURN
+
+"Model-3548":
+	GOSUB "Model-8548"
+    RETURN
+
+"Model-3548V":
+	GOSUB "Model-8548V"
+    RETURN
+
+
+"Model-8020":
+	ROTz -90
+	REVOLVE 12, 360, 1+2,
+		0.039059304,0.021802614, 0,
+		0.038793229,0.02244498, 1,
+		0.038150862,0.022711057, 1,
+		0.02543267,0.022711057, 1,
+		0.024790306,0.02244498, 1,
+		0.024524229,0.021802614, 0,
+		0.024524229,0.013626634, 1,
+		0.024269097,0.012289063, 1,
+		0.023459923,0.011057171, 1,
+		0.02222803,0.010247998, 1,
+		0.020890459,0.0099928649, 1,
+		0,0.0099928649, 0
+		DEL 1
+    RETURN
+
+"Model-8020A":  !...freeform
+	drawMODELL = "8020A" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8025":
+	ROTz -90
+	REVOLVE 15, 360, 1+2,
+		0, 0.01175, 0,
+		0.033912312,0.01175, 1,
+		0.034675739,0.011958807, 1,
+		0.03522662,0.012527093, 1,
+		0.037470921,0.016083256, 1,
+		0.0401464,0.0193673, 1,
+		0.043199013,0.022304083, 1,
+		0.046558323,0.024833551, 1,
+		0.046822281,0.024957483, 1,
+		0.047110767,0.025, 1,
+		0.058495041,0.025, 1,
+		0.058799824,0.024952423, 1,
+		0.059075603,0.024814217, 1,
+		0.061734955,0.022661253, 1,
+		0.064111847,0.0202, 0
+		DEL 1
+    RETURN
+
+"Model-8025V":  !...freeform
+	drawMODELL = "8025V" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8030":  !...freeform
+	drawMODELL = "8030" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8030V":  !...freeform
+	drawMODELL = "8030V" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8548":
+	ROTX 90
+	CYLIND 0.01463, 0.01025
+	ADDZ 0.01463
+	ROTY -90
+	REVOLVE 6, 360, 1,
+			0, 0.01025, 0,
+			0.013, 0.010463, 1,
+			0.014, 0.01161, 1,
+			0.01467, 0.01382, 1,
+			0.0355, 0, 901,
+			0.0605, 0, 3001
+	DEL 3
+    RETURN
+
+"Model-8548V":
+	ROTX 90
+	ROTZ 180
+	CYLIND 0.01072, 0.01
+	ADDZ 0.01072
+	CONE 0.00736, 0.01, 0.01, 90, 66
+	ADDZ 0.00736
+	ROTY -48
+	CONE 0.0316, 0.01, 0.01, 114, 90
+	ROTY -90
+	REVOLVE 4, 360, 0,
+			0.0316, 0.01, 0,
+			0.03251, 0.01058, 1,
+			0.05516, 0, 901,
+			0.08016, 0, 3001
+	DEL 6
+    RETURN
+
+
+! »»» Typen  (Drücker) code by vis2real
+
+"Model-8016":  !...freeform
+	drawMODELL = "8016" : GOTO "FreeformV2R"
+	! drawMODELL = "OGRO 8016" : GOTO "Freeform"
+    RETURN
+
+"Model-8056":  !...freeform
+	drawMODELL = "8056" : GOTO "FreeformV2R"
+	! drawMODELL = "OGRO 8056" : GOTO "Freeform"
+    RETURN
+
+"Model-8100":
+	idx1=0
+	PUT 0, 1, 0, 0
+	PUT 0, 0, 0, 0
+	idx1=idx1+2
+	FOR t=180 TO 270+tlr STEP 90/(seg/4)
+		PUT COS(t)*0.025+0.025, SIN(t)*0.025-0.03, 0, 0
+		idx1=idx1+1
+		NEXT t
+	FOR t=270 TO 360+tlr STEP 90/(seg/4)
+		PUT COS(t)*0.025+0.098, SIN(t)*0.025-0.03, 0, 0
+		idx1=idx1+1
+		NEXT t
+	PUT 0.098+0.025, -0.0145, 0, 0
+	PUT 0.098+0.025, -0.0135, 0, 0
+	idx1=idx1+2
+
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD 0.098+0.025, -0.0145, 0
+	ROTZ 90
+	REVOLVE 2, 360, 2,
+			0, 0.01, 0,
+			0.001, 0.009, 0
+	DEL 2
+	RETURN
+
+	! "8100" Alte Fassung
+	r=0.01
+	ROTz -90 : MULy -1
+	idx1=0
+	FOR t=0 TO 360 STEP 360/seg
+		put SIN(t)*r, COS(t)*r, 1
+		idx1=idx1+1
+		next t
+	idx2=0
+	put SIN(0)*(0.015+r)-0.04, COS(0)*(0.015+r), 0, 0
+	idx2=idx2+1
+	put SIN(0)*(0.015+r)-0.03, COS(0)*(0.015+r), 0, 0
+	idx2=idx2+1
+	FOR t=0 TO 90 STEP 360/seg
+		put SIN(t)*(0.015+r), COS(t)*(0.015+r), 0, 0
+		idx2=idx2+1
+		NEXT t
+	FOR t=90 TO 180 STEP 360/seg
+		put SIN(t)*(0.015+r), COS(t)*(0.015+r)-0.073, 0, 0
+		idx2=idx2+1
+		NEXT t
+	PUT SIN(180)*(0.015+r)-0.0155, COS(180)*(0.015+r)-0.073, 0, 0
+	idx2=idx2+1
+	PUT SIN(180)*(0.015+r)-0.0165, COS(180)*(0.015+r)-0.073, 0, 0
+	idx2=idx2+1
+	ADD 0.030, -r-0.015, 0
+	TUBE	idx1, idx2, 4+8,
+			GET(nsp)
+	DEL 1
+	ADD 0.0145, -0.03-2*r-0.073, 0
+	REVOLVE 2, 360, 2,
+			0, r, 0,
+			-0.001, r-0.001, 0
+	DEL 3
+	RETURN
+
+"Model-8100A":
+	h1=0.0205
+	h2=0.0285
+	r=0.01
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2, 0
+	idx1=0
+	FOR t=170 TO 270+tlr STEP 100/(seg/4)
+		PUT COS(t)*0.025+0.025, SIN(t)*0.025, 0, 0
+		idx1=idx1+1
+		NEXT t
+	FOR t=270 TO 360+tlr STEP 90/(seg/4)
+		PUT COS(t)*0.025+0.098, SIN(t)*0.025, 0, 0
+		idx1=idx1+1
+		NEXT t
+	
+	PUT 0.123, 0.0155, 0, 0
+	PUT 0.123, 0.1, 0, 0
+	idx1=idx1+2
+	
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD 0.123, 0.0155, 0
+	ROTZ 90
+	REVOLVE 2, 360, 2,
+			0, 0.01, 0,
+			0.001, 0.009, 0
+
+	DEL 2
+	DEL 1
+    RETURN
+
+"Model-8100V":
+	idx1=0
+	PUT 0, 1, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.015, 0, 0
+	PUT 0, -0.0175, 0, 0
+	idx1=idx1+4
+	FOR t=205 TO 270 STEP 10
+		PUT COS(t)*0.025+0.0310818, SIN(t)*0.025-0.025, 0, 0
+		idx1=idx1+1
+		NEXT t
+	FOR t=270 TO 360 STEP 10
+		PUT COS(t)*0.025+0.107, SIN(t)*0.025-0.025, 0, 0
+		idx1=idx1+1
+		NEXT t
+	PUT 0.107+0.025, -0.0095, 0, 0
+	PUT 0.107+0.025, -0.0085, 0, 0
+	idx1=idx1+2
+
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD 0.107+0.025, -0.0095, 0
+	ROTZ 90
+	REVOLVE 2, 360, 2,
+			0, 0.01, 0,
+			0.001, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8101":
+	idx1=0
+	PUT 0, 1, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.03, 0, 0
+
+	idx1=idx1+3
+	FOR t=180 TO 270 STEP 10
+		PUT COS(t)*0.025+0.025, SIN(t)*0.025-0.03, 0, 0
+		idx1=idx1+1
+		NEXT t
+	FOR t=270 TO 360 STEP 10
+		PUT COS(t)*0.025+0.098, SIN(t)*0.025-0.03, 0, 0
+		idx1=idx1+1
+		NEXT t
+
+	PUT 0.123, -0.022, 0, 0
+	PUT 0.123, 0, 0, 0
+	idx1=idx1+2
+
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD 0.123, -0.022, 0
+	ROTZ 90
+	REVOLVE 3, 360, 2,
+			0, 0, 900,
+			0, 0.01, 1,
+			0.01, 0, 3001
+	DEL 2
+    RETURN
+
+"Model-8101A":
+	h1=0.0205
+	h2=0.0115
+	r=0.01
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2, 0
+	idx1=0
+	PUT 0, 1, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.021, 0, 0
+	
+	idx1=idx1+3
+	FOR t=180 TO 270 STEP 10
+		PUT COS(t)*0.019+0.019, SIN(t)*0.019-0.021, 0, 0
+		idx1=idx1+1
+		NEXT t
+	FOR t=270 TO 360 STEP 10
+		PUT COS(t)*0.019+0.104, SIN(t)*0.019-0.021, 0, 0
+		idx1=idx1+1
+		NEXT t
+	
+	PUT 0.123, -0.007, 0, 0
+	PUT 0.123, 0, 0, 0
+	idx1=idx1+2
+	
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD 0.123, -0.007, 0
+	ROTZ 90
+	REVOLVE 3, 360, 2,
+			0, 0, 900,
+			0, 0.01, 1,
+			0.01, 0, 3001
+	DEL 2
+	DEL 1
+    RETURN
+
+"Model-8103":
+	idx1=0
+	PUT 0, 1, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.03, 0, 0
+
+	idx1=idx1+3
+	FOR t=180 TO 270 STEP 10
+		PUT COS(t)*0.025+0.025, SIN(t)*0.025-0.03, 0, 0
+		idx1=idx1+1
+		NEXT t
+	FOR t=270 TO 360 STEP 10
+		PUT COS(t)*0.025+0.13, SIN(t)*0.025-0.03, 0, 0
+		idx1=idx1+1
+		NEXT t
+
+	PUT 0.155, -0.015, 0, 0
+	PUT 0.155, 0, 0, 0
+	idx1=idx1+2
+
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD 0.155, -0.015, 0
+	ROTZ 90
+	REVOLVE 3, 360, 2,
+			0, 0.01, 0,
+			0.0005, 0.01, 0,
+			0.0015, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8111":
+	idx1=0
+	PUT 0, 1, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.05, 0, 0
+	PUT 0.016573095, -0.05, 0.0028583461, 0
+	PUT 0.026359224, -0.05, 0.0042793875, 0
+	PUT 0.044019442, -0.05, 0.0058535998, 0
+	PUT 0.061735035, -0.05, 0.0065222228, 0
+	PUT 0.079440526, -0.05, 0.0063024312, 0
+	PUT 0.097071516, -0.05, 0.0052048204, 0
+	PUT 0.11458246, -0.05, 0.0032993464, 0
+	PUT 0.13250745, -0.05, 0.00012207835, 0
+	PUT 0.15025032, -0.05, -0.0038379479, 0
+
+	idx1=12
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD 0.13250745, -0.05, 0.00012207835
+	ROTY 11.074886
+	REVOLVE 2, 360, 2,
+			0, 0.01, 0,
+			0.001, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8112":
+	idx1=0
+	PUT 0, 1, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0.0002677124, -0.05, 0, 0
+	PUT 0.016998842, -0.05, 0.002361112, 0
+	PUT 0.031483219, -0.05, 0.0037641851, 0
+	PUT 0.046146691, -0.05, 0.0045742369, 0
+	PUT 0.06124367, -0.05, 0.004895522, 0
+	PUT 0.076099541, -0.05, 0.0046863495, 0
+	PUT 0.090739358, -0.05, 0.0038673045, 0
+	PUT 0.10588005, -0.05, 0.0023225223, 0
+	PUT 0.12226771, -0.05, 0, 0
+	PUT 0.12226771, -0.015305687, 0, 0
+	PUT 0.1222677, 0, 0, 0
+
+	idx1=13
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)
+
+	ADD 0.1222677, -0.015305687, 0
+	ROTZ 90
+	REVOLVE 2, 360, 2,
+			0, 0.01, 0,
+			0.001, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8115":  !...freeform
+	drawMODELL = "8115" : GOTO "FreeformV2R"
+    RETURN
+
+	! "8115" Alte Fassung
+	r=0.01
+	ROTz -90 : MULy -1
+	idx1=0
+	FOR t=0 TO 360 STEP 360/seg
+		put SIN(t)*r, COS(t)*r, 1
+		idx1=idx1+1
+		NEXT t
+	idx2=0
+	put SIN(0)*(0.015+r)-0.04, COS(0)*(0.015+r), 0, 0
+	idx2=idx2+1
+	put SIN(0)*(0.015+r)-0.03, COS(0)*(0.015+r), 0, 0
+	idx2=idx2+1
+
+	FOR t=0 TO 90 STEP 360/seg
+		put SIN(t)*(0.015+r), COS(t)*(0.015+r), 0, 0
+		idx2=idx2+1
+		NEXT t
+	PUT SIN(90)*(0.015+r), COS(90)*(0.015+r)-0.099, 0, 0
+	idx2=idx2+1
+	PUT SIN(90)*(0.015+r), COS(90)*(0.015+r)-0.1, 0, 0
+	idx2=idx2+1
+
+	ADD 0.03, -r-0.015, 0
+	TUBE	idx1, idx2, 4+8,
+			GET(nsp)
+	DEL 1
+	ADD 0.045+r, -2*r-0.104, 0
+	ROTZ 90
+	REVOLVE 2, 360, 2,
+			0, r, 0,
+			-0.001, r-0.001, 0
+	DEL 4
+    RETURN
+
+"Model-8115V":  !...freeform
+	drawMODELL = "8115V" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8116":  !...freeform
+	drawMODELL = "8116" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8116V":  !...freeform
+	drawMODELL = "8116V" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8130":
+	idx1=29
+	PUT 0, 0.1, 0, 0
+	PUT	0, 0, 0, 0
+	PUT	0, -0.015, 0, 0
+	PUT	0, -0.025, 0, 0
+	PUT	0.00039694621, -0.029549072, 0.00012897403, 0
+	PUT	0.0016693733, -0.034202366, 0.00054240361, 0
+	PUT	0.0038756681, -0.038680231, 0.0012592857, 0
+	PUT	0.0069639599, -0.042677684, 0.0022627232, 0
+	PUT	0.010765725, -0.0459249, 0.0034979857, 0
+	PUT	0.015024407, -0.048244715, 0.0048817137, 0
+	PUT	0.019449958, -0.049582632, 0.0063196679, 0
+	PUT	0.023776431, -0.049999998, 0.0077254279, 0
+	PUT	0.029813159, -0.050000001, 0.009526381, 0
+	PUT	0.035982809, -0.050000004, 0.011044407, 0
+	PUT	0.042265744, -0.050000002, 0.012267055, 0
+	PUT	0.048640682, -0.050000004, 0.013183637, 0
+	PUT	0.055085394, -0.050000003, 0.013785573, 0
+	PUT	0.061576393, -0.050000003, 0.014066422, 0
+	PUT	0.068089588, -0.050000001, 0.014022101, 0
+	PUT	0.074600676, -0.050000005, 0.013650919, 0
+	PUT	0.081084868, -0.050000006, 0.012953687, 0
+	PUT	0.087517856, -0.050000003, 0.011933644, 0
+	PUT	0.093875795, -0.050000001, 0.010596427, 0
+	PUT	0.10013567, -0.050000008, 0.0089499693, 0
+	PUT	0.10627539, -0.050000016, 0.0070044522, 0
+	PUT	0.11227419, -0.050000003, 0.0047721187, 0
+	PUT	0.11811309, -0.049999998, 0.0022667974, 0
+	PUT	0.12377458, -0.049999997, -0.00049590992, 0
+	PUT	0.12421847, -0.050000001, -0.0007259694, 0
+
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD 0.12377458, -0.049999997, -0.00049590992
+	ROTY 90-63.23
+	REVOLVE 3, 360, 2,
+			0, 0.01, 0,
+			0.0005, 0.01, 0,
+			0.0015, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8140":
+	idx1=0
+	PUT 0, 0.1, 0, 0
+	PUT	0, 0, 0, 0
+	idx1=idx1+2
+	FOR t=180 TO 250 STEP 10
+		PUT COS(t)*0.025+0.025, SIN(t)*0.025-0.024, 0, 0
+		idx1=idx1+1
+		NEXT t
+	FOR t=257 TO 302.5 STEP 3.5
+		PUT COS(t)*0.13+0.06, SIN(t)*0.13+0.075, 0, 0
+		idx1=idx1+1
+		NEXT t
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD COS(299)*0.13+0.06, SIN(299)*0.13+0.075, 0
+	ROTZ 29
+	REVOLVE 3, 360, 2,
+			0, 0.01, 0,
+			0.0005, 0.01, 0,
+			0.0015, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8140A":
+	h1=0.0205
+	h2=0.0115
+	r=0.01
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2, 0
+	idx1=0
+	PUT 0, 0.1, 0, 0
+	PUT	0, 0, 0, 0
+	idx1=idx1+2
+	FOR t=180 TO 250 STEP 10
+		PUT COS(t)*0.025+0.025, SIN(t)*0.025-0.009, 0, 0
+		idx1=idx1+1
+		NEXT t
+	FOR t=257 TO 302.5 STEP 3.5
+		PUT COS(t)*0.13+0.06, SIN(t)*0.13+0.09, 0, 0
+		idx1=idx1+1
+		NEXT t
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD COS(299)*0.13+0.06, SIN(299)*0.13+0.09, 0
+	ROTZ 29
+	REVOLVE 3, 360, 2,
+			0, 0.01, 0,
+			0.0005, 0.01, 0,
+			0.0015, 0.009, 0
+	DEL 3
+    RETURN
+
+"Model-8141":
+	idx1=0
+	PUT 0, 0.1, 0, 0
+	PUT	0, 0, 0, 0
+	idx1=idx1+2
+	FOR t=180 TO 250 STEP 10
+		PUT COS(t)*0.025+0.025, SIN(t)*0.025-0.024, 0, 0
+		idx1=idx1+1
+		NEXT t
+	FOR t=257 TO 302.5 STEP 3.5
+		PUT COS(t)*0.13+0.06, SIN(t)*0.13+0.075, 0, 0
+		idx1=idx1+1
+		NEXT t
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD COS(299)*0.13+0.06, SIN(299)*0.13+0.075, 0
+	ROTZ 29
+	REVOLVE 3, 360, 2,
+			0, 0, 900,
+			0, 0.01, 1,
+			0.01, 0, 3001
+	DEL 2
+    RETURN
+
+"Model-8141A":
+	h1=0.0205
+	h2=0.0115
+	r=0.01
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2, 0
+	idx1=0
+	PUT 0, 0.1, 0, 0
+	PUT	0, 0, 0, 0
+	idx1=idx1+2
+	FOR t=180 TO 250 STEP 10
+		PUT COS(t)*0.025+0.025, SIN(t)*0.025-0.009, 0, 0
+		idx1=idx1+1
+		NEXT t
+	FOR t=257 TO 302.5 STEP 3.5
+		PUT COS(t)*0.13+0.06, SIN(t)*0.13+0.09, 0, 0
+		idx1=idx1+1
+		NEXT t
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD COS(299)*0.13+0.06, SIN(299)*0.13+0.09, 0
+	ROTZ 29
+	REVOLVE 3, 360, 2,
+			0, 0, 900,
+			0, 0.01, 1,
+			0.01, 0, 3001
+	DEL 3
+    RETURN
+
+"Model-8155":
+	idx1=0
+	PUT 0, 0.1, 0, 0
+	PUT	0, 0, 0, 0
+	idx1=idx1+2
+	FOR t=180 TO 270 STEP 10
+		PUT COS(t)*0.025+0.025, SIN(t)*0.025-0.03, 0, 0
+		idx1=idx1+1
+		NEXT t
+	PUT 0.025+0.0985, -0.055, 0, 0
+	PUT	0.2, -0.055, 0, 0
+	idx1=idx1+2
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD 0.025+0.0985, -0.055, 0
+	ROTZ 0
+	REVOLVE 3, 360, 2,
+			0, 0.01, 0,
+			0.0005, 0.01, 0,
+			0.0015, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8155V":
+	idx1=0
+	PUT 0, 0.1, 0, 0
+	PUT	0, 0, 0, 0
+	PUT 0, -0.0101, 0, 0
+	idx1=idx1+3
+	FOR t=205 TO 270 STEP 13
+		PUT COS(t)*0.03182+0.03702, SIN(t)*0.03182-0.01409, 0, 0
+		idx1=idx1+1
+		NEXT t
+	PUT 0.11591, -0.04591, 0, 0
+	PUT	0.2, -0.04591, 0, 0
+	idx1=idx1+2
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD 0.11591, -0.04591, 0
+	ROTZ 0
+	REVOLVE 3, 360, 2,
+			0, 0.01, 0,
+			0.0005, 0.01, 0,
+			0.0015, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8156":
+	idx1=0
+	PUT 0, 0.1, 0, 0
+	PUT	0, 0, 0, 0
+	idx1=idx1+2
+	FOR t=180 TO 270 STEP 10
+		PUT COS(t)*0.025+0.025, SIN(t)*0.025-0.03, 0, 0
+		idx1=idx1+1
+		NEXT t
+	PUT 0.025+0.0985, -0.055, 0, 0
+	PUT	0.2, -0.055, 0, 0
+	idx1=idx1+2
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	ADD 0.025+0.0985, -0.055, 0
+	ROTZ 0
+	REVOLVE 3, 360, 2,
+			0, 0, 900,
+			0, 0.01, 1,
+			0.01, 0, 3001
+	DEL 2
+    RETURN
+
+"Model-8200 Bitch/Neither/Teherani":  !...freeform
+	drawMODELL = "8200" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8350":
+	idx1=0
+	PUT 0, 0.1, 0, 0
+	PUT	0, 0, 0, 0
+	idx1=idx1+2
+	FOR t=180 TO 270 STEP 10
+		PUT COS(t)*0.025+0.025, SIN(t)*0.025-0.029, 0, 0
+		idx1=idx1+1
+		NEXT t
+	FOR t=270 TO 360 STEP 10
+		PUT COS(t)*0.025+0.103, SIN(t)*0.025-0.029, 0, 0
+		idx1=idx1+1
+		NEXT t
+	PUT 0.128, -0.015, 0, 0
+	PUT	0.128, 0, 0, 0
+	idx1=idx1+2
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.011, 360,4001,
+			GET(NSP)	
+
+
+	ADD 0.128, -0.015, 0
+	ROTZ 90
+	REVOLVE 3, 360, 2,
+			0, 0.011, 0,
+			0.0005, 0.011, 0,
+			0.0015, 0.01, 0
+	DEL 2
+	RETURN
+
+	! "8350" Alte Fassung
+	r=0.011
+	ROTz -90 : MULy -1
+	idx1=0
+	FOR t=0 TO 360 STEP 360/seg
+		PUT SIN(t)*r, COS(t)*r, 1
+		idx1=idx1+1
+		NEXT t
+	idx2=0
+	PUT SIN(0)*(0.014+r)-0.04, COS(0)*(0.014+r), 0, 0
+	idx2=idx2+1
+	PUT SIN(0)*(0.014+r)-0.029, COS(0)*(0.014+r), 0, 0
+	idx2=idx2+1
+	FOR t=0 TO 90 STEP 360/seg
+		PUT SIN(t)*(0.014+r), COS(t)*(0.014+r), 0, 0
+		idx2=idx2+1
+		NEXT t
+	FOR t=90 TO 180 STEP 360/seg
+		PUT SIN(t)*(0.014+r), COS(t)*(0.014+r)-0.078, 0, 0
+		idx2=idx2+1
+		NEXT t
+	PUT SIN(180)*(0.014+r)-0.015, COS(180)*(0.014+r)-0.078, 0, 0
+	idx2=idx2+1
+	PUT SIN(180)*(0.014+r)-0.016, COS(180)*(0.014+r)-0.078, 0, 0
+	idx2=idx2+1
+
+	ADD 0.030, -r-0.014, 0
+	TUBE	idx1, idx2, 4+8,
+			get(nsp)
+	DEL 1
+	ADD 0.015, -0.029-2*r-0.077, 0
+	REVOLVE 2, 360, 2,
+			0, r, 0,
+			-0.001, r-0.001, 0
+	DEL 3
+    RETURN
+
+"Model-8350A":
+	h1=0.0205
+	h2=0.0115
+	r=0.01
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2, 0
+	idx1=0
+	PUT 0, 0.1, 0, 0
+	PUT	0, 0, 0, 0
+	idx1=idx1+2
+	FOR t=180 TO 270 STEP 10
+		PUT COS(t)*0.025+0.025, SIN(t)*0.025-0.009, 0, 0
+		idx1=idx1+1
+		NEXT t
+	FOR t=270 TO 370 STEP 10
+		PUT COS(t)*0.025+0.103, SIN(t)*0.025-0.009, 0, 0
+		idx1=idx1+1
+		NEXT t
+
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.011, 360,4001,
+			GET(NSP)	
+
+	ADD 0.128, -0.009, 0
+	ROTZ 90
+	REVOLVE 3, 360, 2,
+			0, 0.011, 0,
+			0.0005, 0.011, 0,
+			0.0015, 0.01, 0
+	DEL 3
+    RETURN
+
+"Model-8350V":
+	idx1=0
+	PUT 0, 0.1, 0, 0
+	PUT	0, 0, 0, 0
+	PUT 0, -0.0092, 0, 0
+	idx1=idx1+3
+	FOR t=205 TO 270 STEP 13
+		PUT COS(t)*0.0318+0.0374, SIN(t)*0.0318-0.0132, 0, 0
+		idx1=idx1+1
+		NEXT t
+	FOR t=270 TO 360 STEP 10
+		PUT COS(t)*0.0318+0.094, SIN(t)*0.0318-0.0132, 0, 0
+		idx1=idx1+1
+		NEXT t
+	PUT 0.1258, -0.0086, 0, 0
+	PUT	0.1258, 0, 0, 0
+	idx1=idx1+2
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+
+	ADD 0.1258, -0.0086, 0
+	ROTZ 90
+	REVOLVE 2, 360, 2,
+			0, 0.01, 0,
+			0.001, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8353":
+	idx1=0
+	PUT 0, 0.1, 0, 0
+	PUT	0, 0, 0, 0
+	idx1=idx1+2
+	FOR t=180 TO 270 STEP 10
+		PUT COS(t)*0.0227+0.0227, SIN(t)*0.0227-0.0264, 0, 0
+		idx1=idx1+1
+		NEXT t
+	FOR t=270 TO 360 STEP 10
+		PUT COS(t)*0.0227+0.1164, SIN(t)*0.0227-0.0264, 0, 0
+		idx1=idx1+1
+		NEXT t
+	PUT 0.1391, -0.0136, 0, 0
+	PUT	0.1391, 0, 0, 0
+	idx1=idx1+2
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+
+	ADD 0.1391, -0.0136, 0
+	ROTZ 90
+	REVOLVE 3, 360, 2,
+			0, 0.01, 0,
+			0.0005, 0.01, 0,
+			0.0015, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8354":
+	idx1=0
+	PUT 0, 0.1, 0, 0
+	PUT	0, 0, 0, 0
+	idx1=idx1+2
+	FOR t=180 TO 370 STEP 10
+		PUT COS(t)*0.051+0.051, SIN(t)*0.051-0.01364, 0, 0
+		idx1=idx1+1
+		NEXT t
+
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)
+
+	ADD 0.102, -0.01364, 0
+	ROTZ 90
+	REVOLVE 3, 360, 2,
+			0, 0.01, 0,
+			0.0005, 0.01, 0,
+			0.0015, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8437":  !...freeform
+	drawMODELL = "8437" : GOTO "FreeformV2R"
+    RETURN
+
+! "Model-8526":  !...freeform ALT
+! 	drawMODELL = "OGRO 8526" : GOTO "Freeform"
+!     RETURN
+
+"Model-8527":  !...freeform
+	drawMODELL = "8527" : GOTO "FreeformV2R"
+	! drawMODELL = "OGRO 8527" : GOTO "Freeform"
+    RETURN
+
+"Model-8527A":  !...freeform
+	h1=0.0205
+	h2=0.00872
+	r=0.01
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2+0.01874, 0
+	ADDY -0.01874
+	CUTPLANE -90
+	DEL 1
+	GOSUB "Model-8527"
+	CUTEND
+	DEL 1
+    RETURN
+
+"Model-8810":
+	idx1=0
+	PUT 0, 0.01, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.03, 0, 0
+	PUT 0.000268277, -0.034549, -0.000319705, 0
+	PUT 0.00112824, -0.0392024, -0.00134461, 0
+	PUT 0.00261943, -0.0436802, -0.00312172, 0
+	PUT 0.00470662, -0.0476777, -0.00560919, 0
+	PUT 0.00727621, -0.0509249, -0.00867144, 0
+	PUT 0.0101545, -0.0532447, -0.0121017, 0
+	PUT 0.0131457, -0.0545825, -0.0156663, 0
+	PUT 0.0160697, -0.055, -0.019151, 0
+	PUT 0.0302753, -0.055, -0.0360807, 0
+	PUT 0.0341553, -0.0549999, -0.0398047, 0
+	PUT 0.038861, -0.0549999, -0.0426687, 0
+	PUT 0.0440796, -0.0549999, -0.0444325, 0
+	PUT 0.0494264, -0.055, -0.045011, 0
+	PUT 0.103996, -0.0550001, -0.045011, 0
+	PUT 0.108545, -0.0545826, -0.045011, 0
+	PUT 0.113199, -0.0532445, -0.045011, 0
+	PUT 0.117677, -0.0509247, -0.045011, 0
+	PUT 0.121674, -0.0476777, -0.045011, 0
+	PUT 0.124921, -0.0436805, -0.045011, 0
+	PUT 0.127241, -0.0392025, -0.045011, 0
+	PUT 0.128579, -0.0345491, -0.045011, 0
+	PUT 0.128997, -0.03, -0.045011, 0
+	PUT 0.128997, -0.0145, -0.0450113, 0
+	PUT 0.128997, 0, -0.0450113, 0
+	idx1=27
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)
+
+	ADD 0.128997, -0.0145, -0.0450113
+	ROTZ 90
+	REVOLVE 2, 360, 2,
+			0, 0.01, 0,
+			0.001, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8811":
+	MULZ -1
+	GOSUB "Model-8810"
+	DEL 1
+    RETURN
+
+"Model-8815":
+	idx1=0
+	PUT 0, 0.01, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.025, 0, 0
+	PUT 0.000346018, -0.0295491, 0.000233402, 0
+	PUT 0.00145521, -0.0342024, 0.000981546, 0
+	PUT 0.00337836, -0.0386803, 0.00227869, 0
+	PUT 0.00607043, -0.0426776, 0.00409453, 0
+	PUT 0.00938465, -0.045925, 0.00633005, 0
+	PUT 0.0130968, -0.0482446, 0.00883399, 0
+	PUT 0.0169546, -0.0495827, 0.011436, 0
+	PUT 0.0207259, -0.05, 0.0139798, 0
+	PUT 0.0307275, -0.05, 0.0207259, 0
+	PUT 0.033926, -0.05, 0.0225558, 0
+	PUT 0.037398, -0.05, 0.0239077, 0
+	PUT 0.0410324, -0.05, 0.0247285, 0
+	PUT 0.0447073, -0.0500001, 0.025, 0
+	PUT 0.1335, -0.05, 0.025, 0
+	PUT 0.2335, -0.05, 0.025, 0
+	idx1=18
+	TUBE 	2, idx1, 1+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+
+	ADD 0.1335, -0.05, 0.025
+	ROTZ 0
+	REVOLVE 3, 360, 2,
+			0, 0.01, 0,
+			0.0005, 0.01, 0,
+			0.0015, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8825":
+	GROUP "8825_1"
+	ROTX 90
+	CYLIND 0.05, 0.01
+	DEL 1
+	ENDGROUP
+
+	GROUP "8825_2"
+	ADD 0.04855, -0.05, -0.12059
+	idx1=0
+	FOR t=54.9 TO 125.1+3.9 STEP 3.9
+		PUT COS(t)*0.13, 0, SIN(t)*0.13, 0
+		idx1=idx1+1
+		NEXT t
+	TUBE 	2, idx1, 1+2+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	DEL 1
+	ENDGROUP
+
+	result_8825=ADDGROUP ("8825_1", "8825_2")
+	PLACEGROUP result_8825
+	KILLGROUP "8825_1"
+	KILLGROUP "8825_2"
+
+	ADD 0.04855, -0.05, -0.12059
+	ROTY 31.2
+	ADDZ 0.13
+	REVOLVE 3, 360, 2,
+			0, 0.01, 0,
+			0.0005, 0.01, 0,
+			0.0015, 0.009, 0
+	DEL 3
+
+	ADD 0.04855, -0.05, -0.12059
+	ROTY -31.2
+	ADDZ 0.13
+	ROTY 180
+	REVOLVE 3, 360, 2,
+			0, 0.01, 0,
+			0.0005, 0.01, 0,
+			0.0015, 0.009, 0
+	DEL 4
+    RETURN
+
+"Model-8826":
+	GROUP "8826_1"
+	ROTX 90
+	CYLIND 0.05, 0.01
+	DEL 1
+	ENDGROUP
+
+	GROUP "8826_2"
+	ADD 0.04855, -0.05, -0.12059
+	idx1=0
+	FOR t=61.3-3.5875 TO 118.7+3.5875+3.5875 STEP 3.5875
+		PUT COS(t)*0.13, 0, SIN(t)*0.13, 0
+		idx1=idx1+1
+		NEXT t
+
+	TUBE 	2, idx1, 1+2+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+	DEL 1
+	ENDGROUP
+
+	result_8826=ADDGROUP ("8826_1", "8826_2")
+	PLACEGROUP result_8826
+	KILLGROUP "8826_1"
+	KILLGROUP "8826_2"
+
+	ADD 0.04855, -0.05, -0.12059
+	ROTY 28.7
+	ADDZ 0.13
+	REVOLVE 3, 360, 2,
+			0, 0, 900,
+			0, 0.01, 1,
+			0.01, 0, 3001
+	DEL 3
+
+	ADD 0.04855, -0.05, -0.12059
+	ROTY -28.7
+	ADDZ 0.13
+	ROTY 180
+	REVOLVE 3, 360, 2,
+			0, 0, 900,
+			0, 0.01, 1,
+			0.01, 0, 3001
+	DEL 4
+    RETURN
+
+"Model-8830 Sieger":  !...freeform
+	drawMODELL = "8830" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8830A Sieger":  !...freeform
+	h1=0.0212
+	h2=0.0089
+	r=0.01
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2+0.01736, 0
+	ADDY -0.01736
+	CUTPLANE -90
+	DEL 1
+	GOSUB "Model-8830 Sieger"
+	CUTEND
+	DEL 1
+    RETURN
+
+"Model-8860":  !...freeform
+	drawMODELL = "8860" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8870":
+	ROTX 90
+	CYLIND 0.046, 0.01
+	DEL 1
+	ADDY -0.046
+
+	ROTX 90
+	ADD -0.0165, -0.0125, 0.004
+	CUTPOLYA	4, 1, 0,
+				-0.001, 0.002, 7,
+				0.001, 0.002, 7,
+				0.001, 0.003, 7,	
+				-0.001, 0.003, 7
+
+	CUTPOLYA	4, 1, 0, 
+				-0.001, 0.022, 7,
+				0.001, 0.022, 7,
+				0.001, 0.023, 7,	
+				-0.001, 0.023, 7
+
+	ADD 0.0065, 0.0075, 0
+	FOR idx2=1 TO 5
+		FOR idx3=1 TO 3
+			CUTPOLYA	2, 1, 0.0035,
+						0, 0, 923,
+						0.00075, 360, 4088
+
+			ADDY 0.005
+			NEXT idx3
+		DEL 3
+		ADDX 0.005
+		NEXT idx2
+	DEL 6
+	CUTPOLYA	12, 1, 0.0035,
+				0, 0.002, 24,
+				0, 0.003, 24,
+				0.031, 0.003, 88,
+				0.032, 0.004, 1088,
+				0.032, 0.021, 88,
+				0.031, 0.022, 1088,
+				0, 0.022, 24,
+				0, 0.023, 24,
+				0.031, 0.023, 88,
+				0.033, 0.021, 1088,
+				0.033, 0.004, 88,
+				0.031, 0.002, 1088,
+				0, 0.002, 24
+	HPRISM_	matG, matG, matG, matG,
+			9, 0.004, 0, 0.0009, 1,
+			0, 0.001, 78,
+			0, 0.024, 78,
+			0.001, 0.025, 1078,
+			0.127, 0.025, 78,
+			0.13, 0.022, 1078,
+			0.13, 0.003, 78,
+			0.127, 0, 1078,
+			0.001, 0, 78,
+			0, 0.001, 1078
+
+	FOR idx2=1 TO 18
+		CUTEND
+		NEXT idx2
+
+	ADDY 0.025
+	ROTX 180
+	CUTPOLYA	4, 1, 0,
+				-0.001, 0.002, 15,
+				0.001, 0.002, 15,
+				0.001, 0.003, 15,	
+				-0.001, 0.003, 15
+	CUTPOLYA	4, 1, 0, 
+				-0.001, 0.022, 15,
+				0.001, 0.022, 15,
+				0.001, 0.023, 15,	
+				-0.001, 0.023, 15
+	HPRISM_	matG, matG, matG, matG,
+			9, 0.005, 0, 0.0025, 1,
+			0, 0.001, 78,
+			0, 0.024, 78,
+			0.001, 0.025, 1078,
+			0.127, 0.025, 78,
+			0.13, 0.022, 1078,
+			0.13, 0.003, 78,
+			0.127, 0, 1078,
+			0.001, 0, 78,
+			0, 0.001, 1078
+	DEL 2
+	CUTEND
+	CUTEND
+	DEL 3
+    RETURN
+
+"Model-8871":
+	ROTX 90
+	CYLIND 0.046, 0.01
+	DEL 1
+
+	ADD -0.0165, -0.055, 0
+	ADDZ -0.0125
+	ROTX 90
+	CUTPOLYA	4, 1, 0,
+				-0.001, 0.002, 7,
+				0.001, 0.002, 7,
+				0.001, 0.003, 7,	
+				-0.001, 0.003, 7
+	CUTPOLYA	4, 1, 0, 
+				-0.001, 0.022, 7,
+				0.001, 0.022, 7,
+				0.001, 0.023, 7,	
+				-0.001, 0.023, 7
+	TOLER 0.00001
+	CUTPOLYA	12, 1, -0.0005,
+				0, 0.002, 24,
+				0, 0.003, 24,
+				0.031, 0.003, 88,
+				0.032, 0.004, 1088,
+				0.032, 0.021, 88,
+				0.031, 0.022, 1088,
+				0, 0.022, 24,
+				0, 0.023, 24,
+				0.031, 0.023, 88,
+				0.033, 0.021, 1088,
+				0.033, 0.004, 88,
+				0.031, 0.002, 1088,
+				0, 0.002, 24
+	ADD 0.0065, 0.0075, 0
+	FOR idx2=1 TO 5
+		FOR idx3=1 TO 3
+			CUTPOLYA	2, 1, -0.0005,
+						0, 0, 923,
+						0.00075, 360, 4088
+
+			ADDY 0.005
+			NEXT idx3
+		DEL 3
+		ADDX 0.005
+		NEXT idx2
+	DEL 8
+	HPRISM_	matG, matG, matG, matG,
+			13, 0.0125, 0, 0.001, 1,
+			0, 0.001, 78,
+			0, 0.008, 78,
+			0.001, 0.009, 1078,
+			0.1285, 0.009, 78,
+			0.131, 0.0115, 1078,
+			0.131, 0.039, 78,
+			0.132, 0.04, 1078,
+			0.139, 0.04, 78,
+			0.14, 0.039, 1078,
+			0.14, 0.001, 78,
+			0.139, 0, 1078,
+			0.001, 0, 78,
+			0, 0.001, 1078
+
+	ROTY 180
+	HPRISM_	matG, matG, matG, matG,
+			13, 0.0125, 0, 0.001, 1,
+			0, 0.001, 78,
+			0, 0.008, 78,
+			-0.001, 0.009, 1078,
+			-0.1285, 0.009, 78,
+			-0.131, 0.0115, 1078,
+			-0.131, 0.039, 78,
+			-0.132, 0.04, 1078,
+			-0.139, 0.04, 78,
+			-0.14, 0.039, 1078,
+			-0.14, 0.001, 78,
+			-0.139, 0, 1078,
+			-0.001, 0, 78,
+			0, 0.001, 1078
+	DEL 1
+
+	FOR idx2=1 TO 18
+		CUTEND
+		NEXT idx2
+	DEL 1
+	RETURN
+
+"Model-8871V":
+	idx1=5
+	PUT 0, 0.01, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.02, 0, 0
+	PUT 0.02403, -0.046, 0, 0
+	PUT 0, -0.072, 0, 0
+	TUBE 	2, idx1, 1+2+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+
+	ADD -0.0165+0.02341, -0.055, 0
+	ADDZ -0.0125
+	ROTX 90
+	CUTPOLYA	4, 1, 0,
+				-0.001, 0.002, 7,
+				0.001, 0.002, 7,
+				0.001, 0.003, 7,	
+				-0.001, 0.003, 7
+	CUTPOLYA	4, 1, 0, 
+				-0.001, 0.022, 7,
+				0.001, 0.022, 7,
+				0.001, 0.023, 7,	
+				-0.001, 0.023, 7
+	TOLER 0.00001
+	CUTPOLYA	12, 1, -0.0005,
+				0, 0.002, 24,
+				0, 0.003, 24,
+				0.031, 0.003, 88,
+				0.032, 0.004, 1088,
+				0.032, 0.021, 88,
+				0.031, 0.022, 1088,
+				0, 0.022, 24,
+				0, 0.023, 24,
+				0.031, 0.023, 88,
+				0.033, 0.021, 1088,
+				0.033, 0.004, 88,
+				0.031, 0.002, 1088,
+				0, 0.002, 24
+
+	ADD 0.0065, 0.0075, 0
+	FOR idx2=1 TO 5
+		FOR idx3=1 TO 3
+			CUTPOLYA	2, 1, -0.0005,
+						0, 0, 923,
+						0.00075, 360, 4088
+
+			ADDY 0.005
+		NEXT idx3
+		DEL 3
+		ADDX 0.005
+	NEXT idx2
+	DEL 8
+
+	HPRISM_	matG, matG, matG, matG,
+			13, 0.0125, 0, 0.001, 1,
+			0, 0.001, 78,
+			0, 0.008, 78,
+			0.001, 0.009, 1078,
+			0.1285, 0.009, 78,
+			0.131, 0.0115, 1078,
+			0.131, 0.039, 78,
+			0.132, 0.04, 1078,
+			0.139, 0.04, 78,
+			0.14, 0.039, 1078,
+			0.14, 0.001, 78,
+			0.139, 0, 1078,
+			0.001, 0, 78,
+			0, 0.001, 1078
+
+	ROTY 180
+	HPRISM_	matG, matG, matG, matG,
+			13, 0.0125, 0, 0.001, 1,
+			0, 0.001, 78,
+			0, 0.008, 78,
+			-0.001, 0.009, 1078,
+			-0.1285, 0.009, 78,
+			-0.131, 0.0115, 1078,
+			-0.131, 0.039, 78,
+			-0.132, 0.04, 1078,
+			-0.139, 0.04, 78,
+			-0.14, 0.039, 1078,
+			-0.14, 0.001, 78,
+			-0.139, 0, 1078,
+			-0.001, 0, 78,
+			0, 0.001, 1078
+	DEL 1
+
+	FOR idx2=1 TO 18
+		CUTEND
+	NEXT idx2
+	DEL 1
+    RETURN
+
+"Model-8880 Kister":  !...freeform
+	drawMODELL = "8880" : GOTO "FreeformV2R"
+	! drawMODELL = "OGRO 8880" : GOTO "Freeform"
+    RETURN
+
+"Model-8880A Kister":  !...freeform
+	h1=0.021
+	h2=0.006
+	r=0.01
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2+0.00897, 0
+	ADDY -0.00897
+	CUTPLANE -90
+	DEL 1
+	GOSUB "Model-8880 Kister"
+	CUTEND
+	DEL 1
+	RETURN
+
+"Model-8890 Welter":  !...freeform
+	drawMODELL = "8890" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8906":
+	idx1=5
+	PUT 0, 0.01, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.05, 0, 0
+	PUT 0.12418, -0.05, 0, 0
+	PUT 0.15, -0.05, 0, 0
+
+	TUBE 	2, idx1, 1+2+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+
+	ADD 0.12418, -0.05, 0
+	REVOLVE 2, 360, 2,
+			0, 0.01, 0,
+			0.001, 0.009, 0
+	DEL 1
+	RETURN
+
+	! "8906" ALT
+	r=0.01
+	ROTz -90 : MULy -1
+	idx1=0
+	FOR t=0 TO 360 STEP 360/seg
+		PUT SIN(t)*r, COS(t)*r, 1
+		idx1=idx1+1
+		NEXT t
+	PUT -1, 0, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0.05, 0, 0, 0
+	PUT 0.05, -0.135, 0, 0
+	PUT 0.05, -0.15, 0, 0
+
+	TUBE	idx1, 5, 4+8,
+			GET(nsp)
+	ADD 0.05, -0.135, 0
+	ROTz 90
+	REVOLVE 2, 360, 2,
+			0, r, 0,
+			-0.001, r-0.001, 0
+	DEL 4
+    RETURN
+
+"Model-8906A":
+	h1=0.0168
+	h2=0.006
+	r=0.01
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, 0, 0
+
+	idx1=5
+	PUT 0, 0.01, 0, 0
+	PUT 0, -h1-h2, 0, 0
+	PUT 0, -0.05, 0, 0
+	PUT 0.10974, -0.05, 0, 0
+	PUT 0.15, -0.05, 0, 0
+
+
+	TUBE 	2, idx1, 1+2+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+
+	ADD 0.10974, -0.05, 0
+	REVOLVE 2, 360, 2,
+			0, 0.01, 0,
+			0.001, 0.009, 0
+	DEL 1
+    RETURN
+
+"Model-8906V":
+	idx1=6
+	PUT 0, 0.01, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.01625, 0, 0
+	PUT 0.01574, -0.05, 0, 0
+	PUT 0.12418, -0.05, 0, 0
+	PUT 0.15, -0.05, 0, 0
+	TUBE 	2, idx1, 1+2+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+
+	ADD 0.12418, -0.05, 0
+	REVOLVE 2, 360, 2,
+			0, 0.01, 0,
+			0.001, 0.009, 0
+	DEL 1
+    RETURN
+
+"Model-8907":
+	idx1=6
+	PUT 0, 0.01, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.05, 0, 0
+	PUT 0.123, -0.05, 0, 0
+	PUT 0.123, -0.015, 0, 0
+	PUT 0.123, 0, 0, 0
+	TUBE 	2, idx1, 1+2+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+
+	ADD 0.123, -0.015, 0
+	ROTZ 90
+	REVOLVE 3, 360, 2,
+			0, 0.01, 0,
+			0.0005, 0.01, 0,
+			0.0015, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8907A":
+	h1=0.0215
+	h2=0.0125
+	r=0.01
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2, 0
+
+	idx1=6
+	PUT 0, 0.01, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.035, 0, 0
+	PUT 0.123, -0.035, 0, 0
+	PUT 0.123, 0, 0, 0
+	PUT 0.123, 0.01, 0, 0
+	TUBE 	2, idx1, 1+2+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+
+	ADD 0.123, 0, 0
+	ROTZ 90
+	REVOLVE 3, 360, 2,
+			0, 0.01, 0,
+			0.0005, 0.01, 0,
+			0.0015, 0.009, 0
+	DEL 3
+    RETURN
+
+"Model-8907V":
+	idx1=7
+	PUT 0, 0.01, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.0215, 0, 0
+	PUT 0.01574, -0.05, 0, 0
+	PUT 0.123, -0.05, 0, 0
+	PUT 0.123, -0.015, 0, 0
+	PUT 0.123, 0, 0, 0
+	TUBE 	2, idx1, 1+2+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+
+	ADD 0.123, -0.015, 0
+	ROTZ 90
+	REVOLVE 3, 360, 2,
+			0, 0.01, 0,
+			0.0005, 0.01, 0,
+			0.0015, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8910":
+	idx1=6
+	PUT 0, 0.01, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.05, 0, 0
+	PUT 0.155, -0.05, 0, 0
+	PUT 0.155, -0.015, 0, 0
+	PUT 0.155, 0, 0, 0
+	TUBE 	2, idx1, 1+2+4+8+16+32,
+			0, 0, 901,
+			0.01, 360,4001,
+			GET(NSP)	
+
+	ADD 0.155, -0.015, 0
+	ROTZ 90
+	REVOLVE 2, 360, 2,
+			0, 0.01, 0,
+			0.001, 0.009, 0
+	DEL 2
+    RETURN
+
+"Model-8915 Kleihues":  !...freeform
+	drawMODELL = "8915" : GOTO "FreeformV2R"
+	! drawMODELL = "OGRO 8915" : GOTO "Freeform"
+    RETURN
+
+"Model-8916 Kleihues":  !...freeform
+	drawMODELL = "8916" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8916A Kleihues":  !...freeform
+	h1=0.02
+	h2=0.006
+	r=0.024/2
+	vers=0.0235
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2+0.00897, 0
+	ADDY -0.00897
+	CUTPLANE -90
+	DEL 1
+	GOSUB "Model-8916 Kleihues"
+	CUTEND
+	DEL 1
+    RETURN
+
+"Model-8920 Tchoban":  !...freeform
+	drawMODELL = "8920" : GOTO "FreeformV2R"
+	! drawMODELL = "OGRO 8920" : GOTO "Freeform"
+    RETURN
+
+"Model-8928 Wagenfeld":
+	ROTX 90
+	GROUP "8928_1"
+	CYLIND 0.031, 0.01
+	ENDGROUP
+
+	GROUP "8928_2"
+	ADDZ 0.0405
+	MULZ -1
+	HPRISM_	matG, matG, matG, matG,
+			9, 0.0105, 0, 0.001, 1,
+			0.096, 0.01, 78,
+			0, 0.01, 78,
+			-0.01, 0, 1078,
+			0, -0.01, 1078,
+			0.01039, -0.0025, 1078, 
+			0.01452, 0.0005, 1078,
+			0.10398, 0.0005, 78,
+			0.10498, 0.00156, 1078,
+			0.096, 0.01, 1078
+	DEL 2
+	ENDGROUP
+
+	GROUP "8928_3"
+	ADDZ 0.0405
+	HPRISM_	matG, matG, matG, matG,
+			9, 0.0105, 0, 0.001, 1,
+			0.096, 0.01, 78,
+			0, 0.01, 78,
+			-0.01, 0, 1078,
+			0, -0.01, 1078,
+			0.01039, -0.0025, 1078, 
+			0.01452, 0.0005, 1078,
+			0.10398, 0.0005, 78,
+			0.10498, 0.00156, 1078,
+			0.096, 0.01, 1078
+	DEL 1
+	ENDGROUP
+
+	result_8928_1=ADDGROUP("8928_1", "8928_2")
+	result_8928_2=ADDGROUP(result_8928_1, "8928_3")
+	PLACEGROUP result_8928_2
+	KILLGROUP "8928_1"
+	KILLGROUP "8928_2"
+	KILLGROUP "8928_3"
+
+	DEL 1
+    RETURN
+
+"Model-8928A Wagenfeld":
+	h1=0.02
+	h2=0.006
+	r=0.02/2
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2+0.015, 0
+	ADDY -0.015
+	CUTPLANE -90
+	DEL 1
+	GOSUB "Model-8928 Wagenfeld"
+	CUTEND
+	DEL 1
+    RETURN
+
+"Model-8940":
+	idx1=0
+	PUT 0, 0.01, 0, 0
+	PUT 0, 0, 0, 0
+	PUT 0, -0.05, 0, 0
+	idx1=idx1+3
+
+	FOR t=270 TO 297.5 STEP 2.5
+		PUT COS(t)*0.260425, SIN(t)*0.260425+0.210425, 0, 0
+		idx1=idx1+1
+		NEXT t
+
+	PUT 0.126583, -0.02999, 0, 0
+	idx1=idx1+1
+	TUBE 	2, idx1, 1+2+4+8+16+32,
+			0, 0, 901,
+			0.01, 360, 4001,
+			GET(NSP)	
+
+	ADD COS(297.5)*0.260425, SIN(297.5)*0.260425+0.210425, 0
+	ROTZ -14.9138
+	muly 2.66/2
+	REVOLVE 2, 360, 2,
+			0, 0.01, 0,
+			0.001, 0.009, 0
+	DEL 3
+    RETURN
+
+"Model-8940A":
+	h1=0.02
+	h2=0.006
+	r=0.02/2
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2+0.009, 0
+	ADDY -0.009
+	CUTPOLYA	4, 1, 0,
+				-0.05, 0, 7,
+				0.03, 0, 7,
+				0.03, 0.03, 7,
+				-0.05, 0.03, 7		
+	DEL 1
+	GOSUB "Model-8940"
+	CUTEND
+	DEL 1
+    RETURN
+
+"Model-8960 Forstner":
+	CUTPLANE -90
+	ADDX 0.118
+	ROTZ 90
+	CUTPLANE 90
+	DEL 2
+
+	HPRISM_	matG, matG, matG, matG,
+			8, 0.0125, 0, 0.001, 1,
+			-0.0125, 0.01, 78,
+			-0.0125, -0.059, 78,
+			-0.0115, -0.06, 1078,
+			0.12, -0.06, 78,
+			0.12, -0.045, 78,
+			0.0135, -0.045, 78,
+			0.0125, -0.044, 1078,
+			0.0125, 0.01, 78
+
+	MULZ -1
+	HPRISM_	matG, matG, matG, matG,
+			8, 0.0125, 0, 0.001, 1,
+			-0.0125, 0.01, 78,
+			-0.0125, -0.059, 78,
+			-0.0115, -0.06, 1078,
+			0.12, -0.06, 78,
+			0.12, -0.045, 78,
+			0.0135, -0.045, 78,
+			0.0125, -0.044, 1078,
+			0.0125, 0.01, 78
+	DEL 1
+
+	CUTEND
+	CUTEND
+	RETURN
+
+	! "8960 ALT"
+	r=0.012
+	ra=0.001
+	ROTz -90 : MULy -1
+	REVOLVE 2, 360, 3,
+			0, 0.012, 0,
+			0.0014, 0.012, 0
+	ADDx 0.0014
+	FOR t=1 TO 2
+		HPRISM_	matG, matG, matG, matG,
+				8, 0.0125, 0, ra, 1,
+				0, 0.0125, 14,
+				0.06-ra, 0.0125, 78,
+				0.06, 0.0125-ra, 1078,
+				0.06, 0.0125-0.13, 14,
+				0.045, 0.0125-0.13, 14,
+				0.045, -0.0125-ra, 78,
+				0.045-ra, -0.0125, 1078,
+				0, -0.0125, 14
+		mulz -1
+		NEXT t
+	DEL 5
+    RETURN
+
+"Model-8962 Braun Feldweg":  !...freeform
+	drawMODELL = "8962" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8968":  !...freeform
+	drawMODELL = "8968" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8972 Wagenfeld":
+	ROTX 90
+	GROUP "8972_1"
+	HPRISM_	matG, matG, matG, matG,
+			2, 0.055, 85.68, 0.055, 1,
+			0, 0, 979,
+			0.01175, 360, 4079
+	ENDGROUP
+	GROUP "8972_2"
+	ADDZ 0.035
+	CUTPLANE 180
+	DEL 1
+	HPRISM_	matG, matG, matG, matG,
+			7, 0.055, 85.68, 0.055, 1,
+
+			0, 0.01175, 79,
+			0.10812, 0.009, 79,
+			0.10812, -0.009, 1079,
+			0, -0.01175, 79,
+			0, 0, 979,
+			-0.01175, 0, 3079,
+			0, 0.01175, 3079 
+	CUTEND
+	ENDGROUP
+
+	result_8972=ADDGROUP("8972_1", "8972_2")
+	PLACEGROUP result_8972
+	KILLGROUP "8972_1"
+	KILLGROUP "8972_2"
+	DEL 1
+	RETURN
+
+	! "8972" ALT
+	r=0.0115
+	ROTx 90
+
+	GROUP "Abzug 1"
+	ADDz 0.038
+	CUTPLANE
+	DEL 1
+	HPRISM_	matG, matG, matG, matG,
+			5, 0.058, 85.5, 0.055, 1,
+			0, r, 79,
+			0.1077, r-0.002, 79,
+			0.1077, -r+0.002, 1079,
+			0, -r-0.0003, 79,
+			0, r+0.0003, 1079
+	CUTEND
+	ENDGROUP
+
+	GROUP "Abzug 2"
+	ADDz 0.038
+	CUTPLANE
+	DEL 1
+	HPRISM_	matG, matG, matG, matG,
+			2, 0.058, 85.5, 0.055, 1,
+			0, 0, 979,
+			r+0.0003, 360, 4079
+	CUTEND
+	ENDGROUP
+
+	result1=SUBGROUP("Abzug 1", "Abzug 2")
+
+	GROUP "Griff"
+	HPRISM_	matG, matG, matG, matG,
+			5, 0.058, 85.5, 0.055, 1,
+			0, r, 79,
+			0.1077, r-0.002, 79,
+			0.1077, -r+0.002, 1079,
+			0, -r, 79,
+			0, r, 1079
+	ENDGROUP
+
+	result2=SUBGROUP("Griff", result1)
+	PLACEGROUP result2
+	
+	KILLGROUP "Griff"
+	KILLGROUP "Abzug 1"
+	KILLGROUP "Abzug 2"
+	DEL 1
+    RETURN
+
+"Model-8972A Wagenfeld":
+	h1=0.018
+	h2=0.0102
+	r=0.0203/2
+	vers=0.02
+
+	ROTX -90
+	ADDZ -h1
+	GROUP "8972A_1"
+	HPRISM_	matG, matG, matG, matG,
+			5, 0.0035, 45, 0.001, 0,
+			0, r, 78,
+			vers, r, 78,
+			vers, -r, 1078,
+			0, -r, 78,
+			0, r, 1078
+	ENDGROUP
+
+	GROUP "8972A_2"
+	MULZ -1
+	HPRISM_	matG, matG, matG, matG,
+			5, 0.0035, 45, 0.001, 0,
+			0, r, 78,
+			vers, r, 78,
+			vers, -r, 1078,
+			0, -r, 78,
+			0, r, 1078
+	DEL 1
+	ENDGROUP
+
+	GROUP "8972A_3"
+	CYLIND h1, r
+	ADD vers, 0, -h2
+	CONE h2, r, r, 90, 90 
+	DEL 1
+	ENDGROUP
+	result_1a=ADDGROUP("8972A_1", "8972A_2")
+	result_2a=ADDGROUP("8972A_3", result_1a)
+	PLACEGROUP result_2a
+	KILLGROUP "8972A_1"
+	KILLGROUP "8972A_2"
+	KILLGROUP "8972A_3"
+	DEL 2
+
+	ADD vers, -h1-h2+0.02107, 0
+	ADDY -0.02107
+	CUTPOLYA	4, 1, 0,
+				-0.05, 0, 7,
+				0.03, 0, 7,
+				0.03, 0.03, 7,
+				-0.05, 0.03, 7
+				
+	DEL 1
+	GOSUB "Model-8972 Wagenfeld"
+	CUTEND
+	DEL 1
+    RETURN
+
+"Model-8974 Wagenfeld":  !...freeform
+	drawMODELL = "8974" : GOTO "FreeformV2R"
+    RETURN
+
+"Model-8990 Botti":
+	ROTX 90
+	CYLIND 0.015, 0.011
+	ADDZ 0.015
+	CUTPOLYA	8, 1, 0.025,
+				0.009, 0.002, 19,
+				0.009, -0.002, 19,
+				-0.02, -0.002, 19,
+				-0.02, -0.05, 19,
+				0.04, -0.05, 19,
+				0.04, 0.05, 19,
+				-0.02, 0.05, 19,
+				-0.02, 0.002, 19
+	HPRISM_	matG, matG, matG, matG,
+			2, 0.037, 0, 0.001, 1,
+			0, 0, 979,
+			0.011, 360, 4079
+
+	CUTEND
+	CUTPOLYA	4, 1, 0,
+				0.0091, 0.0021, 19,
+				0.0091, -0.0021, 19,
+				-0.02, -0.0021, 19,
+				-0.02, 0.0021, 19
+	ADDZ 0.031
+	HPRISM_	matG, matG, matG, matG,
+			7, 0.006, 0, 0.001, 1,
+			0, 0.011, 78,
+			0.1165, 0.011, 78,
+			0.119, 0.0085, 1078,
+			0.119, -0.0085, 78,
+			0.1165, -0.011, 1078,
+			0, -0.011, 78,
+			0, 0.011, 1078
+	MULZ -1
+
+	GROUP "8990_1"
+	HPRISM_	matG, matG, matG, matG,
+			7, 0.006, 0, 0.0025, 1,
+			0, 0.011, 78,
+			0.1165, 0.011, 78,
+			0.119, 0.0085, 1078,
+			0.119, -0.0085, 78,
+			0.1165, -0.011, 1078,
+			0, -0.011, 78,
+			0, 0.011, 1078
+	ENDGROUP
+
+	GROUP "8990_2"
+	CYLIND 0.006, 0.011
+	ENDGROUP
+
+	result_b1=ADDGROUP("8990_1", "8990_2")
+	PLACEGROUP result_b1
+	KILLGROUP "8990_1"
+	KILLGROUP "8990_2"
+	CUTEND
+	DEL 4
+	RETURN
+
+	! "8990" ALT
+	r=0.011
+	ra=0.001
+	ROTz -90 : MULy -1
+	ROTy 90
+	PRISM_	2, 0.04,
+			0, 0, 975,
+			r, 360, 4075
+	DEL 1
+	
+	ADDx 0.04
+	ROTy 90
+	HPRISM_	matG, matG, matG, matG,
+			7, 0.012, 45, ra, 1,
+			r, 0, 79,
+			r, -0.119+ra, 79,
+			r-ra, -0.119, 1079,
+			-r+ra, -0.119, 79,
+			-r, -0.119+ra, 1079,
+			-r, 0, 78,
+			r, 0, 1078
+	DEL 4
+    RETURN
+
+"Model-8990A Botti":
+	h1=0.024
+	h2=0.016
+	r=0.022/2
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2+0.04, 0
+	ADDY -0.04
+	CUTPOLYA	4, 1, 0,
+				-0.05, 0, 7,
+				0.03, 0, 7,
+				0.03, 0.05, 7,
+				-0.05, 0.05, 7
+				
+	DEL 1
+	GOSUB "Model-8990 Botti"
+	CUTEND
+	DEL 1
+	RETURN
+
+"Model-8991 Botti":
+	GROUP "8991_1"
+	ADDY -0.04
+	CUTPOLYA	4, 1, 0,
+				0, 0.01, 0,
+				0, -0.02, 0,
+				-0.1, -0.02, 0,
+				-0.1, 0.01, 0
+	HPRISM_	matG, matG, matG, matG,
+			10, 0.011, 0, 0.001, 1,
+			-0.01, 0, 78,
+			0.11, 0, 78,
+			0.113, 0.003, 1078,
+			0.113, 0.027, 78,
+			0.115, 0.029, 1078,
+			0.124, 0.029, 78,
+			0.125, 0.028, 1078,
+			0.125, 0.003, 78,
+			0.11, -0.012, 1078,
+			-0.01, -0.012, 78
+	MULZ -1
+	HPRISM_	matG, matG, matG, matG,
+			10, 0.011, 0, 0.001, 1,
+			-0.01, 0, 78,
+			0.11, 0, 78,
+			0.113, 0.003, 1078,
+			0.113, 0.027, 78,
+			0.115, 0.029, 1078,
+			0.124, 0.029, 78,
+			0.125, 0.028, 1078,
+			0.125, 0.003, 78,
+			0.11, -0.012, 1078,
+			-0.01, -0.012, 78
+	DEL 1
+	CUTEND
+	DEL 1
+	ENDGROUP
+
+	GROUP "8991_2"
+	CUTPOLYA	4, 1, 0,
+				0, -0.04, 0,
+				0, -0.06, 0,
+				0.02, -0.06, 0,
+				0.02, -0.04, 0
+
+	ROTX 90
+	HPRISM_	matG, matG, matG, matG,
+			2, 0.052, 0, 0.001, 1,
+			0, 0, 979,
+			0.011, 360, 4079
+	DEL 1
+	CUTEND
+	ENDGROUP
+
+	result_8991=ADDGROUP ("8991_1", "8991_2")
+	PLACEGROUP result_8991
+	KILLGROUP "8991_1"
+	KILLGROUP "8991_2"
+	RETURN
+
+	! "8991" ALT
+		r=0.011
+	ra=0.001
+	ROTz -90 : MULy -1
+	ROTy 90
+	PRISM_	2, 0.04,
+			0, 0, 975,
+			r, 360, 4075
+
+	DEL 1
+	CUTPOLYA	4, 1, 0,
+				0, -0.11, 0,
+				1, -0.11, 0,
+				1, -0.2, 0,
+				0, -0.2, 0
+	ADDx 0.04
+	ROTy 90
+	HPRISM_	matG, matG, matG, matG,
+			7, 0.012, 45, ra, 1,
+			r, 0, 79,
+			r, -0.119+ra, 79,
+			r-ra, -0.119, 1079,
+			-r+ra, -0.119, 79,
+			-r, -0.119+ra, 1079,
+			-r, 0, 78,
+			r, 0, 1078
+	CUTEND
+	DEL 2
+	ADD 0.037, -0.11, 0
+	ROTz 90
+	ROTx 90
+	ROTz 90
+	REVOLVE	7, 90, 0,
+			-r, 0.003, 0,
+			r, 0.003, 0,
+			r, 0.015-ra, 0,
+			r-ra, 0.015, 0,
+			-r+ra, 0.015, 0,
+			-r, 0.015-ra, 0,
+			-r, 0.003, 0
+	DEL 4
+	CUTPOLYA	4, 1, 0,
+				0.037, 0, 0,
+				1, 0, 0,
+				1, -1, 0,
+				0.037, -1, 0
+
+	ADD 0.037, -0.113, 0
+	ROTz -90
+	ROTy 90
+	HPRISM_	matG, matG, matG, matG,
+			6, 0.012, 45, ra, 1,
+			r, 0.01, 79,
+			r, -0.026+ra, 79,
+			r-ra, -0.026, 1079,
+			-r+ra, -0.026, 79,
+			-r, -0.026+ra, 1079,
+			-r, 0.01, 78
+	CUTEND
+	DEL 5
+    RETURN
+
+"Model-8991A Botti":
+	h1=0.024
+	h2=0.016
+	r=0.022/2
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2+0.04, 0
+	ADDY -0.04
+	CUTPOLYA	4, 1, 0,
+				-0.05, 0, 7,
+				0.03, 0, 7,
+				0.03, 0.05, 7,
+				-0.05, 0.05, 7
+	DEL 1
+	GOSUB "Model-8991 Botti"
+	CUTEND
+	DEL 1
+    RETURN
+
+"Model-8998":  !...freeform
+	drawMODELL = "8998" : GOTO "FreeformV2R"
+	! drawMODELL = "OGRO 8998" : GOTO "Freeform"
+    RETURN
+
+"Model-8998A":  !...freeform
+	h1=0.02425
+	h2=0.00925
+	r=0.01175
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2+0.01575, 0
+	ADDY -0.01575
+	CUTPOLYA	4, 1, 0,
+				-0.05, 0, 7,
+				0.03, 0, 7,
+				0.03, 0.05, 7,
+				-0.05, 0.05, 7
+	DEL 1
+
+	GOSUB "Model-8998"
+	CUTEND
+	DEL 1
+    RETURN
+
+"Model-8999":  !...freeform
+	drawMODELL = "8999" : GOTO "FreeformV2R"
+	! drawMODELL = "OGRO 8999" : GOTO "Freeform"
+    RETURN
+
+"Model-8999A":  !...freeform
+	h1=0.02425
+	h2=0.00925
+	r=0.01175
+	vers=0.02
+	GOSUB "repetitive"
+
+	ADD vers, -h1-h2+0.01575, 0
+	ADDY -0.01575
+	CUTPOLYA	4, 1, 0,
+				-0.05, 0, 7,
+				0.03, 0, 7,
+				0.03, 0.05, 7,
+				-0.05, 0.05, 7
+	DEL 1
+	GOSUB "Model-8999"
+	CUTEND
+	DEL 1
+    RETURN
+

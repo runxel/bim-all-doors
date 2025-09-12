@@ -1,0 +1,571 @@
+
+IF NOT( BITTEST(macro_runtype,5) ) OR \
+	(stand AND bs_closer_model2 = "-") OR \
+	(NOT(stand) AND bs_closer_model = "-") THEN END
+
+! PROJECT2 4,270,2
+
+! ----------------------------------------------------------------- [ Grunddefinition der Variablen ]
+
+! Status der Kanten
+msk = 15
+msk2 = 15+64
+
+! »»» Öffnungswinkel und Stifte 
+IF GLOB_VIEW_TYPE = 4 OR GLOB_VIEW_TYPE = 5 THEN
+
+	! »»» Schnitt/Ansicht
+	PEN dk_cont_pens[dka_closer_penSA]
+	IF stand THEN
+		open_leaf = dk_open_leaf[dka_leaf2_angleSA]
+		ELSE
+		open_leaf = dk_open_leaf[dka_leaf_angleSA]
+		ENDIF
+
+	ELSE
+
+	! »»» 3D
+	PEN dk_cont_pens[dka_closer_penC3]
+	IF stand THEN
+		open_leaf = dk_open_leaf[dka_leaf2_angle3D]
+		ELSE
+		open_leaf = dk_open_leaf[dka_leaf_angle3D]
+		ENDIF
+		
+	ENDIF
+
+
+! =============================================================================
+! Ausgabe Schliesser
+! =============================================================================
+
+MATERIAL dk_materials[dka_closer_mat]
+
+! IF dk_LOD < 101 THEN GOSUB "LoD100"
+! IF dk_LOD > 100 AND dk_LOD < 201 THEN GOSUB "LoD200"
+! IF dk_LOD > 200 AND dk_LOD < 301 THEN GOSUB "LoD300"
+IF dk_LOD > 300 AND dk_LOD < 351 THEN GOSUB "LoD350"
+IF dk_LOD > 350 AND dk_LOD < 401 THEN GOSUB "LoD400"
+IF dk_LOD > 400 THEN GOSUB "LoD500"
+
+! ------------------------------------------------------------------------- [ ENDE ]
+
+"ende":
+FOR i=1 TO nsp : x = GET(1) : NEXT i
+END htspt
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"LoD100":
+"LoD200":
+"LoD300":
+	! »»» Keine Darstellung
+	RETURN
+
+"LoD350":
+	! »»» Nur beim Editieren darstellen
+	IF NOT(GLOB_FEEDBACK_MODE) THEN RETURN
+
+"LoD400":
+"LoD500":
+
+	! »»» Eigenschaften standardisieren
+
+	IF stand THEN GOSUB "copyMain"
+
+	! »»» SCHLIEßKÖRPER ausgeben
+
+	! »»» Geometrie berechnen und Transformation
+	IF bs_closer_type = "ITS" THEN
+		GOSUB "calcBodyITS" 
+		GOSUB "KoerperTS_400"
+		ELSE
+		IF bs_closer_type = "BTS" THEN
+			GOSUB "calcBodyBTS"
+			! Versenkten Körper ausgeben
+			GOSUB "KoerperTS_400"
+			ADDz kz
+			! Abdeckung ausgeben
+			GOSUB "AbdeckungBTS"
+			DEL 1
+			ELSE  ! OTS
+			GOSUB "calcBody" 
+			GOSUB "KoerperTS_"+STR(dk_LOD,3,0)
+			ENDIF
+		ENDIF
+
+	IF dk_LOD > 350 THEN GOSUB "Fangpunkte"
+	IF dk_LOD > 350 AND develop THEN GOSUB "FangpunkteTB"
+	IF n THEN DEL n
+
+
+	! »»» SCHIENE / HALTEPUNKT ausgeben  (OTS/ITS)
+
+	IF bs_closer_type # "BTS" THEN
+
+		IF NOT(stand) OR (einszwei # 2) THEN
+
+			! »»» Geometrie berechnen und Transformation
+			IF bs_closer_type = "ITS" THEN
+				GOSUB "calcAncorPointITS" 
+				ELSE  ! OTS
+				GOSUB "calcAncorPoint" 
+				ENDIF
+
+			! »»» Und Schiene bzw. Halter ausgeben...
+			IF bs_closer_type = "ITS" OR ( bs_closer_type = "OTS" AND bs_slider_system = "G" ) THEN
+				GOSUB "Gleitschiene"
+				ENDIF
+
+			IF schere THEN
+				zSS = z + dsz  ! Höhenlage Bewegungsebene Spannschloss
+				GOSUB "Scherenanker"
+				ENDIF
+
+			IF n THEN DEL n
+
+			ENDIF
+
+		IF stand OR einszwei = 2 THEN
+
+			! »»» Geometrie berechnen (Transformation egal), Schiene wurde bei GF ausgegeben
+			IF bs_closer_type = "ITS" THEN
+				GOSUB "calcAncorPointITS" 
+				ELSE  ! OTS
+				GOSUB "calcAncorPoint" 
+				IF schere THEN zSS = z + dsz  ! Höhenlage Bewegungsebene Spannschloss
+				ENDIF
+
+			IF n THEN DEL n
+
+			ENDIF
+
+		ENDIF
+
+
+	! »»» MECHANIK (Hebel/Schere) ausgeben  (OTS/ITS)
+
+	IF bs_closer_type = "ITS" OR ( bs_closer_type = "OTS" AND bs_slider_system = "G" ) THEN
+		GOSUB "positionG"
+		GOSUB "Gleithebel_"+STR(dk_LOD,3,0)
+		ENDIF
+
+	IF schere THEN
+		GOSUB "positionS"
+		xSS = x : ySS = y   ! Verbindungspunkt merken
+		IF ABS(xSS)>tlr AND ABS(ySS)>tlr THEN GOSUB "Scherengestaenge_"+STR(dk_LOD,3,0)
+		ENDIF
+
+	IF develop OR dk_LOD > 400 THEN
+		htspt=htspt+1 : HOTSPOT DAx, DAy, zGE, htspt
+		htspt=htspt+1 : HOTSPOT APx, APy, zGE, htspt
+		ENDIF
+
+	RETURN
+
+! ------------------------------------------------------------------------- [ SUBS Schließkörper ]
+
+"KoerperTS_350":
+"KoerperTS_400":
+	z = kz
+	PUT	0,0,msk,
+		kx, 0, msk,
+		kx, ky, msk,
+		0, ky, msk,
+		0, 0, -1
+	GOSUB "CreatePrism"
+	RETURN
+
+"KoerperTS_500":
+	IF XEA THEN
+		! Körper der XEA-Serie
+		ROTx 90 : MULz -1
+		n = n + 2
+		IF gespiegelt THEN
+			ADD kx, kz/2, ky : MULx 1
+			ELSE
+			ADD 0, kz/2, ky : MULx -1
+			ENDIF
+		CALL "dormakaba Logo XEA" PARAMETERS x = 0.035, y = 0.02, t = 0.001, r = 0.003
+		MATERIAL dk_materials[dka_closer_mat]
+		DEL 2
+		x = kx : y = kz : z = ky : r = 0.0052
+		GOSUB "roundRect"
+		ELSE
+		IF serie = 90 THEN
+			! Körper TS90
+			MUL kx/0.246, ky/0.046, kz/0.056
+			GOSUB "TS90_500"
+			DEL 1
+			ELSE
+			IF schere THEN
+				! Gestängetürschließer
+				ROTy 90 : ROTz 90
+				n = n + 2
+				s = 0.0023 : t = 0.001
+				x = ky : y = kz : z = kx : r = 0.003
+				GOSUB "TS_S_500"
+				ELSE
+				! Körper altes Design
+				ROTy 90 : ROTz 90
+				n = n + 2
+				IF gespiegelt THEN
+					ADD ky, kz/2, kx : ROTy 270 : MULz -1
+					ELSE
+					ADD ky, kz/2, 0  : ROTy 90 : MULz -1
+					ENDIF
+				CALL "dormakaba Logo XEA" PARAMETERS x = 0.035, y = 0.02, t = 0.001, r = 0.003
+				MATERIAL dk_materials[dka_closer_mat]
+				DEL 3
+				x = ky : y = kz : z = kx : r = 0.003
+				GOSUB "roundHalfRect"
+				ENDIF
+			ENDIF
+		ENDIF
+
+	GOSUB "CreatePrism"
+
+	RETURN
+
+"CreatePrism":
+	IF nsp > 9 THEN PRISM_ nsp/3, z, GET(nsp)
+	RETURN
+
+"TS90_500":
+	GROUP "TS90_1"
+		s = 0.0045
+		ADDz 0.056/2
+		MULz 1-2*(bs_closer_position="T")
+		ADD 0.0865, 0.046-0.02, 0.056/2-0.0015
+		CYLIND s, 0.0175
+		ADDz s
+		CONE 0.01-s, 0.0175, 0.008, 90, 90
+		DEL 3
+		ENDGROUP
+	GROUP "TS90_2"
+		mulz -1 : ROTy 90 : ROTz 270
+		z = 0.055
+		ADDz 0.0865-z/2
+		PRISM_ 11, z, 
+			0, 0.056, msk2, 
+			-0.04253616782843, 0.05489380006168, msk2, 
+			-0.04251061650296, 0.05391128737924, 900+msk2, 
+			0, 87.52059331511, 4000+msk2, 
+			-0.04370797721341, 0.04001189793576, msk2, 
+			-0.04375574654416, 0.0159978421101, msk2, 
+			-0.04349331504902, 0.002054789986346, msk2, 
+			-0.04250905408695, 0.002073315419175, 900+msk2, 
+			0, 87.34346052031, 4000+msk2, 
+			0, 0, msk, 
+			0, 0.056, -1
+		DEL 4
+		ENDGROUP
+	GROUP "TS90_3"
+		MULz -1 : ROTy 90 : ROTz 270
+		z = 0.246
+		PRISM_ 12, z, 
+			0, 0.056, msk2, 
+			0.01019790876166, -0.03961693423563, 900+msk2, 
+			0, 28.21161911211, 4000+msk2, 
+			-0.04204706888483, 0.0375120675721, 900+msk2, 
+			0, 43.78866123553, 4000+msk2, 
+			-0.04504680471973, 0.01816559078748, msk2, 
+			-0.04204706888497, 0.018487932428, 900+msk2, 
+			0, 43.78866123544, 4000+msk2, 
+			0.01019790876201, 0.09561693423607, 900+msk2, 
+			0, 28.21161911201, 4000+msk2, 
+			-0.0001094803973398, 0.02800000000002, msk, 
+			0, 0.056, -1
+		DEL 3
+		ENDGROUP
+	GROUP "TS90_4"
+		MULz 1
+		z = 0.056
+		PRISM_ 11, z, 
+			0.2337982268889, 0.04439691262971, msk2, 
+			0.2314683311601, 0.04243648261396, 900+msk2, 
+			0, 43.7886612356, 4000+msk2, 
+			0.01423037177016, 0.04546400013126, msk2, 
+			0.01455569873791, 0.04243648261395, 900+msk2, 
+			0, 43.78866123554, 4000+msk2, 
+			0.09445074995366, -0.002127585056505, 900+msk2, 
+			0, 28.21161911201, 4000+msk2, 
+			0.246, 0, msk2, 
+			0.1515612649957, -0.002079772058477, 900+msk2, 
+			0, 28.21161911211, 4000+msk2
+		DEL 1
+		ENDGROUP
+	Spanner  = ADDGROUP("TS90_1","TS90_2")
+	Gehaeuse = ISECTGROUP("TS90_4","TS90_3")
+	TS90 = ADDGROUP(Spanner,Gehaeuse)
+	PLACEGROUP TS90
+	KILLGROUP TS90 : KILLGROUP Spanner : KILLGROUP Gehaeuse
+	KILLGROUP "TS90_1" : KILLGROUP "TS90_2" : KILLGROUP "TS90_3" : KILLGROUP "TS90_4"
+	RETURN
+
+"TS_S_500":
+	PUT	0,		0,		msk,
+		x,		0,		msk,
+		x,		s,		msk,
+		x-t,	s,		msk,
+		x-t,	y-s,	msk,
+		x,		y-s,	msk,
+		x,		y,		msk,
+		0,		y,		msk,
+		0,		0,		-1
+	RETURN
+
+"AbdeckungBTS":
+	x = 0.079 : y = 0.0175 : kzd = 0.003 ! Ausschnitte an Bandseite
+	PRISM_ 8, kzd,
+		dabx,     daby+y,     msk,
+		dabx+x,   daby+y,     msk,
+		dabx+x,   daby,       msk,
+		dabx+abx, daby,       msk,
+		dabx+abx, daby+aby,   msk,
+		dabx+x,   daby+aby,   msk,
+		dabx+x,   daby+aby-y, msk,
+		dabx,     daby+aby-y, msk
+	x = x -0.0025
+	PRISM_ 4, kzd,
+		dabx+x,   daby+aby,   msk,
+		dabx+x,   daby+aby-y, msk,
+		dabx,     daby+aby-y, msk,
+		dabx,     daby+aby,   msk
+	PRISM_ 4, kzd,
+		dabx+x,   daby,   msk,
+		dabx+x,   daby+y, msk,
+		dabx,     daby+y, msk,
+		dabx,     daby,   msk
+	RETURN
+
+
+! ------------------------------------------------------------------------- [ SUBS Gegenstück ]
+
+"Gleitschiene":
+	IF dk_LOD> 400 THEN
+		IF XEA THEN
+			ROTx 90 : MULz -1
+			n = n + 2
+			x = sx : y = sz : z = sy : r = 0.0052
+			GOSUB "roundRect"
+			ELSE
+			IF serie = 90 THEN
+				MUL sx/0.3842, sy/0.025, sz/0.02
+				GOSUB "Gleitschiene90"
+				DEL 1
+				ELSE
+				! Schiene altes Design
+				ROTy 90 : ROTz 90
+				n = n + 2
+				x = sy : y = sz : z = sx : r = 0.003
+				GOSUB "roundHalfRect"
+				ENDIF
+			ENDIF
+		ELSE
+		z = sz
+		PUT  0,  0, msk,
+			sx,  0, msk,
+			sx, sy, msk,
+			 0, sy, msk,
+			 0,  0,  -1
+		ENDIF
+
+	GOSUB "CreatePrism"
+
+	RETURN
+
+"Gleitschiene90":
+	GROUP "TS90_5"
+		MULz -1 : ROTy 90 : ROTz 270
+		z = 0.3842
+		PRISM_ 11, z, 
+			-0.02374627485006, 0.01572589026522, msk2, 
+			-0.02301841715615, 0.01386131882019, 900+msk2, 
+			0, 68.67622827534, 4000+msk2, 
+			-0.02502001739001, 0.006138681482813, msk2, 
+			-0.02301841715615, 0.006138681179812, 900+msk2, 
+			0, 68.67622827534, 4000+msk2, 
+			-0.001000798548982, 0.06254204286117, 900+msk2, 
+			0, 22.24045940138, 4000+msk2, 
+			0, 0.02, msk2, 
+			-0.001000798548981, -0.04254204286117, 900+msk2, 
+			0, 22.24045940138, 4000+msk2
+		DEL 3
+		ENDGROUP
+	GROUP "TS90_6"
+		MULz 1
+		z = 0.02
+		PRISM_ 11, z, 
+			0.008628552654906, 0.02378945500431, msk2, 
+			0.06482910456846, -0.0100542991479, 900+msk2, 
+			0, 22.24045940137, 4000+msk2, 
+			0.3841781012908, 0, msk2, 
+			0.3193489967223, -0.01005429914791, 900+msk2, 
+			0, 22.24045940139, 4000+msk2, 
+			0.3736815866598, 0.02306027377619, 900+msk2, 
+			0, 68.6762282753, 4000+msk2, 
+			0.01049651463101, 0.02506551371386, msk2, 
+			0.01049651463101, 0.02306027377619, 900+msk2, 
+			0, 68.67621960222, 4000+msk2
+		DEL 1
+		ENDGROUP
+	Schiene90 = ISECTGROUP("TS90_5","TS90_6")
+	PLACEGROUP Schiene90
+	KILLGROUP Schiene90 : KILLGROUP "TS90_5" : KILLGROUP "TS90_6"
+	RETURN
+
+"Scherenanker":
+	s = 0.004
+	r = sy-yL
+	z = sz
+	PUT -dsx,     s, msk,
+		-dsx,     0, msk,
+		 sx-dsx,  0, msk,
+		 sx-dsx,  s, msk,
+		 r,      sy, msk,
+		-r,      sy, msk,
+		-dsx,     s,  -1
+	GOSUB "CreatePrism"
+	RETURN
+
+
+! ------------------------------------------------------------------------- [ SUBS Verbindungsmechanik ]
+
+"Gleithebel_350":
+"Gleithebel_400":
+	htspt=htspt+1 : HOTSPOT x, y, zGE, htspt
+	LIN_ DAx, DAy, zGE, x, y, zGE
+	RETURN
+
+"Gleithebel_500":
+	htspt=htspt+1 : HOTSPOT x, y, zGE, htspt
+	! Auf X ausrichten
+	x = x - DAx : y = y - DAy
+	IF ABS(x)<tlr THEN w = 0 ELSE w =ATN(y/x) + 180 * (x<0)
+	! Ausgabe
+	ADD DAx, DAy, zGE - zH/2
+	ROTz w
+	PRISM_ 5, zH,
+		xH, -yH/2, msk2,
+		 0, -yH/2, msk2,
+		yH/2,-180, 2000+msk2,
+		xH, yH/2, msk2,
+		yH/2,-180, 2000+msk2
+	DEL 2
+	RETURN
+
+"Scherengestaenge_350":
+"Scherengestaenge_400":
+	htspt=htspt+1 : HOTSPOT x, y, zGE, htspt
+	LIN_ DAx, DAy, zGE,  xSS, ySS, zGE
+	LIN_ xSS, ySS, zGE,  xSS, ySS, zSS
+	LIN_ xSS, ySS, zSS,  APx, APy, zSS
+	RETURN
+
+"Scherengestaenge_500":
+	htspt=htspt+1 : HOTSPOT x, y, zGE, htspt
+
+	! »»» Spannschloss
+	! Auf X ausrichten
+	x = xSS - APx : y = ySS - APy
+	IF ABS(x)<tlr THEN
+		w = 90 + 180 * (y<0)
+		ELSE
+		w =ATN(y/x) + 180 * (x<0)
+		ENDIF
+	! Ausgabe
+	ADD APx, APy, zSS
+	ROTz w
+	r= SQR ((APx - xSS)^2 + (APy - ySS)^2)
+	ROTy 90
+	CYLIND r, 0.007/2
+	DEL 1
+	ADDz -0.015/2
+	PRISM_ 9, 0.015,
+		r,       -yH/2, msk,
+		r-0.10,  -yH/2, msk,
+		r-0.12, -0.0075, msk,
+		r-0.14, -0.0075, msk,
+		r-0.14,  0.0075, msk,
+		r-0.12,  0.0075, msk,
+		r-0.10,   yH/2, msk,
+		r,        yH/2, msk2,
+		yH/2,-180, 2000+msk2
+	DEL 3
+
+	! »»» Gestänge
+	! Auf X ausrichten
+	x = xSS - DAx : y = ySS - DAy
+	IF ABS(x)<tlr THEN w = 0 ELSE w =ATN(y/x) + 180 * (x<0)
+	! Ausgabe
+	ADD DAx, DAy, zGE - zH/2
+	ROTz w
+	! r= SQR ((DAx - xSS)^2 + (DAy - ySS)^2)
+	PRISM_ 5, zH,
+		xH, -yH/2, msk2,
+		 0, -yH/2, msk2,
+		yH/2,-180, 2000+msk2,
+		xH, yH/2, msk2,
+		yH/2,-180, 2000+msk2
+	DEL 2
+	RETURN
+
+
+! ------------------------------------------------------------------------- [ SUBS Diverses ]
+
+"Fangpunkte":
+	htspt=htspt+1 : HOTSPOT  0, ky, 0, htspt
+	htspt=htspt+1 : HOTSPOT kx, ky, 0, htspt
+	htspt=htspt+1 : HOTSPOT  0, ky, kz, htspt
+	htspt=htspt+1 : HOTSPOT kx, ky, kz, htspt
+	RETURN
+
+"FangpunkteTB":
+	htspt=htspt+1 : HOTSPOT  0, 0, 0, htspt
+	htspt=htspt+1 : HOTSPOT kx, 0, 0, htspt
+	htspt=htspt+1 : HOTSPOT  0, 0, kz, htspt
+	htspt=htspt+1 : HOTSPOT kx, 0, kz, htspt
+	RETURN
+
+"roundRect":
+	PUT	0,		r, msk2,
+		0,		-y, 800+msk2,
+		r,		0, 1000+msk2,
+		x-r,	0, msk2,
+		x,		r, 1000+msk2,
+		x,		y-r, msk2,
+		x-r,	y, 1000+msk2,
+		r,		y, msk2,
+		0,		y-r, 1000+msk2,
+		0,		r, -1
+
+		! --> plus innen
+		! r,		t, msk,
+		! x-r,	t, msk,
+		! x-t,	r, 1000+msk,
+		! x-t,	y-r, msk,
+		! x-r,	y-t, 1000+msk,
+		! r,		y-t, msk,
+		! t,		y-r, 1000+msk,
+		! t,		r, msk,
+		! r,		t, 1000+msk,
+		! r,		t, -1
+	RETURN
+
+"roundHalfRect":
+	PUT	0,		0, msk2,
+		x-r,	0, msk2,
+		x,		r, 1000+msk2,
+		x,		y-r, msk2,
+		x-r,	y, 1000+msk2,
+		0,		y, msk2,
+		0,		0, -1
+	RETURN

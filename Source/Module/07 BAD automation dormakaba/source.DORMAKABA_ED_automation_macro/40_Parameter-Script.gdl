@@ -1,0 +1,142 @@
+! ------------------------------------------------------------------------[ Module development settings ]
+
+IF macro_runtype = 0 THEN
+	VALUES{2} "macro_runtype" 0, "IDLE", 1,"handshake page hirarchy", 2,"handshake page names", 3,"CALL UI page", 5,"return element values", 10,"rebuilt VALUE lists"
+	ENDIF
+
+
+! =============================================================================
+! PLAUSIBILITY
+! =============================================================================
+
+! »»» Typenauswahl nach Anzahl Türblätter und Typ
+IF bs_door_leafs = 1 AND (bs_automation_type = "2S" OR bs_automation_type = "2E" OR bs_automation_type = "GS") THEN
+	bs_automation_type = "GF"
+	bs_automation_model2 = "-"
+	PARAMETERS	bs_automation_type = bs_automation_type,
+				bs_automation_model2 = bs_automation_model2
+	ENDIF
+
+IF bs_door_leafs < 1 AND bs_automation_type # "-" THEN
+	bs_automation_type = "-"
+	PARAMETERS bs_automation_type = bs_automation_type
+	LOCK "bs_automation_type"
+	ENDIF
+
+IF bs_door_leafs < 2 OR ACT<3 OR bs_automation_type = "2S" OR bs_automation_type = "2E" THEN
+	bs_automation_model2 = "-"
+	PARAMETERS	bs_automation_model2 = bs_automation_model2
+	ENDIF
+
+IF bs_automation_type = "GS" AND mittelfalz THEN
+	bs_automation_type = "2S"
+	bs_automation_model2 = "-"
+	PARAMETERS	bs_automation_type = bs_automation_type,
+				bs_automation_model2 = bs_automation_model2
+	ENDIF
+
+IF bs_automation_type = "GS" AND bs_demand_FireResistance THEN
+	bs_automation_type = "2S"
+	PARAMETERS	bs_automation_type = bs_automation_type
+	ENDIF
+
+IF bs_automation_type = "-" THEN
+	bs_automation_model = "-"
+	bs_automation_model2 = "-"
+	PARAMETERS	bs_automation_model = bs_automation_model
+				bs_automation_model2 = bs_automation_model2
+	ENDIF
+
+
+! »»» IMMER ein gelistetes Modell angeben / Nach Anschalten passendes Modell suchen.
+! ... Gangflügel
+IF bs_automation_type # "-" AND (selectedE < 1 OR bs_automation_model = "-" OR bs_automation_model = "") THEN
+	sts = 0 : j = VARDIM1(UIautomationModelText)
+	FOR i = 1 TO j
+		IF STRSUB(UIautomationModelText[i],1,1) # "[" OR \
+			((bs_automation_model = "-" OR bs_automation_model = "") AND selectedE < 1 ) THEN
+			selectedE = i
+			IF STRSUB(UIautomationModelText[i],1,1) # "["  THEN i = j
+			ENDIF
+		NEXT i
+	IF selectedE < 0 THEN selectedE = (j>0)
+	IF selectedE > 0 THEN
+		bs_automation_model = UIautomationModelVal[selectedE]
+		PARAMETERS	bs_automation_model = bs_automation_model
+		ENDIF
+	ENDIF
+
+! ... Standflügel
+IF bs_automation_type # "-" AND (selectedE2 < 1 OR bs_automation_model2 = "-" OR bs_automation_model2 = "") AND ACT=4 THEN
+	sts = 0 : j = VARDIM1(UIautomation2ModelText)
+	FOR i = 1 TO j
+		IF STRSUB(UIautomation2ModelText[i],1,1) # "[" OR \
+			((bs_automation_model2 = "-" OR bs_automation_model2 = "") AND selectedE2 < 1 ) THEN
+			selectedE2 = i
+			IF STRSUB(UIautomation2ModelText[i],1,1) # "["  THEN i = j
+			ENDIF
+		NEXT i
+	IF selectedE2 < 0 THEN selectedE2 = (j>0)
+	IF selectedE2 > 0 THEN
+		bs_automation_model2 = UIautomation2ModelVal[selectedE2]
+		PARAMETERS	bs_automation_model2 = bs_automation_model2
+		ENDIF
+	ENDIF
+
+
+! »»» Elektrifizierung setzen (Bit 4)
+IF bs_automation_type # "-" THEN
+	bs_door_electrified = BITSET(bs_door_electrified, 4)
+	ELSE
+	bs_door_electrified = BITSET(bs_door_electrified, 4, 0)
+	ENDIF
+PARAMETERS bs_door_electrified = bs_door_electrified
+
+
+! »»» Notwendigen Schalter setzen (Bit 4)
+IF bs_automation_type # "-" AND \
+	(( bs_automation_activation_BS # "-" AND bs_automation_activation_BS # "R") OR \
+	( bs_automation_activation_BGS # "-" AND bs_automation_activation_BGS # "R")) THEN
+	bs_door_external_button = BITSET(bs_door_external_button, 4)
+	ELSE
+	bs_door_external_button = BITSET(bs_door_external_button, 4, 0)
+	ENDIF
+PARAMETERS bs_door_external_button = bs_door_external_button
+
+
+! =============================================================================
+! VALUES
+! =============================================================================
+
+LOCK "bs_automation_manufacturer"
+
+! ----------------------------------- PARAMETER VALUE LIST [ECD.automation] (start)
+
+VALUES "bs_automation_type" "-", "GF", "2E", "2S", "GS"
+VALUES "bs_automation_material" " ", "ST", "ES", "AL", "XX", CUSTOM
+VALUES "bs_automation_surface" " ", "-", "G", "N", "L", "V", "Z", "C", "E", "I", "X", CUSTOM
+VALUES "bs_automation_orientation" "BS", "GS"
+VALUES "bs_automation_activation_BS" "-", "T", "S", "R", "TR", "SR"
+VALUES "bs_automation_activation_BGS" "-", "T", "S", "R", "TR", "SR"
+VALUES "bs_automation_model" "-", "ED100 G N", "ED100 G CPD", "ED100 ESR 1/2 G N", "ED100 ESR 1/2 G CPD", "ED100 ESR G N",
+	"ED100 ESR G CPD", "ED100 GST N", "ED100 GST VERL", "ED100 ESR 1/2 GST N", "ED100 ESR 1/2 GST VERL",
+	"ED100 ESR GST N", "ED100 ESR GST VERL", "ED250 G N", "ED250 G CPD", "ED250 ESR 1/2 G N",
+	"ED250 ESR 1/2 G CPD", "ED250 ESR G N", "ED250 ESR G CPD", "ED250 GST N", "ED250 GST VERL",
+	"ED250 ESR 1/2 GST N", "ED250 ESR 1/2 GST VERL", "ED250 ESR GST N", "ED250 ESR GST VERL"
+VALUES "bs_automation_model2" "-", "ED100 G N", "ED100 G CPD", "ED100 GST N", "ED100 GST VERL", "ED250 G N", "ED250 G CPD",
+	"ED250 GST N", "ED250 GST VERL"
+
+! --------------------------------------------------------------- PARAMETER VALUE LISTS (end)
+
+! ---------------------------------------------------------------------- !
+
+END bs_door_electrified, bs_door_external_button
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
