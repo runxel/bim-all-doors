@@ -1,0 +1,1721 @@
+IF  bs_control_side = "-" THEN
+	!IF NOT( BITTEST(macro_runtype,5) AND dk_visibleLeaf) OR noHandle AND bs_access_control_system <> "Digitalzylinder" THEN END
+	END
+ENDIF
+
+IF bs_control_side = "BS" THEN
+	IF macro_runtype = 32+1 THEN
+		IF NOT( BITTEST(macro_runtype,5) AND dk_visibleLeaf) OR noHandle AND bs_access_control_system <> "Digitalzylinder" THEN END
+	ELSE
+		END
+	ENDIF
+ENDIF
+
+IF bs_control_side = "BGS" THEN
+	IF macro_runtype = 32+2 THEN
+		IF NOT( BITTEST(macro_runtype,5) AND dk_visibleLeaf) OR noHandle AND bs_access_control_system <> "Digitalzylinder" THEN END
+	ELSE
+		END
+	ENDIF
+ENDIF
+
+IF bs_control_side = "ZS" THEN
+	IF NOT( BITTEST(macro_runtype,5) AND dk_visibleLeaf) OR noHandle AND bs_access_control_system <> "Digitalzylinder" THEN END
+ENDIF
+
+! PROJECT2 4,270,2
+
+! ----------------------------------------------------------------- [ Grunddefinition der Variablen ]
+
+faktor = 1 ! Skalierung der absoluten Geometrien
+
+! »»» Status der Kanten
+msk = 15
+msk2 = 15+64
+matG = dk_materials[dka_handle_mat]
+
+! »»» Prüfung BS / BGS
+bs_bgs = 0
+
+
+	IF BITTEST(macro_runtype,0) THEN								
+		bs_bgs = 1			! 	Bandseite
+		ENDIF
+
+	IF BITTEST(macro_runtype,1) THEN								
+		bs_bgs = 2			! 	Bandgegenseite
+		ENDIF
+
+
+! =============================================================================
+! Ausgabe Bänder
+! =============================================================================
+
+
+	IF bs_acs_handle_model = "HA" THEN
+		d = abmess[1][1]
+		x = abmess[1][2]  ! Griffbreite ab Dornmitte
+		y = abmess[1][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HB" THEN
+		d = abmess[2][1]
+		x = abmess[2][2]  ! Griffbreite ab Dornmitte
+		y = abmess[2][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HC" THEN
+		d = abmess[3][1]
+		x = abmess[3][2]  ! Griffbreite ab Dornmitte
+		y = abmess[3][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HD" THEN
+		d = abmess[4][1]
+		x = abmess[4][2]  ! Griffbreite ab Dornmitte
+		y = abmess[4][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HL" THEN
+		d = abmess[5][1]
+		x = abmess[5][2]  ! Griffbreite ab Dornmitte
+		y = abmess[5][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HM" THEN
+		d = abmess[6][1]
+		x = abmess[6][2]  ! Griffbreite ab Dornmitte
+		y = abmess[6][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HN" THEN
+		d = abmess[7][1]
+		x = abmess[7][2]  ! Griffbreite ab Dornmitte
+		y = abmess[7][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HP" THEN
+		d = abmess[8][1]
+		x = abmess[8][2]  ! Griffbreite ab Dornmitte
+		y = abmess[8][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HQ" THEN
+		d = abmess[9][1]
+		x = abmess[9][2]  ! Griffbreite ab Dornmitte
+		y = abmess[9][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "8115" THEN
+		d = abmess[10][1]
+		x = abmess[10][2]  ! Griffbreite ab Dornmitte
+		y = abmess[10][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "8116" THEN
+		d = abmess[11][1]
+		x = abmess[11][2]  ! Griffbreite ab Dornmitte
+		y = abmess[11][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "8116V" THEN
+		d = abmess[12][1]
+		x = abmess[12][2]  ! Griffbreite ab Dornmitte
+		y = abmess[12][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "8906" THEN
+		d = abmess[13][1]
+		x = abmess[13][2]  ! Griffbreite ab Dornmitte
+		y = abmess[13][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+
+    x = x - d/2
+
+
+
+
+IF dk_LOD < 101 THEN GOSUB "LoD100"
+IF dk_LOD > 100 AND dk_LOD < 201 THEN GOSUB "LoD200"
+IF dk_LOD > 200 AND dk_LOD < 301 THEN GOSUB "LoD300"
+IF dk_LOD > 300 AND dk_LOD < 351 THEN GOSUB "LoD350"
+IF dk_LOD > 350 AND dk_LOD < 401 THEN GOSUB "LoD400"
+IF dk_LOD > 400 THEN GOSUB "LoD500"
+
+IF dk_LOD > 350 THEN GOSUB "Fangpunkte"
+
+! ------------------------------------------------------------------------- [ ENDE ]
+
+"ende":
+END htspt
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"LoD100":
+RETURN
+"LoD200":
+RETURN
+"LoD300":
+sts = 1
+
+
+	IF bs_access_control_system = "Digitalzylinder" THEN
+		ADDZ -bs_case_distance
+		ROTX 90
+		RESOL 24
+
+
+		ADDZ 0.005
+			CIRCLE 0.016
+
+		DEL 3
+	ENDIF
+
+
+	IF bs_access_control_system = "c-lever compact" THEN
+		ROTX 90
+		ADDZ 0.034
+			POLY	4, 
+					-0.0273, -0.0434,
+					-0.0273, 0.0794,
+					0.0273, 0.0794,
+					0.0273, -0.0434
+
+
+		ROTX -90	
+			LIN_ 0, 0,0, 0,-y,0
+			LIN_ 0,-y,0, x,-y,0
+		DEL 3
+	ENDIF
+
+
+	IF bs_access_control_system = "c-lever air" THEN
+		ROTX 90
+		ADDZ 0.01
+			POLY	4, 
+					-0.026, -0.116, 
+					-0.026, 0.064, 
+					0.026, 0.064, 
+					0.026, -0.116
+
+		ROTX -90	
+			LIN_ 0, 0,0, 0,-y,0
+			LIN_ 0,-y,0, x,-y,0
+		DEL 3
+	ENDIF
+
+	IF bs_access_control_system = "c-lever pro HAC" THEN
+		ROTX 90
+		ADDZ 0.023
+		IF bs_panel_type = "VB" then
+			POLY	4,
+					-0.0273, -0.196, 
+					-0.0273, 0.102, 
+					0.0273, 0.102, 
+					0.0273, -0.196
+		ELSE
+			POLY	4,
+					-0.02, -0.196,
+					-0.02, 0.102, 
+					0.02, 0.102, 
+					0.02, -0.196
+		ENDIF
+
+		ROTX -90	
+			LIN_ 0, 0,0, 0,-y,0
+			LIN_ 0,-y,0, x,-y,0
+		DEL 3
+	ENDIF
+
+	IF bs_access_control_system = "c-lever pro HBC" THEN
+		ROTX 90
+		ADDZ 0.023
+		IF bs_panel_type = "VB" then
+			POLY	4, 
+					-0.0273, 0.196, 
+					-0.0273, -0.102, 
+					0.0273, -0.102, 
+					0.0273, 0.196
+		ELSE
+			POLY	4, 
+					-0.02, 0.196, 
+					-0.02, -0.102, 
+					0.02, -0.102, 
+					0.02, 0.196
+		ENDIF
+
+		ROTX -90	
+			LIN_ 0, 0,0, 0,-y,0
+			LIN_ 0,-y,0, x,-y,0
+		DEL 3
+	ENDIF
+
+RETURN
+
+
+"LoD350":
+sts=1
+MATERIAL dk_materials[dka_hinge_mat]
+
+	IF bs_access_control_system = "c-lever compact" THEN
+		ROTX 90
+			PRISM_	4, 0.034,
+					-0.0273, -0.0434, 15,
+					-0.0273, 0.0794, 15,
+					0.0273, 0.0794, 15,
+					0.0273, -0.0434, 15
+
+		ADDZ 0.034
+		ROTX -90	
+			ADDz -d/2
+			PRISM 6,d,
+				-d/2,0,
+				-d/2,-y,
+				x,-y,
+				x,-y+d,
+				d/2,-y+d,
+				d/2,0
+			DEL 1
+		DEL 3
+	ENDIF
+
+
+	IF bs_access_control_system = "c-lever air" THEN
+		ROTX 90
+			PRISM_	4, 0.01,
+					-0.026, -0.116, 15,
+					-0.026, 0.064, 15,
+					0.026, 0.064, 15,
+					0.026, -0.116, 15
+
+		ADDZ 0.01
+		ROTX -90	
+			ADDz -d/2
+			PRISM 6,d,
+				-d/2,0,
+				-d/2,-y,
+				x,-y,
+				x,-y+d,
+				d/2,-y+d,
+				d/2,0
+			DEL 1
+		DEL 3
+	ENDIF
+
+	IF bs_access_control_system = "c-lever pro HAC" THEN
+		ROTX 90
+		IF bs_panel_type = "VB" then
+			PRISM_	4, 0.01,
+					-0.0273, -0.196, 15,
+					-0.0273, 0.102, 15,
+					0.0273, 0.102, 15,
+					0.0273, -0.196, 15
+		ELSE
+			PRISM_	4, 0.01,
+					-0.02, -0.196, 15,
+					-0.02, 0.102, 15,
+					0.02, 0.102, 15,
+					0.02, -0.196, 15
+		ENDIF
+		ADDZ 0.01
+		ROTX -90	
+			ADDz -d/2
+			PRISM 6,d,
+				-d/2,0,
+				-d/2,-y,
+				x,-y,
+				x,-y+d,
+				d/2,-y+d,
+				d/2,0
+			DEL 1
+		DEL 3
+	ENDIF
+
+	IF bs_access_control_system = "c-lever pro HBC" THEN
+		ROTX 90
+		IF bs_panel_type = "VB" then
+			PRISM_	4, 0.01,
+					-0.0273, 0.196, 15,
+					-0.0273, -0.102, 15,
+					0.0273, -0.102, 15,
+					0.0273, 0.196, 15
+		ELSE
+			PRISM_	4, 0.01,
+					-0.02, 0.196, 15,
+					-0.02, -0.102, 15,
+					0.02, -0.102, 15,
+					0.02, 0.196, 15
+		ENDIF
+		ADDZ 0.01
+		ROTX -90	
+			ADDz -d/2
+			PRISM 6,d,
+				-d/2,0,
+				-d/2,-y,
+				x,-y,
+				x,-y+d,
+				d/2,-y+d,
+				d/2,0
+			DEL 1
+		DEL 3
+	ENDIF
+
+	IF bs_access_control_system = "Digitalzylinder" THEN
+		ADDZ -bs_case_distance
+		ROTX 90
+		RESOL 24
+
+
+		ADDZ 0.009
+			PRISM_	2, 0.048,
+					0, 0, 979,
+					0.016, 360, 4079	
+
+		DEL 3
+	ENDIF
+
+RETURN
+
+
+
+"LoD400":
+	! PEN dk_cont_pens[dka_closer_pen3D]
+	MATERIAL dk_materials[dka_hinge_mat]
+	GOSUB "DORMA_" + bs_access_control_system   !bs_acs_model
+	RETURN
+
+"LoD500":
+	! PEN dk_cont_pens[dka_closer_pen3D]
+	MATERIAL dk_materials[dka_hinge_mat]
+	GOSUB "DORMA_" + bs_access_control_system   !bs_acs_model
+
+	RETURN
+
+
+"Fangpunkte":
+	! Referenzpunkt
+	htspt=htspt+1 : HOTSPOT 0, 0, 0, htspt
+	! Keine Fangpunkte nötig
+	RETURN
+
+
+"DORMA_Digitalzylinder":
+
+
+	IF bs_closure1 = "PZ" OR bs_closure2 = "PZ" THEN
+		ADD 0, 0, -bs_case_distance+0.008
+	ELSE
+		ADD 0, 0, -bs_case_distance
+	ENDIF
+	ROTX 90
+	TOLER 0.00005
+
+!	MATERIAL dk_materials[dka_acs_mat]
+
+
+	ADDZ 0.04+0.006
+	IF bs_acs_cover = "B" then 
+		HPRISM_	"Cover black", "Cover black", "Cover black", "Cover black",
+			17, 0.009, 45, 0.001, 1,
+			-0.01079362015969, -0.01392905956777,      79, 
+			0,        0.018,    979, 
+					   0, 37.35565077438,   4079, 
+			0.009192388155425, -0.009192388155425,    979, 
+					   0, 52.64436561095,   4079, 
+				  -0.018, 0,    979, 
+					   0, 37.35565077438,   4079, 
+			0.009192388080947, 0.009192388080946,    979, 
+					   0, 52.6443837801,   4079, 
+			0,       -0.018,    979, 
+					   0, 37.35565077438,   4079, 
+			-0.009192388155425, 0.009192388155425,    979, 
+					   0, 52.64436561096,   4079, 
+				   0.018, 0,    979, 
+					   0, 37.35565077438,   4079, 
+			-0.009192388155425, -0.009192388155425,    979, 
+					   0, 52.64434637145,   4079
+
+	ENDIF
+
+	IF bs_acs_cover = "W" then 
+		HPRISM_	"Cover white", "Cover white", "Cover white", "Cover white",
+			17, 0.009, 45, 0.001, 1,
+			-0.01079362015969, -0.01392905956777,      79, 
+			0,        0.018,    979, 
+					   0, 37.35565077438,   4079, 
+			0.009192388155425, -0.009192388155425,    979, 
+					   0, 52.64436561095,   4079, 
+				  -0.018, 0,    979, 
+					   0, 37.35565077438,   4079, 
+			0.009192388080947, 0.009192388080946,    979, 
+					   0, 52.6443837801,   4079, 
+			0,       -0.018,    979, 
+					   0, 37.35565077438,   4079, 
+			-0.009192388155425, 0.009192388155425,    979, 
+					   0, 52.64436561096,   4079, 
+				   0.018, 0,    979, 
+					   0, 37.35565077438,   4079, 
+			-0.009192388155425, -0.009192388155425,    979, 
+					   0, 52.64434637145,   4079
+
+	ENDIF
+	ADDZ 0.01
+	PRISM_	10, 0.0001,
+			-0.0055, -0.0055, 15,
+			-0.0055, 0.0055, 15,
+			0.0055, 0.0055, 15,
+			0.0055, -0.0055, 15,
+			-0.0055, -0.0055, -1,
+			-0.005, -0.005, 15,
+			-0.005, 0.005, 15,
+			0.005, 0.005, 15,
+			0.005, -0.005, 15,
+			-0.005, -0.005, -1
+	DEL 1
+	DEL 1
+
+	ADDZ 0.01
+!	MATERIAL dk_materials[dka_acs_mat]
+	PRISM_	17, 0.036,
+        -0.01079362015969, -0.01392905956777,      79, 
+        0,        0.018,    979, 
+                   0, 37.35565077438,   4079, 
+        0.009192388155425, -0.009192388155425,    979, 
+                   0, 52.64436561095,   4079, 
+              -0.018, 0,    979, 
+                   0, 37.35565077438,   4079, 
+        0.009192388080947, 0.009192388080946,    979, 
+                   0, 52.6443837801,   4079, 
+        0,       -0.018,    979, 
+                   0, 37.35565077438,   4079, 
+        -0.009192388155425, 0.009192388155425,    979, 
+                   0, 52.64436561096,   4079, 
+               0.018, 0,    979, 
+                   0, 37.35565077438,   4079, 
+        -0.009192388155425, -0.009192388155425,    979, 
+                   0, 52.64434637145,   4079
+	DEL 1
+
+	IF bs_control_side # "ZS" THEN
+		ADDZ -0.036-gs_leaf_thk-0.003
+		IF bs_control_side = "BS" AND ((bs_closure2 = "PZ") OR (bs_closure2 = "RZ") OR (bs_closure2 = "OZ")) THEN
+			PRISM_	17, 0.029,
+				-0.01079362015969, -0.01392905956777,      79, 
+				0,        0.018,    979, 
+						   0, 37.35565077438,   4079, 
+				0.009192388155425, -0.009192388155425,    979, 
+						   0, 52.64436561095,   4079, 
+					  -0.018, 0,    979, 
+						   0, 37.35565077438,   4079, 
+				0.009192388080947, 0.009192388080946,    979, 
+						   0, 52.6443837801,   4079, 
+				0,       -0.018,    979, 
+						   0, 37.35565077438,   4079, 
+				-0.009192388155425, 0.009192388155425,    979, 
+						   0, 52.64436561096,   4079, 
+					   0.018, 0,    979, 
+						   0, 37.35565077438,   4079, 
+				-0.009192388155425, -0.009192388155425,    979, 
+						   0, 52.64434637145,   4079
+		ENDIF	
+		IF bs_control_side = "BGS" AND ((bs_closure1 = "PZ") OR (bs_closure1 = "RZ") OR (bs_closure1 = "OZ")) THEN
+			PRISM_	17, 0.029,
+				-0.01079362015969, -0.01392905956777,      79, 
+				0,        0.018,    979, 
+						   0, 37.35565077438,   4079, 
+				0.009192388155425, -0.009192388155425,    979, 
+						   0, 52.64436561095,   4079, 
+					  -0.018, 0,    979, 
+						   0, 37.35565077438,   4079, 
+				0.009192388080947, 0.009192388080946,    979, 
+						   0, 52.6443837801,   4079, 
+				0,       -0.018,    979, 
+						   0, 37.35565077438,   4079, 
+				-0.009192388155425, 0.009192388155425,    979, 
+						   0, 52.64436561096,   4079, 
+					   0.018, 0,    979, 
+						   0, 37.35565077438,   4079, 
+				-0.009192388155425, -0.009192388155425,    979, 
+						   0, 52.64434637145,   4079
+		ENDIF	
+		DEL 1
+	ENDIF
+
+
+	DEL 2
+RETURN
+
+
+"DORMA_c-lever compact":
+	ROTX 90
+	TOLER 0.0001
+	MATERIAL "ALUMINIUM_DK"
+
+	ADDZ 0.023
+	CYLIND 0.011, 0.011
+
+	ADDZ 0.011
+	ROTX -90
+	CALL "DORMAKABA_OGRO_handles3D" PARAMETERS matG = matG, KnaufGriffModell = drawMODELL
+	DEL 2
+
+	MATERIAL "ALUMINIUM_DK"
+	ADDY 0.042
+	PRISM_	10, 0.0001,
+			-0.0055, -0.0055, 15,
+			-0.0055, 0.0055, 15,
+			0.0055, 0.0055, 15,
+			0.0055, -0.0055, 15,
+			-0.0055, -0.0055, -1,
+			-0.005, -0.005, 15,
+			-0.005, 0.005, 15,
+			0.005, 0.005, 15,
+			0.005, -0.005, 15,
+			-0.005, -0.005, -1
+	DEL 1
+	DEL 1
+
+	ADD -0.01625, 0, 0.023
+	ROTZ 90
+	CUTPLANE -10
+	DEL 2
+
+	ADD 0.01625, 0, 0.023
+	ROTZ 90
+	CUTPLANE 10
+	DEL 2
+
+	ROTX 0
+	CUTFORM	4, 1, 19,
+			0, 0, -1, -0.0015,
+			-0.01725, -0.2, 23,
+			-0.01725, 0.2, 23,
+			0.01725, 0.2, 23,
+			0.01725, -0.2, 23
+	DEL 1
+
+	PRISM_	9, 0.023,
+			-0.02725, -0.0384, 79,
+			-0.02725, 0.0744, 79,
+			-0.02225, 0.0794, 1079,
+			0.02225, 0.0794, 79,
+			0.02725, 0.0744, 1079,
+			0.02725, -0.0384, 79,
+			0.02225, -0.0434, 1079,
+			-0.02225, -0.0434, 79,
+			-0.02725, -0.0384, 1079
+	CUTEND
+
+	IF bs_acs_cover = "B" then MATERIAL "Cover black"
+	IF bs_acs_cover = "W" then MATERIAL "Cover white"
+	ADDZ 0.0015
+	PRISM_	4, 0.0215,
+			-0.01725, -0.0434, 15,
+			-0.01725, 0.0794, 15,
+			0.01725, 0.0794, 15,
+			0.01725, -0.0434, 15
+	DEL 1
+
+	CUTEND
+	CUTEND
+
+
+	MATERIAL "ALUMINIUM_DK"
+	IF bs_acs_platetype = "5" THEN
+		GOSUB "Schlossrosette"
+
+		ADDZ -gs_leaf_thk
+		ROTY 180
+		GOSUB "Drückerrosette"
+		ADDZ 0.009
+		ROTX 90
+		ROTZ 180
+		CALL "DORMAKABA_OGRO_handles3D" PARAMETERS matG = matG, KnaufGriffModell = drawMODELL
+		DEL 3
+		GOSUB "Schlossrosette"
+		DEL 2
+
+	ENDIF
+
+	DEL 1
+RETURN
+
+
+"DORMA_c-lever air":
+
+
+	IF bs_acs_platetype = "5" THEN
+		ROTX 90
+
+
+		ADDZ -gs_leaf_thk
+		ROTY 180
+		GOSUB "Drückerrosette"
+		ADDZ 0.009
+		ROTX 90
+		ROTZ 180
+		CALL "DORMAKABA_OGRO_handles3D" PARAMETERS matG = matG, KnaufGriffModell = drawMODELL
+		DEL 3
+		GOSUB "Schlossrosette"
+		DEL 2
+		DEL 1
+	ENDIF
+
+
+	IF bs_acs_sytle = 4 THEN
+		MATERIAL dk_materials[dka_acs_mat]
+		ROTX 90
+		GOSUB "Schnitte"
+		ADD 0, 0.039, 0.01
+		PRISM_	10, 0.0001,
+				-0.0055, -0.0055, 15,
+				-0.0055, 0.0055, 15,
+				0.0055, 0.0055, 15,
+				0.0055, -0.0055, 15,
+				-0.0055, -0.0055, -1,
+				-0.005, -0.005, 15,
+				-0.005, 0.005, 15,
+				0.005, 0.005, 15,
+				0.005, -0.005, 15,
+				-0.005, -0.005, -1
+		DEL 1
+	
+	
+		CUTFORM	10, 1, 3+8+16,
+				0, 0, -1, -0.0015,
+				-0.06, -0.14, 15,
+				-0.06, 0.1, 15,
+				0.06, 0.1, 15,
+				0.06, -0.14, 15,
+				0.026, -0.14, 15,
+				0.026, 0.054, 79,
+				0.016, 0.064, 1079,
+				-0.016, 0.064, 79,
+				-0.026, 0.054, 1079,
+				-0.026, -0.14, 15
+	
+		IF bs_acs_cover = "B" then MATERIAL "Cover black"
+		IF bs_acs_cover = "W" then MATERIAL "Cover white"
+	
+	
+		CUTFORM	16, 1, 3+16,
+				0, 0, -1, -0.008,
+				-0.026, -0.00215, 15,
+				-0.026, 0.00215, 15,
+				-0.014, 0.00215, 15,
+				-0.014, 0.005, 79,
+				-0.005, 0.014, 1079,
+				0.005, 0.014, 79,
+				0.014, 0.005, 1079,
+				0.014, 0.00215, 15,
+				0.026, 0.00215, 15, 
+				0.026, -0.00215, 15, 
+				0.014, -0.00215, 15,
+				0.014, -0.005, 79,
+				0.005, -0.014, 1079,
+				-0.005, -0.014, 79,
+				-0.014, -0.005, 1079,
+				-0.014, -0.00215, 15
+		
+		ADDZ 0.008
+		PRISM_	4, 0.002,
+				-0.05, 0, 15,
+				-0.05, 0.08, 15,
+				0.05, 0.08, 15,	
+				0.05, 0, 15		
+		DEL 1
+	
+		CUTFORM	4, 1, 3+16,
+				0, 0, -1, -0.008,
+				-0.05, 0, 15,
+				-0.05, 0.08, 15,
+				0.05, 0.08, 15,	
+				0.05, 0, 15		
+	
+		HPRISM_	dk_materials[dka_acs_mat], dk_materials[dka_acs_mat], dk_materials[dka_acs_mat], dk_materials[dka_acs_mat],	
+				4, 0.01, 0, 0.01, 1,
+				-0.05, -0.116, 15,
+				-0.05, 0.08, 15,
+				0.05, 0.08, 15,	
+				0.05, -0.116, 15
+	
+		CUTEND
+		CUTEND
+		CUTEND
+	
+		MATERIAL "LED"
+		ADDZ 0.008
+	
+		CUTFORM	9, 1, 3+8+16,
+				0, 0, -1, -0.0015,
+				-0.012, -0.005, 79,
+				-0.012, 0.005, 79,
+				-0.005, 0.012, 1079,
+				0.005, 0.012, 79,
+				0.012, 0.005, 1079,
+	
+				0.012, -0.005, 79,
+				0.005, -0.012, 1079,
+				-0.005, -0.012, 79,
+				-0.012, -0.005, 1079
+	
+		PRISM_	16, 0.002,
+				-0.026, -0.00215, 15,
+				-0.026, 0.00215, 15,
+				-0.014, 0.00215, 15,
+				-0.014, 0.005, 79,
+				-0.005, 0.014, 1079,
+				0.005, 0.014, 79,
+				0.014, 0.005, 1079,
+				0.014, 0.00215, 15,
+				0.026, 0.00215, 15, 
+				0.026, -0.00215, 15, 
+				0.014, -0.00215, 15,
+				0.014, -0.005, 79,
+				0.005, -0.014, 1079,
+				-0.005, -0.014, 79,
+				-0.014, -0.005, 1079,
+				-0.014, -0.00215, 15	
+		CUTEND
+		DEL 1
+		MATERIAL dk_materials[dka_acs_mat]
+		ADDZ 0.008
+		PRISM_	9, 0.002,
+				-0.012, -0.005, 79,
+				-0.012, 0.005, 79,
+				-0.005, 0.012, 1079,
+				0.005, 0.012, 79,
+				0.012, 0.005, 1079,
+	
+				0.012, -0.005, 79,
+				0.005, -0.012, 1079,
+				-0.005, -0.012, 79,
+				-0.012, -0.005, 1079
+		DEL 1
+	
+		ADDZ 0.01
+		ROTX -90
+		CALL "DORMAKABA_OGRO_handles3D" PARAMETERS matG = matG, KnaufGriffModell = drawMODELL
+		DEL 2
+		DEL 2	
+		GOSUB "Schnittende"
+	ENDIF
+
+	IF bs_acs_sytle = 2 THEN
+		MATERIAL dk_materials[dka_acs_mat]
+		ROTX 90
+		GOSUB "Schnitte"
+		ADD 0, 0.039, 0.01
+		PRISM_	10, 0.0001,
+				-0.0055, -0.0055, 15,
+				-0.0055, 0.0055, 15,
+				0.0055, 0.0055, 15,
+				0.0055, -0.0055, 15,
+				-0.0055, -0.0055, -1,
+				-0.005, -0.005, 15,
+				-0.005, 0.005, 15,
+				0.005, 0.005, 15,
+				0.005, -0.005, 15,
+				-0.005, -0.005, -1
+		DEL 1
+	
+	
+		CUTFORM	10, 1, 3+8+16,
+				0, 0, -1, -0.0015,
+				-0.06, -0.18, 15,
+				-0.06, 0.14, 15,
+				0.06, 0.14, 15,
+				0.06, -0.18, 15,
+				0.02, -0.18, 15,
+				0.02, 0.112, 79,
+				0.012, 0.12, 1079,
+				-0.012, 0.12, 79,
+				-0.02, 0.112, 1079,
+				-0.02, -0.18, 15
+	
+		IF bs_acs_cover = "B" then MATERIAL "Cover black"
+		IF bs_acs_cover = "W" then MATERIAL "Cover white"
+	
+	
+		CUTFORM	16, 1, 3+16,
+				0, 0, -1, -0.008,
+				-0.02, -0.00215, 15,
+				-0.02, 0.00215, 15,
+				-0.014, 0.00215, 15,
+				-0.014, 0.005, 79,
+				-0.005, 0.014, 1079,
+				0.005, 0.014, 79,
+				0.014, 0.005, 1079,
+				0.014, 0.00215, 15,
+				0.02, 0.00215, 15, 
+				0.02, -0.00215, 15, 
+				0.014, -0.00215, 15,
+				0.014, -0.005, 79,
+				0.005, -0.014, 1079,
+				-0.005, -0.014, 79,
+				-0.014, -0.005, 1079,
+				-0.014, -0.00215, 15
+		
+		ADDZ 0.008
+		PRISM_	4, 0.002,
+				-0.05, 0, 15,
+				-0.05, 0.12, 15,
+				0.05, 0.12, 15,	
+				0.05, 0, 15		
+		DEL 1
+	
+		CUTFORM	4, 1, 3+16,
+				0, 0, -1, -0.008,
+				-0.05, 0, 15,
+				-0.05, 0.12, 15,
+				0.05, 0.12, 15,	
+				0.05, 0, 15		
+	
+		HPRISM_	dk_materials[dka_acs_mat], dk_materials[dka_acs_mat], dk_materials[dka_acs_mat], dk_materials[dka_acs_mat],	
+				4, 0.01, 0, 0.01, 1,
+				-0.05, -0.16165, 15,
+				-0.05, 0.12, 15,
+				0.05, 0.12, 15,	
+				0.05, -0.16165, 15
+	
+		CUTEND
+		CUTEND
+		CUTEND
+	
+		MATERIAL "LED"
+		ADDZ 0.008
+	
+		CUTFORM	9, 1, 3+8+16,
+				0, 0, -1, -0.0015,
+				-0.012, -0.005, 79,
+				-0.012, 0.005, 79,
+				-0.005, 0.012, 1079,
+				0.005, 0.012, 79,
+				0.012, 0.005, 1079,
+	
+				0.012, -0.005, 79,
+				0.005, -0.012, 1079,
+				-0.005, -0.012, 79,
+				-0.012, -0.005, 1079
+	
+		PRISM_	16, 0.002,
+				-0.02, -0.00215, 15,
+				-0.02, 0.00215, 15,
+				-0.014, 0.00215, 15,
+				-0.014, 0.005, 79,
+				-0.005, 0.014, 1079,
+				0.005, 0.014, 79,
+				0.014, 0.005, 1079,
+				0.014, 0.00215, 15,
+				0.02, 0.00215, 15, 
+				0.02, -0.00215, 15, 
+				0.014, -0.00215, 15,
+				0.014, -0.005, 79,
+				0.005, -0.014, 1079,
+				-0.005, -0.014, 79,
+				-0.014, -0.005, 1079,
+				-0.014, -0.00215, 15	
+		CUTEND
+		DEL 1
+		MATERIAL dk_materials[dka_acs_mat]
+		ADDZ 0.008
+		PRISM_	9, 0.002,
+				-0.012, -0.005, 79,
+				-0.012, 0.005, 79,
+				-0.005, 0.012, 1079,
+				0.005, 0.012, 79,
+				0.012, 0.005, 1079,
+	
+				0.012, -0.005, 79,
+				0.005, -0.012, 1079,
+				-0.005, -0.012, 79,
+				-0.012, -0.005, 1079
+		DEL 1
+	
+		ADDZ 0.01
+		ROTX -90
+		CALL "DORMAKABA_OGRO_handles3D" PARAMETERS matG = matG, KnaufGriffModell = drawMODELL
+		DEL 2
+		DEL 2
+		GOSUB "Schnittende"
+	ENDIF
+
+RETURN
+
+"DORMA_c-lever pro HAC":
+
+	MULZ -1
+
+	cutter = 0
+	IF bs_lock_barrel = "PZ" THEN
+		ROTX -90
+		ADDy -bs_case_distance
+		CUTFORM	7, 1, 19,
+				0, 0, 1, 0,
+
+				0.005218203717063, 0.0009791727138655, 91, 
+				0, 0.007917390676022, 900+91, 
+				0, 286.1369307339, 4000+91, 
+				-0.005212466805051, -0.01208432290015, 91, 
+				0, -0.01189490089931, 900+91, 
+				0, 175.8398407309, 4000+91, 
+				0.005218203717063, 0.0009791727138655, -1
+
+		DEL 2
+		cutter = cutter + 1
+
+		ROTX -90
+		ADDy -bs_case_distance
+		CUTFORM	7, 1, 19,
+				0, 0, -1, 0,
+
+				0.005218203717063, 0.0009791727138655, 91, 
+				0, 0.007917390676022, 900+91, 
+				0, 286.1369307339, 4000+91, 
+				-0.005212466805051, -0.01208432290015, 91, 
+				0, -0.01189490089931, 900+91, 
+				0, 175.8398407309, 4000+91, 
+				0.005218203717063, 0.0009791727138655, -1
+
+		DEL 2
+		cutter = cutter + 1
+	ENDIF
+
+	IF bs_lock_barrel = "OZ" THEN
+		ROTX -90
+		ADDy -bs_case_distance
+		CUTFORM	7, 1, 19,
+				0, 0, 1, 0,
+
+				0.01, 0.01, 91,
+				0.00, 0.01, 900+91,
+				0, 180, 4000+91,
+				-0.01, -0.01, 91,
+				0.00,-0.01, 900+91,
+				0, 180, 4000+91,
+				0.01, 0.01, -1
+
+		DEL 2
+		cutter = cutter + 1
+
+		ROTX -90
+		ADDy -bs_case_distance
+		CUTFORM	7, 1, 19,
+				0, 0, -1, 0,
+
+				0.01, 0.01, 91,
+				0.00, 0.01, 900+91,
+				0, 180, 4000+91,
+				-0.01, -0.01, 91,
+				0.00,-0.01, 900+91,
+				0, 180, 4000+91,
+				0.01, 0.01, -1
+
+		DEL 2
+		cutter = cutter + 1
+	ENDIF
+
+	IF bs_lock_barrel = "RZ" THEN
+		ROTX -90
+		ADDy -bs_case_distance
+		CUTFORM	2, 1, 19,
+				0, 0, 1, 0,
+
+				0,0, 900+91,
+				0.01,360, 4000+91
+
+		DEL 2
+		cutter = cutter + 1
+
+		ROTX -90
+		ADDy -bs_case_distance
+		CUTFORM	2, 1, 19,
+				0, 0, -1, 0,
+
+				0,0, 900+91,
+				0.01,360, 4000+91
+
+		DEL 2
+		cutter = cutter + 1
+	ENDIF
+
+
+	if bs_acs_sytle = 1 then
+		GOSUB "c-lever pro schmal mit"
+		IF bs_acs_handles <> 1+2+4 THEN
+			ADDY gs_leaf_thk
+			MULY -1
+			GOSUB "c-lever pro schmal ohne"
+			DEL 2
+		ENDIF
+	endif
+	if bs_acs_sytle = 2 then
+		GOSUB "c-lever pro breit mit"
+		IF bs_acs_handles <> 1+2+4 THEN
+			ADDY gs_leaf_thk
+			MULY -1
+			GOSUB "c-lever pro breit ohne"
+			DEL 2
+		ENDIF
+	endif
+	if bs_acs_sytle = 3 then
+		GOSUB "c-lever pro breit mit"
+		IF bs_acs_handles <> 1+2+4 THEN
+			ADDY gs_leaf_thk
+			MULY -1
+			GOSUB "c-lever pro schmal ohne"
+			DEL 2
+		ENDIF
+	endif
+	if bs_acs_sytle = 4 then
+		GOSUB "c-lever pro schmal mit"
+		IF bs_acs_handles <> 1+2+4 THEN
+			ADDY gs_leaf_thk
+			MULY -1
+			GOSUB "c-lever pro breit ohne"
+			DEL 2
+		ENDIF
+	endif
+
+	IF cutter <> 0 THEN 
+		CUTEND
+		CUTEND
+	ENDIF
+
+	DEL 1
+RETURN
+
+"DORMA_c-lever pro HBC":
+
+	if bs_acs_sytle = 1 then
+		GOSUB "c-lever pro schmal mit"
+		IF bs_acs_handles <> 1+2+4 THEN
+			ADDY gs_leaf_thk
+			MULY -1
+			GOSUB "c-lever pro schmal ohne"
+			DEL 2
+		ENDIF
+	endif
+	if bs_acs_sytle = 2 then
+		GOSUB "c-lever pro breit mit"
+		IF bs_acs_handles <> 1+2+4 THEN
+			ADDY gs_leaf_thk
+			MULY -1
+			GOSUB "c-lever pro breit ohne"
+			DEL 2
+		ENDIF
+	endif
+	if bs_acs_sytle = 3 then
+		GOSUB "c-lever pro breit mit"
+		IF bs_acs_handles <> 1+2+4 THEN
+			ADDY gs_leaf_thk
+			MULY -1
+			GOSUB "c-lever pro schmal ohne"
+			DEL 2
+		ENDIF
+	endif
+	if bs_acs_sytle = 4 then
+		GOSUB "c-lever pro schmal mit"
+		IF bs_acs_handles <> 1+2+4 THEN
+			ADDY gs_leaf_thk
+			MULY -1
+			GOSUB "c-lever pro breit ohne"
+			DEL 2
+		ENDIF
+	endif
+
+
+	RETURN
+
+"DORMA_":
+	RETURN
+"DORMA_-":   ! Aus
+	RETURN
+
+
+"c-lever pro schmal mit":
+
+	ROTX 90
+	TOLER 0.0001
+
+	MATERIAL dk_materials[dka_acs_mat]
+	ADDZ 0.023
+	CYLIND 0.011, 0.011
+
+	ADDZ 0.011
+	ROTX -90
+	CALL "DORMAKABA_OGRO_handles3D" PARAMETERS matG = matG, KnaufGriffModell = drawMODELL
+	DEL 2
+
+	ADD 0, -0.066, 0.004
+	PRISM_	10, 0.0001,
+			-0.0055, -0.0055, 15,
+			-0.0055, 0.0055, 15,
+			0.0055, 0.0055, 15,
+			0.0055, -0.0055, 15,
+			-0.0055, -0.0055, -1,
+			-0.005, -0.005, 15,
+			-0.005, 0.005, 15,
+			0.005, 0.005, 15,
+			0.005, -0.005, 15,
+			-0.005, -0.005, -1
+	DEL 1
+	DEL 1
+
+	ROTX 0
+	CUTFORM	9, 1, 19,
+			0, 0, -1, -0.0015,
+			-0.019, -0.097, 79,
+			-0.019, 0.191, 79,
+			-0.015, 0.195, 1079,
+			0.015, 0.195, 79,
+			0.019, 0.191, 1079,
+			0.019, -0.097, 79,
+			0.015, -0.101, 1079,
+			-0.015, -0.101, 79,
+			-0.019, -0.097, 1079
+	DEL 1
+
+	PRISM_	9, 0.023,
+			-0.02, -0.097, 79,
+			-0.02, 0.191, 79,
+			-0.015, 0.196, 1079,
+			0.015, 0.196, 79,
+			0.02, 0.191, 1079,
+			0.02, -0.097, 79,
+			0.015, -0.102, 1079,
+			-0.015, -0.102, 79,
+			-0.02, -0.097, 1079
+	CUTEND
+
+	ADDZ 0.0015
+
+	CUTFORM	4, 1, 19+8,
+			0, 0, -1, -0.0015,
+			-0.02, -0.0295, 15,
+			-0.02, -0.2, 15,
+			0.02, -0.2, 15,
+			0.02, -0.0295, 15
+
+	PRISM_	9, 0.0215,
+			-0.0185, -0.097, 79,
+			-0.0185, 0.191, 79,
+			-0.015, 0.1945, 1079,
+			0.015, 0.1945, 79,
+			0.0185, 0.191, 1079,
+			0.0185, -0.097, 79,
+			0.015, -0.1005, 1079,
+			-0.015, -0.1005, 79,
+			-0.0185, -0.097, 1079
+
+	CUTEND
+
+	IF bs_acs_cover = "B" then MATERIAL "Cover black"
+	IF bs_acs_cover = "W" then MATERIAL "Cover white"
+
+	CUTFORM	4, 1, 19+8,
+			0, 0, -1, -0.0015,
+			-0.02, -0.03, 15,
+			-0.02, 0.2, 15,
+			0.02, 0.2, 15,
+			0.02, -0.03, 15
+
+	ADD 0, -0.03, 0.0215
+	ROTX -45
+	CUTPLANE
+	DEL 2
+
+	PRISM_	9, 0.0255,
+			-0.0185, -0.097, 79,
+			-0.0185, 0.191, 79,
+			-0.015, 0.1945, 1079,
+			0.015, 0.1945, 79,
+			0.0185, 0.191, 1079,
+			0.0185, -0.097, 79,
+			0.015, -0.1005, 1079,
+			-0.015, -0.1005, 79,
+			-0.0185, -0.097, 1079
+
+	CUTEND
+	CUTEND
+
+	DEL 1
+	DEL 1
+RETURN
+
+
+"c-lever pro schmal ohne":
+
+	ROTX 90
+	TOLER 0.0001
+
+	MATERIAL dk_materials[dka_acs_mat]
+	ADDZ 0.023
+	CYLIND 0.011, 0.011
+
+	ADDZ 0.011
+	ROTX -90
+	CALL "DORMAKABA_OGRO_handles3D" PARAMETERS matG = matG, KnaufGriffModell = drawMODELL
+	DEL 2
+
+	DEL 1
+
+	ROTX 0
+	CUTFORM	9, 1, 19,
+			0, 0, -1, -0.0015,
+			-0.019, -0.097, 79,
+			-0.019, 0.191, 79,
+			-0.015, 0.195, 1079,
+			0.015, 0.195, 79,
+			0.019, 0.191, 1079,
+			0.019, -0.097, 79,
+			0.015, -0.101, 1079,
+			-0.015, -0.101, 79,
+			-0.019, -0.097, 1079
+	DEL 1
+
+	PRISM_	9, 0.023,
+			-0.02, -0.097, 79,
+			-0.02, 0.191, 79,
+			-0.015, 0.196, 1079,
+			0.015, 0.196, 79,
+			0.02, 0.191, 1079,
+			0.02, -0.097, 79,
+			0.015, -0.102, 1079,
+			-0.015, -0.102, 79,
+			-0.02, -0.097, 1079
+	CUTEND
+
+	ADDZ 0.0015
+
+	PRISM_	9, 0.0215,
+			-0.0185, -0.097, 79,
+			-0.0185, 0.191, 79,
+			-0.015, 0.1945, 1079,
+			0.015, 0.1945, 79,
+			0.0185, 0.191, 1079,
+			0.0185, -0.097, 79,
+			0.015, -0.1005, 1079,
+			-0.015, -0.1005, 79,
+			-0.0185, -0.097, 1079
+
+	DEL 1
+	DEL 1
+RETURN
+
+
+"c-lever pro breit mit":
+	ROTX 90
+	TOLER 0.0001
+
+	MATERIAL dk_materials[dka_acs_mat]
+	ADDZ 0.023
+	CYLIND 0.011, 0.011
+
+	ADDZ 0.011
+	ROTX -90
+	CALL "DORMAKABA_OGRO_handles3D" PARAMETERS matG = matG, KnaufGriffModell = drawMODELL
+	DEL 2
+
+	ADD 0, -0.066, 0.004
+	PRISM_	10, 0.0001,
+			-0.0055, -0.0055, 15,
+			-0.0055, 0.0055, 15,
+			0.0055, 0.0055, 15,
+			0.0055, -0.0055, 15,
+			-0.0055, -0.0055, -1,
+			-0.005, -0.005, 15,
+			-0.005, 0.005, 15,
+			0.005, 0.005, 15,
+			0.005, -0.005, 15,
+			-0.005, -0.005, -1
+	DEL 1
+	DEL 1
+
+	ADD -0.019, 0, 0.023
+	ROTZ 90
+	CUTPLANE -68
+	DEL 2
+
+	ADD 0.019, 0, 0.023
+	ROTZ 90
+	CUTPLANE 68
+	DEL 2
+
+
+	ROTX 0
+	CUTFORM	9, 1, 19,
+			0, 0, -1, -0.0015,
+			-0.019, -0.097, 79,
+			-0.019, 0.191, 79,
+			-0.015, 0.195, 1079,
+			0.015, 0.195, 79,
+			0.019, 0.191, 1079,
+			0.019, -0.097, 79,
+			0.015, -0.101, 1079,
+			-0.015, -0.101, 79,
+			-0.019, -0.097, 1079
+	DEL 1
+
+	PRISM_	9, 0.023,
+			-0.02725, -0.097, 79,
+			-0.02725, 0.191, 79,
+			-0.02225, 0.196, 1079,
+			0.02225, 0.196, 79,
+			0.02725, 0.191, 1079,
+			0.02725, -0.097, 79,
+			0.02225, -0.102, 1079,
+			-0.02225, -0.102, 79,
+			-0.02725, -0.097, 1079
+	CUTEND
+	CUTEND
+	CUTEND
+
+	ADDZ 0.0015
+
+	CUTFORM	4, 1, 19+8,
+			0, 0, -1, -0.0015,
+			-0.02, -0.0295, 15,
+			-0.02, -0.2, 15,
+			0.02, -0.2, 15,
+			0.02, -0.0295, 15
+
+	PRISM_	9, 0.0215,
+			-0.0185, -0.097, 79,
+			-0.0185, 0.191, 79,
+			-0.015, 0.1945, 1079,
+			0.015, 0.1945, 79,
+			0.0185, 0.191, 1079,
+			0.0185, -0.097, 79,
+			0.015, -0.1005, 1079,
+			-0.015, -0.1005, 79,
+			-0.0185, -0.097, 1079
+
+	CUTEND
+
+	IF bs_acs_cover = "B" then MATERIAL "Cover black"
+	IF bs_acs_cover = "W" then MATERIAL "Cover white"
+
+	CUTFORM	4, 1, 19+8,
+			0, 0, -1, -0.0015,
+			-0.02, -0.03, 15,
+			-0.02, 0.2, 15,
+			0.02, 0.2, 15,
+			0.02, -0.03, 15
+
+	ADD 0, -0.03, 0.0215
+	ROTX -45
+	CUTPLANE
+	DEL 2
+
+	PRISM_	9, 0.0255,
+			-0.0185, -0.097, 79,
+			-0.0185, 0.191, 79,
+			-0.015, 0.1945, 1079,
+			0.015, 0.1945, 79,
+			0.0185, 0.191, 1079,
+			0.0185, -0.097, 79,
+			0.015, -0.1005, 1079,
+			-0.015, -0.1005, 79,
+			-0.0185, -0.097, 1079
+
+	CUTEND
+	CUTEND
+
+	DEL 1
+	DEL 1
+
+RETURN
+
+
+"c-lever pro breit ohne":
+	ROTX 90
+	TOLER 0.0001
+
+	MATERIAL dk_materials[dka_acs_mat]
+	ADDZ 0.023
+	CYLIND 0.011, 0.011
+
+	ADDZ 0.011
+	ROTX -90
+	CALL "DORMAKABA_OGRO_handles3D" PARAMETERS KnaufGriffModell = drawMODELL, matG = matG
+	DEL 2
+
+	DEL 1
+
+	ADD -0.019, 0, 0.023
+	ROTZ 90
+	CUTPLANE -68
+	DEL 2
+
+	ADD 0.019, 0, 0.023
+	ROTZ 90
+	CUTPLANE 68
+	DEL 2
+
+
+	ROTX 0
+	CUTFORM	9, 1, 19,
+			0, 0, -1, -0.0015,
+			-0.019, -0.097, 79,
+			-0.019, 0.191, 79,
+			-0.015, 0.195, 1079,
+			0.015, 0.195, 79,
+			0.019, 0.191, 1079,
+			0.019, -0.097, 79,
+			0.015, -0.101, 1079,
+			-0.015, -0.101, 79,
+			-0.019, -0.097, 1079
+	DEL 1
+
+	PRISM_	9, 0.023,
+			-0.02725, -0.097, 79,
+			-0.02725, 0.191, 79,
+			-0.02225, 0.196, 1079,
+			0.02225, 0.196, 79,
+			0.02725, 0.191, 1079,
+			0.02725, -0.097, 79,
+			0.02225, -0.102, 1079,
+			-0.02225, -0.102, 79,
+			-0.02725, -0.097, 1079
+	CUTEND
+	CUTEND
+	CUTEND
+
+	ADDZ 0.0015
+
+
+
+	PRISM_	9, 0.0215,
+			-0.0185, -0.097, 79,
+			-0.0185, 0.191, 79,
+			-0.015, 0.1945, 1079,
+			0.015, 0.1945, 79,
+			0.0185, 0.191, 1079,
+			0.0185, -0.097, 79,
+			0.015, -0.1005, 1079,
+			-0.015, -0.1005, 79,
+			-0.0185, -0.097, 1079
+
+	DEL 1
+	DEL 1
+RETURN
+
+"Schlossrosette":
+	IF bs_acs_sytle = 4 THEN															! Vollblatttür mit Rundrosette
+		ADDy -bs_case_distance
+
+
+		IF bs_lock_barrel = "PZ" THEN
+			HPRISM_	"ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK",
+				2+7, 0.009, 45, 0.0005, 1,
+				0, 0, 979,
+				0.055/2, 360, 4079,
+	
+				0.005218203717063, 0.0009791727138655, 79, 
+				0, 0.007917390676022, 900+79, 
+				0, 286.1369307339, 4000+79, 
+				-0.005212466805051, -0.01208432290015, 79, 
+				0, -0.01189490089931, 900+79, 
+				0, 175.8398407309, 4000+79, 
+				0.005218203717063, 0.0009791727138655, -1
+		ENDIF
+
+		IF bs_lock_barrel = "OZ" THEN
+			HPRISM_	"ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK",
+				2+7, 0.009, 45, 0.0005, 1,
+				0, 0, 979,
+				0.055/2, 360, 4079,
+	
+				0.01, 0.01, 79,
+				0.00, 0.01, 900+79,
+				0, 180, 4000+79,
+				-0.01, -0.01, 79,
+				0.00,-0.01, 900+79,
+				0, 180, 4000+79,
+				0.01, 0.01, -1
+
+		ENDIF
+
+		IF bs_lock_barrel = "RZ" THEN
+			HPRISM_	"ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK",
+				2+2, 0.009, 45, 0.0005, 1,
+				0, 0, 979,
+				0.055/2, 360, 4079,
+	
+				0,0, 900+79,
+				0.01,360, 4000+79
+
+		ENDIF
+
+		IF bs_lock_barrel <> "RZ" AND bs_lock_barrel <> "OZ" AND bs_lock_barrel <> "PZ" THEN
+			HPRISM_	"ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK",
+				2, 0.009, 45, 0.0005, 1,
+				0, 0, 979,
+				0.055/2, 360, 4079
+
+		ENDIF
+		DEL 1
+	ELSE
+																					! Rechteckrosette
+		ADDy -bs_case_distance
+		r3 = 0.0045
+		h3 = 0.0685
+		b3 = 0.0315
+
+		IF bs_lock_barrel = "PZ" THEN
+			HPRISM_	"ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK",
+					10+7, 0.009, 45, 0.0005, 1,
+					-b3/2, -h3/2+r3, 79,
+					-b3/2, h3/2-r3, 79,
+					-b3/2+r3, h3/2, 1079,
+					b3/2-r3, h3/2, 79,
+					b3/2, h3/2-r3, 1079,
+					b3/2, -h3/2+r3, 79,
+					b3/2-r3, -h3/2, 1079,
+					-b3/2+r3, -h3/2, 79,
+					-b3/2, -h3/2+r3, 1079,
+					-b3/2, -h3/2+r3, -1,
+		
+					0.005218203717063, 0.0009791727138655, 79, 
+					0, 0.007917390676022, 900+79, 
+					0, 286.1369307339, 4000+79, 
+					-0.005212466805051, -0.01208432290015, 79, 
+					0, -0.01189490089931, 900+79, 
+					0, 175.8398407309, 4000+79, 
+					0.005218203717063, 0.0009791727138655, -1
+		ENDIF
+
+		IF bs_lock_barrel = "OZ" THEN
+			HPRISM_	"ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK",
+					10+7, 0.009, 45, 0.0005, 1,
+					-b3/2, -h3/2+r3, 79,
+					-b3/2, h3/2-r3, 79,
+					-b3/2+r3, h3/2, 1079,
+					b3/2-r3, h3/2, 79,
+					b3/2, h3/2-r3, 1079,
+					b3/2, -h3/2+r3, 79,
+					b3/2-r3, -h3/2, 1079,
+					-b3/2+r3, -h3/2, 79,
+					-b3/2, -h3/2+r3, 1079,
+					-b3/2, -h3/2+r3, -1,
+		
+					0.01, 0.01, 79,
+					0.00, 0.01, 900+79,
+					0, 180, 4000+79,
+					-0.01, -0.01, 79,
+					0.00,-0.01, 900+79,
+					0, 180, 4000+79,
+					0.01, 0.01, -1
+
+		ENDIF
+
+		IF bs_lock_barrel = "RZ" THEN
+			HPRISM_	"ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK",
+					10+2, 0.009, 45, 0.0005, 1,
+					-b3/2, -h3/2+r3, 79,
+					-b3/2, h3/2-r3, 79,
+					-b3/2+r3, h3/2, 1079,
+					b3/2-r3, h3/2, 79,
+					b3/2, h3/2-r3, 1079,
+					b3/2, -h3/2+r3, 79,
+					b3/2-r3, -h3/2, 1079,
+					-b3/2+r3, -h3/2, 79,
+					-b3/2, -h3/2+r3, 1079,
+					-b3/2, -h3/2+r3, -1,
+		
+					0,0, 900+79,
+					0.01,360, 4000+79
+
+		ENDIF
+
+		IF bs_lock_barrel <> "RZ" AND bs_lock_barrel <> "OZ" AND bs_lock_barrel <> "PZ" THEN
+			HPRISM_	"ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK",
+					9, 0.009, 45, 0.0005, 1,
+					-b3/2, -h3/2+r3, 79,
+					-b3/2, h3/2-r3, 79,
+					-b3/2+r3, h3/2, 1079,
+					b3/2-r3, h3/2, 79,
+					b3/2, h3/2-r3, 1079,
+					b3/2, -h3/2+r3, 79,
+					b3/2-r3, -h3/2, 1079,
+					-b3/2+r3, -h3/2, 79,
+					-b3/2, -h3/2+r3, 1079
+
+		ENDIF
+		DEL 1
+
+
+	ENDIF
+RETURN
+
+"Drückerrosette":
+		IF bs_acs_sytle = 4 THEN															! Vollblatttür mit Rundrosette
+			HPRISM_	"ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK",
+				2, 0.009, 45, 0.0005, 1,
+				0, 0, 979,
+				0.055/2, 360, 4079
+		ELSE
+			r3 = 0.0045
+			h3 = 0.0685
+			b3 = 0.0315
+			HPRISM_	"ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK", "ALUMINIUM_DK",
+				9, 0.009, 45, 0.0005, 1,
+				-b3/2, -h3/2+r3, 79,
+				-b3/2, h3/2-r3, 79,
+				-b3/2+r3, h3/2, 1079,
+				b3/2-r3, h3/2, 79,
+				b3/2, h3/2-r3, 1079,
+				b3/2, -h3/2+r3, 79,
+				b3/2-r3, -h3/2, 1079,
+				-b3/2+r3, -h3/2, 79,
+				-b3/2, -h3/2+r3, 1079
+	
+		ENDIF
+
+RETURN
+
+
+"Schnitte":
+		ADDy -bs_case_distance
+
+
+		IF bs_lock_barrel = "PZ" THEN
+			cutpolya	7, 1, 0,
+				0.005218203717063, 0.0009791727138655, 79, 
+				0, 0.007917390676022, 900+79, 
+				0, 286.1369307339, 4000+79, 
+				-0.005212466805051, -0.01208432290015, 79, 
+				0, -0.01189490089931, 900+79, 
+				0, 175.8398407309, 4000+79, 
+				0.005218203717063, 0.0009791727138655, -1
+		ENDIF
+
+		IF bs_lock_barrel = "OZ" THEN
+			cutpolya	7, 1, 0,
+	
+				0.01, 0.01, 79,
+				0.00, 0.01, 900+79,
+				0, 180, 4000+79,
+				-0.01, -0.01, 79,
+				0.00,-0.01, 900+79,
+				0, 180, 4000+79,
+				0.01, 0.01, -1
+
+		ENDIF
+
+		IF bs_lock_barrel = "RZ" THEN
+			cutpolya	2, 1, 0,
+	
+				0,0, 900+79,
+				0.01,360, 4000+79
+
+		ENDIF
+
+		DEL 1
+
+RETURN
+
+
+"Schnittende":
+
+IF bs_lock_barrel = "RZ" OR bs_lock_barrel = "OZ" OR bs_lock_barrel = "PZ" THEN
+	CUTEND
+ENDIF
+RETURN
+

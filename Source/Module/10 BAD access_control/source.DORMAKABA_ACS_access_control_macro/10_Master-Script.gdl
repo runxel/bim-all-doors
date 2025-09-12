@@ -1,0 +1,683 @@
+! ######################################
+!
+! BIM-all-doors - DOOR SYSTEM
+!
+! Module: Access control system
+!
+! Manufacturer: DORMAKABA
+! Linie: c-lever
+!
+! (p) 2018 BY DORMAKABA
+! openSource by CCO1.0 license since 2025
+!
+! https://github.com/dormakaba/bim-all-doors
+! 
+! ######################################
+
+! =============================================================================
+! GLOBAL SETTINGS
+! =============================================================================
+
+! »»» Arrays
+DIM clr1[], clr2[][], UI_page_subs[]
+DIM UI_page_names[], UI_page_icons[], UI_page_type[]
+
+! »»» Constants
+tlr = 0.00001  !»» accurancy
+version = 1.90 !»» Objektversion
+txt = ""	   !»»  Text für alles
+
+! »»» Localization
+sprache = language  !»»  Deutsch
+
+
+! »»» Common keywords
+IF sprache = 1 THEN
+
+	commonMacro = "allgemein" 
+	commonKey = "unspezifiziert" 
+	naKey = "undefiniert" 
+	noKey = "nein" 
+	yesKey = "ja"
+	offKey = "Aus"
+
+	ELSE
+		
+	commonKey = "unspecific"
+	naKey = "common"
+	noKey = "no"
+	yesKey = "yes"
+	offKey = "off"
+
+	ENDIF
+	
+! ----------------------------------- MULTILINGUAL TEXT [DORMAKABA.hinge] (start)
+
+! --------- RESET array variables
+	DIM uiTXT[]
+	DIM context[]
+
+! --------- Common Text (Deutsch)
+	IF language = 1 THEN
+		context[1] = "Stahl"
+		context[2] = "Aluminium"
+		context[3] = "Holz"
+		context[4] = "Kunststoff"
+		ENDIF
+! --------- Common Text (Englisch)
+	IF language = 4 THEN
+		context[1] = "Steel"
+		context[2] = "Aluminium"
+		context[3] = "Wood"
+		context[4] = "Plastic"
+		ENDIF
+
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		uiTXT[1] = "ZUGANGSKONTROLLE"
+		uiTXT[2] = "... Beschläge und Materialien"
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF language = 4 THEN
+		uiTXT[1] = "ACCESS CONTROL"
+		uiTXT[2] = "... handle and materials"
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (start)
+
+! --------- PRODUCT PARAMETERS
+
+! --------- DEFAULT VALUE ARRAYS
+
+! --------- dk_cont_pens[i][…]
+	dka_handle_penC2 = 1
+	dka_handle_penC3 = 2
+	dka_frame_penC2 = 3
+	dka_frame_penC3 = 4
+	dka_panel_penC2 = 5
+	dka_panel_penC3 = 6
+	dka_opline2D = 7
+	dka_oplineSA = 8
+	dka_opline3D = 9
+	dka_topview_penC2 = 10
+	dka_penInvisible = 11
+	dka_closer_penSA = 12
+	dka_closer_pen3D = 13
+	dka_grip_penC2 = 14
+	dka_grip_penC3 = 15
+	dka_wallhole_side2D = 16
+	dka_wallhole_lintel2D1 = 17
+	dka_wallhole_lintel2D2 = 18
+! --------- dk_fill_pens[i][…]
+	dka_handle_penF = 1
+	dka_frame_penF = 2
+	dka_side1_penF = 3
+	dka_side2_penF = 4
+	dka_panel_penF = 5
+	dka_panelfill1_penF = 6
+	dka_panelfill2_penF = 7
+	dka_panelfill3_penF = 8
+	dka_panel2fill1_penF = 9
+	dka_panel2fill2_penF = 10
+	dka_panel2fill3_penF = 11
+	dka_topview_penF = 12
+	dka_fan_penF = 13
+	dka_gap_filling_penF = 14
+	dka_grip_penF = 15
+	dka_wallhole_penF = 16
+! --------- dk_bkg_pens[i][…]
+	dka_handle_penB = 1
+	dka_frame_penB = 2
+	dka_side1_penB = 3
+	dka_side2_penB = 4
+	dka_panel_penB = 5
+	dka_panelfill1_penB = 6
+	dka_panelfill2_penB = 7
+	dka_panelfill3_penB = 8
+	dka_panel2fill1_penB = 9
+	dka_panel2fill2_penB = 10
+	dka_panel2fill3_penB = 11
+	dka_topview_penB = 12
+	dka_fan_penB = 13
+	dka_gap_filling_penB = 14
+	dka_grip_penB = 15
+	dka_wallhole_penB = 16
+! --------- dk_fills[i][…]
+	dka_handle_fill = 1
+	dka_frame_fill = 2
+	dka_side1_fill = 3
+	dka_side2_fill = 4
+	dka_panel_fill = 5
+	dka_panelfill1_fill = 6
+	dka_panelfill2_fill = 7
+	dka_panelfill3_fill = 8
+	dka_panel2fill1_fill = 9
+	dka_panel2fill2_fill = 10
+	dka_panel2fill3_fill = 11
+	dka_topview_fill = 12
+	dka_fan_fill = 13
+	dka_gap_filling_fill = 14
+	dka_grip_fill = 15
+	dka_wallhole_fill = 16
+! --------- dk_linetype[i][…]
+	dka_invisible = 1
+	dka_wallhole_lintelBS1 = 2
+	dka_wallhole_lintelBGS1 = 3
+	dka_wallhole_lintelBS2 = 4
+	dka_wallhole_lintelBGS2 = 5
+! --------- dk_materials[i][…]
+	dka_handle_mat = 1
+	dka_plate_mat = 2
+	dka_frame_mat_BS = 3
+	dka_frame_mat_BGS = 4
+	dka_side1_mat_BS = 5
+	dka_side1_mat_BGS = 6
+	dka_side2_mat_BS = 7
+	dka_side2_mat_BGS = 8
+	dka_fan_mat_BS = 9
+	dka_fan_mat_BGS = 10
+	dka_panel_mat_BS = 11
+	dka_panel_mat_BGS = 12
+	dka_panelfill1_mat_BS = 13
+	dka_panelfill1_mat_BGS = 14
+	dka_panelfill2_mat_BS = 15
+	dka_panelfill2_mat_BGS = 16
+	dka_panelfill3_mat_BS = 17
+	dka_panelfill3_mat_BGS = 18
+	dka_panel2_mat_BS = 19
+	dka_panel2_mat_BGS = 20
+	dka_panel2fill1_mat_BS = 21
+	dka_panel2fill1_mat_BGS = 22
+	dka_panel2fill2_mat_BS = 23
+	dka_panel2fill2_mat_BGS = 24
+	dka_panel2fill3_mat_BS = 25
+	dka_panel2fill3_mat_BGS = 26
+	dka_panel_bandings_mat = 27
+	dka_panel2_bandings_mat = 28
+	dka_hinge_mat = 29
+	dka_closer_mat = 30
+	dka_automation_mat = 31
+	dka_grip_mat_BS1 = 32
+	dka_grip_mat_BS2 = 33
+	dka_grip_mat_BGS1 = 34
+	dka_grip_mat_BGS2 = 35
+	dka_acs_mat = 36
+! --------- dk_open_leaf[i][…]
+	dka_leaf_angle2D = 1
+	dka_leaf2_angle2D = 2
+	dka_leaf_angleSA = 3
+	dka_leaf2_angleSA = 4
+	dka_leaf_angle3D = 5
+	dka_leaf2_angle3D = 6
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (end)
+
+
+! »»» Konstruktionstyp ermitteln
+IF bs_leaf_oversize < tlr OR bs_leaf_overhang < tlr THEN stumpf = 1 ELSE stumpf = 0
+
+holz = ( bs_panel_material = "H" AND bs_frame_material = "HZ" )
+
+
+! ------------------------------------------------------------------------[ Verfügbare Modelle ]
+
+! »»» Liste verfügbarere Modelle aufbauen
+! DIM DormaACSModel[]
+
+! 	j = 0
+! 	j = j + 1 : DormaACSModel[j] = "74xx"
+
+! »»» Auswahl prüfen, ob in der Liste enthalten. Sonst setzen.
+! 	sts = 0 
+! 	FOR i=1 TO j
+! 		IF bs_access_control_model = DormaACSModel[i] THEN sts = 1
+! 		NEXT i
+! 	IF NOT(sts) THEN bs_access_control_model = DormaACSModel[1]
+
+! ------------------------------------------------------------------------[ Einstellungen für User Interface ]
+
+! UI_page_type =  -2 > sub of ROOT, -1 > sub of last, 1 > sub of first macro page
+seiten = 0
+
+! Abhängig von Beschränkung  der Einstellmöglichkeiten sichtbar
+IF dk_LOI > 0 THEN
+	seiten = 1
+	UI_page_names[seiten] = uiTXT[1]  !"ZUGANGSKONTROLLE"
+	UI_page_icons[seiten] = "dk_title_access_control 18x18.png"
+	UI_page_type[seiten]  = -1
+	UI_page_subs[seiten] = 7000
+
+	! Achtung! "bs_control_side" darf nur auf der ersten Seite abgefragt werden!
+
+	IF  bs_control_side <> "-" THEN
+		seiten = 2
+		UI_page_names[seiten] = uiTXT[2]  !"ZUGANGSKONTROLLE"    ! neuer Titel vergeben
+		UI_page_icons[seiten] = "dk_title_access_control_function 18x18.png"		! Icon
+		UI_page_type[seiten]  = 1
+		UI_page_subs[seiten] = 7001
+
+!		seiten = 3
+!		UI_page_names[seiten] = uiTXT[3]  !"ZUGANGSKONTROLLE"    ! neuer Titel vergeben
+!		UI_page_icons[seiten] = "dk_title_access_control_case 18x18.png"		! Icon
+!		UI_page_type[seiten]  = 1
+!		UI_page_subs[seiten] = 7002
+!
+!		seiten = 4
+!		UI_page_names[seiten] = uiTXT[4]  !"ZUGANGSKONTROLLE"    ! neuer Titel vergeben
+!		UI_page_icons[seiten] = "dk_title_access_control_material 18x18.png"		! Icon
+!		UI_page_type[seiten]  = 1
+!		UI_page_subs[seiten] = 7003
+		ENDIF
+
+	! Immer anlegen
+
+ENDIF
+
+! ------------------------------------------------------------------------[ Generierung Produktcode ]
+
+
+bs_acs_productcode = ""
+IF bs_access_control_system = "c-lever compact" THEN
+	bs_acs_productcode = "27"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_function
+	bs_acs_productcode = bs_acs_productcode + bs_acs_platetype + "-"
+	bs_acs_productcode = bs_acs_productcode + "K6/"
+	bs_acs_productcode = bs_acs_productcode + "MRD/"
+	bs_acs_productcode = bs_acs_productcode + "SL"+bs_acs_systemlevel+"/"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_emodule+"/"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_baseplate+"/"
+	bs_acs_productcode = bs_acs_productcode + "TS31-100/"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_handle_model+"/"
+	bs_acs_productcode = bs_acs_productcode + STR(bs_case_hole*1000,1,0)+"/"
+	bs_acs_productcode = bs_acs_productcode + "R"+"/"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_cover
+ENDIF
+
+IF bs_access_control_system = "c-lever pro HAC" OR bs_access_control_system = "c-lever pro HBC" THEN
+	bs_acs_productcode = "26"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_function
+	bs_acs_productcode = bs_acs_productcode + str(bs_acs_sytle,1,0) + "-"
+	bs_acs_productcode = bs_acs_productcode + "K6/"
+	bs_acs_productcode = bs_acs_productcode + "MRD/"
+	bs_acs_productcode = bs_acs_productcode + "SL"+bs_acs_systemlevel+"/"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_emodule+"/"
+	IF bs_access_control_system = "c-lever pro HAC" THEN
+		bs_acs_productcode = bs_acs_productcode + "HAC"+"/"
+	ELSE
+		bs_acs_productcode = bs_acs_productcode + "HBC"+"/"
+	ENDIF
+	bs_acs_productcode = bs_acs_productcode + bs_acs_case_a + "/"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_case_b + "/"
+	IF gs_leaf_thk <= 0.063 then
+		bs_acs_productcode = bs_acs_productcode + "TS63/"
+	ENDIF
+	IF gs_leaf_thk > 0.063 and gs_leaf_thk <= 0.099 then
+		bs_acs_productcode = bs_acs_productcode + "TS99/"
+	ENDIF
+
+
+	bs_acs_productcode = bs_acs_productcode + bs_acs_handle_model+"/"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_handle_model+"/"
+	bs_acs_productcode = bs_acs_productcode +"NI"+"/"
+	bs_acs_productcode = bs_acs_productcode + STR(bs_case_hole*1000,1,0)+"/"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_cover+"/"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_electric+"/"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_addon
+ENDIF
+
+IF bs_access_control_system = "c-lever air" THEN
+	bs_acs_productcode = "29"
+
+	bs_acs_productcode = bs_acs_productcode + str(bs_acs_sytle,1,0)
+	bs_acs_productcode = bs_acs_productcode + bs_acs_platetype + "-"
+	bs_acs_productcode = bs_acs_productcode + "K6/"
+	bs_acs_productcode = bs_acs_productcode + "MRD/"
+	bs_acs_productcode = bs_acs_productcode + "SL"+bs_acs_systemlevel+"/"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_emodule+"/"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_case_a + "/"
+
+
+
+	IF gs_leaf_thk <= 0.047 then
+		bs_acs_productcode = bs_acs_productcode + "TS47/"
+	ENDIF
+	IF gs_leaf_thk > 0.047 and gs_leaf_thk <= 0.062 then
+		bs_acs_productcode = bs_acs_productcode + "TS62/"
+	ENDIF
+	IF gs_leaf_thk > 0.062 and gs_leaf_thk <= 0.077 then
+		bs_acs_productcode = bs_acs_productcode + "TS77/"
+	ENDIF
+	IF gs_leaf_thk > 0.077 and gs_leaf_thk <= 0.090 then
+		bs_acs_productcode = bs_acs_productcode + "TS90/"
+	ENDIF
+	IF gs_leaf_thk > 0.090 and gs_leaf_thk <= 0.11 then
+		bs_acs_productcode = bs_acs_productcode + "TS110/"
+	ENDIF
+
+	bs_acs_productcode = bs_acs_productcode + bs_acs_handle_model+"/"
+
+	IF bs_acs_platetype = "5" THEN
+		bs_acs_productcode = bs_acs_productcode + bs_acs_handle_model+"/"
+		IF bs_acs_sytle = 4 THEN
+			bs_acs_productcode = bs_acs_productcode + "R/"
+		ELSE
+			bs_acs_productcode = bs_acs_productcode + "C/"
+		ENDIF
+	ENDIF
+
+	bs_acs_productcode = bs_acs_productcode + STR(bs_case_hole*1000,1,0)+"/"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_cover+"/"
+	bs_acs_productcode = bs_acs_productcode + "DR"+" "
+
+ENDIF
+
+IF bs_access_control_system = "Digitalzylinder" THEN
+	IF bs_lock_barrel = "PZ" THEN bs_acs_productcode = "143"
+	IF bs_lock_barrel = "RZ" THEN bs_acs_productcode = "153"
+	IF bs_lock_barrel = "OZ" THEN bs_acs_productcode = "483"
+	IF bs_control_side = "ZS" THEN bs_acs_productcode = bs_acs_productcode + "9"
+	IF bs_control_side = "BS" OR bs_control_side = "BGS" THEN 
+		IF bs_closure2 = "-" OR bs_closure1 = "-" THEN
+			bs_acs_productcode = bs_acs_productcode + "4-"
+		ELSE
+			bs_acs_productcode = bs_acs_productcode + "5-"
+		ENDIF
+	ENDIF
+
+
+
+	bs_acs_productcode = bs_acs_productcode + "K6/"
+	bs_acs_productcode = bs_acs_productcode + "SL"+bs_acs_systemlevel+"/"
+	bs_acs_productcode = bs_acs_productcode + bs_acs_emodule+"/"
+	bs_acs_productcode = bs_acs_productcode + STR(bs_acs_case_la,1,0) + "/"
+	bs_acs_productcode = bs_acs_productcode + STR(bs_acs_case_lb,1,0) + "/"
+	bs_acs_productcode = bs_acs_productcode + "IN/"
+
+	bs_acs_productcode = bs_acs_productcode + "ST/"
+	IF bs_control_side = "ZS" THEN bs_acs_productcode = bs_acs_productcode + "SK/"
+	IF bs_control_side = "BS" OR bs_control_side = "BGS" THEN 
+		IF bs_closure2 = "-" OR bs_closure1 = "-" THEN
+			bs_acs_productcode = bs_acs_productcode + "NK/"
+		ELSE
+			bs_acs_productcode = bs_acs_productcode + "MK/"
+		ENDIF
+	ENDIF
+
+
+
+
+
+
+
+	IF bs_acs_cover = "B" THEN bs_acs_productcode = bs_acs_productcode + "BLK/"
+	IF bs_acs_cover = "W" THEN bs_acs_productcode = bs_acs_productcode + "WHT/"
+
+	bs_acs_productcode = bs_acs_productcode + bs_acs_cam +"/"
+
+	bs_acs_productcode = bs_acs_productcode + "INT"+" "
+
+ENDIF
+
+PARAMETERS bs_acs_model = bs_acs_productcode
+
+! =============================================================================
+! MATERIALDEFINITION
+! =============================================================================
+
+DEFINE MATERIAL "Edelstahl ES" 3, 0.9, 0.9, 0.9
+DEFINE MATERIAL "Cover white" 4, 0.95, 0.95, 0.95
+DEFINE MATERIAL "Cover black" 4, 0.05, 0.05, 0.05
+DEFINE MATERIAL "LED" 0, 0.8, 0.8, 0.8, 0.54, 0.75, 0.7, 0.5, 1, 0, 0.0, 0.0, 0.0, 0, 0, 0, 0
+DEFINE MATERIAL "ALUMINIUM_DK" 0, 172/255, 172/255, 172/255,
+                        0.85, 0.5, 0.9, 0,
+                        10, 0,
+                        172/255, 172/255, 172/255,
+                        0, 0, 0,
+                        0
+
+! =============================================================================
+! GRIFFDEFINITION
+! =============================================================================
+
+if bs_acs_handle_model = "HL" then drawMODELL="8906"
+if bs_acs_handle_model = "HN" then drawMODELL="8907"
+if bs_acs_handle_model = "HA" then drawMODELL="8100"
+if bs_acs_handle_model = "HB" then drawMODELL="8100V"
+if bs_acs_handle_model = "HC" then drawMODELL="8100A"
+if bs_acs_handle_model = "HD" then drawMODELL="8155"
+if bs_acs_handle_model = "HM" then drawMODELL="8906A"
+if bs_acs_handle_model = "HO" then drawMODELL="8907A"
+if bs_acs_handle_model = "HP" then drawMODELL="8999"
+if bs_acs_handle_model = "HQ" then drawMODELL="8527A"
+
+if bs_acs_handle_model = "8906" then drawMODELL="8906"
+if bs_acs_handle_model = "8906V" then drawMODELL="8906V"
+if bs_acs_handle_model = "8115" then drawMODELL="8115"
+if bs_acs_handle_model = "8116V" then drawMODELL="8116V"
+
+
+! =============================================================================
+! FEHLERARRAY
+! =============================================================================
+
+! »»» Fehlermeldungen initialisieren
+DIM errorQ[]
+errorI = 0
+errorQ[1] = ""
+txt = ""
+
+! Fehlermeldungen aus Statuswert (bitweise) lesen
+! sts = 1+2+8 : GOSUB "debuginfo"
+
+IF GLOB_PREVIEW_MODE AND macro_runtype <> 256 THEN
+
+	! Allgemein
+	IF bs_door_leafs # 1 THEN
+		errorI = errorI+1 : errorQ[errorI] = txt + "Zugangskonrollsystem: nur an einflügeligen Türen. "
+		ENDIF
+		
+ENDIF
+
+IF GLOB_PREVIEW_MODE AND bs_control_side <> "-" THEN
+
+	IF gs_leaf_thk < 0.035 THEN
+		errorI = errorI+1 : errorQ[errorI] = txt + "Zugangskonrollsystem: Türblattstärke mind. 35 mm. "
+		ENDIF
+
+	! » Plausibilität Auswahl i.V.m. Beschlag-Modul
+
+	! "Digitalzylinder" erfordert immer Beschläge. Beidseitig.
+	IF bs_access_control_system = "Digitalzylinder" AND (gs_handle_type = "-" OR gs_handle_type2 = "-") THEN 
+		errorI = errorI+1 : errorQ[errorI] = txt + "Für BS und BGS fehlt Drückergarnitur. "
+	ENDIF
+
+!	! "c-lever pro HBC" erfordert immer Brandschutz beim Beschlag ggü.
+!	IF bs_access_control_system = "c-lever pro HBC" THEN 
+!		IF (bs_control_side = "BGS" AND (gs_handle_type # "-" AND bs_handle_material # "ES")) OR \
+!			(bs_control_side = "BS" AND (gs_handle_type2 # "-" AND bs_handle_material2 # "ES")) THEN 
+!			errorI = errorI+1 : errorQ[errorI] = txt + "Material der Drückergarnitur muss Edelstahl sein (Brandschutz). "
+!		ENDIF
+!	ENDIF
+
+	! "c-lever compact" erfordert immer Beschläge. Einseitig.
+	IF bs_access_control_system = "c-lever compact" AND bs_acs_platetype = "4" THEN 
+		IF bs_control_side = "BGS" AND gs_handle_type = "-" THEN 
+			errorI = errorI+1 : errorQ[errorI] = txt + "Für BS fehlt Drückergarnitur. "
+		ENDIF
+		IF bs_control_side = "BS" AND gs_handle_type2 = "-" THEN 
+			errorI = errorI+1 : errorQ[errorI] = txt + "Für BGS fehlt Drückergarnitur. "
+		ENDIF
+	ENDIF
+
+	! "c-lever air" erfordert immer Beschläge. Einseitig.
+	IF bs_access_control_system = "c-lever air"  AND bs_acs_platetype = "4" THEN 
+		IF bs_control_side = "BGS" AND gs_handle_type = "-" THEN 
+			errorI = errorI+1 : errorQ[errorI] = txt + "Für BS fehlt Drückergarnitur. "
+		ENDIF
+		IF bs_control_side = "BS" AND gs_handle_type2 = "-" THEN 
+			errorI = errorI+1 : errorQ[errorI] = txt + "Für BGS fehlt Drückergarnitur. "
+		ENDIF
+	ENDIF
+
+	! "c-lever air" erfordert immer Rundrosetten
+	IF bs_access_control_system = "c-lever air" OR bs_access_control_system = "c-lever compact" THEN 
+		IF bs_acs_platetype = "4" THEN 
+			! Einzelrosette an Schloss?
+			sts = bs_doorplate1 = "6612" OR bs_doorplate1 = "650x + 6612"
+			sts = sts OR bs_doorplate1 = "6679" OR bs_doorplate1 = "662x + 6679"
+			sts = sts OR bs_doorplate1 = "6676" OR bs_doorplate1 = "661x + 6676"
+			! Nein?
+			IF bs_control_side = "BGS" AND NOT(sts) THEN 
+				errorI = errorI+1 : errorQ[errorI] = txt + "Für BS nur Rundrosetten. "
+			ENDIF
+			IF bs_control_side = "BS" AND NOT(sts) THEN 
+				errorI = errorI+1 : errorQ[errorI] = txt + "Für BGS nur Rundrosetten. "
+			ENDIF
+		ENDIF
+	ENDIF
+
+	IF bs_access_control_system # "-" AND (bs_pushbar_BS # "-" OR bs_pushbar_BGS # "-") THEN 
+		errorI = errorI+1 : errorQ[errorI] = txt + "Bei Zutrittskontrolle bitte Stossgriff deaktivieren. "
+	ENDIF
+
+ENDIF
+
+
+! =============================================================================
+! Abmessungen zurückgeben
+! =============================================================================
+
+! »»» Koordinaten Griffe Gangflügel Bandgegenseite
+IF macro_runtype = 257 THEN
+	handleX = 0   ! Griffbreite ab Dornmitte
+	plateD =  0   ! Dicke Abdeckung
+	handleY = 0   ! Abstand Abdeckung zu Griffaußenseite
+	IF bs_access_control_system = "c-lever compact" THEN 
+		plateD = 0.034	! Dicke Abdeckung
+	ENDIF
+	IF bs_access_control_system = "Digitalzylinder" THEN 
+		plateD = 0.06		! Dicke Abdeckung
+	ENDIF
+	IF bs_access_control_system = "c-lever air" THEN 
+		plateD = 0.01		! Dicke Abdeckung
+	ENDIF
+	IF bs_access_control_system = "c-lever pro HBC" THEN 
+		plateD = 0.023		! Dicke Abdeckung
+	ENDIF
+	IF bs_access_control_system = "c-lever pro HAC" THEN 
+		plateD = 0.023		! Dicke Abdeckung
+	ENDIF
+
+
+	IF bs_acs_handle_model = "HA" THEN
+		handleX = abmess[1][2]  ! Griffbreite ab Dornmitte
+		handleY = abmess[1][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HB" THEN
+		handleX = abmess[2][2]  ! Griffbreite ab Dornmitte
+		handleY = abmess[2][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HC" THEN
+		handleX = abmess[3][2]  ! Griffbreite ab Dornmitte
+		handleY = abmess[3][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HD" THEN
+		handleX = abmess[4][2]  ! Griffbreite ab Dornmitte
+		handleY = abmess[4][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HL" THEN
+		handleX = abmess[5][2]  ! Griffbreite ab Dornmitte
+		handleY = abmess[5][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HM" THEN
+		handleX = abmess[6][2]  ! Griffbreite ab Dornmitte
+		handleY = abmess[6][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HN" THEN
+		handleX = abmess[7][2]  ! Griffbreite ab Dornmitte
+		handleY = abmess[7][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HP" THEN
+		handleX = abmess[8][2]  ! Griffbreite ab Dornmitte
+		handleY = abmess[8][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "HQ" THEN
+		handleX = abmess[9][2]  ! Griffbreite ab Dornmitte
+		handleY = abmess[9][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "8115" THEN
+		handleX = abmess[10][2]  ! Griffbreite ab Dornmitte
+		handleY = abmess[10][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "8116" THEN
+		handleX = abmess[11][2]  ! Griffbreite ab Dornmitte
+		handleY = abmess[11][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "8116V" THEN
+		handleX = abmess[12][2]  ! Griffbreite ab Dornmitte
+		handleY = abmess[12][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+	IF bs_acs_handle_model = "8906" THEN
+		handleX = abmess[13][2]  ! Griffbreite ab Dornmitte
+		handleY = abmess[13][3]   ! Abstand Abdeckung zu Griffaußenseite
+	ENDIF
+
+
+	END handleX, plateD + handleY
+
+ENDIF
+
+! »»» Koordinaten Griffe Standflügel Bandgegenseite
+IF macro_runtype = 258 THEN
+	handleX = 0   ! Griffbreite ab Dornmitte
+	plateD =  0   ! Dicke Abdeckung
+	handleY = 0   ! Abstand Abdeckung zu Griffaußenseite
+	END handleX, plateD + handleY
+	ENDIF
+
+
+! =============================================================================
+! question - answer mode  / HANDSHAKE
+! =============================================================================
+
+IF macro_runtype = 1   THEN END UI_page_type   ! »»» return UI page hirarchy
+IF macro_runtype = 2   THEN END UI_page_names  ! »»» return UI page names
+IF macro_runtype = 4   THEN END UI_page_icons  ! »»» return UI page picts
+IF macro_runtype = 256 THEN END errorQ  ! »»» Fehlermeldung
+
+! ------------------------------------------------------------------------[ ... ]
+
+! »»» Check, ob im aktuellen Kontext (2D/3D und BS/BGS) mit diesem Makro ein Beschlag erzeugt werden soll
+noHandle = 0
+IF  ( BITTEST(macro_runtype,4) OR BITTEST(macro_runtype,5) ) AND \  !nur bei 2D oder 3D Skript
+	( (BITTEST(macro_runtype,0) AND NOT(BITTEST(bs_acs_handles,0))) OR \
+	  (BITTEST(macro_runtype,1) AND NOT(BITTEST(bs_acs_handles,1))) OR \
+	  (BITTEST(macro_runtype,2) AND NOT(BITTEST(bs_acs_handles,2))) ) THEN noHandle = 1
+
+
+GOTO "masterend"
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+! »»» Errorcontent: So kann eine Statusvariable, bitweise gesetzt ausgewertetw werden
+"debuginfo":
+	IF sts THEN txt = "Auswertung: " ELSE txt=""
+	IF BITTEST(sts,0) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "AAA"
+	IF BITTEST(sts,1) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "BBB"
+	IF txt # "" THEN txt = " ("+txt+")"
+	RETURN
+
+"masterend":
+
+

@@ -1,0 +1,859 @@
+
+!-------------------------------------------- [ Standardelemente aller Seiten ]
+
+! »»» Standardwerte
+
+DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[] ! Arrays für diskrete Auswahlen UI_INFIELD{4}
+
+
+! ----------------------------------- MULTILINGUAL TEXT [DORMAKABA.access_control] (start)
+
+! --------- RESET array variables
+	DIM babel[]
+	DIM bubble[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		babel[1] = "Hersteller:"
+		babel[2] = "Material/Oberfläche:"
+		babel[3] = "Produkt:"
+		babel[4] = "Serie:"
+		babel[5] = "Kontrolle von:"
+		babel[6] = "System Level:"
+		babel[7] = "E-Modul:"
+		babel[8] = "Rückplatte:"
+		babel[9] = "Türstärke:"
+		babel[10] = "Türdrücker:"
+		babel[11] = "Drückerdorn:"
+		babel[12] = "Rosettendesign:"
+		babel[13] = "Antennenabdeckung:"
+		babel[14] = "Dornmaß:"
+		babel[15] = "Funktion:"
+		babel[16] = "Türblatt:"
+		babel[17] = "Material:"
+		babel[18] = "Ausführung:"
+		babel[19] = "Schloss Seite A:"
+		babel[20] = "Schloss Seite B:"
+		babel[21] = "Stromversorgung:"
+		babel[22] = "Zusatz:"
+		babel[23] = "Schloss:"
+		babel[24] = "Länge A:"
+		babel[25] = "Länge B:"
+		babel[26] = "Mitnehmer:"
+		babel[27] = "Schildausführung:"
+
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF language = 4 THEN
+		babel[1] = "Manufacturer:"
+		babel[2] = "Material/Finish:"
+		babel[3] = "Product:"
+		babel[4] = "Line:"
+		babel[5] = "Kontrolle von:"
+		babel[6] = "System Level:"
+		babel[7] = "E-Modul:"
+		babel[8] = "Rückplatte:"
+		babel[9] = "Türstärke:"
+		babel[10] = "Türdrücker:"
+		babel[11] = "Drückerdorn:"
+		babel[12] = "Rosettendesign:"
+		babel[13] = "Antennenabdeckung:"
+		babel[14] = "Dornmaß:"
+		babel[15] = "Function:"
+		babel[16] = "Türblatt:"
+		babel[17] = "Material:"
+		babel[18] = "Ausführung:"
+		babel[19] = "Schloss Seite A:"
+		babel[20] = "Schloss Seite B:"
+		babel[21] = "Stromversorgung:"
+		babel[22] = "Zusatz:"
+		babel[23] = "Schloss:"
+		babel[24] = "Länge A:"
+		babel[25] = "Länge B:"
+		babel[26] = "Mitnehmer:"
+		babel[27] = "Schildausführung:"
+		ENDIF
+
+! --------- User Interface - Tooltip text (Deutsch)
+	IF language = 1 THEN
+		bubble[1] = "Zugangskontrollsyst Hersteller"
+		bubble[2] = "Zugangskontrollsyst Material"
+		bubble[3] = "Oberflächenmaterial"
+		bubble[4] = "Verarbeitung"
+		bubble[5] = "Modelltyp"
+		bubble[6] = "Informationen im Internet"
+		bubble[7] = "Abstand von der Mitte des Drückers oder Schließzylinders bis zur Stulpvorderkante"
+		bubble[8] = "Seite der Zugangskontrolle"
+		bubble[9] = "Systemlevel"
+		bubble[10] = "E-Modul in Abhängigkeit zum Systemlevel"
+		bubble[11] = "Farbe der Antennenabdeckung"
+		bubble[12] = "Funktion"
+		bubble[13] = "Rückplatte"
+		bubble[14] = "Türstärke"
+		bubble[15] = "Türblatt"
+		bubble[16] = "Material"
+		bubble[17] = "Querschnittsmaß Drückerdorn"
+		bubble[18] = "Ausführung"
+		bubble[19] = "Schlossausführung & Distanz Seite A"
+		bubble[20] = "Schlossausführung & Distanz Seite B"
+		bubble[21] = "Stromversorgung"
+		bubble[22] = "Zusatz"
+		bubble[23] = "Schloss"
+		bubble[24] = "Zylinderlänge Sensorseite"
+		bubble[25] = "Zylinderlänge Sensorgegenseite"
+		bubble[26] = "Mitnehmer"
+		bubble[27] = "Schildausführung:"
+		ENDIF
+! --------- User Interface - Tooltip text (Englisch)
+	IF language = 4 THEN
+		bubble[1] = "Zugangskontrollsyst Hersteller"
+		bubble[2] = "Zugangskontrollsyst Material"
+		bubble[3] = "Oberflächenmaterial"
+		bubble[4] = "Verarbeitung"
+		bubble[5] = "Modelltyp"
+		bubble[6] = "Informationen im Internet"
+		bubble[7] = "Abstand von der Mitte des Drückers oder Schließzylinders bis zur Stulpvorderkante"
+		bubble[8] = "Seite der Zugangskontrolle"
+		bubble[9] = "Systemlevel"
+		bubble[10] = "E-Modul in Abhängigkeit zum Systemlevel"
+		bubble[11] = "Farbe der Antennenabdeckung"
+		bubble[12] = "Funktion"
+		bubble[13] = "Rückplatte"
+		bubble[14] = "Türstärke"
+		bubble[15] = "Türblatt"
+		bubble[16] = "Material"
+		bubble[17] = "Querschnittsmaß Drückerdorn"
+		bubble[18] = "Ausführung"
+		bubble[19] = "Schlossausführung & Distanz Seite A"
+		bubble[20] = "Schlossausführung & Distanz Seite B"
+		bubble[21] = "Stromversorgung"
+		bubble[22] = "Zusatz"
+		bubble[23] = "Schloss"
+		bubble[24] = "Zylinderlänge Sensorseite"
+		bubble[25] = "Zylinderlänge Sensorgegenseite"
+		bubble[26] = "Mitnehmer"
+		bubble[27] = "Schildausführung:"
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+
+! =============================================================================
+! Dialogstart
+! =============================================================================
+
+! ------------------------------------------------------------------------[ Dialog start in development environment ]
+
+IF macro_runtype # 128 THEN
+
+	UI_DIALOG "DORMA ACCESS CONTROL MACRO V0.1 01.11.19", 444,266
+
+	ENDIF
+
+format = "" : sts = REQUEST ("Working_length_unit", "",format)			  !	Format für UI-Outfield -Längenwerte	
+
+
+! ------------------------------------------------------------------------[ 1. Seite ]
+
+s = 1
+ IF  seiten > 0 THEN
+ 	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+ 	ENDIF
+
+
+
+! ! ------------------------------------------------------------------------[ 2. Seite ]
+
+ s = 2
+ IF  seiten > 1 THEN
+ 	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+ 	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+ 	ENDIF
+
+!! ! ------------------------------------------------------------------------[ 3. Seite ]
+!
+! s = 3
+! IF  seiten > 2 THEN
+! 	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+! 	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+! 	ENDIF
+!
+!! ! ------------------------------------------------------------------------[ 4. Seite ]
+!
+! s = 4
+! IF  seiten > 3 THEN
+! 	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+! 	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+! 	ENDIF
+
+! =============================================================================
+! Dialogende
+! =============================================================================
+
+END
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"devshow":
+	! Ausgabe Infos neben UI, wenn im Entwicklermodus
+	UI_STYLE 1,2
+	UI_OUTFIELD "[ACCESS CONTROLv" + str("%^.2",version) + "]"  , 60,0,200,15, 4
+	UI_STYLE 0,0
+
+	i = -1 : s = 20
+	i = i+1 :	UI_INFIELD{3} "bs_acs_model",		475,i*s, 45,19  UI_TOOLTIP "bs_acs_model"
+				UI_INFIELD{3} "bs_acs_electric",	525,i*s, 45,19  UI_TOOLTIP "bs_acs_electric"
+				ui_outfield bs_door_electrified,	575,i*s, 95,15  UI_TOOLTIP "bs_door_electrified"
+	i = i+1 :	ui_outfield bs_acs_handles,		475,i*s, 45,15  UI_TOOLTIP "bs_acs_handles"
+				ui_outfield bs_acs_function,	525,i*s, 45,15  UI_TOOLTIP "bs_acs_function"
+	RETURN
+
+"error2tooltip":
+	IF errorI > 0 THEN txt = errorQ[1] ELSE txt = ""
+	FOR i=2 TO errorI : txt = txt + errorQ[i] + "  " : NEXT i
+	IF STRLEN(txt) > 80 THEN txt = STRSUB(txt,1,77) + "..."
+	RETURN
+
+"devSELECTION":
+	FOR i= 1 TO VARDIM1(UIpicIdxArray)
+		ui_outfield UIpicIdxArray[i],   0,260+i*15,140,15
+		ui_outfield UItextArray[i]  , 150,260+i*15,140,15
+		ui_outfield UIvaluesArray[i], 300,260+i*15,140,15
+		NEXT i
+	RETURN
+
+! =============================================================================
+! Auswahloptionen
+! =============================================================================
+
+! ------------------------------------------------------------------------[ statische Auswahloptionen ]
+
+! ----------------------------------- PARAMETER / INFIELD VALUE LIST [ECD.hinge] (start)
+
+! --------------------------------------------------------------- PARAMETER / INFIELD VALUE LIST (end)
+
+! ----------------------------------- PARAMETER / INFIELD VALUE LIST [ECD.access_control] (start)
+
+"VALUES_bs_control_side":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aus" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "zweiseitig" : UIvaluesArray[j] = "ZS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Bandseite" : UIvaluesArray[j] = "BS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Bandgegenseite" : UIvaluesArray[j] = "BGS"
+	RETURN
+
+"VALUES_bs_access_control_system":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "c-lever compact" : UIvaluesArray[j] = "c-lever compact"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "c-lever air" : UIvaluesArray[j] = "c-lever air"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "c-lever pro HAC" : UIvaluesArray[j] = "c-lever pro HAC"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "c-lever pro HBC"  : UIvaluesArray[j] = "c-lever pro HBC" 
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Digitalzylinder"  : UIvaluesArray[j] = "Digitalzylinder" 
+	RETURN
+
+"VALUES_bs_acs_material":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Stahl" : UIvaluesArray[j] = "ST"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Edelstahl" : UIvaluesArray[j] = "ES"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aluminium" : UIvaluesArray[j] = "AL"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sondermaterial" : UIvaluesArray[j] = "XX"
+	RETURN
+
+"VALUES_bs_acs_surface":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbehandelt" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gebürstet" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Geschliffen" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Getrommelt" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Poliert" : UIvaluesArray[j] = "P"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vernickelt" : UIvaluesArray[j] = "N"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lackiert" : UIvaluesArray[j] = "L"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Pulverbeschichtet" : UIvaluesArray[j] = "V"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verzinkt" : UIvaluesArray[j] = "Z"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verchromt" : UIvaluesArray[j] = "C"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Eloxiert" : UIvaluesArray[j] = "E"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Titanisiert" : UIvaluesArray[j] = "I"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vergoldet" : UIvaluesArray[j] = "G"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sonderoberfläche" : UIvaluesArray[j] = "X"
+	RETURN
+
+"VALUES_bs_acs_systemlevel":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "SL 1 für Hostsystem Smart" : UIvaluesArray[j] = "1"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "SL 2 für Hostsystem Smart, exivo, MATRIX ONE, KEM" : UIvaluesArray[j] = "2"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "SL 3 für Hostsystem Smart, exivo, MATRIX ONE, KEM, MATRIX PRO, exos, EACM, b-comm ERP, B-COMM" : UIvaluesArray[j] = "3"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "SL 4 für OSS, Third Party Systeme" : UIvaluesArray[j] = "4"
+	RETURN
+
+"VALUES_bs_acs_emodule":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "E300 RFID Standalone" : UIvaluesArray[j] = "E300"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "E310 RFID + RCID (TouchGo)" : UIvaluesArray[j] = "E310"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "E320 RFID + Wireless" : UIvaluesArray[j] = "E320"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "E321 RFID + Wireless + Türüberwachung" : UIvaluesArray[j] = "E321"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "E340 RFID + mobile Access" : UIvaluesArray[j] = "E340"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "E360 RFID + Wireless + mobile Access" : UIvaluesArray[j] = "E360"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "E361 RFID + Wireless + Türüberwachung + mobile Access" : UIvaluesArray[j] = "E361"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "O300 RFID für OSS (Open Security Standard)" : UIvaluesArray[j] = "O300"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "E110 RCID (TouchGo)" : UIvaluesArray[j] = "E110"
+	RETURN
+
+"VALUES_bs_acs_cover":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "schwarz" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "weiss" : UIvaluesArray[j] = "W"
+	RETURN
+
+"VALUES_bs_acs_platetype":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Halbgarnitur" : UIvaluesArray[j] = "4"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vollgarnitur" : UIvaluesArray[j] = "5"
+	RETURN
+
+"VALUES_bs_acs_function":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "remote Version" : UIvaluesArray[j] = "0"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "remote Version ES" : UIvaluesArray[j] = "1"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Version Standard" : UIvaluesArray[j] = "2"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ES Version" : UIvaluesArray[j] = "3"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Unterlagsplatte Rosettenbefestigung" : UIvaluesArray[j] = "4"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Version Panikstange" : UIvaluesArray[j] = "5"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Unterlagsplatte Kurzschild" : UIvaluesArray[j] = "6"
+	RETURN
+
+"VALUES_bs_acs_baseplate":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rückplatte Europa 38 mm" : UIvaluesArray[j] = "EU"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rückplatte Schweden" : UIvaluesArray[j] = "SE"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Rückplatte Finnland" : UIvaluesArray[j] = "FI"
+	RETURN
+
+"VALUES_bs_acs_handle_model":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "HA" : UIvaluesArray[j] = "HA"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "HB" : UIvaluesArray[j] = "HB"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "HC" : UIvaluesArray[j] = "HC"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "HD" : UIvaluesArray[j] = "HD"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "HL" : UIvaluesArray[j] = "HL"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "HM" : UIvaluesArray[j] = "HM"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "HN" : UIvaluesArray[j] = "HN"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "HO" : UIvaluesArray[j] = "HO"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "HP" : UIvaluesArray[j] = "HP"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "HQ" : UIvaluesArray[j] = "HQ"
+	RETURN
+
+
+
+"VALUES_bs_acs_case_a":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Blind" : UIvaluesArray[j] = "0000"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "105 mm Skand. Blind" : UIvaluesArray[j] = "1000"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "69 mm Skand." : UIvaluesArray[j] = "69OZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "105 mm Skand." : UIvaluesArray[j] = "10OZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "69 mm Skand. Blind" : UIvaluesArray[j] = "6900"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Blind vorb. 72 mm Loch" : UIvaluesArray[j] = "7200"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Blind vorb. 92 mm Loch" : UIvaluesArray[j] = "9200"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Blind vorb. 74 mm Loch" : UIvaluesArray[j] = "7400"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Blind vorb. 94 mm Loch" : UIvaluesArray[j] = "9400"
+
+
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "55 mm Profilzylinder" : UIvaluesArray[j] = "55PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "57 mm Profilzylinder" : UIvaluesArray[j] = "57PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "70 mm Profilzylinder" : UIvaluesArray[j] = "70PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "72 mm Profilzylinder" : UIvaluesArray[j] = "72PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "78 mm Profilzylinder" : UIvaluesArray[j] = "78PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "86 mm Profilzylinder" : UIvaluesArray[j] = "86PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "88 mm Profilzylinder" : UIvaluesArray[j] = "88PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "90 mm Profilzylinder" : UIvaluesArray[j] = "90PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "92 mm Profilzylinder" : UIvaluesArray[j] = "92PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "98 mm Profilzylinder" : UIvaluesArray[j] = "98PZ"
+
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "74 mm Rundzylinder" : UIvaluesArray[j] = "74RZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "78 mm Rundzylinder" : UIvaluesArray[j] = "78RZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "94 mm Rundzylinder" : UIvaluesArray[j] = "94RZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "100,5 mm Rundzylinder" : UIvaluesArray[j] = "10RZ"
+	RETURN
+
+"VALUES_bs_acs_case_b":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Blind" : UIvaluesArray[j] = "0000"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "105 mm Skand. Blind" : UIvaluesArray[j] = "1000"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "69 mm Skand." : UIvaluesArray[j] = "69OZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "105 mm Skand." : UIvaluesArray[j] = "10OZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "69 mm Skand. Blind" : UIvaluesArray[j] = "6900"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Blind vorb. 72 mm Loch" : UIvaluesArray[j] = "7200"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Blind vorb. 92 mm Loch" : UIvaluesArray[j] = "9200"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Blind vorb. 74 mm Loch" : UIvaluesArray[j] = "7400"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Blind vorb. 94 mm Loch" : UIvaluesArray[j] = "9400"
+
+
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "55 mm Profilzylinder" : UIvaluesArray[j] = "55PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "57 mm Profilzylinder" : UIvaluesArray[j] = "57PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "70 mm Profilzylinder" : UIvaluesArray[j] = "70PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "72 mm Profilzylinder" : UIvaluesArray[j] = "72PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "78 mm Profilzylinder" : UIvaluesArray[j] = "78PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "86 mm Profilzylinder" : UIvaluesArray[j] = "86PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "88 mm Profilzylinder" : UIvaluesArray[j] = "88PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "90 mm Profilzylinder" : UIvaluesArray[j] = "90PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "92 mm Profilzylinder" : UIvaluesArray[j] = "92PZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "98 mm Profilzylinder" : UIvaluesArray[j] = "98PZ"
+
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "74 mm Rundzylinder" : UIvaluesArray[j] = "74RZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "78 mm Rundzylinder" : UIvaluesArray[j] = "78RZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "94 mm Rundzylinder" : UIvaluesArray[j] = "94RZ"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "100,5 mm Rundzylinder" : UIvaluesArray[j] = "10RZ"
+	RETURN
+
+"VALUES_bs_acs_electric":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Batterie" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "S-Modul" : UIvaluesArray[j] = "E"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "S-Modul + Batterie" : UIvaluesArray[j] = "M"
+	RETURN
+
+"VALUES_bs_acs_addon":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "ohne Zusatz" : UIvaluesArray[j] = "0"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "mit Taster" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "mit Taster + Drückerkontakt" : UIvaluesArray[j] = "TD"
+	RETURN
+
+"VALUES_bs_acs_cam":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Standard-Mitnehmer" : UIvaluesArray[j] = "NS"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Zahnrad mit 10 Zähnen" : UIvaluesArray[j] = "ML10"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Zahnrad mit 18 Zähnen" : UIvaluesArray[j] = "ML18"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Biffar-Mitnehmer" : UIvaluesArray[j] = "BF"
+	RETURN
+
+! --------------------------------------------------------------- PARAMETER / INFIELD VALUE LIST (end)
+
+
+! ------------------------------------------------------------------------[ dynamische Auswahloptionen ]
+
+
+"SELECT_bs_acs_material":
+	GOSUB "VALUES_bs_acs_material"
+	sts = 0
+	IF bs_acs_material # "XX" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_acs_material THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_acs_surface":
+	GOSUB "VALUES_bs_acs_surface"
+	sts = 0
+	IF bs_acs_surface # "X" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_acs_surface THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_acs_systemlevel":
+	GOSUB "VALUES_bs_acs_systemlevel"
+	sts = 0
+	IF bs_acs_systemlevel # "" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_acs_systemlevel THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_acs_emodule":
+	GOSUB "VALUES_bs_acs_emodule"
+	sts = 0
+	IF bs_acs_emodule # "" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_acs_emodule THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_acs_cover":
+	GOSUB "VALUES_bs_acs_cover"
+	sts = 0
+	IF bs_acs_cover # "" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_acs_cover THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_acs_platetype":
+	GOSUB "VALUES_bs_acs_platetype"
+	sts = 0
+	IF bs_acs_platetype# "" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_acs_platetype THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_acs_function":
+	GOSUB "VALUES_bs_acs_function"
+	sts = 0
+	IF bs_acs_function # "" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_acs_function THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_acs_baseplate":
+	GOSUB "VALUES_bs_acs_baseplate"
+	sts = 0
+	IF bs_acs_baseplate # "" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_acs_baseplate THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_acs_handle_model":
+	GOSUB "VALUES_bs_acs_handle_model"
+	sts = 0
+	IF bs_acs_handle_model # "" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_acs_handle_model THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+
+
+"SELECT_bs_acs_case_a":
+	GOSUB "VALUES_bs_acs_case_a"
+	sts = 0
+	IF bs_acs_case_a # "" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_acs_case_a THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_acs_case_b":
+	GOSUB "VALUES_bs_acs_case_b"
+	sts = 0
+	IF bs_acs_case_b # "" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_acs_case_b THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_acs_electric":
+	GOSUB "VALUES_bs_acs_electric"
+	sts = 0
+	IF bs_acs_electric # "" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_acs_electric THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_acs_addon":
+	GOSUB "VALUES_bs_acs_addon"
+	sts = 0
+	IF bs_acs_addon # "" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_acs_addon THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_acs_cam":
+	GOSUB "VALUES_bs_acs_cam"
+	sts = 0
+	IF bs_acs_cam # "" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_acs_addon THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+! ------------------------------------------------------------- MAIN PAGE [ 7000 ]
+	7000:   ! #### LOI 5+ - Grundeinstellungen Access Control
+	GOSUB 9900
+
+	jjj = 26			! Zeilenzähler
+
+	UI_OUTFIELD babel[5], 40,jjj , 125,15, 0+0
+	GOSUB "VALUES_bs_control_side"
+	UI_INFIELD{3} "bs_control_side", 174, jjj-5 , 224,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[8]
+
+	IF  bs_control_side = "-" THEN RETURN
+	
+
+
+	jjj=jjj+23			! 49
+
+!	UI_STYLE 0,1
+	UI_OUTFIELD babel[4], 40,jjj , 125,15, 0+0
+!	UI_STYLE 0,0
+
+	GOSUB "VALUES_bs_access_control_system"
+	UI_INFIELD{3} "bs_access_control_system", 174, jjj-5 , 224,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[5]
+
+
+	jjj=jjj+23			! 72
+
+	IF bs_access_control_system = "c-lever air" OR bs_access_control_system = "c-lever compact" THEN 
+		UI_OUTFIELD babel[27], 40,jjj , 125,15, 0+0
+		UI_STYLE 0,0
+		GOSUB "VALUES_bs_acs_platetype"
+		UI_INFIELD{3} "bs_acs_platetype", 174, jjj-5 , 224,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[27]
+	
+		jjj=jjj+23			! 95
+	ENDIF
+ 
+
+!	!!! Produktcode !!!
+!	UI_OUTFIELD babel[3], 40, jjj , 125,15, 0+0
+!
+!	UI_OUTFIELD bs_acs_model, 174,jjj , 262,19 UI_TOOLTIP bubble[5]+ " (" + bs_acs_model + ")"
+!
+!	jjj=jjj+20			! 115
+
+
+	UI_SEPARATOR 40,jjj, 407,jjj
+
+	jjj=jjj+12			! 127
+
+
+	UI_OUTFIELD babel[6], 40, jjj , 125,15, 0+0
+	GOSUB "SELECT_bs_acs_systemlevel"
+	IF sts THEN
+		UI_INFIELD{3} "bs_acs_systemlevel", 174, jjj-5 , 224,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[9]
+	ELSE
+		UI_INFIELD{3} "bs_acs_systemlevel", 174, jjj-5 , 224,21 UI_TOOLTIP bubble[9]
+	ENDIF
+
+	jjj=jjj+23			! 150
+
+	UI_OUTFIELD babel[7], 40, jjj , 125,15, 0+0
+	GOSUB "SELECT_bs_acs_emodule"
+	IF sts THEN
+		UI_INFIELD{3} "bs_acs_emodule", 174, jjj-5 , 224,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[10]
+	ELSE
+		UI_INFIELD{3} "bs_acs_emodule", 174, jjj-5 , 224,21 UI_TOOLTIP bubble[10]
+	ENDIF
+
+	jjj=jjj+23			! 173
+	IF bs_access_control_system <> "c-lever air" AND bs_access_control_system <> "Digitalzylinder" THEN
+		UI_OUTFIELD babel[15], 40, jjj , 125,15, 0+0
+		GOSUB "SELECT_bs_acs_function"
+		IF sts THEN
+			UI_INFIELD{3} "bs_acs_function", 174, jjj-5 , 224,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[12]
+		ELSE
+			UI_INFIELD{3} "bs_acs_function", 174, jjj-5 , 224,21 UI_TOOLTIP bubble[12]
+		ENDIF
+	
+		jjj=jjj+23			! 173
+	ENDIF
+	IF bs_access_control_system <> "c-lever compact" AND bs_access_control_system <> "c-lever air" AND bs_access_control_system <> "Digitalzylinder" THEN
+		UI_OUTFIELD babel[21], 40, jjj , 125,15, 0+0
+		GOSUB "SELECT_bs_acs_electric"
+		IF sts THEN
+			UI_INFIELD{3} "bs_acs_electric", 174, jjj-5 , 224,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+		ELSE
+			UI_INFIELD{3} "bs_acs_electric", 174, jjj-5 , 224,21 UI_TOOLTIP bubble[21]
+		ENDIF
+	
+		jjj=jjj+23			! 173
+	ENDIF
+	IF bs_access_control_system <> "c-lever compact" AND bs_access_control_system <> "c-lever air" AND bs_access_control_system <> "Digitalzylinder" THEN
+		UI_OUTFIELD babel[22], 40, jjj , 125,15, 0+0
+		GOSUB "SELECT_bs_acs_addon"
+		IF sts THEN
+			UI_INFIELD{3} "bs_acs_addon", 174, jjj-5 , 224,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[22]
+		ELSE
+			UI_INFIELD{3} "bs_acs_addon", 174, jjj-5 , 224,21 UI_TOOLTIP bubble[22]
+		ENDIF
+	ENDIF
+
+
+
+	RETURN
+
+
+
+
+	7001:   ! #### LOI 5+ - Schloss und Beschlag Access Control
+	GOSUB 9900
+
+	jjj = 26			! Zeilenzähler
+
+
+
+	IF bs_access_control_system <> "c-lever compact" AND bs_access_control_system <> "Digitalzylinder"	THEN
+		UI_OUTFIELD babel[18], 40, jjj , 125,15, 0+0
+		IF bs_access_control_system <> "c-lever air"	THEN
+			UI_INFIELD{3} "bs_acs_sytle", 174, jjj-5 , 197,21, 2, "", 99, 1, 0, 0, 0, 0, 
+			1, "schmal / schmal", 1,
+			2, "breit / breit", 2,
+			3, "ext. breit / int. schmal", 3,
+			4, "ext. schmal / int. breit", 4,
+			5, "breit", 5,
+			6, "schmal", 6		UI_TOOLTIP bubble[18]
+		ELSE
+			UI_INFIELD{3} "bs_acs_sytle", 174, jjj-5 , 197,21, 2, "", 99, 1, 0, 0, 0, 0, 
+			2, "schmal", 2,
+			4, "breit", 4	UI_TOOLTIP bubble[18]
+		ENDIF
+		jjj=jjj+23			! 150
+	ENDIF
+
+	IF bs_access_control_system = "c-lever compact"	THEN
+		UI_OUTFIELD babel[8], 40, jjj , 125,15, 0+0
+		GOSUB "SELECT_bs_acs_baseplate"
+		IF sts THEN
+			UI_INFIELD{3} "bs_acs_baseplate", 174, jjj-5 , 197,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[13]
+		ELSE
+			UI_INFIELD{3} "bs_acs_baseplate", 174, jjj-5 , 197,21 UI_TOOLTIP bubble[13]
+		ENDIF
+	
+		jjj=jjj+23			! 150
+	ENDIF
+
+	IF bs_access_control_system = "c-lever pro HAC" OR bs_access_control_system = "c-lever pro HBC" THEN
+		UI_OUTFIELD babel[19], 40, jjj , 125,15, 0+0
+		GOSUB "SELECT_bs_acs_case_a"
+		IF sts THEN
+			UI_INFIELD{3} "bs_acs_case_a", 174, jjj-5 , 197,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[19]
+		ELSE
+			UI_INFIELD{3} "bs_acs_case_a", 174, jjj-5 , 197,21 UI_TOOLTIP bubble[19]
+		ENDIF
+	
+		jjj=jjj+23			! 150
+	
+		UI_OUTFIELD babel[20], 40, jjj , 125,15, 0+0
+		GOSUB "SELECT_bs_acs_case_b"
+		IF sts THEN
+			UI_INFIELD{3} "bs_acs_case_b", 174, jjj-5 , 197,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[20]
+		ELSE
+			UI_INFIELD{3} "bs_acs_case_b", 174, jjj-5 , 197,21 UI_TOOLTIP bubble[20]
+		ENDIF
+		jjj=jjj+23			! 173
+	ENDIF
+
+	IF bs_access_control_system = "c-lever air" THEN
+		UI_OUTFIELD babel[23], 40, jjj , 125,15, 0+0
+		GOSUB "SELECT_bs_acs_case_a"
+		IF sts THEN
+			UI_INFIELD{3} "bs_acs_case_a", 174, jjj-5 , 197,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[23]
+		ELSE
+			UI_INFIELD{3} "bs_acs_case_a", 174, jjj-5 , 197,21 UI_TOOLTIP bubble[23]
+		ENDIF
+	
+		jjj=jjj+23			! 150
+	ENDIF
+
+	IF bs_access_control_system = "c-lever pro HAC" OR bs_access_control_system = "c-lever pro HBC" OR bs_access_control_system = "c-lever compact" THEN
+		UI_OUTFIELD babel[10], 40, jjj , 125,15, 0+0
+		GOSUB "SELECT_bs_acs_handle_model"
+		UI_INFIELD{3} "bs_acs_handle_model", 174, jjj-5, 197, 69, 2, 4 , 104, 13, 80, 44, 80, 44, 
+						3, "HA", "HA",
+						16, "HB", "HB",
+						61, "HC", "HC",
+						13, "HD", "HD",
+						32, "HL", "HL",
+						79, "HM", "HM",
+						81, "HN", "HN",														
+						82, "HO", "HO",	
+						20, "HP", "HP",	
+						74, "HQ", "HQ"	
+		jjj=jjj+71			! 150
+	ENDIF
+
+	IF bs_access_control_system = "c-lever air" THEN
+		UI_OUTFIELD babel[10], 40, jjj , 125,15, 0+0
+		GOSUB "SELECT_bs_acs_handle_model"
+		UI_INFIELD{3} "bs_acs_handle_model", 174, jjj-5, 197, 69, 2, 4 , 104, 13, 80, 44, 80, 44, !  "dk_acs_handles.png"
+						32, "8906", "8906",
+						80, "8906V", "8906V",
+						8, "8115", "8115",														
+						65, "8116V", "8116V"
+		jjj=jjj+71			! 150
+	ENDIF
+
+	IF bs_access_control_system = "Digitalzylinder" THEN
+
+		UI_INFIELD "bs_acs_case_la", 134, jjj-5 , 50,21  UI_TOOLTIP bubble[24]
+		UI_INFIELD "bs_acs_case_lb", 189, jjj-5 , 50,21  UI_TOOLTIP bubble[25]
+		jjj=jjj+23			! 150
+
+		IF bs_control_side = "ZS" THEN
+			UI_PICT 2, 57, jjj, 245, 89, 1   !"dk_acs_digitalcylinder.png"
+		ELSE
+			UI_PICT 3, 57, jjj, 221, 89, 1   !"dk_acs_digitalcylinder2.png"
+		ENDIF
+		jjj=jjj+103			! 150
+
+		UI_OUTFIELD babel[26], 40, jjj , 125,15, 0+0
+		GOSUB "SELECT_bs_acs_cam"
+		IF sts THEN
+			UI_INFIELD{3} "bs_acs_cam", 174, jjj-5 , 197,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[26]
+		ELSE
+			UI_INFIELD{3} "bs_acs_cam", 174, jjj-5 , 197,21 UI_TOOLTIP bubble[25]
+		ENDIF
+	
+		jjj=jjj+23			! 150
+	ENDIF
+
+	UI_OUTFIELD babel[13], 40, jjj , 125,15, 0+0
+
+	GOSUB "SELECT_bs_acs_cover"
+	IF sts THEN
+		UI_INFIELD{3} "bs_acs_cover", 174, jjj-5 , 100,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[11]
+	ELSE
+		UI_INFIELD{3} "bs_acs_cover", 174, jjj-5 , 100,21 UI_TOOLTIP bubble[11]
+	ENDIF
+
+	RETURN
+
+
+
+
+
+
+
+	7003:   ! #### LOI 5+ - Materialien Access Control
+	GOSUB 9900
+
+	jjj = 26			! Zeilenzähler
+
+
+
+
+	RETURN
+
+
+
+
+! -------------------------------------------------------------TITLE [ 9900 ]
+	9900:	  ! #### TITEL on all pages
+	IF develop THEN GOSUB "devshow"
+	IF errorI>0 THEN
+		GOSUB "error2tooltip"
+		! UI_PICT 12, 36,-2 , 16,16, 1 UI_TOOLTIP txt
+		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
+		ENDIF   !»» "dk_attention 16x16.png"
+	UI_STYLE 0,0
+	UI_PICT 1, 279,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 419,15
+	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 422,-5 , 22,22, 0, "https://www.dormakaba.com/de-de/produkte-loesungen/produkte/systemloesungen-zutritt-und-zeit/elektronische-tuerbeschlaege-und--schloesser" UI_TOOLTIP bubble[6]
+	RETURN
+

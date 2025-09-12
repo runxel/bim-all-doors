@@ -1,0 +1,101 @@
+
+! ------------------------------------------------------------------------[ Object development settings ]
+
+IF macro_runtype = 0 THEN
+	VALUES{2} "macro_runtype" 0, "IDLE", 1,"handshake page hirarchy", 2,"handshake page names", 3,"CALL UI page", 5,"return element values", 10,"rebuilt VALUE lists"
+	ENDIF
+
+! Zwangszuordnung wegen DORMAKABA - BTS aufheben:
+IF  bs_closer_type # "BTS" OR bs_closer_manufacturer # "Dormakaba" OR closer_system # "DORMAKABA_TS" THEN
+	hinge_system = commonMacro
+	PARAMETERS hinge_system = hinge_system
+	PARAMETERS bs_hinge_type = "O3"
+	PARAMETERS bs_hinge_chuck = ""
+	PARAMETERS bs_hinge_nmbr = 2
+	PARAMETERS bs_hinge_height = 0.12
+	PARAMETERS bs_hinge_manufacturer = ""
+	PARAMETERS bs_hinge_material = "ST"
+	PARAMETERS bs_hinge_reel_diameter = 0.02
+	PARAMETERS bs_ancor_hinge_X = (1-stumpf) * (0.01 + bs_leaf_oversize)
+	PARAMETERS bs_ancor_hinge_Y = 0.01
+	END
+	ENDIF
+
+! »»» Schützen
+LOCK "bs_hinge_manufacturer",
+	"bs_hinge_type", "bs_hinge_chuck", 
+	"bs_hinge_nmbr", 
+	"bs_hinge_reel_diameter", "bs_hinge_height", 
+	"bs_ancor_hinge_X", "bs_ancor_hinge_Y",
+	"bs_hinge_material"
+
+
+! =============================================================================
+! PLAUSIBILITY
+! =============================================================================
+
+PARAMETERS bs_hinge_type = "A"
+IF holz THEN
+	PARAMETERS bs_hinge_chuck = "aufgeschraubt"
+	ELSE
+	PARAMETERS bs_hinge_chuck = "angeschweißt"
+	ENDIF
+PARAMETERS bs_hinge_nmbr = 2
+PARAMETERS bs_hinge_reel_diameter = 0.035
+PARAMETERS bs_hinge_height = 0.02
+PARAMETERS bs_hinge_manufacturer = "Dormakaba"
+PARAMETERS bs_hinge_material = "ST"
+
+! "Zapfenbandpaar"
+VALUES "bs_hinge_model" DormaHingeModel
+
+
+! ----------------------------------------------------------------- Parameterabhängigkeiten
+
+! »»» Einstellung in X
+IF stumpf THEN
+	bs_ancor_hinge_X = 0.003
+	ELSE
+	bs_ancor_hinge_X = bs_leaf_oversize
+	ENDIF
+PARAMETERS bs_ancor_hinge_X = bs_ancor_hinge_X
+
+! »»» Einstellung in Y
+IF stumpf THEN
+	bs_ancor_hinge_Y = 0.036
+	ELSE
+	bs_ancor_hinge_Y = 0.036 ! - bs_leaf_overhang
+	ENDIF
+PARAMETERS bs_ancor_hinge_Y = bs_ancor_hinge_Y
+
+
+! =============================================================================
+! VALUES
+! =============================================================================
+
+! ----------------------------------- PARAMETER VALUE LIST [ECD.hinge] (start)
+
+VALUES "bs_hinge_type" "O2", "O3", "E2", "E3", "KO2", "KO3", "P", "F", "U2", "U3", "K2", "K3", "V", "A"
+VALUES "bs_hinge_chuck" "eingebohrt", "aufgeschraubt", "eingestemmt", "angeschweißt", "Bandaufnahme", CUSTOM
+VALUES "bs_hinge_material" " ", "ST", "ES", "AL", "XX", CUSTOM
+VALUES "bs_hinge_surface" " ", "-", "B", "S", "T", "P", "N", "L", "V", "Z", "C", "E", "I", "G", "X", CUSTOM
+VALUES "bs_hinge_adjust" "-", "2D", "3D"
+! VALUES "bs_hinge_fixture_width" 0.04, 0.06, CUSTOM
+! VALUES "bs_hinge_fixture_height" 0.04, 0.05, CUSTOM
+VALUES "develop" 0, 1, 2, 3, 4, 5, 6, 7, 8
+
+! --------------------------------------------------------------- PARAMETER VALUE LISTS (end)
+
+
+! ---------------------------------------------------------------------- Ende
+
+END
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+

@@ -1,0 +1,429 @@
+
+IF NOT( BITTEST(macro_runtype,5) ) THEN END
+
+
+! PROJECT2 4,270,2
+
+! ----------------------------------------------------------------- [ Grunddefinition der Variablen ]
+
+faktor = 0.01 ! Skalierung der absoluten Geometrien
+
+! »»» Status der Kanten
+msk = 15
+msk2 = 15+64
+
+! »»» 3D
+IF GLOB_CONTEXT = 3 THEN
+	IF BITTEST(macro_runtype,0) THEN
+		dk_open_leaf_3D = dk_open_leaf[dka_leaf2_angle3D]
+		ELSE
+		dk_open_leaf_3D = dk_open_leaf[dka_leaf_angle3D]
+		ENDIF
+	ENDIF
+
+! »»» Schnitt/Ansicht
+IF GLOB_CONTEXT = 4 THEN
+	IF BITTEST(macro_runtype,0) THEN
+		dk_open_leaf_3D = dk_open_leaf[dka_leaf2_angleSA]
+		ELSE
+		dk_open_leaf_3D = dk_open_leaf[dka_leaf_angleSA]
+		ENDIF
+	ENDIF
+
+! =============================================================================
+! Ausgabe Bänder
+! =============================================================================
+
+! IF dk_LOD < 101 THEN GOSUB "LoD100"
+! IF dk_LOD > 100 AND dk_LOD < 201 THEN GOSUB "LoD200"
+! IF dk_LOD > 200 AND dk_LOD < 301 THEN GOSUB "LoD300"
+! IF dk_LOD > 300 AND dk_LOD < 351 THEN GOSUB "LoD350"
+! IF dk_LOD > 350 AND dk_LOD < 401 THEN GOSUB "LoD400"
+IF dk_LOD > 400 THEN GOSUB "LoD500"
+
+IF dk_LOD > 350 THEN GOSUB "Fangpunkte"
+
+! ------------------------------------------------------------------------- [ ENDE ]
+
+"ende":
+END htspt
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"LoD100":
+"LoD200":
+"LoD300":
+"LoD350":
+"LoD400":
+	! Keine Darstellung
+	RETURN
+
+"LoD500":
+	! PEN dk_cont_pens[dka_closer_pen3D]
+	MATERIAL dk_materials[dka_hinge_mat]
+	IF bs_hinge_model ="74xx" THEN
+		IF holz THEN GOSUB "DORMA_7411" ELSE  GOSUB "DORMA_7431"
+		ELSE
+		GOSUB "DORMA_" + bs_hinge_model
+		ENDIF
+	RETURN
+
+
+"Fangpunkte":
+	! Keine Fangpunkte nötig
+	RETURN
+
+
+"DORMA_7411":
+	s = 0.02
+	t = 0.006
+	z = 0.004
+
+	! Türhebel
+	ROTz dk_open_leaf_3D
+	ADDZ 0.023 - 0.008 - t
+	IF stumpf THEN GOSUB "DORMA_7411-56" ELSE GOSUB "DORMA_7411-46"
+	ADDZ t/2 - s/2
+	CYLIND s, bs_hinge_reel_diameter/2
+	DEL 3
+
+	! oben...
+	ADDz ac_leaf_height - (1-stumpf) * (bs_leaf_oversize + dk_panel_folding_gap) + stumpf * z
+
+	! Türbänder oben (Türblatt)
+	ROTz dk_open_leaf_3D
+	ADDZ -t
+	IF stumpf THEN GOSUB "DORMA_7411-56" ELSE GOSUB "DORMA_7411-46"
+	DEL 1
+	ADDZ -s
+	CYLIND s, bs_hinge_reel_diameter/2
+	DEL 2
+
+	! Türbänder oben (Zarge)
+	ADDZ z
+	IF stumpf THEN GOSUB "DORMA_7411-56" ELSE GOSUB "DORMA_7411-50"
+	CYLIND s, bs_hinge_reel_diameter/2
+	DEL 1
+
+	! ADDZ -hinge_pos1
+	! !...
+	! IF bs_hinge_nmbr > 2 THEN
+	! 	ADDZ -bs_hinge_pos3
+	! 	! IF stumpf THEN GOSUB "DORMA_LM-Band" ELSE GOSUB "DORMA_LM-Band (überfälzt)"
+	! 	DEL 1
+	! 	ENDIF
+	! ADDZ -hinge_pos2
+	! !...
+	! IF bs_hinge_nmbr = 4 THEN
+	! 	ADDZ bs_hinge_pos4
+	! 	DEL 1
+	! 	ENDIF
+	! DEL 2
+
+	DEL 1
+	RETURN
+
+"DORMA_7411-46":
+	MUL faktor, -faktor, 1
+	PRISM_ 24, t, 
+		0, 1.75, msk2, 
+		0, 0, 900+msk2, 
+		0, -90, 4000+msk2, 
+		0, 0, 900+msk2, 
+		0, -73.41839161665, 4000+msk2, 
+		4.806843765371, -0.6102329455829, msk2, 
+		4.686617235245, -0.124898117914, 900+msk2, 
+		0, 53.22226, 4000+msk2, 
+		6.749184673466, 3.479467336625, msk2, 
+		6.932716513383, 3.399997536531, 900+msk2, 
+		0, -66.58742149317, 4000+msk2, 
+		19.80001128682, 3.599996282546, msk2, 
+		19.80001040089, 3.799995981657, 900+msk2, 
+		0, 89.99974645121, 4000+msk2, 
+		20.00001007999, 5.399995559057, msk2, 
+		19.80000985172, 5.399993754267, 900+msk2, 
+		0, 89.99912536171, 4000+msk2, 
+		3.5000118635, 5.599994662196, msk2, 
+		3.500000085761, 5.399994676778, 900+msk2, 
+		0, 90.00299999999, 4000+msk2, 
+		3.30000047, 2.249999610864, msk2, 
+		2.800001483129, 2.249998986869, 900+msk2, 
+		0, -90.00023, 4000+msk2, 
+		0, 1.75, msk2
+	DEL 1
+	RETURN
+
+"DORMA_7411-50":
+	MUL faktor, -faktor, 1
+	PRISM_ 25, t, 
+		2.8000001, 1.75, 1, 
+		0, 1.75, msk, 
+		0, 0, 900+msk2, 
+		0, -90, 4000+msk2, 
+		0, 0, 900+msk2, 
+		0, -73.41839161665, 4000+msk2, 
+		4.806843765371, -0.6102329455829, msk, 
+		4.686617235245, -0.124898117914, 900+msk2, 
+		0, 53.22226, 4000+msk2, 
+		6.8000121, 3.6, msk, 
+		6.80001223, 3.799999860374, msk, 
+		7.000012100106, 3.800000129894, 900+msk2, 
+		0, -90.00007718169, 4000+msk2, 
+		19.80001128682, 4.000000300004, msk, 
+		19.80001040177, 4.19999999823, 900+msk2, 
+		0, 89.99974695818, 4000+msk2, 
+		20.00001007999, 5.799999576515, msk, 
+		19.80000985172, 5.799997771725, 900+msk2, 
+		0, 89.99912536171, 4000+msk2, 
+		3.5000118635, 5.999998679654, msk, 
+		3.500000085761, 5.799998694235, 900+msk2, 
+		0, 90.00299999999, 4000+msk2, 
+		3.30000047, 2.249999610864, msk, 
+		2.800001483129, 2.249998986869, 900+msk2, 
+		0, -90.00023, 4000+msk2
+	DEL 1
+	RETURN
+
+"DORMA_7411-56":
+	MUL faktor, -faktor, 1
+	PRISM_ 25, t, 
+		2.8000001, 1.75, msk, 
+		0, 1.75, msk, 
+		0, 0, 900+msk2, 
+		0, -90, 4000+msk2, 
+		0, 0, 900+msk2, 
+		0, -73.41839161665, 4000+msk2, 
+		4.806843765371, -0.6102329455829, msk, 
+		4.686617235245, -0.124898117914, 900+msk2, 
+		0, 53.22226, 4000+msk2, 
+		6.8000121, 3.6, msk, 
+		6.80001223, 4.399999860374, msk, 
+		7.000012100106, 4.400000129894, 900+msk2, 
+		0, -90.00007718169, 4000+msk2, 
+		19.80001128682, 4.600000300004, msk, 
+		19.80001040177, 4.79999999823, 900+msk2, 
+		0, 89.99974695818, 4000+msk2, 
+		20.00001007999, 6.399999576515, msk, 
+		19.80000985172, 6.399997771725, 900+msk2, 
+		0, 89.99912536171, 4000+msk2, 
+		3.5000118635, 6.599998679654, msk, 
+		3.500000085761, 6.399998694235, 900+msk2, 
+		0, 90.00299999999, 4000+msk2, 
+		3.30000047, 2.249999610864, msk, 
+		2.800001483129, 2.249998986869, 900+msk2, 
+		0, -90.00023, 4000+msk2
+	DEL 1
+	RETURN
+
+
+"DORMA_7431":
+	s = 0.02
+	t = 0.006
+	z = 0.004
+
+	! Türhebel
+	ROTz dk_open_leaf_3D
+	ADDZ 0.023 - 0.008 - t
+	GOSUB "DORMA_7431_angeschweisst"
+	ADDZ t/2 - s/2
+	CYLIND s, bs_hinge_reel_diameter/2
+	DEL 3
+
+	! oben...
+	ADDz ac_leaf_height - (1-stumpf) * (bs_leaf_oversize + dk_panel_folding_gap) + stumpf * z1
+
+	! Türbänder oben (Türblatt)
+	ROTz dk_open_leaf_3D
+	ADDZ -s
+	GOSUB "DORMA_7431_angeschweisst"
+	CYLIND s, bs_hinge_reel_diameter/2
+	DEL 2
+
+	! Türbänder oben (Zarge)
+	ADDZ z
+	CYLIND s, bs_hinge_reel_diameter/2
+	ADDZ s-t
+	GOSUB "DORMA_7431_angeschweisst"
+	DEL 2
+
+	! ADDZ -hinge_pos1
+	! !...
+	! IF bs_hinge_nmbr > 2 THEN
+	! 	ADDZ -bs_hinge_pos3
+	! 	! IF stumpf THEN GOSUB "DORMA_LM-Band" ELSE GOSUB "DORMA_LM-Band (überfälzt)"
+	! 	DEL 1
+	! 	ENDIF
+	! ADDZ -hinge_pos2
+	! !...
+	! IF bs_hinge_nmbr = 4 THEN
+	! 	ADDZ bs_hinge_pos4
+	! 	DEL 1
+	! 	ENDIF
+	! DEL 2
+
+	DEL 1
+	CYLIND s, bs_hinge_reel_diameter/2
+	RETURN
+
+"DORMA_7431_angeschweisst":
+	MUL faktor, -faktor, 1
+	PRISM_ 14, t, 
+		0.0005918081213849, 1.7500005, msk2, 
+		0, 0, 900+msk2, 
+		0, -89.98064358461, 4000+msk2, 
+		0, 0, 900+msk2, 
+		0, -76.06453836804, 4000+msk2, 
+		4.805963380322, -0.6105546879625, msk2, 
+		4.68554856645, -0.1252695780883, 900+msk2, 
+		0, 53.39306000001, 4000+msk2, 
+		6.8, 3.6 - bs_leaf_overhang/faktor, msk, 
+		3.3, 3.6 - bs_leaf_overhang/faktor, msk, 
+		3.3, 2.0499975, msk2, 
+		3.000003045281, 2.049997654719, 900+msk2, 
+		0, -89.99996, 4000+msk2, 
+		0.0005918081213849, 1.7500005, msk2
+	DEL 1
+	RETURN
+
+"DORMA_7472K": ! Anschweißlager
+	PRISM_ 6, t, 
+		-3.0661499, 3.6, msk2, 
+		-0.0428131, 3.6, msk2, 
+		1.519129927507, 0.8687601764515, msk2, 
+		0, 0, 900+msk2, 
+		0, 168.9366720277, 4000+msk2, 
+		-3.0661499, 3.6, msk2
+	RETURN
+
+"DORMA_7473K": ! Anschraublager
+	PRISM_ 6, t, 
+		-4.4, 3.1, msk2, 
+		-2.224395, -1.141079, msk2, 
+		0, 0, 900+msk2, 
+		0, 213.3083, 4000+msk2, 
+		-0.4, 3.1, msk2, 
+		-4.4, 3.1, msk2
+	PRISM_ 5, t, 
+		-4.4, 3.6, msk2, 
+		-0.4, 3.6, msk2, 
+		-0.4, 3.1, msk2, 
+		-4.4, 3.1, msk2, 
+		-4.4, 3.6, msk2
+	RETURN
+
+"DORMA_7459":
+	s = 0.033
+	t = 0.033 
+
+	GOSUB "DORMA_7459K"
+	MUL faktor, -faktor, 1
+	ROTz -dk_open_leaf_2D
+	PRISM_ 12, t, 
+		3.017267692037, 3.600846764533, msk2, 
+		3.017267692037, 2.476754788912, msk2, 
+		2.60967709019, 2.476754788912, 900+msk2, 
+		0, -90, 4000+msk2, 
+		0, 2.069164187064, msk2, 
+		0, 0.02906596413369, 900+msk2, 
+		0, 180, 4000+msk2, 
+		0.4601729688683, -2.011032258797, msk2, 
+		11.98426093268, 1.961903502368, msk2, 
+		11.98426093268, 2.476754788912, msk2, 
+		11.98426093268, 3.600846764533, msk2, 
+		3.017267692037, 3.600846764533, msk2
+	DEL 2
+	CYLIND s, bs_hinge_reel_diameter/2
+	RETURN
+
+
+
+
+
+
+
+! »»» Oberes und mittleres Band
+
+"DORMA_7472":
+	ROTz -dk_open_leaf_2D
+	PRISM_ 12, t, 
+		0, 1.75, 1, 
+		0, 0, 900, 
+		0, -165.3915000837, 4001, 
+		4.806979790565, -0.6102946992774, 1, 
+		4.686587687279, -0.1250185833184, 900, 
+		0, 53.20225101928, 4001, 
+		6.8000002, 3.6, 1, 
+		3.2999982, 3.599998318182, 1, 
+		3.2999982, 2.249998, 1, 
+		2.8000002, 2.249998, 900, 
+		0, -90, 4001, 
+		0, 1.75, 1
+	DEL 1
+	GOSUB "DORMA_7472K"
+	PRISM_ 5, t, 
+		-1.75, 0, 1, 
+		0, 0, 900, 
+		0, -180, 4001, 
+		0, 0, 900, 
+		0, -180, 4001
+	circle2 0,0, 1.1
+	! circle2 0,0, 1.75
+	RETURN
+
+
+! »»» LAGER an Zarge
+
+"LM-Band-K":
+	PEN dk_cont_pens[dka_penInvisible]
+	LINE_TYPE dk_linetype[dka_invisible]
+	PRISM_ 11, t, 
+		-0.8668960409715, 3.6, 1, 
+		-0.8668960409715, 1.44845544415, 1, 
+		-0.5637699010927, 1.44845544415, 900, 
+		0, 105.5723801428, 4001, 
+		0, 0, 900, 
+		0, -112.6425383142, 4001, 
+		0, 0, 900, 
+		0, -139.2976857824, 4001, 
+		-3.732901536067, 2.418092033807, 1, 
+		-3.732901536067, 3.6, 1, 
+		-0.8668960409715, 3.6, 1
+	PEN dk_cont_pens[dka_topview_penC2]
+	LINE_TYPE 1
+	RETURN
+
+"DORMA_7459K":
+	! Anschweißlager. Form und bez. geraten!
+	PEN dk_cont_pens[dka_penInvisible]
+	LINE_TYPE dk_linetype[dka_invisible]
+	PEN dk_cont_pens[dka_topview_penC2]
+	LINE_TYPE 1
+	RETURN
+
+"DORMA_7476AX":
+	PRISM_ 5, t, 
+		-2.0550003, 0, 1, 
+		0, 0, 900, 
+		0, -180, 4001, 
+		0, 0, 900, 
+		0, -180, 4001
+	PRISM_ 5, t, 
+		-4.75, 3.331595, 1, 
+		4.7499998, 3.331595, 1, 
+		4.7499998, -2.668405, 1, 
+		-4.75, -2.668405, 1, 
+		-4.75, 3.331595, 1
+	PRISM_ 5, t, 
+		-4.75, 2.831595, 1, 
+		4.7499998, 2.831595, 1, 
+		4.7499998, 3.331595, 1, 
+		-4.75, 3.331595, 1, 
+		-4.75, 2.831595, 1
+	RETURN

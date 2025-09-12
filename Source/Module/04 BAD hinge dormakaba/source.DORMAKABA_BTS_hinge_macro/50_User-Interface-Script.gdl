@@ -1,0 +1,293 @@
+
+!-------------------------------------------- [ Standardelemente aller Seiten ]
+
+! »»» Standardwerte
+
+DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[] ! Arrays für diskrete Auswahlen UI_INFIELD{4}
+
+
+! ----------------------------------- MULTILINGUAL TEXT [DORMAKABA.hinge] (start)
+
+! --------- RESET array variables
+	DIM babel[]
+	DIM bubble[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		babel[1] = "Hersteller:"
+		babel[2] = "Material/Oberfläche:"
+		babel[3] = "Produkt:"
+		babel[4] = "Bandtyp:"
+		babel[5] = "Drehpunkt/ Bandachse:"
+		babel[6] = "3D/Rendering:"
+		babel[7] = "Durchmesser (3):"
+		babel[8] = "Türblatt"
+		babel[9] = "Versatz X (1):"
+		babel[10] = "Abstand Y (2):"
+		babel[11] = "Zarge"
+		babel[12] = "Notwendige Bandserie bei Verwendung des dormakaba Bodentürschließers."
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF language = 4 THEN
+		babel[1] = "Manufacturer:"
+		babel[2] = "Material/Finish:"
+		babel[3] = "Product:"
+		babel[4] = "Bandtyp:"
+		babel[5] = "Drehpunkt/ Bandachse:"
+		babel[6] = "3D/Rendering:"
+		babel[7] = "Diameter (3):"
+		babel[8] = "Door leaf"
+		babel[9] = "Versatz X (1):"
+		babel[10] = "Abstand Y (2):"
+		babel[11] = "Frame"
+		babel[12] = "Notwendige Bandserie bei Verwendung des dormakaba Bodentürschließers."
+		ENDIF
+
+! --------- User Interface - Tooltip text (Deutsch)
+	IF language = 1 THEN
+		bubble[1] = "Band Hersteller"
+		bubble[2] = "Band Material"
+		bubble[3] = "Bezug- und Drehachsen"
+		bubble[4] = "Oberflächenmaterial"
+		bubble[5] = "Rollendurchmesser"
+		bubble[6] = "Band Oberfläche"
+		bubble[7] = "BTS Zubehör - Türbänder (PDF)"
+		bubble[8] = "BTS"
+		bubble[9] = "Bandtyp"
+		bubble[10] = "Bandachse in Y"
+		bubble[111] = "Bandachse in X"
+		ENDIF
+! --------- User Interface - Tooltip text (Englisch)
+	IF language = 4 THEN
+		bubble[1] = "Band Hersteller"
+		bubble[2] = "Band Material"
+		bubble[3] = "Bezug- und Drehachsen"
+		bubble[4] = "Oberflächenmaterial"
+		bubble[5] = "Rollendurchmesser"
+		bubble[6] = "Band Oberfläche"
+		bubble[7] = "BTS Zubehör - Türbänder (PDF)"
+		bubble[8] = "BTS"
+		bubble[9] = "Bandtyp"
+		bubble[10] = "Bandachse in Y"
+		bubble[111] = "Bandachse in X"
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+
+! =============================================================================
+! Dialogstart
+! =============================================================================
+
+
+! ------------------------------------------------------------------------[ Dialog start in development environment ]
+
+IF macro_runtype # 128 THEN
+
+	UI_DIALOG "DORMA HINGE MACRO V0.1 12.08.17", 444,266
+
+	ENDIF
+
+format = "" : sts = REQUEST ("Working_length_unit", "",format)			  !	Format für UI-Outfield -Längenwerte	
+	
+
+! ------------------------------------------------------------------------[ 1. Seite ]
+
+s = 1
+IF  seiten > 0 THEN
+	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ 2. Seite ]
+
+s = 2
+IF  seiten > 1 THEN
+	IF macro_runtype = 0 THEN : UIpage = s : UIpage_number = UIpage : UIpage_parent = UI_page_type[s] : ENDIF  ! »»» Development
+	IF UIpage_number = s THEN GOSUB UI_page_subs[s]
+	ENDIF
+
+
+! =============================================================================
+! Dialogende
+! =============================================================================
+
+END
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"devshow":
+	UI_STYLE 1,2
+	UI_OUTFIELD "[HINGE (DORMA) v" + str("%^.2",version) + "]"  , 60,0,100,15, 4
+	UI_STYLE 0,0
+
+	i = -1 : s = 20
+	i = i+1 :	UI_INFIELD{3} "bs_closer_type",			475,i*s, 45,19  UI_TOOLTIP "bs_closer_type"
+				UI_INFIELD{3} "bs_closer_model",		525,i*s, 95,19  UI_TOOLTIP "bs_closer_model"
+				ui_outfield bs_closer_type,				625,i*s, 95,15  UI_TOOLTIP "bs_closer_type"
+	i = i+1 :	UI_INFIELD{3} "bs_closer2",				475,i*s, 45,19  UI_TOOLTIP "bs_closer2"
+				UI_INFIELD{3} "bs_closer_model2",		525,i*s, 95,19  UI_TOOLTIP "bs_closer_model2"
+				ui_outfield bs_closer2,					625,i*s, 95,15  UI_TOOLTIP "bs_closer2"
+	RETURN
+
+"devSELECTION":
+	FOR i= 1 TO VARDIM1(UIpicIdxArray)
+		ui_outfield UIpicIdxArray[i],   0,260+i*15,140,15
+		ui_outfield UItextArray[i]  , 150,260+i*15,140,15
+		ui_outfield UIvaluesArray[i], 300,260+i*15,140,15
+		NEXT i
+	RETURN
+
+! ------------------------------------------------------------------------[ Auswahloptionen ]
+
+
+! ----------------------------------- PARAMETER / INFIELD VALUE LIST [ECD.hinge] (start)
+
+"VALUES_bs_hinge_type":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Objektband zweiteilig" : UIvaluesArray[j] = "O2"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Objektband dreiteilig" : UIvaluesArray[j] = "O3"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Einbohrband zweiteilig" : UIvaluesArray[j] = "E2"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Einbohrband dreiteilig" : UIvaluesArray[j] = "E3"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "KO Band zweiteilig" : UIvaluesArray[j] = "KO2"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "KO Band dreiteilig" : UIvaluesArray[j] = "KO3"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Paumelle" : UIvaluesArray[j] = "P"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Fitschenband" : UIvaluesArray[j] = "F"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Universalband zweiteilig" : UIvaluesArray[j] = "U2"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Universalband dreiteilig" : UIvaluesArray[j] = "U3"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Konstruktionsband zweiteilig" : UIvaluesArray[j] = "K2"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Konstruktionsband dreiteilig" : UIvaluesArray[j] = "K3"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verdecktes Band" : UIvaluesArray[j] = "V"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aufgesetztes Band" : UIvaluesArray[j] = "A"
+	RETURN
+
+"VALUES_bs_hinge_material":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Stahl" : UIvaluesArray[j] = "ST"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Edelstahl" : UIvaluesArray[j] = "ES"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Aluminium" : UIvaluesArray[j] = "AL"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sondermaterial" : UIvaluesArray[j] = "XX"
+	RETURN
+
+"VALUES_bs_hinge_surface":
+	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "undefiniert" : UIvaluesArray[j] = " "
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "unbehandelt" : UIvaluesArray[j] = "-"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Gebürstet" : UIvaluesArray[j] = "B"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Geschliffen" : UIvaluesArray[j] = "S"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Getrommelt" : UIvaluesArray[j] = "T"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Poliert" : UIvaluesArray[j] = "P"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vernickelt" : UIvaluesArray[j] = "N"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Lackiert" : UIvaluesArray[j] = "L"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Pulverbeschichtet" : UIvaluesArray[j] = "V"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verzinkt" : UIvaluesArray[j] = "Z"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Verchromt" : UIvaluesArray[j] = "C"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Eloxiert" : UIvaluesArray[j] = "E"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Titanisiert" : UIvaluesArray[j] = "I"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Vergoldet" : UIvaluesArray[j] = "G"
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Sonderoberfläche" : UIvaluesArray[j] = "X"
+	RETURN
+
+! --------------------------------------------------------------- PARAMETER / INFIELD VALUE LIST (end)
+
+
+"SELECT_bs_hinge_material":
+	GOSUB "VALUES_bs_hinge_material"
+	sts = 0
+	IF bs_hinge_material # "XX" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_hinge_material THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+"SELECT_bs_hinge_surface":
+	GOSUB "VALUES_bs_hinge_surface"
+	sts = 0
+	IF bs_hinge_surface # "X" THEN
+		FOR i = 1 TO j
+			IF UIvaluesArray[i] = bs_hinge_surface THEN sts = 1
+			NEXT i
+		ENDIF
+	RETURN
+
+
+"SELECT_HingePosBitmap2":
+	uiBitmapIDX = 1 + 3*stumpf + bs_folding_nmbr
+	RETURN
+
+
+! ------------------------------------------------------------- MAIN PAGE [ 6000 ]
+	6000:   ! #### LOI 5+ - Grundeinstellungen Türbänder
+	GOSUB 9900
+	UI_OUTFIELD babel[3], 57,68 , 125,15, 0+0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[4], 57,26 , 125,15, 0+0
+	UI_STYLE 0,0
+	UI_OUTFIELD babel[1], 57,47 , 125,15, 0+0
+	UI_OUTFIELD babel[2], 57,104 , 125,15, 0+0
+	UI_OUTFIELD babel[6], 57,126 , 125,15, 0+0
+	UI_STYLE 1,2
+	UI_OUTFIELD babel[12], 222,240 , 163,33, 0+0
+	UI_STYLE 0,0
+	UI_STYLE 0,1
+	UI_OUTFIELD babel[5], 222,156 , 163,15, 0+0
+	UI_STYLE 0,0
+	IF rolle THEN UI_OUTFIELD babel[7], 222,176 , 98,15, 0+0
+	UI_OUTFIELD babel[9], 222,199 , 98,15, 0+0
+	UI_OUTFIELD babel[10], 222,222 , 98,15, 0+0
+	GOSUB "VALUES_bs_hinge_type"
+	UI_INFIELD{3} "bs_hinge_type", 183,21 , 204,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[9]
+	UI_INFIELD{3} "bs_hinge_manufacturer", 184,44 , 202,19 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} "bs_hinge_model", 184,66 , 202,19 UI_TOOLTIP bubble[8]
+	GOSUB "SELECT_bs_hinge_material"
+	IF sts THEN
+		UI_INFIELD{3} "bs_hinge_material", 184,99 , 100,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
+		ENDIF
+	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_material", 184,99 , 100,21 UI_TOOLTIP bubble[2]
+	GOSUB "SELECT_bs_hinge_surface"
+	IF sts THEN
+		UI_INFIELD{3} "bs_hinge_surface", 287,99 , 100,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[6]
+		ENDIF
+	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_surface", 287,99 , 100,21 UI_TOOLTIP bubble[6]
+	UI_INFIELD{3} dk_materials[dka_hinge_mat], 209,122 , 178,21 UI_TOOLTIP bubble[4]
+	IF rolle THEN UI_INFIELD{3} "bs_hinge_reel_diameter", 320,174 , 65,19 UI_TOOLTIP bubble[5]
+	UI_INFIELD{3} "bs_ancor_hinge_X", 320,197 , 65,19 UI_TOOLTIP bubble[111]
+	UI_INFIELD{3} "bs_ancor_hinge_Y", 320,220 , 65,19 UI_TOOLTIP bubble[10]
+	UI_PICT "ui_general_surface_flat 23x23", 183,122 , 23,23, 1
+	GOSUB "SELECT_HingePosBitmap2"
+	UI_PICT uiBitmapIDX, 81,157 , 80,90, 1 UI_TOOLTIP bubble[3]
+	UI_STYLE 1,2
+	UI_OUTFIELD babel[11], 63,250 , 37,12, 1+0
+	UI_STYLE 0,0
+	UI_STYLE 1,2
+	UI_OUTFIELD babel[8], 164,207 , 47,12, 0+0
+	UI_STYLE 0,0
+	UI_SEPARATOR 57,92, 387,92
+	UI_SEPARATOR 57,149, 387,149
+	RETURN
+! -------------------------------------------------------------TITLE [ 9900 ]
+	9900:	  ! #### TITEL on all pages
+	IF develop THEN GOSUB "devshow"
+	UI_STYLE 0,0
+	UI_PICT 1, 279,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 419,15
+	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 422,-5 , 22,22, 0, "https://www.dormakaba.com/resource/blob/139662/c6ffd5d35b18a249add08e24058fc102/050639-51532-0614-technikprospekt-bts-zubehoer-de-pdf-data.pdf" UI_TOOLTIP bubble[7]
+	IF errorI>0 THEN
+		txt = ""
+		FOR i=1 TO errorI
+		txt = txt + errorQ[i]
+		NEXT i
+		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
+		ENDIF
+	RETURN
+

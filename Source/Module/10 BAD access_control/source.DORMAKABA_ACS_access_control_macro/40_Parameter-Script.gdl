@@ -1,0 +1,358 @@
+
+! ------------------------------------------------------------------------[ Object development settings ]
+
+IF macro_runtype = 0 THEN
+	VALUES{2} "macro_runtype" 0, "IDLE", 1,"handshake page hirarchy", 2,"handshake page names", 3,"CALL UI page", 5,"return element values", 10,"rebuilt VALUE lists"
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ Settings auf andere Module ]
+
+! »»» Festlegen, welche Beschläge in diesem Modul erzeugt werden und in Parameter sichern.
+! Im Beschlag Makro wird dieser Wert geprüft und die Auswahl und Ausgabe deaktiviert
+!
+! Bitweise setzen. 
+! (=1) Auswahl/Erzeugung erfolgt in ACS-Modul, 
+! (=0) Auswahl/Erzeugung in Handles-Modul zulässig
+! Wobei immer drei Bits je die betroffene Seite definieren: BS / BGS / 2. FLÜGEL
+! Das dritte Bit ist immer gesetzt, weil der Zusatzflügel bei ACS nicht erlaubt ist und daher
+! für diesen keine Auswahl getroffen werden darf/muss/kann.
+!
+! GRIFFE (Bit 0,1,2) 1 + 2 + 4
+!
+! ABDECKUNGEN (Bit 3,4,5) 8 + 16 + 32
+!
+! SCHLOSSROSETTE (Bit 6,7,8) 64 + 128 + 256
+
+
+IF bs_control_side = "-" THEN
+
+	! Kein ACS gewählt
+	bs_acs_handles = 0
+
+	ELSE
+
+	! "bs_acs_function" muss korrekten Wert für nachfolgende Plausibilitätsprüfung haben!
+	! Also schauen, ob gerade das System gewechselt wurde und evt. ein falscher Wert drin steht,
+	! weil der VALUES Befehl noch nicht gegriffen hat
+	! IF GLOB_MODPAR_NAME = "bs_access_control_system" THEN
+	! 	IF bs_access_control_system = "c-lever compact" THEN
+	! 	 	bs_acs_function = "2"
+	! 		ENDIF
+	! 	IF bs_access_control_system = "c-lever pro HAC" AND STRSTR("0123456",bs_acs_function) < 1 THEN
+	!  		bs_acs_function = "0"
+	! 		ENDIF
+	! 	IF bs_access_control_system = "c-lever pro HBC" AND STRSTR("024",bs_acs_function) < 1  THEN
+	!  		bs_acs_function = "0"
+	! 		ENDIF
+	! 	IF bs_access_control_system = "c-lever air" THEN
+	! 	 	bs_acs_function = ""
+	! 		ENDIF
+	! 	IF bs_access_control_system = "Digitalzylinder" THEN
+	! 	 	bs_acs_function = ""
+	! 		ENDIF
+	! 	PARAMETERS bs_acs_function = bs_acs_function
+	! 	ENDIF
+
+	! Flags setzen, welche Komponenten der beschläge im ACS erledigt werden
+
+	bs_acs_handles = 0
+
+	IF bs_access_control_system = "Digitalzylinder" THEN 
+		bs_acs_handles = 4+32+256
+	ENDIF
+
+	IF bs_access_control_system = "c-lever air" THEN 
+		IF bs_acs_platetype = "4" THEN
+			IF bs_control_side = "BS" THEN bs_acs_handles = 1+4 + 8+32 + 64+256
+			IF bs_control_side = "BGS" THEN bs_acs_handles = 2+4 + 16+32 + 128+256
+		ELSE
+			IF bs_control_side = "BS" THEN bs_acs_handles = 1+2+4 + 8+16+32 + 64+128+256
+			IF bs_control_side = "BGS" THEN bs_acs_handles = 1+2+4 + 8+16+32 + 64+128+256
+		ENDIF
+	ENDIF
+
+	IF bs_access_control_system = "c-lever compact" THEN
+		IF bs_acs_platetype = "4" THEN
+			IF bs_control_side = "BS"  AND bs_acs_function = "2" THEN bs_acs_handles = 1+4 + 8+32 + 256
+			IF bs_control_side = "BGS" AND bs_acs_function = "2" THEN bs_acs_handles = 2+4 + 16+32 + 256
+		ELSE
+			IF bs_control_side = "BS"  AND bs_acs_function = "2" THEN bs_acs_handles = 1+2+4 + 8+16+32 + 64+128+256
+			IF bs_control_side = "BGS" AND bs_acs_function = "2" THEN bs_acs_handles = 1+2+4 + 8+16+32 + 64+128+256
+		ENDIF
+	ENDIF
+
+	IF  bs_access_control_system = "c-lever pro HAC" OR \
+		bs_access_control_system = "c-lever pro HBC" THEN
+		IF bs_control_side = "ZS" THEN bs_acs_handles = 1+2+4 + 8+16+32 + 64+128+256
+		IF bs_control_side = "BS" THEN bs_acs_handles =  1+2+4 + 8+16+32 + 64+128+256
+		IF bs_control_side = "BGS" THEN bs_acs_handles =  1+2+4 + 8+16+32 + 64+128+256
+
+
+
+	ENDIF
+
+ENDIF
+PARAMETERS bs_acs_handles = bs_acs_handles
+
+
+! »»» Elektrifizierung setzen, wenn die ZuKo Strom von extern braucht (Bit 6)
+IF bs_acs_electric = "E" AND bs_control_side # "-" THEN
+	bs_door_electrified = BITSET(bs_door_electrified, 6)
+	ELSE
+	bs_door_electrified = BITSET(bs_door_electrified, 6, 0)
+	ENDIF
+PARAMETERS bs_door_electrified = bs_door_electrified
+
+
+! Beschränkungen bei Beschlägen wegen DORMAKABA - ACS - Auswahl aufheben:
+! IF  bs_access_control_model = "-" THEN
+! 	handle_system = commonMacro
+! 	PARAMETERS handle_system = handle_system
+! 	END
+! 	ENDIF
+
+
+! =============================================================================
+! PLAUSIBILITY
+! =============================================================================
+
+! »»» Immer schützen und ggf. Wertezuordnung, wenn aktiv
+IF  bs_control_side = "-" THEN
+	ELSE
+	LOCK "bs_access_control_type"
+	bs_access_control_type = "K" : PARAMETERS bs_access_control_type = bs_access_control_type
+	ENDIF
+
+LOCK "bs_acs_manufacturer"
+LOCK "bs_acs_model"
+
+
+! =============================================================================
+! VALUES
+! =============================================================================
+
+! ----------------------------------- PARAMETER VALUE LIST [DORMAKABA.access_control] (start)
+
+!VALUES "bs_acs_material" " ", "ST", "ES", "AL", "XX", CUSTOM
+VALUES "bs_acs_material" "ES"
+
+
+VALUES "bs_acs_surface" "S"
+
+VALUES "bs_acs_model" bs_acs_productcode
+VALUES "bs_acs_systemlevel" "1", "2", "3", "4"
+
+VALUES "bs_acs_cover" "B", "W"			! Abdeckung 
+
+IF bs_access_control_system = "c-lever compact" THEN
+	VALUES "bs_acs_baseplate" "EU", "SE", "FI"
+ELSE
+	VALUES "bs_acs_baseplate" ""
+ENDIF
+
+
+
+IF bs_access_control_system = "c-lever compact" THEN
+ 	VALUES "bs_acs_function" "2"
+	IF bs_acs_systemlevel = "1" THEN
+		VALUES "bs_acs_emodule" "E300", "E110"
+	ENDIF
+	IF bs_acs_systemlevel = "2" OR bs_acs_systemlevel = "3" THEN
+		VALUES "bs_acs_emodule" "E300", 
+								"E320", 
+								"E340", 
+								"E360"
+	ENDIF
+	IF bs_acs_systemlevel = "4" THEN
+		VALUES "bs_acs_emodule" "O300"
+	ENDIF
+
+	IF bs_demand_EscapeRoute <> 1 THEN
+		VALUES "bs_acs_handle_model" "HA", "HD", "HL", "HN"
+	ELSE
+		VALUES "bs_acs_handle_model" "HA", "HN"
+	ENDIF
+
+	VALUES "bs_acs_platetype" "4", "5"
+	VALUES "bs_acs_case_a" ""
+	VALUES "bs_acs_case_b" ""
+	VALUES "bs_acs_electric" ""
+	VALUES "bs_acs_addon" ""
+	VALUES "bs_acs_cam" ""
+ENDIF
+
+IF bs_access_control_system = "c-lever pro HAC" OR bs_access_control_system = "c-lever pro HBC" THEN
+	IF bs_access_control_system = "c-lever pro HAC" THEN
+ 		VALUES "bs_acs_function" "0", "1", "2", "3", "4", "5", "6"
+		IF bs_lock_barrel = "PZ" THEN
+			VALUES "bs_acs_case_a" "55PZ", "57PZ", "70PZ", "72PZ", "78PZ", "85PZ", "88PZ", "90PZ", "92PZ", "98PZ"
+			VALUES "bs_acs_case_b" bs_acs_case_a
+		ENDIF
+		IF bs_lock_barrel = "RZ" THEN
+			VALUES "bs_acs_case_a" "74RZ", "78RZ", "94RZ", "10RZ"
+			VALUES "bs_acs_case_b" bs_acs_case_a
+		ENDIF
+		IF bs_lock_barrel <> "RZ" AND bs_lock_barrel <> "PZ" THEN
+			VALUES "bs_acs_case_a" "0000", "7200","9200","7400","9400"
+			IF bs_acs_case_a = "0000" THEN
+				VALUES "bs_acs_case_b" "0000", "7200","9200","7400","9400"
+			ELSE
+				VALUES "bs_acs_case_b" "0000", bs_acs_case_a
+			ENDIF
+		ENDIF		
+	ENDIF
+
+
+
+
+	IF bs_acs_systemlevel = "1" THEN
+		VALUES "bs_acs_emodule" "E300", "E110"
+	ENDIF
+	IF bs_acs_systemlevel = "2" OR bs_acs_systemlevel = "3" THEN
+		VALUES "bs_acs_emodule" "E300", "E310", 
+								"E320", "E321", 
+								"E340", "E360", 
+								"E361"
+	ENDIF
+	IF bs_acs_systemlevel = "4" THEN
+		VALUES "bs_acs_emodule" "O300"
+	ENDIF
+
+	IF bs_demand_EscapeRoute <> 1 THEN
+		VALUES "bs_acs_handle_model" "HA", "HB", "HC", "HD", "HL", "HM", "HN", "HO", "HP", "HQ"
+	ELSE
+		VALUES "bs_acs_handle_model" "HA", "HB", "HC", "HN", "HO", "HP", "HQ"
+	ENDIF
+	IF bs_panel_type = "VB" then
+		VALUES "bs_acs_sytle" 1,2,3,4
+	ELSE
+		VALUES "bs_acs_sytle" 1
+	ENDIF	
+
+	VALUES "bs_acs_electric" "E", "M", "B"
+	VALUES "bs_acs_addon" "0", "T", "TD"
+	VALUES "bs_acs_cam" ""
+ENDIF
+
+IF bs_access_control_system = "c-lever air" THEN
+ 	VALUES "bs_acs_function" ""
+
+	IF bs_panel_type = "VB" then
+		VALUES "bs_acs_sytle" 4
+	ELSE
+		VALUES "bs_acs_sytle" 2
+	ENDIF	
+
+	IF bs_acs_systemlevel = "1" THEN
+		VALUES "bs_acs_emodule" "E300", "E110"
+	ENDIF
+	IF bs_acs_systemlevel = "2" OR bs_acs_systemlevel = "3" THEN
+		VALUES "bs_acs_emodule" "E300", 
+								"E320", 
+								"E340", 
+								"E360"
+	ENDIF
+	IF bs_acs_systemlevel = "4" THEN
+		VALUES "bs_acs_emodule" "O300"
+	ENDIF
+
+	IF bs_lock_barrel = "PZ" THEN
+		VALUES "bs_acs_case_a" "70PZ", "72PZ", "85PZ", "88PZ", "90PZ", "92PZ"
+		VALUES "bs_acs_case_b" ""
+	ENDIF
+	IF bs_lock_barrel = "RZ" THEN
+		VALUES "bs_acs_case_a" "74RZ", "78RZ", "94RZ"
+		VALUES "bs_acs_case_b" ""
+	ENDIF
+	IF bs_lock_barrel <> "RZ" AND bs_lock_barrel <> "PZ" THEN
+		VALUES "bs_acs_case_a" "0000"
+		VALUES "bs_acs_case_b" ""
+	ENDIF	
+	VALUES "bs_acs_platetype" "4", "5"
+	IF bs_demand_EscapeRoute <> 1 THEN
+		VALUES "bs_acs_handle_model" "8906", "8906V", "8115", "8116V"
+	ELSE
+		VALUES "bs_acs_handle_model" "8116V"
+	ENDIF
+
+	VALUES "bs_acs_electric" ""
+	VALUES "bs_acs_addon" ""
+	VALUES "bs_acs_cam" ""
+ENDIF
+
+
+IF bs_access_control_system = "Digitalzylinder" THEN
+ 	VALUES "bs_acs_function" ""
+!	VALUES "bs_acs_sytle" 0
+
+
+	IF bs_acs_systemlevel = "1" THEN
+		VALUES "bs_acs_emodule" "E300"
+	ENDIF
+	IF bs_acs_systemlevel = "2" OR bs_acs_systemlevel = "3" THEN
+		VALUES "bs_acs_emodule" "E300", "E320"
+	ENDIF
+	IF bs_acs_systemlevel = "4" THEN
+		VALUES "bs_acs_emodule" "E300", "O300"
+	ENDIF
+
+	FOR t = 30 TO 160 STEP 5
+		PUT t
+	NEXT t
+
+	VALUES "bs_acs_case_la" USE(NSP)
+	VALUES "bs_acs_case_lb" GET(NSP)
+
+	VALUES "bs_acs_cam" "NS", "ML10", "ML18", "BF"
+
+
+
+	VALUES "bs_acs_handle_model" ""
+
+	VALUES "bs_acs_electric" ""
+	VALUES "bs_acs_addon" ""
+ENDIF
+
+
+
+
+VALUES "develop" 0, 1, 2, 3, 4, 5, 6, 7, 8
+
+! --------------------------------------------------------------- PARAMETER VALUE LISTS (end)
+
+
+! ----------------------------------------------------------------- dynamische Wertelisten
+
+IF bs_door_leafs # 1 THEN
+	VALUES "bs_control_side" "-"
+ELSE
+	VALUES "bs_control_side" "-", "ZS", "BS", "BGS"
+ENDIF
+
+IF bs_control_side = "-" THEN
+	VALUES "bs_access_control_system" ""
+ELSE
+	IF bs_control_side = "ZS" THEN
+		VALUES "bs_access_control_system" "Digitalzylinder"
+	ENDIF
+	IF bs_control_side = "BS" OR bs_control_side = "BGS" THEN
+		VALUES "bs_access_control_system" "c-lever pro HAC", "c-lever compact", "c-lever air" , "Digitalzylinder"
+	ENDIF
+ENDIF
+
+
+
+! ---------------------------------------------------------------------- Ende
+
+END bs_door_electrified, bs_acs_handles
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
