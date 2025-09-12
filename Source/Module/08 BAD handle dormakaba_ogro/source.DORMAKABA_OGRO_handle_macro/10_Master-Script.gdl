@@ -1,0 +1,1143 @@
+! ######################################
+!
+! BIM-all-doors - DOOR SYSTEM
+!
+! Module: Handle Macro
+!
+! Manufacturer: DORMAKABA
+! Linie: OGRO
+!
+! Product content © 2021 BY DORMAKABA
+!
+! (p) 2018-2021 BY DORMAKABA / WRITTEN BY FRANK BEISTER
+! openSource by CCO1.0 license since 2025
+!
+! https://github.com/dormakaba/bim-all-doors
+! 
+! #############################################################################
+
+
+! =============================================================================
+! GLOBAL SETTINGS
+! =============================================================================
+
+! »»» Arrays
+
+DIM clr1[], clr2[][], UI_page_subs[]
+DIM UI_page_names[], UI_page_icons[], UI_page_type[], UI_page_subs[]
+
+! »»» Constants
+
+tlr = 0.00001  !»» accurancy
+version = 1.90 !»» Objektversion
+txt = ""	   !»»  Text für alles
+
+
+! »»» Check, ob aktueller Beschlag in diesem Modul erzeugt werden soll
+noLockPlate = 0
+IF  ( BITTEST(macro_runtype,4) OR BITTEST(macro_runtype,5) ) AND \  ! 2D/3D Modus
+	( (BITTEST(macro_runtype,0) AND BITTEST(bs_acs_handles,6)) OR \ ! BS & Schlossrosette
+	  (BITTEST(macro_runtype,1) AND BITTEST(bs_acs_handles,7)) OR \ ! BGS & Schlossrosette
+	  (BITTEST(macro_runtype,2) AND BITTEST(bs_acs_handles,8)) ) \  ! SF & Schlossrosette
+	THEN noLockPlate = 1   ! -> es ist Kein Griff auszugeben
+noPlate = 0
+IF  ( BITTEST(macro_runtype,4) OR BITTEST(macro_runtype,5) ) AND \  ! 2D/3D Modus
+	( (BITTEST(macro_runtype,0) AND BITTEST(bs_acs_handles,3)) OR \ ! BS & Rosette
+	  (BITTEST(macro_runtype,1) AND BITTEST(bs_acs_handles,4)) OR \ ! BGS & Rosette
+	  (BITTEST(macro_runtype,2) AND BITTEST(bs_acs_handles,5)) ) \  ! SF & Rosette
+	THEN noPlate = 1   ! -> es ist Kein Griff auszugeben
+noHandle = 0
+IF  ( BITTEST(macro_runtype,4) OR BITTEST(macro_runtype,5) ) AND \  ! 2D/3D Modus
+	( (BITTEST(macro_runtype,0) AND BITTEST(bs_acs_handles,0)) OR \ ! BS & Griff
+	  (BITTEST(macro_runtype,1) AND BITTEST(bs_acs_handles,1)) OR \ ! BGS & Griff
+	  (BITTEST(macro_runtype,2) AND BITTEST(bs_acs_handles,2)) ) \  ! SF & Griff
+	THEN noHandle = 1   ! -> es ist Kein Griff auszugeben
+
+
+! »»» Localization
+
+sprache = language  !»»  Deutsch
+
+
+! »»» Common keywords
+
+IF sprache = 1 THEN
+
+	commonKey = "unspezifiziert" 
+	naKey = "[-]"  !"undefiniert" 
+	noKey = "nein" 
+	yesKey = "ja"
+
+	ELSE
+		
+	commonKey = "unspecific"
+	naKey = "[-]"  !"common"
+	noKey = "no"
+	yesKey = "yes"
+
+	ENDIF
+
+	
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (start)
+
+! --------- PRODUCT PARAMETERS
+
+! --------- produkte[i][…]
+	dki_Serie = 1
+	dki_Bezeichnung = 2
+! --------- kategorien[i][…]
+	dki_Brandschutz = 1
+	dki_Rauchschutz = 2
+	dki_FluchtRettung = 3
+	dki_Hygiene = 4
+	dki_Standfluegel = 5
+	dki_Verkroepft = 6
+! --------- zuordnung[i][…]
+	dki_Typ = 1
+	dki_BitmapVB = 2
+	dki_BitmapPT = 3
+! --------- eigenschaften[i][…]
+	dki_Gebrauchskategorie = 1
+	dki_Dauerhaftigkeit = 2
+	dki_Feuer = 3
+	dki_Sicherheitsklasse = 4
+	dki_Korrosion = 5
+	dki_Brailleschrift = 6
+! --------- GriffMaterial[i][…]
+	dki_ER = 1
+	dki_ERgebuerstet = 2
+	dki_ERpoliert = 3
+	dki_ALgebuerstet = 4
+! --------- schildVB[i][…]
+	dki_RosettenRund = 1
+	dki_LangschildRund = 2
+	dki_LangschildKantig = 3
+	dki_KurzschildRund = 4
+	dki_KurzschildKantig = 5
+	dki_Breitschild = 6
+	dki_leer = 7
+! --------- schildPT[i][…]
+	dki_ProfilrosettenRund = 1
+	dki_ProfilrosettenKantig = 2
+	dki_Profillangschild = 3
+! --------- lochung[i][…]
+	dki_Buntbart = 1
+	dki_Profilzylinder = 2
+	dki_Rundzylinder = 3
+	dki_Ovalzylinder = 4
+	dki_Blind = 5
+	dki_WC = 6
+	dki_LochungCH = 7
+! --------- abmessung[i][…]
+	dki_D = 1
+	dki_Breite = 2
+	dki_Tiefe = 3
+	dki_VersatzX = 4
+! --------- DEFAULT VALUE ARRAYS
+
+! --------- dk_cont_pens[i][…]
+	dka_handle_penC2 = 1
+	dka_handle_penC3 = 2
+	dka_frame_penC2 = 3
+	dka_frame_penC3 = 4
+	dka_panel_penC2 = 5
+	dka_panel_penC3 = 6
+	dka_opline2D = 7
+	dka_oplineSA = 8
+	dka_opline3D = 9
+	dka_topview_penC2 = 10
+	dka_penInvisible = 11
+	dka_closer_penSA = 12
+	dka_closer_pen3D = 13
+	dka_grip_penC2 = 14
+	dka_grip_penC3 = 15
+! --------- dk_fill_pens[i][…]
+	dka_handle_penF = 1
+	dka_frame_penF = 2
+	dka_side1_penF = 3
+	dka_side2_penF = 4
+	dka_panel_penF = 5
+	dka_panelfill1_penF = 6
+	dka_panelfill2_penF = 7
+	dka_panelfill3_penF = 8
+	dka_panel2fill1_penF = 9
+	dka_panel2fill2_penF = 10
+	dka_panel2fill3_penF = 11
+	dka_topview_penF = 12
+	dka_fan_penF = 13
+	dka_gap_filling_penF = 14
+	dka_grip_penF = 15
+! --------- dk_bkg_pens[i][…]
+	dka_handle_penB = 1
+	dka_frame_penB = 2
+	dka_side1_penB = 3
+	dka_side2_penB = 4
+	dka_panel_penB = 5
+	dka_panelfill1_penB = 6
+	dka_panelfill2_penB = 7
+	dka_panelfill3_penB = 8
+	dka_panel2fill1_penB = 9
+	dka_panel2fill2_penB = 10
+	dka_panel2fill3_penB = 11
+	dka_topview_penB = 12
+	dka_fan_penB = 13
+	dka_gap_filling_penB = 14
+	dka_grip_penB = 15
+! --------- dk_fills[i][…]
+	dka_handle_fill = 1
+	dka_frame_fill = 2
+	dka_side1_fill = 3
+	dka_side2_fill = 4
+	dka_panel_fill = 5
+	dka_panelfill1_fill = 6
+	dka_panelfill2_fill = 7
+	dka_panelfill3_fill = 8
+	dka_panel2fill1_fill = 9
+	dka_panel2fill2_fill = 10
+	dka_panel2fill3_fill = 11
+	dka_topview_fill = 12
+	dka_fan_fill = 13
+	dka_gap_filling_fill = 14
+	dka_grip_fill = 15
+! --------- dk_materials[i][…]
+	dka_handle_mat = 1
+	dka_plate_mat = 2
+	dka_frame_mat_BS = 3
+	dka_frame_mat_BGS = 4
+	dka_side1_mat_BS = 5
+	dka_side1_mat_BGS = 6
+	dka_side2_mat_BS = 7
+	dka_side2_mat_BGS = 8
+	dka_fan_mat_BS = 9
+	dka_fan_mat_BGS = 10
+	dka_panel_mat_BS = 11
+	dka_panel_mat_BGS = 12
+	dka_panelfill1_mat_BS = 13
+	dka_panelfill1_mat_BGS = 14
+	dka_panelfill2_mat_BS = 15
+	dka_panelfill2_mat_BGS = 16
+	dka_panelfill3_mat_BS = 17
+	dka_panelfill3_mat_BGS = 18
+	dka_panel2_mat_BS = 19
+	dka_panel2_mat_BGS = 20
+	dka_panel2fill1_mat_BS = 21
+	dka_panel2fill1_mat_BGS = 22
+	dka_panel2fill2_mat_BS = 23
+	dka_panel2fill2_mat_BGS = 24
+	dka_panel2fill3_mat_BS = 25
+	dka_panel2fill3_mat_BGS = 26
+	dka_panel_bandings_mat = 27
+	dka_panel2_bandings_mat = 28
+	dka_hinge_mat = 29
+	dka_closer_mat = 30
+	dka_automation_mat = 31
+	dka_grip_mat_BS1 = 32
+	dka_grip_mat_BS2 = 33
+	dka_grip_mat_BGS1 = 34
+	dka_grip_mat_BGS2 = 35
+
+! ----------------------------------- INDEX NAMES OF ARRAY PARAMETERS (end)
+
+! ----------------------------------- MULTILINGUAL TEXT [DORMAKABA OGRO] (start)
+
+! --------- RESET array variables
+	DIM uiTXT[]
+
+! --------- User Interface - UI_xxxFIELD text (Deutsch)
+	IF language = 1 THEN
+		uiTXT[1] = "Türgriffe + Türschilder"
+		uiTXT[2] = "Griffgarnitur Gangflügel"
+		uiTXT[3] = "Griffgarnitur Standflügel"
+		uiTXT[4] = "Griffgarnitur Bandseite"
+		uiTXT[5] = "Griffgarnitur Bandgegenseite"
+		uiTXT[6] = "BESCHLÄGE - "
+		uiTXT[7] = " ... "
+		ENDIF
+! --------- User Interface - UI_xxxFIELD text (Englisch)
+	IF language = 4 THEN
+		uiTXT[1] = "handles + plates"
+		uiTXT[2] = "handles + plates of active door leaf"
+		uiTXT[3] = "handles + plates of inactive door leaf"
+		uiTXT[4] = "handles + plates on swing side"
+		uiTXT[5] = "handles + plates on opposite swing side"
+		uiTXT[6] = "FIXTURES - "
+		uiTXT[7] = " ... "
+		ENDIF
+
+! ----------------------------------- MULTILINGUAL TEXT (end)
+
+
+! »»» Index des gewählten Produktes
+selectedBS=0  : selectedPlateBS=0  : selectedClsrBS=0
+selectedBGS=0 : selectedPlateBGS=0 : selectedClsrBGS=0
+selectedSF=0  : selectedPlateSF=0  : selectedClsrSF=0
+
+! »»» Konstruktionstyp ermitteln
+
+! bs_panel_type "VB", "RF", "RP"
+! bs_panel_material "HO", "ST", "AL", "GL", "KU"
+
+! gs_frame_type "EZ", "UZ", "FB", "RR", "BZ", "SR"
+! bs_frame_material "ST", "HO", "AL", "KU"
+
+! bs_panel_type
+! dk_panel_segments, dk_panel_segments2
+! leafFrWidthLeft, leafFrWidthLeft2
+
+
+! »»» Falzart
+! IF bs_leaf_oversize < tlr OR bs_leaf_overhang < tlr THEN stumpf = 1 ELSE stumpf = 0
+! IF bs_door_leafs > 1 AND ( dk_panel_folding_nmbr > 0 AND dk_panel_folding_dimensions[1][1] > 0 ) THEN
+! 	mittelfalz = 1
+! 	mittelfalzBezug = dk_panel_folding_dimensions[dk_panel_folding_nmbr][1]
+! 	ELSE
+! 	mittelfalz = 0
+! 	mittelfalzBezug = 0
+! 	ENDIF
+
+! »»» Konstruktionstyp
+IF	( bs_panel_type = "RP" ) OR \
+	( gs_han_pos < 0.055 OR ( dk_panel_segments > 0 AND leafFrWidthLeft < gs_han_pos + 0.03 + 0.01 )) OR \
+	( bs_door_leafs > 1  AND gs_handle_type3 # "-" AND (gs_han_pos2 < 0.055 OR (dk_panel_segments2 > 0 AND leafFrWidthLeft2 < gs_han_pos2 + 0.03 + 0.01 ))) THEN
+	doorTYPE = 1  ! Profiltür
+	ELSE
+	doorTYPE = 0  ! Vollblattür bzw. "genug" Platz für "normales" Schloss in Randprofil
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ environment ]
+
+! »»» current UI page?
+IF macro_runtype=256 THEN curInfo = 1+2+4 ELSE curInfo = 0
+
+! ------------------------------------------------------------------------[ settings / locals ]
+
+!  UI_page_type =  -2 > sub of ROOT, -1 > sub of last, 1 > sub of first macro page
+seiten=0
+
+! »»» UI-Seiten nach Level of Information
+! LOI 100-300
+IF dk_LOI<4 THEN
+	IF BITTEST(bs_acs_handles,0) AND BITTEST(bs_acs_handles,1) AND BITTEST(bs_acs_handles,2) AND \ 
+		BITTEST(bs_acs_handles,3) AND BITTEST(bs_acs_handles,4) AND BITTEST(bs_acs_handles,5) AND \ 
+		BITTEST(bs_acs_handles,6) AND BITTEST(bs_acs_handles,7) AND BITTEST(bs_acs_handles,8) THEN
+		i = 0 ! Steuerung Titelbeginn wegen Subseiten
+		ELSE
+		seiten = seiten + 1
+		UI_page_names[seiten] = uiTXT[6] + uiTXT[1]  ! "BESCHLÄGE - Türgriffe und Türschilder"
+		UI_page_icons[seiten] = "dk_title_handleHF 18x18.png"
+		UI_page_type[seiten]  = 1
+		UI_page_subs[seiten] = 1000
+		IF macro_runtype=128 AND UIpage_number=1 THEN curInfo = 1+2+4
+		i = 1
+		ENDIF
+	ENDIF
+
+! LOI 400
+IF dk_LOI=4 THEN
+	! BS / BGS
+	IF BITTEST(bs_acs_handles,0) AND BITTEST(bs_acs_handles,1) AND \ 
+		BITTEST(bs_acs_handles,3) AND BITTEST(bs_acs_handles,4) AND \ 
+		BITTEST(bs_acs_handles,6) AND BITTEST(bs_acs_handles,7) THEN
+		i = 0 ! Steuerung Titelbeginn wegen Subseiten
+		ELSE
+		seiten = seiten + 1
+		UI_page_names[seiten] = uiTXT[6] + uiTXT[2]  ! "BESCHLÄGE - Griffgarnitur Gangflügel"
+		UI_page_icons[seiten] = "dk_title_handleHF 18x18.png"
+		UI_page_type[seiten]  = -1
+		UI_page_subs[seiten] = 1100
+		IF macro_runtype=128 AND UIpage_number=1 THEN curInfo = 1+2
+		i = 1
+		ENDIF
+
+	! Standflügel
+	IF bs_door_leafs > 1 AND NOT( BITTEST(bs_acs_handles,2) AND BITTEST(bs_acs_handles,5) AND BITTEST(bs_acs_handles,8) ) THEN
+		seiten = seiten + 1
+		UI_page_names[seiten] = uiTXT[6+i] + uiTXT[3]  ! " ... Griffgarnitur Standflügel"
+		UI_page_icons[seiten] = "dk_title_handleSF 18x18.png"
+		UI_page_type[seiten]  = 1
+		UI_page_subs[seiten] = 1200
+		IF macro_runtype=128 AND UIpage_number=2 THEN curInfo = 4
+		i = 1
+		ENDIF
+
+	ENDIF
+
+! LOI 500
+IF dk_LOI>4 THEN
+	! BS
+	IF BITTEST(bs_acs_handles,0) AND BITTEST(bs_acs_handles,3) AND BITTEST(bs_acs_handles,6) THEN
+		i = 0 ! Steuerung Titelbeginn wegen Subseiten
+		ELSE
+		seiten = seiten + 1
+		UI_page_names[seiten] = uiTXT[6] + uiTXT[4]  ! "BESCHLÄGE - Griffgarnitur Bandseite"
+		UI_page_icons[seiten] = "dk_title_handleBS 18x18.png"
+		UI_page_type[seiten]  = -1
+		UI_page_subs[seiten] = 1300
+		IF macro_runtype=128 AND UIpage_number=1 THEN curInfo = 1
+		i = 1
+		ENDIF
+
+	! BGS
+	IF NOT( BITTEST(bs_acs_handles,1) AND BITTEST(bs_acs_handles,4) AND BITTEST(bs_acs_handles,7) ) THEN
+		seiten = seiten + 1
+		UI_page_names[seiten] = uiTXT[6 + i] + uiTXT[5]  ! " ... Griffgarnitur Bandgegenseite"
+		UI_page_icons[seiten] = "dk_title_handleBGS 18x18.png"
+		UI_page_type[seiten]  = 1
+		UI_page_subs[seiten] = 1400
+		IF macro_runtype=128 AND UIpage_number=2 THEN curInfo = 2
+		i = 1
+		ENDIF
+
+	! Standflügel
+	if bs_door_leafs > 1 AND NOT( BITTEST(bs_acs_handles,2) AND BITTEST(bs_acs_handles,5) AND BITTEST(bs_acs_handles,8) ) THEN
+		seiten = seiten + 1
+		UI_page_names[seiten] = uiTXT[6 + i] + uiTXT[3]  ! " ... Griffgarnitur Standflügel"
+		UI_page_icons[seiten] = "dk_title_handleSF 18x18.png"
+		UI_page_type[seiten]  = 1
+		UI_page_subs[seiten] = 1500
+		IF macro_runtype=128 AND UIpage_number=3 THEN curInfo = 4
+		i = 1
+		ENDIF
+
+	ENDIF
+
+! Makroende, wenn nur Voranfrage
+IF macro_runtype = 1   THEN END UI_page_type   ! (0) »»» return UI page hirarchy
+IF macro_runtype = 2   THEN END UI_page_names  ! (1) »»» return UI page names
+IF macro_runtype = 4   THEN END UI_page_icons  ! (2) »»» return UI page picts
+
+
+! »»» Fehlermeldungen
+DIM errorQ[]
+errorI = 0
+errorQ[1] = ""
+
+
+! =============================================================================
+! Modelle BANDSEITE
+! =============================================================================
+
+selectedClsrBS = 1+(STRSTR("-  PZ RZ OZ CH BB WCKWCS", bs_closure1)-1)/3
+
+! ----------------------------------------------------------------- GRIFFE
+
+DIM  UIhandleModelPic[], UIhandleModelText[], UIhandleModelVal[]
+j=1 : UIhandleModelPic[j] = 104 : UIhandleModelText[j] = commonKey : UIhandleModelVal[j] = "-"
+
+FOR i=1 TO VARDIM1(produkte)
+
+	IF zuordnung[i][dki_Typ] < 10 THEN
+
+		sts=0  ! Wenn sts wahr, dann Fehler
+
+		IF bs_handle_model = produkte[i][dki_Bezeichnung] THEN selectedBS = i ! = gewählter Griff
+		
+		IF bs_handle_product_line # produkte[i][dki_Serie] THEN sts=BITSET(sts, 0) ! Geeignet für den Türtyp?
+
+		IF doortype=0 AND zuordnung[i][dki_BitmapVB] < 1 THEN sts=BITSET(sts, 1)
+		IF doorTYPE=1 AND zuordnung[i][dki_BitmapPT] < 1 THEN sts=BITSET(sts, 1)
+
+		! IF gs_handle_type = "-" THEN sts=BITSET(sts, 0)
+		IF gs_handle_type = "DR" AND zuordnung[i][dki_Typ] # 1 THEN sts=BITSET(sts, 0)
+		IF gs_handle_type = "KF" AND zuordnung[i][dki_Typ] # 2 THEN sts=BITSET(sts, 0)
+		IF gs_handle_type = "KD" AND zuordnung[i][dki_Typ] # 3 THEN sts=BITSET(sts, 0)
+
+		IF NOT(kategorien[i][dki_Brandschutz]) AND bs_demand_FireResistance = 1 THEN sts=BITSET(sts, 2)
+		IF NOT(kategorien[i][dki_Rauchschutz]) AND bs_demand_SmokeResistance = 1 THEN sts=BITSET(sts, 2)
+		!IF NOT(kategorien[i][dki_FluchtRettung])   AND bs_demand_EscapeRoute = 1 THEN sts=BITSET(sts, 3)
+		IF NOT(kategorien[i][dki_Hygiene]) AND NOT(bs_quality_Hygiene = noKey OR bs_quality_Hygiene = naKey )THEN sts=BITSET(sts, 4)
+		! IF NOT(eigenschaften[i][dki_Gebrauchskategorie]) AND NOT( = noKey OR = naKey ) THEN sts=BITSET(sts, 4)
+		IF NOT(kategorien[i][dki_Dauerhaftigkeit]) AND NOT(bs_quality_MechanicalLoad = noKey OR bs_quality_MechanicalLoad = naKey ) THEN sts=BITSET(sts, 4)
+		! IF NOT(eigenschaften[i][dki_Feuer]) AND bs_quality_FireResistanceRating = "" THEN sts=BITSET(sts, 4)
+		! IF NOT(eigenschaften[i][dki_Sicherheitsklasse])  AND NOT( = noKey OR = naKey )THEN sts=BITSET(sts, 4)
+		IF NOT(eigenschaften[i][dki_Korrosion])	AND NOT(bs_quality_CorrosionPrevention = noKey OR bs_quality_CorrosionPrevention = naKey ) THEN sts=BITSET(sts, 4)
+		IF NOT(eigenschaften[i][dki_Brailleschrift]) AND bs_handle_braille # "" THEN sts=BITSET(sts, 5)
+
+		IF sts=0 OR selectedBS=i THEN
+			j=j+1
+			UIhandleModelVal[j] = produkte[i][dki_Bezeichnung]
+
+			icon = zuordnung[i][dki_BitmapVB]
+			IF (doorTYPE=1 AND zuordnung[i][dki_BitmapPT]) OR icon<1 THEN icon = zuordnung[i][dki_BitmapPT]
+			UIhandleModelPic[j] = icon
+
+			IF sts THEN
+				UIhandleModelText[j] = "[ " + produkte[i][dki_Serie] + " " + produkte[i][dki_Bezeichnung] + " ]"
+				IF BITTEST(curInfo,0) AND gs_handle_type # "-" THEN  ! Fehlermeldung setzen
+					GOSUB "debuginfo"
+					errorI = errorI+1 : errorQ[errorI] = " passt nicht zu Anforderungen."+txt
+					IF gs_handle_type # "DR" THEN txt = "Knauf" ELSE txt = "Griff"
+					errorQ[errorI] = "BS: " + txt + errorQ[errorI]
+					ENDIF
+				ELSE
+				UIhandleModelText[j] = produkte[i][dki_Serie] + " " + produkte[i][dki_Bezeichnung]
+				ENDIF
+
+			ENDIF
+
+		ENDIF
+
+	NEXT i
+
+IF j<2 AND gs_handle_type # "-" THEN
+	IF gs_handle_type # "DR" AND gs_handle_type # "-" THEN txt = "Knauf" ELSE txt = "Griff"
+	errorI = errorI+1 : errorQ[errorI] = "BS: Kein " + txt + " der Serie passt zu den Anforderungen."
+	ENDIF
+
+IF bs_handle_model = "-" AND gs_handle_type # "-" AND BITTEST(curInfo,0) THEN  ! Fehlermeldung setzen
+	IF gs_handle_type # "DR" THEN txt = "Knauf" ELSE txt = "Griff"
+	errorI = errorI+1 : errorQ[errorI] = "BS: " + txt + " ist Standardmodell."
+	ENDIF
+
+
+! ----------------------------------------------------------------- ABDECKUNGEN
+
+DIM  UIplateModelPic[], UIplateModelText[], UIplateModelVal[]
+IF gs_handle_type = "-" AND bs_closure1 = "-" THEN
+	k=1 : UIplateModelPic[k] = 7 : UIplateModelText[k] = "kein Schild" : UIplateModelVal[k] = "-"
+	ELSE
+	k=0
+	ENDIF
+
+FOR i=1 TO VARDIM1(produkte)
+
+   IF zuordnung[i][dki_Typ] > 9 THEN
+
+		sts=0  ! Wenn sts wahr, dann Produkt zulässig
+
+		IF doorTYPE=1 THEN
+			! »»» Schild für Profiltür geeignet?
+			FOR m=1 TO VARDIM2(schildPT)
+				IF schildPT[i][m] THEN sts=BITSET(sts,1)
+				NEXT m
+			ELSE
+			! »»» Schild für Vollblatttür geeignet?
+			FOR m=1 TO VARDIM2(schildVB)
+				IF schildVB[i][m] THEN sts=BITSET(sts,0)
+				NEXT m
+			ENDIF
+
+		! »»» Plausibilitäten: Sonderschilder zulässig?
+		IF produkte[i][dki_Bezeichnung] = "ZL 65xx Forstner" AND bs_handle_model <> "8960 Forstner" THEN sts=0
+		IF produkte[i][dki_Bezeichnung] = "ZL 65xx Tchoban"  AND bs_handle_model <> "8920 Tchoban"  THEN sts=0
+
+		! »»» Plausibilitäten: WC-Schilder?
+		IF (bs_closure1="WCS" OR bs_closure1="WCK") AND STRSTR(produkte[i][dki_Bezeichnung],"6612")	> 0 THEN sts=0
+		! IF (STRSTR(produkte[i][dki_Bezeichnung],"7122") > 0 OR STRSTR(produkte[i][dki_Bezeichnung],"7123") > 0) AND NOT(bs_closure1="WCS" OR bs_closure1="WCK") THEN sts=0
+		IF STRSTR(produkte[i][dki_Bezeichnung],"7122") > 0 AND NOT(bs_closure1="WCK" OR bs_closure1="WCS") THEN sts=0
+		IF STRSTR(produkte[i][dki_Bezeichnung],"7123") > 0 AND NOT(bs_closure1="WCK" OR bs_closure1="WCS") THEN sts=0
+
+		! »»» Plausibilitäten: Einzelrosetten zulässig?
+		IF STRSTR("6612|7122|7123|6679|6676",produkte[i][dki_Bezeichnung]) > 0 AND NOT(gs_handle_type = "-" OR BITTEST(bs_acs_handles,3)) THEN sts=0
+		IF STRSTR("650x|662x|661x",produkte[i][dki_Bezeichnung]) > 0 AND NOT(bs_closure1 = "-") THEN sts=0
+
+		! »»» Abdeckungen in Abhängigkeit des Access Control Systems
+	    IF BITTEST(bs_acs_handles,3) AND STRSTR("6612|7122|7123|6679|6676",produkte[i][dki_Bezeichnung]) < 1 THEN sts = 0
+
+		! »»» In Auswahlliste aufnehmen
+		IF sts THEN
+
+			IF bs_doorplate1 = produkte[i][dki_Bezeichnung] THEN selectedPlateBS = i ! = gewählte Abdeckung
+
+			k=k+1
+			UIplateModelVal[k]  = produkte[i][dki_Bezeichnung]
+			UIplateModelText[k] = "OGRO " + produkte[i][dki_Bezeichnung]
+
+			icon = zuordnung[i][dki_BitmapVB]
+			IF doorTYPE=1 OR icon<1 THEN icon = zuordnung[i][dki_BitmapPT]
+			UIplateModelPic[k] = icon + 14*(8-selectedClsrBS)
+			ENDIF				
+
+		ENDIF
+
+	NEXT i
+
+! ----------------------------------------------------------------- ATTRIBUTE
+
+! »»» Materialien
+
+	DIM UIhandleMatPic[], UIhandleMatText[], UIhandleMatVal[]
+	DIM UIplateMatPic[], UIplateMatText[], UIplateMatVal[]
+	j=1
+	UIhandleMatPic[j] = 0 : UIhandleMatText[j] = naKey : UIhandleMatVal[j] = " "
+	UIplateMatPic[j] = 0  : UIplateMatText[j] = naKey  : UIplateMatVal[j] = " "
+	IF selectedBS>0 THEN
+		IF GriffMaterial[selectedBS][dki_ER] OR GriffMaterial[selectedBS][dki_ERgebuerstet] OR GriffMaterial[selectedBS][dki_ERpoliert] THEN
+			j=j+1
+			UIhandleMatPic[j] = 3 : UIhandleMatText[j] = "Edelstahl" : UIhandleMatVal[j] = "ES"
+			UIplateMatPic[j] = 3  : UIplateMatText[j] = "Edelstahl"  : UIplateMatVal[j] = "ES"
+			ENDIF
+		IF GriffMaterial[selectedBS][dki_ALgebuerstet] THEN
+			j=j+1
+			UIhandleMatPic[j] = 4 : UIhandleMatText[j] = "Aluminium" : UIhandleMatVal[j] = "AL"
+			UIplateMatPic[j] = 4  : UIplateMatText[j] = "Aluminium"  : UIplateMatVal[j] = "AL"
+			ENDIF
+		ENDIF
+
+! »»» Oberflächen
+
+	DIM UIhandleSurfPic[], UIhandleSurfText[], UIhandleSurfVal[]
+	DIM UIplateSurfPic[],  UIplateSurfText[],  UIplateSurfVal[]
+	j=1 : k=1
+	UIhandleSurfPic[j] = 0 : UIhandleSurfText[j] = naKey : UIhandleSurfVal[j] = " "
+	UIplateSurfPic[k] = 0  : UIplateSurfText[k] = naKey  : UIplateSurfVal[k] = " "
+	IF selectedBS>0 THEN
+		IF GriffMaterial[selectedBS][dki_ER] THEN
+			j=j+1 : UIhandleSurfPic[j] = 2 : UIhandleSurfText[j] = "unbehandelt" : UIhandleSurfVal[j] = "-"
+			k=k+1 : UIplateSurfPic[k] = 2  : UIplateSurfText[k] = "unbehandelt" :  UIplateSurfVal[k] = "-"
+			ENDIF
+		IF GriffMaterial[selectedBS][dki_ALgebuerstet] OR GriffMaterial[selectedBS][dki_ERgebuerstet] THEN
+			j=j+1 : UIhandleSurfPic[j] = 3 : UIhandleSurfText[j] = "Gebürstet" : UIhandleSurfVal[j] = "B"
+			k=k+1 : UIplateSurfPic[k] = 3  : UIplateSurfText[k] = "Gebürstet" :  UIplateSurfVal[k] = "B"
+			ENDIF
+		IF GriffMaterial[selectedBS][dki_ERpoliert] AND (bs_handle_material="ES" OR bs_handle_material=" ") THEN
+			j=j+1 : UIhandleSurfPic[j] = 5 : UIhandleSurfText[j] = "Poliert" : UIhandleSurfVal[j] = "P"
+			ENDIF
+		IF GriffMaterial[selectedBS][dki_ERpoliert] AND (bs_doorplate_material1="ES" OR bs_doorplate_material1=" ") THEN
+			k=k+1 : UIplateSurfPic[k] = 5  : UIplateSurfText[k] = "Poliert" :  UIplateSurfVal[k] = "P"
+			ENDIF
+		ENDIF
+
+
+! =============================================================================
+! Modelle GRIFFE BANDGEGENSEITE
+! =============================================================================
+
+selectedClsrBGS = 1+(STRSTR("-  PZ RZ OZ CH BB WCKWCS", bs_closure2)-1)/3
+
+! ----------------------------------------------------------------- GRIFFE
+
+DIM  UIhandleModelPic2[], UIhandleModelText2[], UIhandleModelVal2[]
+j=1 : UIhandleModelPic2[j] = 104 : UIhandleModelText2[j] = commonKey : UIhandleModelVal2[j] = "-"
+
+FOR i=1 TO VARDIM1(produkte)
+
+	IF zuordnung[i][dki_Typ] < 10 THEN
+
+		sts=0  ! Wenn sts wahr, dann Fehler
+
+		IF bs_handle_model2 = produkte[i][dki_Bezeichnung] THEN selectedBGS = i ! = gewählter Griff
+		
+		IF bs_handle_product_line # produkte[i][dki_Serie] THEN sts=BITSET(sts,0)
+
+		IF doorTYPE=0 AND zuordnung[i][dki_BitmapVB] < 1 THEN sts=BITSET(sts,1)
+		IF doorTYPE=1 AND zuordnung[i][dki_BitmapPT] < 1 THEN sts=BITSET(sts,1)
+		IF NOT(kategorien[i][dki_Verkroepft]) AND doorTYPE=1 THEN sts=BITSET(sts,1)
+
+		! IF gs_handle_type2 = "-" THEN sts=BITSET(sts,0)
+		IF gs_handle_type2 = "DR" AND zuordnung[i][dki_Typ] # 1 THEN sts=BITSET(sts,0)
+		IF gs_handle_type2 = "KF" AND zuordnung[i][dki_Typ] # 2 THEN sts=BITSET(sts,0)
+		IF gs_handle_type2 = "KD" AND zuordnung[i][dki_Typ] # 3 THEN sts=BITSET(sts,0)
+
+		IF NOT(kategorien[i][dki_Brandschutz]) AND bs_demand_FireResistance = 1 THEN sts=BITSET(sts,2)
+		IF NOT(kategorien[i][dki_Rauchschutz]) AND bs_demand_SmokeResistance = 1 THEN sts=BITSET(sts,2)
+		IF NOT(kategorien[i][dki_FluchtRettung]) AND bs_demand_EscapeRoute = 1 THEN sts=BITSET(sts,3)
+		IF NOT(kategorien[i][dki_Hygiene]) AND NOT(bs_quality_Hygiene = noKey OR bs_quality_Hygiene = naKey )THEN sts=BITSET(sts,4)
+		! IF NOT(eigenschaften[i][dki_Gebrauchskategorie]) AND NOT( = noKey OR		 = naKey ) THEN sts=BITSET(sts,4)
+		IF NOT(kategorien[i][dki_Dauerhaftigkeit]) AND NOT(bs_quality_MechanicalLoad = noKey OR bs_quality_MechanicalLoad = naKey ) THEN sts=BITSET(sts,4)
+		! IF NOT(eigenschaften[i][dki_Feuer]) AND bs_quality_FireResistanceRating = "" THEN sts=BITSET(sts,4)
+		! IF NOT(eigenschaften[i][dki_Sicherheitsklasse])  AND NOT( = noKey OR		 = naKey )THEN sts=BITSET(sts,4)
+		IF NOT(eigenschaften[i][dki_Korrosion])	AND NOT(bs_quality_CorrosionPrevention = noKey OR bs_quality_CorrosionPrevention = naKey ) THEN sts=BITSET(sts,4)
+		IF NOT(eigenschaften[i][dki_Brailleschrift]) AND bs_handle_braille2 # "" THEN sts=BITSET(sts, 5)
+
+		IF sts=0 OR selectedBGS=i THEN
+			j=j+1
+			UIhandleModelVal2[j] = produkte[i][dki_Bezeichnung]
+
+			k = zuordnung[i][dki_BitmapVB]
+			IF doorTYPE=1 OR k<1 THEN k = zuordnung[i][dki_BitmapPT]
+			UIhandleModelPic2[j] = k
+
+			IF sts THEN
+				UIhandleModelText2[j] = "[ " + produkte[i][dki_Serie] + " " + produkte[i][dki_Bezeichnung] + " ]"
+				IF BITTEST(curInfo,1) AND gs_handle_type2 # "-" THEN  ! Fehlermeldung setzen
+					GOSUB "debuginfo"
+					errorI = errorI+1 : errorQ[errorI] = " passt nicht zu Anforderungen."+txt
+					IF gs_handle_type2 # "DR" THEN txt = "Knauf" ELSE txt = "Griff"
+					errorQ[errorI] = "BGS: " + txt + errorQ[errorI]
+					ENDIF
+				ELSE
+				UIhandleModelText2[j] = produkte[i][dki_Serie] + " " + produkte[i][dki_Bezeichnung]
+			   ENDIF
+
+			ENDIF
+		
+		ENDIF
+
+	NEXT i
+
+IF j<2 AND gs_handle_type2 # "-" THEN
+	IF gs_handle_type2 # "DR" THEN txt = "Knauf" ELSE txt = "Griff"
+	errorI = errorI+1 : errorQ[errorI] = "BGS: Kein " + txt + " der Serie passt zu den Anforderungen."
+	ENDIF
+
+IF bs_handle_model2 = "-" AND gs_handle_type2 # "-" AND BITTEST(curInfo,1) THEN  ! Fehlermeldung setzen
+	IF gs_handle_type2 # "DR" THEN txt = "Knauf" ELSE txt = "Griff"
+	errorI = errorI+1 : errorQ[errorI] = "BGS: " + txt + " ist Standardmodell."
+	ENDIF
+
+! ----------------------------------------------------------------- ABDECKUNGEN
+
+DIM  UIplateModelPic2[], UIplateModelText2[], UIplateModelVal2[]
+IF gs_handle_type2 = "-" THEN
+	k=1 : UIplateModelPic2[k] = 7 : UIplateModelText2[k] = "kein Schild" : UIplateModelVal2[k] = "-"
+	ELSE
+	k=0
+	ENDIF
+
+FOR i=1 TO VARDIM1(produkte)
+
+   IF zuordnung[i][dki_Typ] > 9 THEN
+
+		sts=0  ! Wenn sts wahr, dann Produkt zulässig
+
+		IF doorTYPE=1 THEN
+			! »»» Schild für Profiltür geeignet?
+			FOR m=1 TO VARDIM2(schildPT)
+				IF schildPT[i][m] THEN sts=BITSET(sts,1)
+				NEXT m
+			ELSE
+			! »»» Schild für Vollblatttür geeignet?
+			FOR m=1 TO VARDIM2(schildVB)
+				IF schildVB[i][m] THEN sts=BITSET(sts,0)
+				NEXT m
+			ENDIF
+
+		! »»» Plausibilitäten: Sonderschilder zulässig?
+		IF produkte[i][dki_Bezeichnung] = "ZL 65xx Forstner" AND bs_handle_model2 <> "8960 Forstner" THEN sts=0
+		IF produkte[i][dki_Bezeichnung] = "ZL 65xx Tchoban"  AND bs_handle_model2 <> "8920 Tchoban"  THEN sts=0
+
+		! »»» Plausibilitäten: WC-Schilder?
+		IF (bs_closure2="WCS" OR bs_closure2="WCK") AND STRSTR(produkte[i][dki_Bezeichnung],"6612")	> 0 THEN sts=0
+		! IF (STRSTR(produkte[i][dki_Bezeichnung],"7122") > 0 OR STRSTR(produkte[i][dki_Bezeichnung],"7123") > 0) AND NOT(bs_closure2="WCS" OR bs_closure2="WCK") THEN sts=0
+		IF STRSTR(produkte[i][dki_Bezeichnung],"7122") > 0 AND NOT(bs_closure2="WCK" OR bs_closure2="WCS") THEN sts=0
+		IF STRSTR(produkte[i][dki_Bezeichnung],"7123") > 0 AND NOT(bs_closure2="WCK" OR bs_closure2="WCS") THEN sts=0
+
+		! »»» Plausibilitäten: Einzelrosetten zulässig?
+		IF STRSTR("6612|7122|7123|6679|6676",produkte[i][dki_Bezeichnung]) > 0 AND NOT(gs_handle_type2 = "-" OR BITTEST(bs_acs_handles,4)) THEN sts=0
+		IF STRSTR("650x|662x|661x",produkte[i][dki_Bezeichnung]) > 0 AND NOT(bs_closure2 = "-") THEN sts=0
+
+		! »»» Abdeckungen in Abhängigkeit des Access Control Systems
+	    IF BITTEST(bs_acs_handles,4) AND STRSTR("6612|7122|7123|6679|6676",produkte[i][dki_Bezeichnung]) < 1 THEN sts = 0
+
+		! »»» In Auswahlliste aufnehmen
+		IF sts THEN
+
+			IF bs_doorplate2 = produkte[i][dki_Bezeichnung] THEN selectedPlateBGS = i ! = gewählte Abdeckung
+
+			k=k+1
+			UIplateModelVal2[k]  = produkte[i][dki_Bezeichnung]
+			UIplateModelText2[k] = "OGRO " + produkte[i][dki_Bezeichnung]
+
+			icon = zuordnung[i][dki_BitmapVB]
+			IF doorTYPE=1 OR icon<1 THEN icon = zuordnung[i][dki_BitmapPT]
+			UIplateModelPic2[k] = icon + 14*(8-selectedClsrBGS)
+			ENDIF		
+
+		ENDIF
+
+	NEXT i
+
+! ----------------------------------------------------------------- ATTRIBUTE
+
+! »»» Materialien
+
+	DIM UIhandleMatPic2[], UIhandleMatText2[], UIhandleMatVal2[]
+	DIM UIplateMatPic2[],  UIplateMatText2[],  UIplateMatVal2[]
+	j=1
+	UIhandleMatPic2[j] = 0 : UIhandleMatText2[j] = naKey : UIhandleMatVal2[j] = " "
+	UIplateMatPic2[j] = 0  : UIplateMatText2[j] = naKey  : UIplateMatVal2[j] = " "
+	IF selectedBGS>0 THEN
+		IF GriffMaterial[selectedBGS][dki_ER] OR GriffMaterial[selectedBGS][dki_ERgebuerstet] OR GriffMaterial[selectedBGS][dki_ERpoliert] THEN
+			j=j+1
+			UIhandleMatPic2[j] = 3 : UIhandleMatText2[j] = "Edelstahl" : UIhandleMatVal2[j] = "ES"
+			UIplateMatPic2[j] = 3  : UIplateMatText2[j] = "Edelstahl"  : UIplateMatVal2[j] = "ES"
+			ENDIF
+		IF GriffMaterial[selectedBGS][dki_ALgebuerstet] THEN
+			j=j+1
+			UIhandleMatPic2[j] = 4 : UIhandleMatText2[j] = "Aluminium" : UIhandleMatVal2[j] = "AL"
+			UIplateMatPic2[j] = 4  : UIplateMatText2[j] = "Aluminium"  : UIplateMatVal2[j] = "AL"
+			ENDIF
+		ENDIF
+
+! »»» Oberflächen
+
+	DIM UIhandleSurfPic2[], UIhandleSurfText2[], UIhandleSurfVal2[]
+	DIM UIplateSurfPic2[],  UIplateSurfText2[],  UIplateSurfVal2[]
+	j=1 : k=1
+	UIhandleSurfPic2[j] = 0 : UIhandleSurfText2[j] = naKey : UIhandleSurfVal2[j] = " "
+	UIplateSurfPic2[k] = 0  : UIplateSurfText2[k] = naKey : UIplateSurfVal2[k] = " "
+	IF selectedBGS>0 THEN
+		IF GriffMaterial[selectedBGS][dki_ER] THEN
+			j=j+1 : UIhandleSurfPic2[j] = 2 : UIhandleSurfText2[j] = "unbehandelt" : UIhandleSurfVal2[j] = "-"
+			k=k+1 : UIplateSurfPic2[k] = 2  : UIplateSurfText2[k] = "unbehandelt"  : UIplateSurfVal2[k] = "-"
+			ENDIF
+		IF GriffMaterial[selectedBGS][dki_ALgebuerstet] OR GriffMaterial[selectedBGS][dki_ERgebuerstet] THEN
+			j=j+1 : UIhandleSurfPic2[j] = 3 : UIhandleSurfText2[j] = "Gebürstet" : UIhandleSurfVal2[j] = "B"
+			k=k+1 : UIplateSurfPic2[k] = 3  : UIplateSurfText2[k] = "Gebürstet"  : UIplateSurfVal2[k] = "B"
+			ENDIF
+		IF GriffMaterial[selectedBGS][dki_ERpoliert] AND (bs_handle_material2="ES" OR bs_handle_material2=" ") THEN
+			j=j+1 : UIhandleSurfPic2[j] = 5 : UIhandleSurfText2[j] = "Poliert" : UIhandleSurfVal2[j] = "P"
+			ENDIF
+		IF GriffMaterial[selectedBGS][dki_ERpoliert] AND (bs_doorplate_material2="ES" OR bs_doorplate_material2=" ") THEN
+			k=k+1 : UIplateSurfPic2[k] = 5  : UIplateSurfText2[k] = "Poliert" :  UIplateSurfVal2[k] = "P"
+			ENDIF
+		ENDIF
+
+
+! =============================================================================
+! Modelle GRIFFE STANDFLÜGEL
+! =============================================================================
+
+selectedClsrSF = 1+(STRSTR("-  PZ RZ OZ CH BB WCKWCS", bs_closure3)-1)/3
+
+! ----------------------------------------------------------------- GRIFFE
+
+DIM  UIhandleModelPic3[], UIhandleModelText3[], UIhandleModelVal3[]
+j=1 : UIhandleModelPic3[j] = 104 : UIhandleModelText3[j] = commonKey : UIhandleModelVal3[j] = "-"
+
+FOR i=1 TO VARDIM1(produkte)*(bs_door_leafs > 1)
+
+	IF zuordnung[i][dki_Typ] < 10 THEN
+
+		sts=0  ! Wenn sts wahr, dann Fehler
+
+		IF bs_handle_model3 = produkte[i][dki_Bezeichnung] THEN selectedSF = i ! = gewählter Griff
+
+		IF bs_handle_product_line # produkte[i][dki_Serie] THEN sts=BITSET(sts,0)
+
+		IF NOT(eigenschaften[i][dki_Standfluegel]) THEN sts=BITSET(sts,4)
+
+		IF doorTYPE=0 AND zuordnung[i][dki_BitmapVB] = 0 THEN sts=BITSET(sts,1)
+		IF doorTYPE=1 AND zuordnung[i][dki_BitmapPT] = 0 THEN sts=BITSET(sts,1)
+		IF NOT(kategorien[i][dki_Verkroepft]) AND doorTYPE=1 AND NOT(gs_handle_side3) THEN sts=BITSET(sts,1)
+
+		! IF gs_handle_type3 = "-" THEN sts=BITSET(sts,0)
+		IF gs_handle_type3 = "DR" AND zuordnung[i][dki_Typ] # 1 THEN sts=BITSET(sts,0)
+		IF gs_handle_type3 = "KF" AND zuordnung[i][dki_Typ] # 2 THEN sts=BITSET(sts,0)
+		IF gs_handle_type3 = "KD" AND zuordnung[i][dki_Typ] # 3 THEN sts=BITSET(sts,0)
+
+		IF NOT(kategorien[i][dki_Brandschutz])	 AND bs_demand_FireResistance = 1 THEN sts=BITSET(sts,2)
+		IF NOT(kategorien[i][dki_Rauchschutz])	 AND bs_demand_SmokeResistance = 1 THEN sts=BITSET(sts,2)
+		IF NOT(kategorien[i][dki_FluchtRettung]) AND bs_demand_EscapeRoute = 1 AND NOT(gs_handle_side3) THEN sts=BITSET(sts,3)
+		IF NOT(kategorien[i][dki_Hygiene])		 AND NOT(bs_quality_Hygiene = noKey OR bs_quality_Hygiene  = naKey )THEN sts=BITSET(sts,4)
+		! IF NOT(eigenschaften[i][dki_Gebrauchskategorie]) AND NOT( = noKey OR = naKey ) THEN sts=0
+		IF NOT(kategorien[i][dki_Dauerhaftigkeit]) AND NOT(bs_quality_MechanicalLoad = noKey OR bs_quality_MechanicalLoad = naKey ) THEN sts=BITSET(sts,4)
+		! IF NOT(eigenschaften[i][dki_Feuer]) AND bs_quality_FireResistanceRating = "" THEN sts=0
+		! IF NOT(eigenschaften[i][dki_Sicherheitsklasse])  AND NOT( = noKey OR = naKey )THEN sts=0
+		IF NOT(eigenschaften[i][dki_Korrosion])	AND NOT(bs_quality_CorrosionPrevention = noKey OR bs_quality_CorrosionPrevention = naKey ) THEN sts=BITSET(sts,4)
+
+		IF sts=0 OR selectedSF=i THEN
+			j=j+1
+			UIhandleModelVal3[j] = produkte[i][dki_Bezeichnung]
+
+			k = zuordnung[i][dki_BitmapVB]
+			IF doorTYPE=1 OR k<1 THEN k = zuordnung[i][dki_BitmapPT]
+			UIhandleModelPic3[j] = k
+
+			IF sts THEN
+				UIhandleModelText3[j] = "[ " + produkte[i][dki_Serie] + " " + produkte[i][dki_Bezeichnung] + " ]"
+				IF BITTEST(curInfo,2) AND gs_handle_type3 # "-" THEN  ! Fehlermeldung setzen
+					GOSUB "debuginfo"
+					errorI = errorI+1 : errorQ[errorI] = " passt nicht zu Anforderungen."+txt
+					IF gs_handle_type3 # "DR" THEN txt = "Knauf" ELSE txt = "Griff"
+					errorQ[errorI] = "Standflügel: " + txt + errorQ[errorI]
+					ENDIF
+				ELSE
+				UIhandleModelText3[j] = produkte[i][dki_Serie] + " " + produkte[i][dki_Bezeichnung]
+				ENDIF
+
+			ENDIF
+		
+		ENDIF
+
+	NEXT i
+
+IF j<2 AND gs_handle_type3 # "-" AND bs_door_leafs > 1 THEN
+	IF gs_handle_type3 # "DR" THEN txt = "Knauf" ELSE txt = "Griff"
+	errorI = errorI+1 : errorQ[errorI] = "Standflügel: Kein " + txt + " der Serie passt zu den Anforderungen."
+	ENDIF
+
+IF bs_handle_model3 = "-" AND gs_handle_type3 # "-" AND bs_door_leafs > 1  AND BITTEST(curInfo,2) THEN  ! Fehlermeldung setzen
+	IF gs_handle_type3 # "DR" THEN txt = "Knauf" ELSE txt = "Griff"
+	errorI = errorI+1 : errorQ[errorI] = "Standflügel: " + txt + " ist Standardmodell."
+	ENDIF
+
+! ----------------------------------------------------------------- ABDECKUNGEN
+
+DIM  UIplateModelPic3[], UIplateModelText3[], UIplateModelVal3[]
+IF gs_handle_type3 = "-" THEN
+	k=1 : UIplateModelPic3[k] = 7 : UIplateModelText3[k] = "kein Schild" : UIplateModelVal3[k] = "-"
+	ELSE
+	k=0
+	ENDIF
+
+FOR i=1 TO VARDIM1(produkte)*(bs_door_leafs > 1)
+
+   IF zuordnung[i][dki_Typ] > 9 THEN
+
+		sts=0  ! Wenn sts wahr, dann Produkt zulässig
+
+		IF doorTYPE=1 THEN
+			! »»» Schild für Profiltür geeignet?
+			FOR m=1 TO VARDIM2(schildPT)
+				IF schildPT[i][m] THEN sts=BITSET(sts,1)
+				NEXT m
+			ELSE
+			! »»» Schild für Vollblatttür geeignet?
+			FOR m=1 TO VARDIM2(schildVB)
+				IF schildVB[i][m] THEN sts=BITSET(sts,0)
+				NEXT m
+			ENDIF
+
+		! »»» Plausibilitäten: Sonderschilder zulässig?
+		IF produkte[i][dki_Bezeichnung] = "ZL 65xx Forstner" AND bs_handle_model3 <> "8960 Forstner" THEN sts=0
+		IF produkte[i][dki_Bezeichnung] = "ZL 65xx Tchoban"  AND bs_handle_model3 <> "8920 Tchoban"  THEN sts=0
+
+		! »»» Plausibilitäten: WC-Schilder?
+		! IF (bs_closure3="WCS" OR bs_closure3="WCK") AND STRSTR(produkte[i][dki_Bezeichnung],"6612")	> 0 THEN sts=0
+		! IF STRSTR(produkte[i][dki_Bezeichnung],"7122") > 0 AND NOT(bs_closure3="WCK" OR bs_closure3="WCS") THEN sts=0
+		! IF STRSTR(produkte[i][dki_Bezeichnung],"7123") > 0 AND NOT(bs_closure3="WCK" OR bs_closure3="WCS") THEN sts=0
+
+		! »»» Plausibilitäten: Einzelrosetten zulässig?
+		IF STRSTR("6612|7122|7123|6679|6676",produkte[i][dki_Bezeichnung]) > 0 AND NOT(gs_handle_type3 = "-") THEN sts=0
+		IF STRSTR("650x|662x|661x",produkte[i][dki_Bezeichnung]) > 0 AND NOT(bs_closure3 = "-") THEN sts=0
+
+		! »»» In Auswahlliste aufnehmen
+		IF sts THEN
+
+			IF bs_doorplate3 = produkte[i][dki_Bezeichnung] THEN selectedPlateSF = i ! = gewählte Abdeckung
+
+			k=k+1
+			UIplateModelVal3[k]  = produkte[i][dki_Bezeichnung]
+			UIplateModelText3[k] = "OGRO " + produkte[i][dki_Bezeichnung]
+
+			icon = zuordnung[i][dki_BitmapVB]
+			IF doorTYPE=1 OR icon<1 THEN icon = zuordnung[i][dki_BitmapPT]
+			UIplateModelPic3[k] = icon + 14*(8-selectedClsrBGS)
+			ENDIF		
+
+		ENDIF
+
+	NEXT i
+
+! ----------------------------------------------------------------- ATTRIBUTE
+
+! #### Materialien
+
+	DIM UIhandleMatPic3[], UIhandleMatText3[], UIhandleMatVal3[]
+	DIM UIplateMatPic3[],  UIplateMatText3[],  UIplateMatVal3[]
+	j=1
+	UIhandleMatPic3[j] = 0 : UIhandleMatText3[j] = naKey : UIhandleMatVal3[j] = " "
+	UIplateMatPic3[j] = 0  : UIplateMatText3[j] = naKey  : UIplateMatVal3[j] = " "
+	IF selectedSF>0 THEN
+		IF GriffMaterial[selectedSF][dki_ER] OR GriffMaterial[selectedSF][dki_ERgebuerstet] OR GriffMaterial[selectedSF][dki_ERpoliert] THEN
+			j=j+1
+			UIhandleMatPic3[j] = 3 : UIhandleMatText3[j] = "Edelstahl" : UIhandleMatVal3[j] = "ES"
+			UIplateMatPic3[j] = 3  : UIplateMatText3[j] = "Edelstahl"  : UIplateMatVal3[j] = "ES"
+			ENDIF
+		IF GriffMaterial[selectedSF][dki_ALgebuerstet] THEN
+			j=j+1
+			UIhandleMatPic3[j] = 4 : UIhandleMatText3[j] = "Aluminium" : UIhandleMatVal3[j] = "AL"
+			UIplateMatPic3[j] = 4  : UIplateMatText3[j] = "Aluminium"  : UIplateMatVal3[j] = "AL"
+			ENDIF
+		ENDIF
+
+! #### Oberflächen
+
+	DIM UIhandleSurfPic3[], UIhandleSurfText3[], UIhandleSurfVal3[]
+	DIM UIplateSurfPic3[],  UIplateSurfText3[],  UIplateSurfVal3[]
+	j=1 : k=1
+	UIhandleSurfPic3[j] = 0 : UIhandleSurfText3[j] = naKey : UIhandleSurfVal3[j] = " "
+	UIplateSurfPic3[k] = 0  : UIplateSurfText3[k] = naKey  : UIplateSurfVal3[k] = " "
+	IF selectedSF>0 THEN
+		IF GriffMaterial[selectedSF][dki_ER] THEN
+			j=j+1 : UIhandleSurfPic3[j] = 2 : UIhandleSurfText3[j] = "unbehandelt" : UIhandleSurfVal3[j] = "-"
+			k=k+1 : UIplateSurfPic3[k] = 2  : UIplateSurfText3[k] = "unbehandelt"  : UIplateSurfVal3[k] = "-"
+			ENDIF
+		IF GriffMaterial[selectedSF][dki_ALgebuerstet] OR GriffMaterial[selectedSF][dki_ERgebuerstet] THEN
+			j=j+1 : UIhandleSurfPic3[j] = 3 : UIhandleSurfText3[j] = "Gebürstet" : UIhandleSurfVal3[j] = "B"
+			k=k+1 : UIplateSurfPic3[k] = 3  : UIplateSurfText3[k] = "Gebürstet"  : UIplateSurfVal3[k] = "B"
+			ENDIF
+		IF GriffMaterial[selectedSF][dki_ERpoliert] AND (bs_handle_material3="ES" OR bs_handle_material3=" ") THEN
+			j=j+1 : UIhandleSurfPic3[j] = 5 : UIhandleSurfText3[j] = "Poliert" : UIhandleSurfVal3[j] = "P"
+			ENDIF
+		IF GriffMaterial[selectedSF][dki_ERpoliert] AND (bs_doorplate_material3="ES" OR bs_doorplate_material3=" ") THEN
+			k=k+1 : UIplateSurfPic3[k] = 5  : UIplateSurfText3[k] = "Poliert" :  UIplateSurfVal3[k] = "P"
+			ENDIF
+		ENDIF
+
+
+! =============================================================================
+! question - answer mode  / HANDSHAKE
+! =============================================================================
+
+! IF macro_runtype = 8   THEN ! (3)
+! IF macro_runtype = 16  THEN ! (4) »»» 2D-Script und Bit 0, 1, 2
+! IF macro_runtype = 32  THEN ! (5) »»» 3D-Script und Bit 0, 1, 2
+! IF macro_runtype = 64  THEN ! (6) »»» Para-Script 
+! IF macro_runtype = 128 THEN ! (7) »»» UI-Script
+! IF macro_runtype = 256 THEN ! (8) »»» Rückgabe Fehlermeldungen
+
+! =============================================================================
+! Fehlermeldungen
+! =============================================================================
+
+! Lochung ...
+txt = ""
+
+! ...beidseitig identisch?
+IF NOT(bs_closure1 = "-" OR bs_closure2 = "-" OR STRSUB(bs_closure1,1,2) = "WC") AND bs_closure1 # bs_closure2 THEN
+	txt =" BS - BGS"
+	ENDIF
+
+! ... passt zu Schloss?
+IF (bs_closure1 # "-" AND bs_lock_barrel # "-" AND STRSUB(bs_closure1,1,2) # bs_lock_barrel) THEN
+	IF txt = "" THEN txt = " " ELSE txt = txt + ", "
+	txt = txt + "BS - Schlossmodul"
+	ENDIF
+IF (bs_closure2 # "-" AND bs_lock_barrel # "-" AND STRSUB(bs_closure2,1,2) # bs_lock_barrel) THEN
+	IF txt = "" THEN txt = " " ELSE txt = txt + ", "
+	txt = txt + "BGS - Schlossmodul"
+	ENDIF
+! ... Fehlermeldung setzen
+IF txt # "" THEN
+	errorI = errorI+1 : errorQ[errorI] = "Lochung unterschiedlich (GF):" + txt
+	ENDIF
+
+
+! Anforderung Zugangsberechtigung passt?
+IF (gs_handle_type = "KF" OR gs_handle_type = "-" ) AND bs_ac_identify1 = "J" THEN
+	errorI = errorI+1 : errorQ[errorI] = "GF BS: Beschlag passt nicht zu Identifikationsanforderung."
+	ENDIF
+IF (gs_handle_type2 = "KF" OR gs_handle_type2 = "-" ) AND bs_ac_identify2 = "J" THEN
+	errorI = errorI+1 : errorQ[errorI] = "GF BGS: Beschlag passt nicht zu Identifikationsanforderung."
+	ENDIF
+
+! IF macro_runtype = 64 AND errorI > 0 THEN
+!	 txt = ""
+!	 FOR i=1 TO errorI
+!		 txt=txt+errorQ[i]+"\n"+"\n"
+!		 NEXT i
+!	 PRINT txt
+!	 ENDIF
+
+IF macro_runtype = 256 THEN END errorQ  ! »»» Fehlermeldung
+
+
+! =============================================================================
+! Abmessungen zurückgeben
+! =============================================================================
+
+! »»» Koordinaten Griffe Gangflügel Bandgegenseite
+IF macro_runtype = 257 THEN
+
+	IF selectedBGS > 0 THEN
+
+		! Mit Türschild/Rosette
+		IF selectedPlateBGS > 0 THEN    ! Abdeckung
+			IF bs_doorplate2 = "-" THEN plateD = 0 ELSE plateD = abmessung[selectedPlateBGS][dki_D]
+			ELSE
+			plateD = 0
+			ENDIF
+
+		rothandle = 90*(bs_handle_orientation2="So") - 90*(bs_handle_orientation2="Su")
+
+		! Griffabmessungen
+		IF gs_handle_type2 # "-" THEN    ! Griff
+			IF bs_handle_model2 = "-" OR selectedBGS<1 THEN  ! Standardgriff (undefiniert)
+				i = (MAX(0,STRSTR("DRKFKD",gs_handle_type2)-1)) + (doorTYPE=1)
+				GOSUB "undefinedTypes"
+				selectedBGS = j : bs_handle_model2 = txt
+				ENDIF
+			handleD = abmessung[selectedBGS][dki_D]
+			IF rothandle THEN
+				handleX = handleD/2
+				ELSE
+				handleX = abmessung[selectedBGS][dki_Breite] - handleD/2
+				ENDIF
+			handleY = abmessung[selectedBGS][dki_Tiefe]
+			ENDIF
+
+		ENDIF
+
+	END handleX, plateD + handleY
+	ENDIF
+
+! »»» Koordinaten Griffe Standflügel Bandgegenseite
+IF macro_runtype = 258 THEN
+
+	IF selectedSF > 0 THEN
+
+		! Mit Türschild/Rosette
+		IF selectedPlateSF > 0 THEN    ! Abdeckung
+			IF bs_doorplate3 = "-" THEN plateD = 0 ELSE plateD = abmessung[selectedPlateSF][dki_D]
+			ELSE
+			plateD = 0
+			ENDIF
+
+		rothandle = 90*(bs_handle_orientation3="So") - 90*(bs_handle_orientation3="Su")
+
+		! Griffabmessungen
+		IF gs_handle_type3 # "-" THEN    ! Griff
+			IF bs_handle_model3 = "-" OR selectedSF<1 THEN  ! Standardgriff (undefiniert)
+				i = (MAX(0,STRSTR("DRKFKD",gs_handle_type3)-1)) + (doorTYPE=1)
+				GOSUB "undefinedTypes"
+				selectedSF = j : bs_handle_model3 = txt
+				ENDIF
+			handleD = abmessung[selectedSF][dki_D]
+			IF rothandle THEN
+				handleX = handleD/2
+				ELSE
+				handleX = abmessung[selectedSF][dki_Breite] - handleD/2
+				ENDIF
+			handleY = abmessung[selectedSF][dki_Tiefe]
+			ENDIF
+
+		ENDIF
+
+	END handleX, plateD + handleY
+	ENDIF
+
+
+! ------------------------------------------------------------------------[ ... ]
+
+GOTO "masterend"
+
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+! Errorcontent:
+"debuginfo":
+	IF BITTEST(sts,0) THEN txt = "Griffart/Modell" ELSE txt=""
+	IF BITTEST(sts,1) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "Türkonstruktionstyp"
+	IF BITTEST(sts,2) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "Brand-/Rauchschutzeignung"
+	IF BITTEST(sts,3) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "Fluchtwegeignung"
+	IF BITTEST(sts,4) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "Funktionalanforderung"
+	IF BITTEST(sts,5) THEN txt = txt + STRSUB(", ",1,2*(txt#"")) + "Brailleschrift"
+	IF txt # "" THEN txt = " ("+txt+")"
+	RETURN
+
+! Standard undefined types used in output (2D/3D)
+"undefinedTypes":
+	! Drücker
+	IF i=0 THEN : j = 3 : txt = "8100" : ENDIF
+	IF i=1 THEN : j = 4 : txt = "8100A" : ENDIF
+	! Knopf
+	IF i=4 THEN : j = 73 : txt = "8020" : ENDIF
+	IF i=5 THEN : j = 74 : txt = "8020A" : ENDIF
+	! ... drehbar
+	IF i=2 THEN : j = 81 : txt = "3020" : ENDIF
+	IF i=3 THEN : j = 82 : txt = "3020A" : ENDIF
+	RETURN
+
+"masterend":
+
+

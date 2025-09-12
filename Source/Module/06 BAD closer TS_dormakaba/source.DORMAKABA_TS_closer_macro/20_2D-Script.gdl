@@ -1,0 +1,290 @@
+
+IF	NOT( BITTEST(macro_runtype,4) ) OR \
+	(stand AND bs_closer_model2 = "-") OR \
+	(NOT(stand) AND bs_closer_model = "-") THEN END
+
+
+IF develop THEN
+	DEFINE STYLE "outfieldCLOSERstyle" "Arial", 0.20 * 100/GLOB_SCALE, 1, 0
+	STYLE "outfieldCLOSERstyle"
+	ENDIF
+
+
+! ----------------------------------------------------------------- [ Grunddefinition der Variablen ]
+
+n = 0
+
+
+! =============================================================================
+! Ausgabe Schliesser
+! =============================================================================
+
+! IF dk_LOD < 101 THEN GOSUB "LoD100"
+! IF dk_LOD > 100 AND dk_LOD < 201 THEN GOSUB "LoD200"
+! IF dk_LOD > 200 AND dk_LOD < 301 THEN GOSUB "LoD300"
+IF dk_LOD > 300 AND dk_LOD < 351 THEN GOSUB "LoD350"
+IF dk_LOD > 350 AND dk_LOD < 401 THEN GOSUB "LoD400"
+IF dk_LOD > 400 THEN GOSUB "LoD500"
+
+! ------------------------------------------------------------------------- [ ENDE ]
+
+"ende":
+FOR i=1 TO nsp : x = GET(1) : NEXT i
+END htspt
+	 
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
+"LoD100":
+"LoD200":
+"LoD300":
+"LoD350":
+
+"LoD400":
+	! »»» Nur beim Editieren darstellen
+	IF NOT(GLOB_FEEDBACK_MODE) THEN RETURN
+
+"LoD500":
+	DRAWINDEX 10
+	FILL dk_fills[dka_topview_fill]
+	PEN dk_cont_pens[dka_penInvisible]
+	LINE_TYPE dk_linetype[dka_invisible]
+
+	! »»» Eigenschaften standardisieren
+
+	IF stand THEN
+		GOSUB "copyMain"
+		! Standflügel
+		open_leaf = dk_open_leaf[dka_leaf2_angle2D]
+		ELSE
+		! Gangflügel
+		open_leaf = dk_open_leaf[dka_leaf_angle2D]
+		ENDIF
+	IF develop = 8 THEN GOSUB "devPrintCloserDimensions"
+
+
+	! »»» SCHLIEßKÖRPER ausgeben
+
+	! Geometrie berechnen und Transformation
+	IF bs_closer_type = "ITS" THEN
+		GOSUB "calcBodyITS" 
+		ELSE
+		IF bs_closer_type = "BTS" THEN
+			GOSUB "calcBodyBTS"
+			DRAWINDEX 10
+			! Abdeckung Schliesser ausgeben
+			PEN dk_cont_pens[dka_topview_penC2]
+			LINE_TYPE 1
+			x = 0.079 : y = 0.0175  ! Ausschnitte an Bandseite
+			POLY2_B 8, 1+2+4, dk_fill_pens[dka_topview_penF], dk_bkg_pens[dka_topview_penB],
+				dabx,     daby+y,     1,
+				dabx+x,   daby+y,     1,
+				dabx+x,   daby,       1,
+				dabx+abx, daby,       1,
+				dabx+abx, daby+aby,   1,
+				dabx+x,   daby+aby,   1,
+				dabx+x,   daby+aby-y, 1,
+				dabx,     daby+aby-y, 1
+			x = x -0.0025
+			POLY2_B 4, 1+2+4, dk_fill_pens[dka_topview_penF], dk_bkg_pens[dka_topview_penB],
+				dabx+x,   daby+aby,   1,
+				dabx+x,   daby+aby-y, 1,
+				dabx,     daby+aby-y, 1,
+				dabx,     daby+aby,   1
+			PEN dk_cont_pens[dka_penInvisible]
+			LINE_TYPE dk_linetype[dka_invisible]
+			POLY2_B 4, 1+4, dk_fill_pens[dka_topview_penF], dk_bkg_pens[dka_topview_penB],
+				dabx+x,   daby,   1,
+				dabx+x,   daby+y, 1,
+				dabx,     daby+y, 1,
+				dabx,     daby,   1
+			ELSE  ! OTS
+			GOSUB "calcBody" 
+			ENDIF
+		ENDIF
+
+	IF n THEN
+		msk = 1
+		GOSUB "Koerper"
+		IF nsp>9 AND ABS(kx*ky*kz) > tlr THEN
+			POLY2_B nsp/3,1+4, dk_fill_pens[dka_topview_penF], dk_bkg_pens[dka_topview_penB],
+				GET(nsp)
+			ENDIF
+		IF develop THEN GOSUB "devPrintCloserName"
+		IF dk_LOD > 350 THEN GOSUB "Fangpunkte"
+		DEL n
+		ENDIF
+
+
+	! »»» SCHIENE / HALTEPUNKT ausgeben
+
+	IF bs_closer_type # "BTS" THEN
+
+		IF NOT(stand) OR NOT(bs_closer_type = "OTS" AND NOT(schere)) OR (einszwei # 2) THEN
+
+			! Geometrie berechnen und Transformation
+			IF bs_closer_type = "ITS" THEN
+				GOSUB "calcAncorPointITS" 
+				ELSE
+				GOSUB "calcAncorPoint" 
+				ENDIF
+
+			IF n THEN
+				msk = 1
+				IF bs_closer_type = "ITS" OR ( bs_closer_type = "OTS" AND bs_slider_system = "G" ) THEN
+					GOSUB "Gleitschiene"
+					ENDIF
+				IF schere THEN
+					GOSUB "Scherenanker"
+					ENDIF
+				IF nsp > 9 AND ABS(kx*ky*kz) > tlr THEN
+					POLY2_B nsp/3,1+4, 
+						dk_fill_pens[dka_topview_penF], dk_bkg_pens[dka_topview_penB],
+						GET(nsp)
+					ENDIF
+				ENDIF
+
+			IF n THEN DEL n
+
+			ENDIF
+
+
+		IF stand AND ((bs_closer_type = "OTS" AND NOT(schere) OR bs_closer_type = "ITS") AND (einszwei = 2)) THEN
+
+			! »»» Geometrie berechnen (Transformation egal), Schiene wurde bei GF ausgegeben
+			IF bs_closer_type = "ITS" THEN
+				GOSUB "calcAncorPointITS" 
+				ELSE
+				GOSUB "calcAncorPoint" 
+				ENDIF
+
+			IF n THEN DEL n
+
+			ENDIF
+
+		ENDIF
+
+
+	! »»» MECHANIK ausgeben
+	IF bs_closer_type = "ITS" OR ( bs_closer_type = "OTS" AND bs_slider_system = "G" ) THEN
+		GOSUB "Gleithebel"
+		ENDIF
+	IF schere THEN
+		GOSUB "Scherengestaenge"
+		ENDIF
+
+	IF develop OR dk_LOD > 400 THEN
+		htspt=htspt+1 : HOTSPOT2 DAx, DAy, htspt
+		htspt=htspt+1 : HOTSPOT2 APx, APy, htspt
+		ENDIF
+
+	LINE_TYPE 1
+	RETURN
+
+! ------------------------------------------------------------------------- [ Ausgaben ]
+
+"Koerper":
+	PUT	0,0,msk,
+		kx, 0, msk,
+		kx, ky, msk,
+		0, ky, msk,
+		0, 0, -1
+	RETURN
+
+"Gleitschiene":
+	PUT  0,  0, msk,
+		sx,  0, msk,
+		sx, sy, msk,
+		 0, sy, msk,
+		 0,  0,  -1
+	RETURN
+
+
+"Scherenanker":
+	s = 0.004
+	r = sy-yL
+	PUT -dsx,     s, msk,
+		-dsx,     0, msk,
+		 sx-dsx,  0, msk,
+		 sx-dsx,  s, msk,
+		 r,      sy, msk,
+		-r,      sy, msk,
+		-dsx,     s,  -1
+	RETURN
+
+
+"Gleithebel":
+	GOSUB "positionG"
+	htspt=htspt+1 : HOTSPOT2 x, y, htspt
+	LINE2 DAx, DAy, x,y
+
+	IF develop = 6 THEN GOSUB "devPrintCloserCoordinates"
+
+	RETURN
+
+
+"Scherengestaenge":
+
+	GOSUB "positionS"
+
+	IF ABS(x)>tlr AND ABS(y)>tlr THEN
+
+		htspt=htspt+1 : HOTSPOT2 x, y, htspt
+		! htspt=htspt+1 : HOTSPOT2 x2, y2, htspt
+
+		POLY2 3,1, DAx, DAy, x,y, APx, APy
+		! POLY2 3,1, DAx, DAy, x2,y2, APx, APy
+
+		IF develop=6 THEN
+			circle2 APx,APy,lG
+			circle2 DAx,DAy,xH
+			ENDIF
+
+		ENDIF
+	RETURN
+
+
+"Fangpunkte":
+	htspt=htspt+1 : HOTSPOT2  0, ky, htspt
+	htspt=htspt+1 : HOTSPOT2 kx, ky, htspt
+	RETURN
+
+! ---
+
+"devPrintCloserName":
+	DRAWINDEX 50
+	IF stand THEN
+		text2 0*kx, ky, bs_closer_model2 + " ("+str(selectedS2,1,0)+") MV"+str(montageTYP,1,0)
+		ELSE
+		text2 0*kx, ky, bs_closer_model + " ("+str(selectedS,1,0)+") MV"+str(montageTYP,1,0)
+		ENDIF
+	DRAWINDEX 40
+	RETURN
+
+"devPrintCloserCoordinates":
+	text2 0.2,0.1, STR(DAy,5,3)
+	text2 0.2,0.15,STR(DAx,5,3)
+
+	text2 0.3,0.1, STR(GAy,5,3)
+	text2 0.3,0.15,STR(GAx,5,3)
+
+	text2 0.4,0.1, STR(APy,5,3)
+	text2 0.4,0.15,STR(APx,5,3)
+	RETURN
+
+"devPrintCloserDimensions":
+	DRAWINDEX 50
+	! text2 -0.05,0.05, montageart
+	text2 0.02,0.105, "stand:"+STR(stand,1,0)
+	text2 0.02,0.095, "sx"+STR(sx*1000,1,0)+" | sy"+STR(sy*1000,1,0)+" | sz"+STR(sz*1000,1,0)
+	text2 0.02,0.085, "kx"+STR(kx*1000,1,0)+" | ky"+STR(ky*1000,1,0)+" | kz"+STR(kz*1000,1,0)
+	text2 0.02,0.075, "MT"+STR(montageTYP,1,0)+"  ("+STR(xG,5,3)+"|"+STR(xT,5,3)+")"
+	text2 0.02,0.065, "lG="+STR(lG*1000,3,1)+"  xH="+STR(xH*1000,3,1)
+	DRAWINDEX 40
+	RETURN

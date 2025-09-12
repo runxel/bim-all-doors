@@ -1,0 +1,629 @@
+IF noHandle THEN END
+
+! ------------------------------------------------------------------------[ Object development settings ]
+
+IF macro_runtype = 0 THEN
+	VALUES{2} "macro_runtype" 0, "IDLE", 1,"handshake page hirarchy", 2,"handshake page names", 3,"CALL UI page", 5,"return element values", 10,"rebuilt VALUE lists"
+	ENDIF
+
+sts = APPLICATION_QUERY ("parameter_script", "firstoccasion_in_progress", isFirstRun)
+
+
+! =============================================================================
+! INTERAKTION
+! =============================================================================
+
+IF bs_acs_handles THEN
+
+    ! ### Access control system auf Bandseite
+    IF BITTEST(bs_acs_handles,0)  THEN
+        LOCK "gs_handle_type", "bs_handle_model", "gs_cust_handle", 
+            "bs_handle_orientation", 
+            "bs_handle_material", "bs_handle_surface"
+        gs_handle_type = "-" : PARAMETERS gs_handle_type = gs_handle_type
+        ENDIF
+    IF BITTEST(bs_acs_handles,3) AND BITTEST(bs_acs_handles,6) THEN
+        LOCK "bs_doorplate1", "bs_doorplate_model1", "bs_closure1", 
+            "bs_doorplate_material1", "bs_doorplate_surface1"
+        ENDIF
+
+    ! ### Access control system auf Bandgegenseite
+    IF BITTEST(bs_acs_handles,1) THEN
+        LOCK "gs_handle_type2", "bs_handle_model2", "gs_cust_handle2", 
+            "bs_handle_orientation2", 
+            "bs_handle_material2", "bs_handle_surface2"
+        gs_handle_type2 = "-" : PARAMETERS gs_handle_type2 = gs_handle_type2
+        ENDIF
+    IF BITTEST(bs_acs_handles,4) AND BITTEST(bs_acs_handles,7) THEN
+        LOCK "bs_doorplate2", "bs_doorplate_model2", "bs_closure2", 
+            "bs_doorplate_material2", "bs_doorplate_surface2"
+        ENDIF
+
+    ! ### Access control system auf Standflügel
+    IF BITTEST(bs_acs_handles,2) OR BITTEST(bs_acs_handles,5) OR BITTEST(bs_acs_handles,8) THEN
+        LOCK "gs_handle_type3", "bs_handle_model3", "gs_cust_handle3", 
+            "gs_handle_side3", "bs_handle_orientation3", 
+            "bs_handle_material3", "bs_handle_surface3", 
+            "gs_han_height2", 
+            "bs_doorplate3", "bs_doorplate_model3", "bs_closure3", 
+            "bs_doorplate_material3", "bs_doorplate_surface3"
+        ENDIF
+
+    ENDIF
+
+
+! =============================================================================
+! PLAUSIBILITY
+! =============================================================================
+
+! #### 1 flügelig
+
+IF  bs_door_leafs < 2 THEN
+	LOCK "gs_handle_type3", "bs_handle_model3", "gs_cust_handle3", 
+		"gs_handle_side3", "bs_handle_orientation3", 
+		"bs_handle_material3", "bs_handle_surface3", 
+		"gs_han_height2", 
+		"bs_doorplate3", "bs_doorplate_model3", "bs_closure3", 
+		"bs_doorplate_material3", "bs_doorplate_surface3"
+	ENDIF
+
+
+! #### Gegenseite WC-Beschlag setzen
+! Keine Rücksicht auf Schildeigenscahft BGS !!
+
+sts = 0
+IF STRSUB(bs_closure1,1,2) = "WC" AND GLOB_MODPAR_NAME = "bs_closure1" THEN   ! AND isFirstRun   ! AND NOT(bs_closure1="WCK" AND bs_closure2 = "-")
+	IF bs_closure1="WCS" THEN bs_closure2 = "WCK" ELSE bs_closure2 = "WCS"
+	PARAMETERS bs_closure2 = bs_closure2
+	sts = 1
+  	ENDIF
+IF STRSUB(bs_closure2,1,2) = "WC" AND GLOB_MODPAR_NAME = "bs_closure2" THEN
+	IF bs_closure2="WCS" THEN bs_closure1 = "WCK" ELSE bs_closure1 = "WCS"
+	PARAMETERS bs_closure1 = bs_closure1
+	sts = 1
+	ENDIF
+!... oder wieder "löschen"
+IF sts = 0 AND GLOB_MODPAR_NAME = "bs_closure1" AND NOT(STRSUB(bs_closure1,1,2) = "WC") AND STRSUB(bs_closure2,1,2) = "WC" THEN
+	bs_closure2 = bs_closure1 : PARAMETERS bs_closure2 = bs_closure2
+	ELSE
+	IF sts = 0 AND GLOB_MODPAR_NAME = "bs_closure2" AND STRSUB(bs_closure1,1,2) = "WC" AND NOT(STRSUB(bs_closure2,1,2) = "WC") THEN
+		bs_closure1 = bs_closure2 : PARAMETERS bs_closure1 = bs_closure1
+		ENDIF
+	ENDIF
+
+
+! =============================================================================
+! PLAUSIBILITY Bandseite
+! =============================================================================
+
+! »»» Grifftyp wg. falscher Serie zurücksetzen
+IF bs_handle_product_line="OGRO by ARCHITECTS" THEN  ! AND isFirstRun
+    IF gs_handle_type # "-" AND gs_handle_type # "DR" THEN
+    	gs_handle_type = "-" : PARAMETERS gs_handle_type = gs_handle_type
+    	ENDIF
+    ENDIF
+
+! »»» kein Griff?
+IF gs_handle_type = "-" THEN
+    LOCK "bs_handle_model", "gs_cust_handle",  "bs_handle_orientation", 
+        "bs_handle_material", "bs_handle_surface", "bs_handle_braille"
+    ENDIF
+
+! »»» gewählter Griff zulässig?
+IF selectedBS>0 THEN
+    ! IF NOT(eigenschaften[selectedBS][dki_Brailleschrift]) THEN LOCK "bs_handle_braille"
+    IF gs_handle_type # "DR" THEN LOCK "bs_handle_orientation"
+    ELSE
+    ! LOCK "gs_cust_handle",  "bs_handle_orientation", 
+    !      "bs_handle_material", "bs_handle_surface"
+    ENDIF
+
+! »»» keine Abdeckung? Lochung zulässig?
+IF bs_doorplate1 = "-" THEN
+    LOCK "bs_doorplate_model1", "bs_closure1", 
+        "bs_doorplate_material1", "bs_doorplate_surface1"
+    ENDIF
+
+! »»» Abdeckungen plausibel? / Auswahl mit Auswahlliste abgleichen
+IF selectedPlateBS>0 THEN
+
+    ! »»» Schildauswahl in Auswahlliste?
+    sts=1
+    FOR i=1 TO VARDIM1(UIplateModelVal)
+    	IF bs_doorplate1 = UIplateModelVal[i] THEN sts=0
+    	NEXT i
+
+	! »»» Schild passt zu Konstruktionstyp?
+    IF doorTYPE=0 AND zuordnung[selectedPlateBS][dki_Typ]#10 THEN sts=1 
+    IF doorTYPE=1 AND zuordnung[selectedPlateBS][dki_Typ]#11 THEN sts=1
+
+    ! »»» Sonderschilder zulässig?
+    IF bs_handle_model <> "8960 Forstner" AND bs_doorplate1 = "ZL 65xx Forstner" THEN sts=1
+    IF bs_handle_model <> "8920 Tchoban"  AND bs_doorplate1 = "ZL 65xx Tchoban"  THEN sts=1
+
+    ! »»» Unpassend, dann erstes Schild in der Liste setzen
+    IF sts THEN
+    	bs_doorplate1=UIplateModelVal[1] : PARAMETERS bs_doorplate1 = bs_doorplate1
+        selectedPlateBS=-1
+        ENDIF
+
+    ! »»» WC-Beschlag: Schildnummern ggf. anpassen
+    IF bs_doorplate1 = "650x + 6612" AND bs_closure1="WCK" THEN
+        bs_doorplate1 = "650x + 7122" : PARAMETERS bs_doorplate1 = bs_doorplate1
+        selectedPlateBS=-1
+        ENDIF
+    IF bs_doorplate1 = "650x + 6612" AND bs_closure1="WCS" THEN
+        bs_doorplate1 = "650x + 7122" : PARAMETERS bs_doorplate1 = bs_doorplate1
+        selectedPlateBS=-1
+        ENDIF
+    IF bs_doorplate1 = "6612" AND bs_closure1="WCK" THEN
+        bs_doorplate1 = "7122" : PARAMETERS bs_doorplate1 = bs_doorplate1
+        selectedPlateBS=-1
+        ENDIF
+    IF bs_doorplate1 = "6612" AND bs_closure1="WCS" THEN
+        bs_doorplate1 = "7122" : PARAMETERS bs_doorplate1 = bs_doorplate1
+        selectedPlateBS=-1
+        ENDIF
+    IF (bs_doorplate1 = "650x + 7122" OR bs_doorplate1 = "650x + 7123") AND NOT(bs_closure1="WCS" OR bs_closure1="WCK") THEN
+        bs_doorplate1 = "650x + 6612" : PARAMETERS bs_doorplate1 = bs_doorplate1
+        selectedPlateBS=-1
+        ENDIF
+
+    ! »»» Index des gesetzten Schildes suchen
+    IF selectedPlateBS<0 THEN
+        FOR i=1 TO VARDIM1(produkte)
+             IF bs_doorplate1 = produkte[i][dki_Bezeichnung] THEN selectedPlateBS=i
+             NEXT i
+        ENDIF
+
+    ENDIF
+
+!»»» Auswahl Schild nicht zulässig? ...
+sts = bs_doorplate1 # "-" OR (bs_doorplate1 = "-" AND UIplateModelVal[1] # "-")
+IF selectedPlateBS > 0 THEN
+    FOR i=1 TO VARDIM1(UIplateModelVal)
+    	IF bs_doorplate1 = UIplateModelVal[i] THEN sts=0
+    	NEXT i
+    IF sts THEN selectedPlateBS=-1
+	ENDIF
+IF selectedPlateBS < 1 AND sts THEN  ! ... Erste erlaubte suchen
+	bs_doorplate1 = UIplateModelVal[1]
+	IF bs_doorplate1 = "-" THEN 
+		selectedPlateBS = 0
+		ELSE
+    	FOR i=1 TO VARDIM1(produkte)
+        	IF bs_doorplate1 = produkte[i][dki_Bezeichnung] THEN selectedPlateBS=i
+        	NEXT i
+        ENDIF
+	PARAMETERS bs_doorplate1 = bs_doorplate1
+    ENDIF
+
+! »»» Keine Lochung?
+IF selectedPlateBS>0 THEN
+    sts=1
+    ! »»» Lochung in Schild vorgesehen?
+    FOR m=1 TO VARDIM2(lochung)
+        IF lochung[selectedPlateBS][m] THEN sts=0
+        NEXT m
+    ELSE
+    sts=0
+	ENDIF
+IF doorTYPE=1 AND NOT(STRSTR("- PZRZOZ", bs_closure1)) THEN sts=1
+!... sonst Lochung unterbinden
+IF sts OR bs_doorplate1 = "-" THEN
+    bs_closure1 = "-" : PARAMETERS bs_closure1 = bs_closure1
+    ENDIF
+
+
+! »»» gibt es gewähltes Material für gewählten Griff bzw. Abdeckung?
+sts=0
+IF selectedBS>0 AND VARDIM1(UIhandleMatVal)>0 THEN  ! AND isFirstRun
+    FOR i= 1 TO VARDIM1(UIhandleMatVal)
+        IF UIhandleMatVal[i] = bs_handle_material THEN sts=BITSET(sts,0)
+        NEXT i
+    IF NOT(BITTEST(sts,0)) THEN : bs_handle_material = " " : PARAMETERS bs_handle_material = bs_handle_material : ENDIF
+    ENDIF
+IF selectedPlateBS>0 AND VARDIM1(UIplateMatVal)>0 THEN  ! AND isFirstRun
+    FOR i= 1 TO VARDIM1(UIplateMatVal)
+        IF UIplateMatVal[i]  = bs_doorplate_material1 THEN sts=BITSET(sts,1)
+        NEXT i
+    IF NOT(BITTEST(sts,1)) THEN : bs_doorplate_material1 = " " : PARAMETERS bs_doorplate_material1 = bs_doorplate_material1 : ENDIF
+    ENDIF
+
+! »»» gibt es gewählte Oberfläche für gewähltes Material?
+sts=0
+IF selectedBS>0 AND VARDIM1(UIhandleSurfVal)>0 THEN  ! AND isFirstRun
+    FOR i= 1 TO VARDIM1(UIhandleSurfVal)
+        IF UIhandleSurfVal[i] = bs_handle_surface THEN sts=BITSET(sts,0)
+        NEXT i
+    IF NOT(BITTEST(sts,0)) THEN : bs_handle_surface = UIhandleSurfVal[1] : PARAMETERS bs_handle_surface = bs_handle_surface : ENDIF
+    ENDIF
+IF selectedPlateBS>0 AND VARDIM1(UIplateSurfVal)>0 THEN  ! AND isFirstRun
+    FOR i= 1 TO VARDIM1(UIplateSurfVal)
+        IF UIplateSurfVal[i]  = bs_doorplate_surface1 THEN sts=BITSET(sts,1)
+        NEXT i
+    IF NOT(BITTEST(sts,1)) THEN : bs_doorplate_surface1 = UIplateSurfVal[1] : PARAMETERS bs_doorplate_surface1 = bs_doorplate_surface1 : ENDIF
+    ENDIF
+
+
+! =============================================================================
+! PLAUSIBILITY Bandgegenseite
+! =============================================================================
+
+! »»» Grifftyp wg. falscher Serie zurücksetzen
+IF bs_handle_product_line="OGRO by ARCHITECTS" THEN  ! AND isFirstRun
+    IF gs_handle_type2 # "-" AND gs_handle_type2 # "DR" THEN
+        gs_handle_type2 = "-" : PARAMETERS gs_handle_type2 = gs_handle_type2
+        ENDIF
+    ENDIF
+
+! »»» kein Griff?
+IF gs_handle_type2 = "-" THEN
+    LOCK "bs_handle_model2", "gs_cust_handle2",  "bs_handle_orientation2", 
+        "bs_handle_material2", "bs_handle_surface2", "bs_handle_braille2"
+    ENDIF
+
+! »»» Knauf zulässig?
+IF (gs_handle_type2 = "KF" OR gs_handle_type2 = "KD") AND bs_demand_EscapeRoute = 1 THEN
+    gs_handle_type2 = "DR" : PARAMETERS gs_handle_type2 = gs_handle_type2
+    ENDIF
+
+! »»» gewählter Griff zulässig?
+IF selectedBGS>0 THEN
+    ! IF NOT(eigenschaften[selectedBGS][dki_Brailleschrift]) THEN LOCK "bs_handle_braille2"
+    IF gs_handle_type2 # "DR" THEN LOCK "bs_handle_orientation2"
+    ELSE
+    ! LOCK "gs_cust_handle2",  "bs_handle_orientation2", 
+    !      "bs_handle_material2", "bs_handle_surface2"
+    ENDIF
+
+! »»» keine Abdeckung? Lochung zulässig?
+IF bs_doorplate2 = "-" THEN
+    LOCK "bs_doorplate_model2", "bs_closure2", 
+        "bs_doorplate_material2", "bs_doorplate_surface2"
+    ENDIF
+
+! »»» Abdeckungen plausibel? / Auswahl mit Auswahlliste abgleichen
+IF selectedPlateBGS>0 THEN
+
+    ! »»» Schildauswahl in Auswahlliste?
+    sts=1
+    FOR i=1 TO VARDIM1(UIplateModelVal2)
+    	IF bs_doorplate2 = UIplateModelVal2[i] THEN sts=0
+    	NEXT i
+
+	! »»» Schild passt zu Konstruktionstyp?
+    IF doorTYPE=0 AND zuordnung[selectedPlateBGS][dki_Typ]#10 THEN sts=1 
+    IF doorTYPE=1 AND zuordnung[selectedPlateBGS][dki_Typ]#11 THEN sts=1
+
+    ! »»» Sonderschilder zulässig?
+    IF bs_handle_model2 <> "8960 Forstner" AND bs_doorplate2 = "ZL 65xx Forstner" THEN sts=1
+    IF bs_handle_model2 <> "8920 Tchoban"  AND bs_doorplate2 = "ZL 65xx Tchoban"  THEN sts=1
+
+    ! »»» Unpassend, dann erstes Schild in der Liste setzen
+    IF sts THEN
+    	bs_doorplate2=UIplateModelVal2[1] : PARAMETERS bs_doorplate2 = bs_doorplate2
+        selectedPlateBGS=-1
+        ENDIF
+
+    ! »»» WC-Beschlag: Schildnummern ggf. anpassen
+    IF bs_doorplate2 = "650x + 6612" AND bs_closure2="WCK" THEN
+        bs_doorplate2 = "650x + 7122" : PARAMETERS bs_doorplate2 = bs_doorplate2
+        selectedPlateBGS=-1
+        ENDIF
+    IF bs_doorplate2 = "650x + 6612" AND bs_closure2="WCS" THEN
+        bs_doorplate2 = "650x + 7122" : PARAMETERS bs_doorplate2 = bs_doorplate2
+        selectedPlateBGS=-1
+        ENDIF
+    IF bs_doorplate2 = "6612" AND bs_closure2="WCK" THEN
+        bs_doorplate2 = "7122" : PARAMETERS bs_doorplate2 = bs_doorplate2
+        selectedPlateBGS=-1
+        ENDIF
+    IF bs_doorplate2 = "6612" AND bs_closure2="WCS" THEN
+        bs_doorplate2 = "7122" : PARAMETERS bs_doorplate2 = bs_doorplate2
+        selectedPlateBGS=-1
+        ENDIF
+    IF (bs_doorplate2 = "650x + 7122" OR bs_doorplate2 = "650x + 7123") AND NOT(bs_closure2="WCS" OR bs_closure2="WCK") THEN
+        bs_doorplate2 = "650x + 6612" : PARAMETERS bs_doorplate2 = bs_doorplate2
+        selectedPlateBGS=-1
+        ENDIF
+
+    ! »»» Index des gesetzten Schildes suchen
+    IF selectedPlateBGS<0 THEN
+        FOR i=1 TO VARDIM1(produkte)
+             IF bs_doorplate2 = produkte[i][dki_Bezeichnung] THEN selectedPlateBGS=i
+             NEXT i
+        ENDIF
+
+    ENDIF
+
+!»»» Auswahl Schild nicht zulässig? ...
+sts = bs_doorplate2 # "-" OR (bs_doorplate2 = "-" AND UIplateModelVal2[1] # "-")
+IF selectedPlateBGS > 0 THEN
+    FOR i=1 TO VARDIM1(UIplateModelVal2)
+    	IF bs_doorplate2 = UIplateModelVal2[i] THEN sts=0
+    	NEXT i
+    IF sts THEN selectedPlateBGS=-1
+	ENDIF
+IF selectedPlateBGS < 1 AND sts THEN  ! ... Erste erlaubte suchen
+	bs_doorplate2 = UIplateModelVal2[1]
+	IF bs_doorplate2 = "-" THEN 
+		selectedPlateBGS = 0
+		ELSE
+    	FOR i=1 TO VARDIM1(produkte)
+        	IF bs_doorplate2 = produkte[i][dki_Bezeichnung] THEN selectedPlateBGS=i
+        	NEXT i
+        ENDIF
+	PARAMETERS bs_doorplate2 = bs_doorplate2
+    ENDIF
+
+! »»» Keine Lochung?
+IF selectedPlateBGS>0 THEN
+    sts=1
+    ! »»» Lochung in Schild vorgesehen?
+    FOR m=1 TO VARDIM2(lochung)
+        IF lochung[selectedPlateBGS][m] THEN sts=0
+        NEXT m
+    ELSE
+    sts=0
+	ENDIF
+IF doorTYPE=1 AND NOT(STRSTR("- PZRZOZ", bs_closure2)) THEN sts=1
+!... sonst Lochung unterbinden
+IF sts OR bs_doorplate2 = "-" THEN
+    bs_closure2 = "-" : PARAMETERS bs_closure2 = bs_closure2
+    ENDIF
+
+! »»» gibt es gewähltes Material für gewählten Griff bzw. Abdeckung?
+sts=0
+IF selectedBGS>0 AND VARDIM1(UIhandleMatVal2)>0 THEN  ! AND isFirstRun
+    FOR i= 1 TO VARDIM1(UIhandleMatVal2)
+        IF UIhandleMatVal2[i] = bs_handle_material2 THEN sts=BITSET(sts,0)
+        NEXT i
+    IF NOT(BITTEST(sts,0)) THEN : bs_handle_material2 = " " : PARAMETERS bs_handle_material2 = bs_handle_material2 : ENDIF
+    ENDIF
+IF selectedPlateBGS>0 AND VARDIM1(UIplateMatVal2)>0 THEN  ! AND isFirstRun
+    FOR i= 1 TO VARDIM1(UIplateMatVal2)
+        IF UIplateMatVal2[i]  = bs_doorplate_material2 THEN sts=BITSET(sts,1)
+        NEXT i
+    IF NOT(BITTEST(sts,1)) THEN : bs_doorplate_material2 = " " : PARAMETERS bs_doorplate_material2 = bs_doorplate_material2 : ENDIF
+    ENDIF
+
+! »»» gibt es gewählte Oberfläche für gewähltes Material?
+sts=0
+IF selectedBGS>0 AND VARDIM1(UIhandleSurfVal2)>0 THEN  ! AND isFirstRun
+    FOR i= 1 TO VARDIM1(UIhandleSurfVal2)
+        IF UIhandleSurfVal2[i] = bs_handle_surface2 THEN sts=BITSET(sts,0)
+        NEXT i
+    IF NOT(BITTEST(sts,0)) THEN : bs_handle_surface2 = UIhandleSurfVal2[1] : PARAMETERS bs_handle_surface2 = bs_handle_surface2 : ENDIF
+    ENDIF
+IF selectedPlateBGS>0 AND VARDIM1(UIplateSurfVal2)>0 THEN  ! AND isFirstRun
+    FOR i= 1 TO VARDIM1(UIplateSurfVal2)
+        IF UIplateSurfVal2[i]  = bs_doorplate_surface2 THEN sts=BITSET(sts,1)
+        NEXT i
+    IF NOT(BITTEST(sts,1)) THEN : bs_doorplate_surface2 = UIplateSurfVal2[1] : PARAMETERS bs_doorplate_surface2 = bs_doorplate_surface2 : ENDIF
+    ENDIF
+
+
+! =============================================================================
+! PLAUSIBILITY Standflügel
+! =============================================================================
+
+IF bs_door_leafs > 1 THEN
+
+	! »»» Grifftyp wg. falscher Serie zurücksetzen
+	IF bs_handle_product_line="OGRO by ARCHITECTS" THEN  ! AND isFirstRun
+		IF gs_handle_type3 # "-" AND gs_handle_type3 # "DR" THEN
+			 gs_handle_type3 = "-" : PARAMETERS gs_handle_type3 = gs_handle_type3
+			 ENDIF
+		ENDIF
+
+	! »»» kein Griff?
+	IF gs_handle_type3 = "-" THEN
+		LOCK "bs_handle_model3", "gs_cust_handle3",  "bs_handle_orientation3", 
+			 "bs_handle_material3", "bs_handle_surface3"
+		ENDIF
+
+	! »»» gewählter Griff zulässig?
+	IF selectedSF>0 THEN
+		IF gs_handle_type3 # "DR" THEN LOCK "bs_handle_orientation3"
+		ELSE
+		! LOCK "gs_cust_handle3",  "bs_handle_orientation3", 
+		!      "bs_handle_material3", "bs_handle_surface3"
+		ENDIF
+
+	! »»» keine Abdeckung? Lochung zulässig?
+	IF bs_doorplate3 = "-" THEN
+		LOCK "bs_doorplate_model3", "bs_closure3", 
+			"bs_doorplate_material3", "bs_doorplate_surface3"
+		ENDIF
+
+	! »»» Abdeckungen plausibel? / Auswahl mit Auswahlliste abgleichen
+	IF selectedPlateSF>0 THEN
+
+		! »»» Schildauswahl in Auswahlliste?
+		sts=1
+		FOR i=1 TO VARDIM1(UIplateModelVal3)
+			IF bs_doorplate3 = UIplateModelVal3[i] THEN sts=0
+			NEXT i
+
+		! »»» Schild passt zu Konstruktionstyp?
+		IF doorTYPE=0 AND zuordnung[selectedPlateSF][dki_Typ]#10 THEN sts=1 
+		IF doorTYPE=1 AND zuordnung[selectedPlateSF][dki_Typ]#11 THEN sts=1
+
+		! »»» Sonderschilder zulässig?
+		IF bs_handle_model3 <> "8960 Forstner" AND bs_doorplate3 = "ZL 65xx Forstner" THEN sts=1
+		IF bs_handle_model3 <> "8920 Tchoban"  AND bs_doorplate3 = "ZL 65xx Tchoban"  THEN sts=1
+
+		! »»» Unpassend, dann erstes Schild in der Liste setzen
+		IF sts THEN
+			bs_doorplate3=UIplateModelVal3[1] : PARAMETERS bs_doorplate3 = bs_doorplate3
+			selectedPlateSF=-1
+			ENDIF
+
+		! »»» Index des gesetzten Schildes suchen
+		IF selectedPlateSF<0 THEN
+			FOR i=1 TO VARDIM1(produkte)
+				 IF bs_doorplate3 = produkte[i][dki_Bezeichnung] THEN selectedPlateSF=i
+				 NEXT i
+			ENDIF
+
+		ENDIF
+
+	!»»» Auswahl Schild nicht zulässig? ...
+	sts = bs_doorplate3 # "-" OR (bs_doorplate3 = "-" AND UIplateModelVal3[1] # "-")
+	IF selectedPlateSF > 0 THEN
+		FOR i=1 TO VARDIM1(UIplateModelVal3)
+			IF bs_doorplate3 = UIplateModelVal3[i] THEN sts=0
+			NEXT i
+		IF sts THEN selectedPlateSF=-1
+		ENDIF
+	IF selectedPlateSF < 1 AND sts THEN  ! ... Erste erlaubte suchen
+		bs_doorplate3 = UIplateModelVal3[1]
+		IF bs_doorplate3 = "-" THEN 
+			selectedPlateSF = 0
+			ELSE
+			FOR i=1 TO VARDIM1(produkte)
+				IF bs_doorplate3 = produkte[i][dki_Bezeichnung] THEN selectedPlateSF=i
+				NEXT i
+			ENDIF
+		PARAMETERS bs_doorplate3 = bs_doorplate3
+		ENDIF
+
+	! »»» Keine Lochung?
+	IF selectedPlateSF>0 THEN
+		sts=1
+		! »»» Lochung in Schild vorgesehen?
+		FOR m=1 TO VARDIM2(lochung)
+			IF lochung[selectedPlateSF][m] THEN sts=0
+			NEXT m
+		ELSE
+		sts=0
+		ENDIF
+	!... sonst Lochung unterbinden
+	IF sts OR bs_doorplate3 = "-" THEN
+		bs_closure3 = "-" : PARAMETERS bs_closure3 = bs_closure3
+		ENDIF
+
+	! »»» gibt es gewähltes Material für gewählten Griff bzw. Abdeckung?
+	sts=0
+	IF selectedSF>0 AND VARDIM1(UIhandleMatVal3)>0 AND isFirstRun THEN
+		FOR i= 1 TO VARDIM1(UIhandleMatVal3)
+			IF UIhandleMatVal3[i] = bs_handle_material3 THEN sts=BITSET(sts,0)
+			NEXT i
+		IF NOT(BITTEST(sts,0)) THEN : bs_handle_material3 = " " : PARAMETERS bs_handle_material3 = bs_handle_material3 : ENDIF
+		ENDIF
+	IF selectedPlateSF>0 AND VARDIM1(UIplateMatVal3)>0 AND isFirstRun THEN
+		FOR i= 1 TO VARDIM1(UIplateMatVal3)
+			IF UIplateMatVal3[i]  = bs_doorplate_material3 THEN sts=BITSET(sts,1)
+			NEXT i
+		IF NOT(BITTEST(sts,1)) THEN : bs_doorplate_material3 = " " : PARAMETERS bs_doorplate_material3 = bs_doorplate_material3 : ENDIF
+		ENDIF
+
+	! »»» gibt es gewählte Oberfläche für gewähltes Material?
+	sts=0
+	IF selectedSF>0 AND VARDIM1(UIhandleSurfVal3)>0 AND isFirstRun THEN  !
+		FOR i= 1 TO VARDIM1(UIhandleSurfVal3)
+			IF UIhandleSurfVal3[i] = bs_handle_surface3 THEN sts=BITSET(sts,0)
+			NEXT i
+		IF NOT(BITTEST(sts,0)) THEN : bs_handle_surface3 = UIhandleSurfVal3[1] : PARAMETERS bs_handle_surface3 = bs_handle_surface3 : ENDIF
+		ENDIF
+	IF selectedPlateSF>0 AND VARDIM1(UIplateSurfVal3)>0 AND isFirstRun THEN  !
+		FOR i= 1 TO VARDIM1(UIplateSurfVal3)
+			IF UIplateSurfVal3[i]  = bs_doorplate_surface3 THEN sts=BITSET(sts,1)
+			NEXT i
+		IF NOT(BITTEST(sts,1)) THEN : bs_doorplate_surface3 = UIplateSurfVal3[1] : PARAMETERS bs_doorplate_surface3 = bs_doorplate_surface3 : ENDIF
+		ENDIF
+
+	ENDIF
+
+! =============================================================================
+! VALUES
+! =============================================================================
+
+! ----------------------------------- PARAMETER VALUE LIST [DORMAKABA OGRO] (start)
+
+VALUES "bs_handle_product_line" "OGRO", "OGRO by ARCHITECTS"
+VALUES "bs_handle_model" "-", "8016", "8056", "8100", "8100A", "8100V", "8101", "8101A", "8103", "8111", "8112",
+    "8115", "8115V", "8116", "8116V", "8130", "8140", "8140A", "8141", "8141A", "8155",
+    "8155V", "8156", "8200 Bitch/Neither/Teherani", "8350", "8350A", "8350V", "8353",
+    "8354", "8437", "8527", "8527A", "8810", "8811", "8815", "8825", "8826", "8830 Sieger",
+    "8830A Sieger", "8860", "8870", "8871", "8871V", "8880 Kister", "8890 Welter", "8906",
+    "8906A", "8906V", "8907", "8907A", "8907V", "8910", "8915 Kleihues", "8916 Kleihues",
+    "8916A Kleihues", "8920 Tchoban", "8928 Wagenfeld", "8928A Wagenfeld", "8940", "8940A",
+    "8960 Forstner", "8962 Braun Feldweg", "8968", "8972 Wagenfeld", "8972A Wagenfeld",
+    "8974 Wagenfeld", "8990 Botti", "8991 Botti", "8991A Botti", "8998", "8998A", "8999",
+    "8999A", "8020", "8020A", "8025", "8025V", "8030", "8030V", "8548", "8548V", "3020",
+    "3020A", "3025", "3025V", "3030", "3030V", "3548", "3548V"
+VALUES "bs_handle_model2" "-", "8016", "8056", "8100", "8100A", "8100V", "8101", "8101A", "8103", "8111", "8112",
+    "8115", "8115V", "8116", "8116V", "8130", "8140", "8140A", "8141", "8141A", "8155",
+    "8155V", "8156", "8200 Bitch/Neither/Teherani", "8350", "8350A", "8350V", "8353",
+    "8354", "8437", "8527", "8527A", "8810", "8811", "8815", "8825", "8826", "8830 Sieger",
+    "8830A Sieger", "8860", "8870", "8871", "8871V", "8880 Kister", "8890 Welter", "8906",
+    "8906A", "8906V", "8907", "8907A", "8907V", "8910", "8915 Kleihues", "8916 Kleihues",
+    "8916A Kleihues", "8920 Tchoban", "8928 Wagenfeld", "8928A Wagenfeld", "8940", "8940A",
+    "8960 Forstner", "8962 Braun Feldweg", "8968", "8972 Wagenfeld", "8972A Wagenfeld",
+    "8974 Wagenfeld", "8990 Botti", "8991 Botti", "8991A Botti", "8998", "8998A", "8999",
+    "8999A", "8020", "8020A", "8025", "8025V", "8030", "8030V", "8548", "8548V", "3020",
+    "3020A", "3025", "3025V", "3030", "3030V", "3548", "3548V"
+VALUES "bs_handle_model3" "-", "8016", "8056", "8100", "8100A", "8100V", "8101", "8101A", "8103", "8111", "8112",
+    "8115", "8115V", "8116", "8116V", "8130", "8140", "8140A", "8141", "8141A", "8155",
+    "8155V", "8156", "8200 Bitch/Neither/Teherani", "8350", "8350A", "8350V", "8353",
+    "8354", "8437", "8527", "8527A", "8810", "8811", "8815", "8825", "8826", "8830 Sieger",
+    "8830A Sieger", "8860", "8870", "8871", "8871V", "8880 Kister", "8890 Welter", "8906",
+    "8906A", "8906V", "8907", "8907A", "8907V", "8910", "8915 Kleihues", "8916 Kleihues",
+    "8916A Kleihues", "8920 Tchoban", "8928 Wagenfeld", "8928A Wagenfeld", "8940", "8940A",
+    "8960 Forstner", "8962 Braun Feldweg", "8968", "8972 Wagenfeld", "8972A Wagenfeld",
+    "8974 Wagenfeld", "8990 Botti", "8991 Botti", "8991A Botti", "8998", "8998A", "8999",
+    "8999A", "8020", "8020A", "8025", "8025V", "8030", "8030V", "8548", "8548V", "3020",
+    "3020A", "3025", "3025V", "3030", "3030V", "3548", "3548V"
+VALUES "gs_handle_type" "-", "DR", "KF", "KD"
+VALUES "gs_handle_type2" "-", "DR", "KF", "KD"
+VALUES "gs_handle_type3" "-", "DR", "KD"
+VALUES{2} "gs_handle_side3" 0, "Bandgegenseite", 1, "Bandseite"
+VALUES "bs_handle_orientation" "W", "So", "Su"
+VALUES "bs_handle_orientation2" "W", "So", "Su"
+VALUES "bs_handle_orientation3" "W", "So", "Su"
+VALUES "bs_handle_material" " ", "ST", "ES", "AL", "MS", "NY", "KO", "XX", CUSTOM
+VALUES "bs_handle_material2" " ", "ST", "ES", "AL", "MS", "NY", "KO", "XX", CUSTOM
+VALUES "bs_handle_material3" " ", "ST", "ES", "AL", "MS", "NY", "KO", "XX", CUSTOM
+VALUES "bs_handle_surface" " ", "-", "B", "S", "T", "P", "L", "V", "Z", "N", "C", "G", "E", "I", "X", CUSTOM
+VALUES "bs_handle_surface2" " ", "-", "B", "S", "T", "P", "L", "V", "Z", "N", "C", "G", "E", "I", "X", CUSTOM
+VALUES "bs_handle_surface3" " ", "-", "B", "S", "T", "P", "L", "V", "Z", "N", "C", "G", "E", "I", "X", CUSTOM
+VALUES "bs_doorplate1" "-", "650x + 6612", "650x + 7122", "650x + 7123", "650x", "6612", "7122", "7123",
+    "705x K", "706x K", "702x L", "701x L", "7601", "662x + 6679", "661x + 6676", "662x",
+    "661x", "6679", "6676", "ZL 65xx Tchoban", "ZL 65xx Forstner"
+VALUES "bs_doorplate2" "-", "650x + 6612", "650x + 7122", "650x + 7123", "650x", "6612", "7122", "7123",
+    "705x K", "706x K", "702x L", "701x L", "7601", "662x + 6679", "661x + 6676", "662x",
+    "661x", "6679", "6676", "ZL 65xx Tchoban", "ZL 65xx Forstner"
+VALUES "bs_doorplate3" "-", "650x + 6612", "650x + 7122", "650x + 7123", "650x", "6612", "7122", "7123",
+    "705x K", "706x K", "702x L", "701x L", "7601", "662x + 6679", "661x + 6676", "662x",
+    "661x", "6679", "6676", "ZL 65xx Tchoban", "ZL 65xx Forstner"
+VALUES "bs_closure1" "-", "PZ", "RZ", "OZ", "CH", "BB", "WCS", "WCK"
+VALUES "bs_closure2" "-", "PZ", "RZ", "OZ", "CH", "BB", "WCS", "WCK"
+VALUES "bs_closure3" "-"
+VALUES "bs_doorplate_material1" " ", "ST", "ES", "AL", "MS", "NY", "KO", "XX"
+VALUES "bs_doorplate_material2" " ", "ST", "ES", "AL", "MS", "NY", "KO", "XX"
+VALUES "bs_doorplate_material3" " ", "ST", "ES", "AL", "MS", "NY", "KO", "XX"
+VALUES "bs_doorplate_surface1" " ", "-", "B", "S", "T", "P", "L", "V", "Z", "N", "C", "G", "E", "I", "X"
+VALUES "bs_doorplate_surface2" " ", "-", "B", "S", "T", "P", "L", "V", "Z", "N", "C", "G", "E", "I", "X"
+VALUES "bs_doorplate_surface3" " ", "-", "B", "S", "T", "P", "L", "V", "Z", "N", "C", "G", "E", "I", "X"
+VALUES "gs_han_height" 0.85, 1.05, CUSTOM
+VALUES "gs_han_height2" 0.85, 1.05, CUSTOM
+VALUES "dk_dlg_subset" 1, 2
+VALUES "develop" 0, 1, 2, 3, 4, 5, 6, 7, 8
+
+! --------------------------------------------------------------- PARAMETER VALUE LISTS (end)
+
+
+! --------------------------------------------------------------- xxx
+
+END
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+

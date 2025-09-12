@@ -1,0 +1,461 @@
+! ------------------------------------------------------------------------[ Object development settings ]
+
+IF macro_runtype = 0 THEN
+	VALUES{2} "macro_runtype" 0, "IDLE", 1,"handshake page hirarchy", 2,"handshake page names", 3,"CALL UI page", 5,"return element values", 10,"rebuilt VALUE lists"
+	ENDIF
+
+
+! =============================================================================
+! PLAUSIBILITY
+! =============================================================================
+
+! »»» Andere Bänder bei Bodentürschließer
+IF bs_closer_type = "BTS" THEN
+
+	hinge_system = "DORMAKABA_BTS"
+	PARAMETERS hinge_system = hinge_system
+	! IF GLOB_MODPAR_NAME = "bs_closer_type" THEN
+	! 	PARAMETERS gs_ui_current_page = gs_ui_current_page+1
+	! 	gs_ui_current_page = gs_ui_current_page + 1
+	! 	ENDIF
+	! isFirstRun = 0
+	! sts = APPLICATION_QUERY ("parameter_script", "firstoccasion_in_progress", isFirstRun)
+	! IF isFirstRun THEN
+	! 	PARAMETERS gs_ui_current_page = gs_ui_current_page+1
+	! 	gs_ui_current_page = gs_ui_current_page + 1
+	! 	ENDIF
+
+	ELSE
+
+	! ... und wieder zurückstellen
+	IF GLOB_MODPAR_NAME = "bs_closer_type" AND hinge_system = "DORMAKABA_BTS" THEN
+		hinge_system = commonMacro
+		PARAMETERS hinge_system = hinge_system
+		ENDIF
+
+	ENDIF
+
+
+! ----------------------------------------------------------------- Automatische Auswahl des Schließers (Level of Information)
+
+! Hier vielleicht im Master immer einen passenden >Schließer auswählen
+! Dann im Parameters entscheiden ob kein Schließer gewählt bzw. als passend gefunden wurde
+! Wenn LOI < 4 dann den passend gefundenen setzen.
+
+sts = 0
+IF dk_LOI = 4 AND bs_closer_type = "S" THEN
+	sts = 2
+	ELSE
+	IF dk_LOI < 5 AND bs_closer_type # "-" THEN sts = 1 ELSE sts = 0
+	ENDIF
+
+! Automatisierte Einstellungen, wenn LOI<4 und etwas geändert wurde
+IF	sts = 1 AND \
+	dk_LOI < 4 and ( GLOB_MODPAR_NAME = "bs_closer_type" OR GLOB_MODPAR_NAME = "bs_closer_delay" OR \
+	GLOB_MODPAR_NAME = "bs_demand_FireResistance"  OR GLOB_MODPAR_NAME = "bs_demand_SmokeResistance"  OR \
+	GLOB_MODPAR_NAME = "bs_quality_FireResistanceRating"  OR GLOB_MODPAR_NAME = "bs_quality_SmokeResistance" ) THEN ! OR GLOB_MODPAR_NAME = "bs_door_leafs"
+
+	! »»» Wenn zentrale Anforderungen bestehen, Schließeranforderung setzen
+
+	IF bs_demand_FireResistance = 1 OR bs_demand_SmokeResistance = 1 THEN
+		bs_closer_fix = "R" : bs_closing_order = 1
+		ELSE
+		bs_closer_fix = "-" : bs_closing_order = 0
+		ENDIF
+	PARAMETERS bs_closer_fix = bs_closer_fix, bs_closing_order = bs_closing_order
+
+	! »»» Freilauf nicht bei Vorentwurf
+
+	IF bs_closer_delay = "F" and dk_LOI < 4 THEN
+		bs_closer_delay = "V"
+		PARAMETERS bs_closer_delay = bs_closer_delay
+		ENDIF
+
+	! »»» Modelltyp auswählen
+
+	IF bs_closer_delay = "F" THEN
+
+		! »»» Standardschließer mit Freilauf
+
+		IF bs_closer_fix = "R" THEN
+			bs_closer_model = "TS 99 FLR"
+			IF bs_door_leafs = 1 AND bs_closer_position = "T" THEN
+				bs_closer_model = bs_closer_model + "-K"
+				ENDIF
+			ELSE
+			bs_closer_model = "TS 99 FL"
+			ENDIF
+		bs_closer_model = bs_closer_model + " EN 2-5"
+
+		ELSE
+
+		! »»» Standardschließer ohne Freilauf
+
+		bs_closer_model = "TS 98 XEA EN 1-6" 
+		
+		ENDIF
+
+	! »»» Festlegung festsetzen
+
+	IF bs_door_leafs > 1 THEN bs_closer_model2 = bs_closer_model ELSE bs_closer_model2 = ""
+
+	PARAMETERS bs_closer_model = bs_closer_model, bs_closer_model2 = bs_closer_model2 
+
+	ENDIF
+
+! Eingabe verbieten?
+! IF dk_LOI < 5 THEN LOCK "bs_closer_model", "bs_closer_model2"
+
+
+! ----------------------------------------------------------------- Gezieltes Setzen der Schließerauswahl
+
+IF bs_closer_type # "-" AND bs_closer2 = 0 AND bs_door_leafs < 2 THEN
+	bs_closer2 = 1
+	PARAMETERS bs_closer2 = bs_closer2
+	ENDIF
+
+! »»» Schließertyp GF automatisch gewählt?
+IF  selectedS < 0 THEN
+	selectedS = ABS(selectedS)
+	bs_closer_model = sProdukte[selectedS][dki_PRODUKT]
+	PARAMETERS bs_closer_model = bs_closer_model
+	IF bs_closer2 = 0 AND bs_door_leafs < 2 THEN
+		bs_closer2 = 1
+		PARAMETERS bs_closer2 = bs_closer2
+		ENDIF
+	ENDIF
+
+! »»» Schließertyp SF automatisch gewählt?
+IF  selectedS2 < 0 THEN
+	selectedS2 = ABS(selectedS2)
+	bs_closer_model2 = sProdukte[selectedS2][dki_PRODUKT]
+	PARAMETERS bs_closer_model2 = bs_closer_model2
+	ENDIF
+
+
+! ----------------------------------------------------------------- Parameterabhängigkeiten
+
+! »»» Je nach Schließertyp verfügbare Montagevarianten:
+IF bs_closer_type = "BTS" THEN
+	! Horizontale Lage
+	bs_closer_orientation = "BS"
+	PARAMETERS bs_closer_orientation = bs_closer_orientation
+	! Vertikale Lage
+	bs_closer_position = "B"
+	PARAMETERS bs_closer_position = bs_closer_position
+	ELSE
+	IF bs_closer_type = "ITS" THEN
+		! Horizontale Lagey
+		bs_closer_orientation = "MI"
+		PARAMETERS bs_closer_orientation = bs_closer_orientation
+		! Vertikale Lage
+		IF bs_closer_position # "S" AND bs_closer_position # "T" THEN
+			bs_closer_position = "T"
+			PARAMETERS bs_closer_position = bs_closer_position
+			ENDIF
+		ELSE
+		IF bs_closer_type = "OTS" THEN
+			! Horizontale Lage
+			IF bs_closer_orientation # "BS" AND bs_closer_orientation # "GS" THEN
+				bs_closer_orientation = "BS"
+				PARAMETERS bs_closer_orientation = bs_closer_orientation
+				ENDIF
+			! Vertikale Lage
+			IF bs_closer_position # "S" AND bs_closer_position # "T" THEN
+				bs_closer_position = "T"
+				PARAMETERS bs_closer_position = bs_closer_position
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+
+! »»» Nicht verfügbare Anforderungen/Eigenschaften bei ITS
+IF bs_closer_type = "ITS" THEN
+	LOCK "bs_closer_damping"
+	bs_closer_damping = 0
+	PARAMETERS bs_closer_damping = bs_closer_damping
+	! Rauchmelder nicht bei Gestängeschließern
+	IF bs_closer_fix="R" OR bs_closer_fix = "B" THEN
+		bs_closer_fix = "E"
+		PARAMETERS bs_closer_fix = bs_closer_fix
+		ENDIF
+	! Keine Schließverzögerung
+	IF bs_closer_delay = "V" THEN
+		bs_closer_delay = "-"
+		PARAMETERS bs_closer_delay = bs_closer_delay
+		ENDIF
+	ENDIF
+
+! »»» Keine Schließfolge bei <2 Flügeln fordern
+IF bs_closing_order = 1 AND bs_door_leafs < 2 THEN
+	bs_closing_order = 0
+	PARAMETERS bs_closing_order = bs_closing_order
+	ENDIF
+
+! »»» Rauchmelder nicht bei Gestängeschließern
+IF schere AND (bs_closer_fix="R" OR bs_closer_fix = "B") THEN
+	bs_closer_fix = "E"
+	PARAMETERS bs_closer_fix = bs_closer_fix
+	ENDIF
+
+! »»» Handauslösung zwingend?
+IF bs_closer_delay = "F" OR (bs_closer_type = "BTS" AND bs_closer_fix = "E") THEN  ! verzoegerung = "F" OR sProdukte[selectedS][dki_VERZOEGERUNG] = "F"
+	bs_closer_manual = 1
+	PARAMETERS bs_closer_manual = bs_closer_manual
+	LOCK "bs_closer_manual"
+	ENDIF
+
+! »»» BTS keine Schließverzögerung
+IF bs_closer_type = "BTS" AND bs_closer_delay = "V" THEN
+	bs_closer_delay = "-"
+	PARAMETERS bs_closer_delay = bs_closer_delay
+	ENDIF
+
+! »»» Handauslösung nicht bei mechan. Feststellung
+IF feststellung ="-" OR feststellung ="M" OR bs_closer_fix ="M" THEN
+	bs_closer_manual = 0
+	PARAMETERS bs_closer_manual = bs_closer_manual
+	LOCK "bs_closer_manual"
+	ENDIF
+
+! »»» Montage Gestängetürschließer eingeschränkt
+IF schere THEN
+	IF GLOB_MODPAR_NAME = "bs_closer_orientation" THEN
+		IF bs_closer_orientation = "BS" THEN
+			bs_closer_position = "T"
+			ELSE
+			bs_closer_position = "S"
+			ENDIF
+		PARAMETERS bs_closer_position = bs_closer_position
+		ENDIF
+	IF GLOB_MODPAR_NAME = "bs_closer_position" THEN
+		IF bs_closer_position = "T" THEN
+			bs_closer_orientation = "BS"
+			ELSE
+			bs_closer_orientation = "GS"
+			ENDIF
+		PARAMETERS bs_closer_orientation = bs_closer_orientation
+		ENDIF
+	ENDIF
+
+
+! ----------------------------------------------------------------- Türautomation statt Schließer?
+
+! »»» Kein Schließer bei Automatikantrieb auf allen Flügeln bzw. ganz ohne Flügel
+IF automation = bs_door_leafs THEN
+	bs_closer_type = "-"
+	bs_closer2 = 0
+	PARAMETERS bs_closer_type = bs_closer_type, bs_closer2 = bs_closer2
+	ENDIF
+
+
+! ----------------------------------------------------------------- Nur ein Schließer (Gangflügel)?
+
+! »»» Einflügelige Tür
+IF bs_door_leafs < 2 AND bs_closer2 > 1 THEN
+	bs_closer2 = bs_door_leafs  !BITSET(BITSET(bs_closer2, 2,0),1,0)
+	PARAMETERS bs_closer2 = bs_closer2
+	ENDIF
+
+
+! ----------------------------------------------------------------- Bei 2 Türblättern...
+
+IF bs_door_leafs = 2 THEN
+
+	! »»» mit Türautomation
+	IF automation = 1  THEN
+
+		IF bs_demand_FireResistance = 1 THEN
+
+			! »»» (Exklusiver) Schließer auf Standflügel zwingend
+
+			! Schließertyp setzen
+			IF bs_closer_type = "-" THEN
+				bs_closer_type = "OTS"
+				bs_slider_system = "G"
+				bs_closer_orientation = "BS"
+				bs_closer_position = "S"
+				PARAMETERS	bs_closer_type = bs_closer_type, 
+							bs_slider_system = bs_slider_system,
+							bs_closer_orientation = bs_closer_orientation,
+							bs_closer_position = bs_closer_position
+				bs_closer_model2 = "TS 98 XEA EN 1-6"
+				PARAMETERS	bs_closer_model2 = bs_closer_model2
+				ENDIF
+
+			! Zuordnung setzen
+			bs_closer2 = 2   !2 * BITTEST(bs_closer2,1)
+			PARAMETERS	bs_closer2 = bs_closer2
+
+			ELSE
+
+			! »»» Optionaler Schließer auf Standflügel
+			IF bs_closer_type # "-" THEN
+				bs_closer2 = 2
+				ELSE
+				bs_closer2 = 0  !BITSET(BITSET(bs_closer2, 0,0), 2,0)
+				ENDIF
+			PARAMETERS bs_closer2 = bs_closer2
+
+			ENDIF
+
+		LOCK "bs_closer2"
+
+		ENDIF
+
+	! »»» ohne Türautomation
+	IF NOT(automation) THEN
+
+		! »»» Montage nur in Tür bei 2-Flügelig + Brandschutz
+		IF	( bs_closer_type = "ITS" OR ( bs_closer_type = "OTS" AND NOT(schere) ) ) AND \
+			bs_closer_position = "S" AND bs_demand_FireResistance = 1 THEN
+			bs_closer_position = "T"
+			PARAMETERS bs_closer_position = bs_closer_position
+			ENDIF
+
+		! »»» Nur Standflügel geht nicht!
+		IF NOT(BITTEST(bs_closer2,0)) THEN
+			bs_closer2 = 0  !BITSET(BITSET(bs_closer2, 0,1), 2,0)
+			PARAMETERS	bs_closer2 = bs_closer2
+			ENDIF
+
+		! »»» Bei Brandschutz immer Komplettsystem -> dann SF wie GF
+		IF bs_demand_FireResistance = 1 OR bs_demand_SmokeResistance = 1 THEN  ! OR einszwei = 2
+			bs_closer2 = 7
+			bs_closing_order = 1
+			PARAMETERS bs_closer2 = bs_closer2, bs_closing_order = bs_closing_order
+			LOCK "bs_closing_order"  ! , LOCK "bs_closer2"
+			ENDIF
+
+		! »»» Mit Schließfolgeregelung nur Türblattmontage möglich
+		IF bs_closer2 > 2 AND bs_closer_type # "-" AND bs_closer_position = "S" AND bs_closing_order = 1 THEN
+			bs_closer_position = "T"
+			PARAMETERS bs_closer_position = bs_closer_position
+			! LOCK "bs_closer_position"
+			ENDIF
+
+		ENDIF
+
+	ENDIF
+
+
+! ----------------------------------------------------------------- Kein Schließer?
+
+IF bs_closer_type = "-" THEN
+	bs_closer_model = "-"
+	bs_closer2 = 0
+	PARAMETERS bs_closer_model = bs_closer_model, bs_closer2 = bs_closer2
+	ELSE
+	! Doch, dann ggf. closer2 setzen.
+	IF bs_closer2 = 0 THEN
+		bs_closer2 = 1
+		PARAMETERS bs_closer2 = bs_closer2
+		ENDIF
+	ENDIF
+
+
+! ----------------------------------------------------------------- Schließer am Standflügel?
+
+IF bs_closer2 = 0 THEN
+
+	! »»» Kein Schließer am Standflügel
+	bs_closer_model2 = "-"
+	PARAMETERS bs_closer_model2 = bs_closer_model2
+	LOCK "bs_closer_model2"
+
+	! »»» Wenn überhaupt kein Modell gewählt, dann ganz abschalten.   -> Kurzschluss
+	! IF bs_closer_model = "-" OR bs_closer_model = "" THEN
+	! 	bs_closer_type = "-"
+	! 	PARAMETERS bs_closer_type = bs_closer_type
+	! 	ENDIF
+
+	ELSE
+
+	! »»» Schließer am Standflügel identisch?
+	IF BITTEST(bs_closer2,2) AND selectedS2 > 0 THEN  ! Schließer vorselektiert / Schließer mit Gangflügel identisch
+		bs_closer_model2 = sProdukte[selectedS2][dki_PRODUKT]
+		PARAMETERS bs_closer_model2 = bs_closer_model2
+
+		bs_closer_force2		= bs_closer_force
+		bs_opening_limitation2	= bs_opening_limitation
+		bs_closer_damping2		= bs_closer_damping
+		bs_closer_fix2			= bs_closer_fix
+		PARAMETERS bs_closer_force2		= bs_closer_force2, 
+			bs_opening_limitation2	= bs_opening_limitation2, 
+			bs_closer_damping2		= bs_closer_damping2, 
+			bs_closer_fix2			= bs_closer_fix2
+
+		LOCK	"bs_closer_model2", 
+				! "bs_closer_material2",
+				! "bs_closer_surface2", 
+				"bs_closer_force2",
+				"bs_opening_limitation2",
+				"bs_closer_damping2",
+				"bs_closer_fix2"
+		ENDIF
+
+	ENDIF
+
+
+! ----------------------------------------------------------------- Anforderungen im Moment der Parameteränderung anpassen
+
+! »»» Freilauffunktion nur bei einflügeligen
+IF GLOB_MODPAR_NAME = "bs_door_leafs" AND bs_door_leafs = 2 AND bs_closer_delay = "F" THEN
+	bs_closer_delay = "V"
+	PARAMETERS bs_closer_delay = bs_closer_delay
+	ENDIF
+
+! »»» Elektrifizierung setzen (Bit 3)
+	sts = 0
+	IF  bs_closer_type # "-" THEN
+		IF ((bs_door_leafs > 0 AND ( feststellung  = "E" OR feststellung  = "R" )) OR \
+		 (bs_door_leafs = 2 AND ( feststellung2 = "E" OR feststellung2 = "R" ))) THEN sts = 1
+		ENDIF
+	bs_door_electrified = BITSET(bs_door_electrified, 3, sts)
+	PARAMETERS bs_door_electrified = bs_door_electrified
+	
+
+! =============================================================================
+! VALUES
+! =============================================================================
+
+PARAMETERS bs_closer_manufacturer = "Dormakaba"
+LOCK "bs_closer_manufacturer"
+
+! ----------------------------------- PARAMETER VALUE LIST [ECD.closer] (start)
+
+VALUES "bs_closer_type" "-", "OTS", "ITS", "BTS"
+VALUES "bs_closer_material" " ", "ST", "ES", "AL", "XX", CUSTOM
+VALUES "bs_closer_surface" " ", "-", "G", "N", "L", "V", "Z", "C", "E", "I", "X", CUSTOM
+VALUES "bs_closer_orientation" "BS", "GS", "MI"
+VALUES "bs_closer_position" "S", "T", "B"
+VALUES "bs_slider_system" "G", "S"
+VALUES{2} "bs_closer_force" 3, "3 (max. 950mm)", 4, "4 (max.1100mm)", 5, "5 (max. 1250mm)", 6, "6 (max. 1400mm)",
+	7, "7 (max. 1600mm)"
+VALUES{2} "bs_closer_force2" 3, "3 (max. 950mm)", 4, "4 (max. 1100mm)", 5, "5 (max. 1250mm)", 6, "6 (max. 1400mm)",
+	7, "7 (max. 1600mm)"
+VALUES "bs_closer_fix" "-", "M", "E", "R", "B"
+VALUES "bs_closer_fix2" "-", "M", "E"
+VALUES "bs_closer_delay" "-", "V", "F"
+VALUES "bs_closer_actuator" "-", "DORMA MK 396", "DORMA MK 397", CUSTOM
+VALUES{2} "bs_closer2" 0, "Aus", 1, "nur Gangflügel", 2, "nur Standflügel", 3, "Beidseitig individuell",
+	7, "wie Gangflügel"
+VALUES "develop" 0, 1, 2, 3, 4, 5, 6, 7, 8
+
+! --------------------------------------------------------------- PARAMETER VALUE LISTS (end)
+
+VALUES "bs_closer_model"  VALcloserModel
+VALUES "bs_closer_model2" VALcloser2Model
+
+! ---------------------------------------------------------------------- !
+
+END bs_door_electrified, bs_door_external_button
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
