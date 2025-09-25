@@ -1,10 +1,10 @@
 # bim-all-doors
 Türenkonfigurator / BIM-Tool für Archicad
 
-Aktuelle Version:
+Aktuelle Version:  
 v1.90 preview Erste open source version mit neuem Branding
 
-Versionshistorie
+Versionshistorie:  
 v1.63 Letzte Publikation von dormakaba vom 26.1.2021
 
 Quickinfo:
