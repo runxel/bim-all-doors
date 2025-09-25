@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ParamSection SectVersion="26" SectionFlags="0" SubIdent="0">
+    <ParamSectHeader>
+        <Version>26</Version>
+        <AutoHotspots>false</AutoHotspots>
+        <StatBits>
+            <STBit_FixSize />
+        </StatBits>
+        <WDLeftFrame>0</WDLeftFrame>
+        <WDRightFrame>0</WDRightFrame>
+        <WDTopFrame>0</WDTopFrame>
+        <WDBotFrame>0</WDBotFrame>
+        <LayFlags>65535</LayFlags>
+        <WDMirrorThickness>0</WDMirrorThickness>
+        <WDWallInset>0</WDWallInset>
+        <SymbolColor>0</SymbolColor>
+    </ParamSectHeader>
+    <Parameters>
+        <Length Name="A">
+            <Description><![CDATA["Maß 1"]]></Description>
+            <Fix />
+            <Value>0.2</Value>
+        </Length>
+        <Length Name="B">
+            <Description><![CDATA["Maß 2"]]></Description>
+            <Fix />
+            <Value>0.2</Value>
+        </Length>
+        <Integer Name="showWhat">
+            <Description><![CDATA["Wie soll etikettiert werden?"]]></Description>
+            <Value>1</Value>
+        </Integer>
+        <!-- _sp0: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+        <Title Name="_sp0">
+            <Description><![CDATA["Parameterwert"]]></Description>
+        </Title>
+        <String Name="Praefix1">
+            <Description><![CDATA["Praefix"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value><![CDATA["Lichter Durchgang: "]]></Value>
+        </String>
+        <String Name="showParaName1">
+            <Description><![CDATA["Welcher Parameter soll angezeigt werden?"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value><![CDATA["bs_UsableClearance"]]></Value>
+        </String>
+        <String Name="Suffix1">
+            <Description><![CDATA["Suffix"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value><![CDATA["m"]]></Value>
+        </String>
+        <!-- _sp1: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+        <Title Name="_sp1">
+            <Description><![CDATA["Symbolik"]]></Description>
+        </Title>
+        <Boolean Name="showElectric">
+            <Description><![CDATA["Bedarf Elektrik anzeigen"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>1</Value>
+        </Boolean>
+        <Boolean Name="showExternalButton">
+            <Description><![CDATA["Bedarf externer Taster anzeigen"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>1</Value>
+        </Boolean>
+        <Boolean Name="showFireResistance">
+            <Description><![CDATA["Brandschutzanforderung zeigen"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>0</Value>
+        </Boolean>
+        <Boolean Name="showSmokeResistance">
+            <Description><![CDATA["Rauchschutzanforderung zeigen"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>0</Value>
+        </Boolean>
+        <Boolean Name="showNoiseInsulaion">
+            <Description><![CDATA["Schallschutzanforderung zeigen"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>0</Value>
+        </Boolean>
+        <Boolean Name="showAccessibility">
+            <Description><![CDATA["Barrierefreiheit anzeigen"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>0</Value>
+        </Boolean>
+        <Boolean Name="showAdmissionControl">
+            <Description><![CDATA["Einbruchschutz anzeigen"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>0</Value>
+        </Boolean>
+        <Boolean Name="showMoistureProofing">
+            <Description><![CDATA["Feuchteschutz anzeigen"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>0</Value>
+        </Boolean>
+        <Boolean Name="showEscapeRoute">
+            <Description><![CDATA["Bedarf Fluchtwegeignung anzeigen"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>0</Value>
+        </Boolean>
+        <!-- _sp2: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+        <Title Name="_sp2">
+            <Description><![CDATA["Attribute"]]></Description>
+        </Title>
+        <PenColor Name="gs_cont_pen">
+            <Description><![CDATA["Symbol / Rand"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>1</Value>
+        </PenColor>
+        <FillPattern Name="gs_fill_type">
+            <Description><![CDATA["Schraffur"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>64</Value>
+        </FillPattern>
+        <PenColor Name="gs_fill_pen_yellow">
+            <Description><![CDATA["Vordergrund (gelb)"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>12</Value>
+        </PenColor>
+        <PenColor Name="gs_fill_pen_red">
+            <Description><![CDATA["Vordergrund (rot)"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>11</Value>
+        </PenColor>
+        <PenColor Name="gs_fill_pen_blue">
+            <Description><![CDATA["Vordergrund (blau)"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>16</Value>
+        </PenColor>
+        <PenColor Name="gs_fill_pen_green">
+            <Description><![CDATA["Vordergrund (grün)"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>13</Value>
+        </PenColor>
+        <PenColor Name="gs_fill_pen_grey">
+            <Description><![CDATA["Vordergrund (grau)"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>94</Value>
+        </PenColor>
+        <PenColor Name="gs_fill_pen_white">
+            <Description><![CDATA["Vordergrund (weiss)"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>19</Value>
+        </PenColor>
+        <PenColor Name="gs_bkg_pen">
+            <Description><![CDATA["Hintergrund"]]></Description>
+            <Flags>
+                <ParFlg_Child />
+            </Flags>
+            <Value>0</Value>
+        </PenColor>
+        <Boolean Name="AC_CustomReadability">
+            <Description><![CDATA[""]]></Description>
+            <Fix />
+            <Flags>
+                <ParFlg_Hidden />
+            </Flags>
+            <Value>0</Value>
+        </Boolean>
+    </Parameters>
+</ParamSection>

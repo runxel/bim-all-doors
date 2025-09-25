@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ParamSection SectVersion="26" SectionFlags="0" SubIdent="0">
+    <ParamSectHeader>
+        <Version>26</Version>
+        <AutoHotspots>false</AutoHotspots>
+        <StatBits>
+            <STBit_FixSize />
+        </StatBits>
+        <WDLeftFrame>0</WDLeftFrame>
+        <WDRightFrame>0</WDRightFrame>
+        <WDTopFrame>0</WDTopFrame>
+        <WDBotFrame>0</WDBotFrame>
+        <LayFlags>65535</LayFlags>
+        <WDMirrorThickness>0</WDMirrorThickness>
+        <WDWallInset>0</WDWallInset>
+        <SymbolColor>0</SymbolColor>
+    </ParamSectHeader>
+    <Parameters>
+        <Length Name="A">
+            <Description><![CDATA["Maß 1"]]></Description>
+            <Fix />
+            <Value>1</Value>
+        </Length>
+        <Length Name="B">
+            <Description><![CDATA["Maß 2"]]></Description>
+            <Fix />
+            <Value>1</Value>
+        </Length>
+        <String Name="frame_system">
+            <Description><![CDATA["Frame systems"]]></Description>
+            <Value><![CDATA[""]]></Value>
+        </String>
+        <String Name="panel_system">
+            <Description><![CDATA["Panel systems"]]></Description>
+            <Value><![CDATA[""]]></Value>
+        </String>
+        <String Name="hinge_system">
+            <Description><![CDATA["Hinge Sytsems"]]></Description>
+            <Value><![CDATA["allgemein"]]></Value>
+        </String>
+        <String Name="handle_system">
+            <Description><![CDATA["Handle Sytsems"]]></Description>
+            <Value><![CDATA["allgemein"]]></Value>
+        </String>
+        <String Name="closer_system">
+            <Description><![CDATA["Closer systems"]]></Description>
+            <Value><![CDATA[""]]></Value>
+        </String>
+        <String Name="automation_system">
+            <Description><![CDATA["Automation systems"]]></Description>
+            <Value><![CDATA[""]]></Value>
+        </String>
+        <String Name="access_control_system">
+            <Description><![CDATA["Access control systems"]]></Description>
+            <Value><![CDATA[""]]></Value>
+        </String>
+        <String Name="case_system">
+            <Description><![CDATA["Case systems"]]></Description>
+            <Value><![CDATA[""]]></Value>
+        </String>
+        <String Name="grip_system">
+            <Description><![CDATA["Grip systems"]]></Description>
+            <Value><![CDATA[""]]></Value>
+        </String>
+        <String Name="accessory_system">
+            <Description><![CDATA["Accessory systems"]]></Description>
+            <Value><![CDATA[""]]></Value>
+        </String>
+    </Parameters>
+</ParamSection>

@@ -1,0 +1,16 @@
+
+VALUES{2} "dk_LOI" 2, "Vorplanung", 4, "Entwurfsplanung", 5, "Ausführungsplanung", 6, "Werk- und Detailplanung",
+	-2, "global definiert (MVO)"
+
+VALUES{2} "dk_LOD_2D" 100, "symbolisch (100)", 200, "einfach (200)", 300, "repräsentativ (300)", 350, "repräsentativ (350)",
+	400, "exakt (400)", 500, "as built (500)", -1, "nach Maßstab"
+VALUES{2} "dk_LOD_SE" 100, "symbolisch (100)", 200, "einfach (200)", 300, "repräsentativ (300)", 350, "repräsentativ (350)",
+	400, "exakt (400)", 500, "as built (500)", -1, "nach Maßstab"
+VALUES{2} "dk_LOD_3D" 100, "symbolisch (100)", 200, "einfach (200)", 300, "repräsentativ (300)", 350, "repräsentativ (350)",
+	400, "exakt (400)", 500, "as built (500)"
+
+VALUES{2} "showClashBody" 0, "Aus", 1, "Lichter Durchgang", 2, "Aufschlagzone Türblätter",
+	4, "Bewegungsfläche Bandseite", 8, "Bewegungsfläche Bandgegenseite", 12, "Bewegungsflächen BS+BGS",
+	15, "Tür, Bewegungsflächen + Durchgang"
+
+IF dk_clashbodyBM > 0 THEN lock "dk_clashbodySurface" 

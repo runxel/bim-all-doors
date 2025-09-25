@@ -1,0 +1,304 @@
+
+! #### RESET array variables
+	DIM uiTXT[]
+
+! #### User Interface - UI_xxxFIELD text (Deutsch)
+	IF sprache = 1 THEN
+		uiTXT[1] = "BIM-all-doors "
+		uiTXT[2] = "PLANUNGSPHASE / KOMPLEXITÄT DER KONFIGURATION:"
+		uiTXT[3] = "Level of Input"
+		uiTXT[4] = "Wird immer immer im Dialogfeld links oben angezeigt"
+		uiTXT[14] = "Vorplanung"
+		uiTXT[15] = "Entwurfsplanung"
+		uiTXT[16] = "Ausführungsplanung"
+		uiTXT[17] = "Werk- und Detailplanung"
+		uiTXT[18] = "global definiert (MVO)"
+
+		uiTXT[7] = "AUSGABEGENAUIGKEIT / LEVEL OF DETAIL (LOD):"
+		uiTXT[19] = "symbolisch"
+		uiTXT[20] = "einfach"
+		uiTXT[21] = "repräsentativ (1)"
+		uiTXT[22] = "repräsentativ (2)"
+		uiTXT[23] = "exakt"
+		uiTXT[24] = "abgestimmt"
+		uiTXT[25] = "nach Maßstab"
+
+		uiTXT[5] = "Effektiven lichten Durchgang darstellen."
+		uiTXT[6] = "Schaltet die graphische Darstellung des lichten Durchgangs an"
+		uiTXT[8] = "Konturstift"
+		uiTXT[9] = "Schraffur"
+		uiTXT[10] = "Vordergrundstift"
+		uiTXT[11] = "Hintergrundstift"
+		uiTXT[12] = "Linientyp"
+
+		uiTXT[13] = "Kollisionskörper in 3D anzeigen"
+		uiTXT[26] = "GRUNDRISS"
+		uiTXT[27] = "SCHNITT\n+ ANSICHT"
+		uiTXT[28] = "Detaillierungsgrad im Grundriss"
+		uiTXT[29] = "Detaillierungsgrad in Schnitten + Ansichten"
+		uiTXT[30] = "Detaillierungsgrad in 3D"
+		uiTXT[31] = "Level of Detail - Grundriss"
+		uiTXT[32] = "Level of Detail - Schnitt+Ansicht"
+		uiTXT[33] = "Level of Detail - 3D"
+
+		uiTXT[33] = "Kollisionskörper aus"
+		uiTXT[34] = "Lichter Durchgang"
+		uiTXT[35] = "Aufschlagzone Türblätter"
+		uiTXT[36] = "Bewegungsfläche Bandseite"
+		uiTXT[37] = "Bewegungsfläche Bandgegenseite"
+		uiTXT[38] = "Bewegungsflächen BS+BGS"
+		uiTXT[39] = "Tür, Bewegungsflächen + Durchgang"
+
+		uiTXT[40] = "Oberfäche Kollisionskörper"
+		uiTXT[41] = "Baustoff Kollisionskörper"
+
+		ENDIF
+! #### User Interface - UI_xxxFIELD text (Englisch)
+	IF sprache = 4 THEN
+		uiTXT[1] = "BIM-all-doors "
+		uiTXT[2] = "PLANNING PHASE / COMPLEXITY OF CONFIGURATION:"
+		uiTXT[3] = "Level of Input"
+		uiTXT[4] = "will be shown in top left corner of dialog"
+		uiTXT[14] = "preliminary design phase"
+		uiTXT[15] = "final design phase"
+		uiTXT[16] = "construction phase"
+		uiTXT[17] = "detailing planing phase"
+		uiTXT[18] = "global defined (MVO)"
+
+		uiTXT[7] = "LEVEL OF DETAIL / GEOMETRY (LOG)"
+		uiTXT[19] = "symbolic"
+		uiTXT[20] = "simple"
+		uiTXT[21] = "normal"
+		uiTXT[22] = "representative"
+		uiTXT[23] = "detailed"
+		uiTXT[24] = "as built"
+		uiTXT[25] = "by scale"
+
+		uiTXT[5] = "Display effective usable clearance."
+		uiTXT[6] = "enables graphical replacement of useable clearance"
+		uiTXT[8] = "Contour pen"
+		uiTXT[9] = "Filling"
+		uiTXT[10] = "Fill pen"
+		uiTXT[11] = "Background pen"
+		uiTXT[12] = "Line type"
+
+		uiTXT[13] = "Show clash body in 3D"
+		uiTXT[26] = "FLOOR PLAN"
+		uiTXT[27] = "SECTION\n+ ELEVATION"
+		uiTXT[28] = "Level of Detail floor plan"
+		uiTXT[29] = "Level of Detail section/elevation"
+		uiTXT[30] = "Level of Detail 3D"
+		uiTXT[31] = "Level of Detail - floor plan"
+		uiTXT[32] = "Level of Detail - section+elevation"
+		uiTXT[33] = "Level of Detail - 3D"
+
+		uiTXT[33] = "Clash body ff"
+		uiTXT[34] = "Light clearance"
+		uiTXT[35] = "Leaf zone"
+		uiTXT[36] = "moving area hinge side"
+		uiTXT[37] = "moving area ôpposite side"
+		uiTXT[38] = "moving area"
+		uiTXT[39] = "Leaf, moving area and clearance zone"
+
+		uiTXT[40] = "Surface clash body"
+		uiTXT[41] = "Material clash body"
+
+		ENDIF
+
+
+! #### Standardwerte
+
+DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[] ! Arrays für diskrete Auswahlen UI_INFIELD{4}
+UIpicIdxArray[1] = 0 : UItextArray[1] = "" : UIvaluesArray[1] = 0
+
+
+!»» Abmessungen / dimensions
+maxX=600     ! max. Breite/max. width
+LM=25         ! Linker Rand/Left margin  
+RM=maxX-LM   ! Rechter Rand / right margin position
+uiSB=RM-LM   ! Spaltenbreite / column width
+maxY=230     ! Maximalhöhe /max. height
+uiTH=15      ! Texthöhe / height of text
+uiFH=30      ! Eingabefeldhöhe / height of input fields
+uiZH=uiFH+4  ! Zeilenhöhe / line height
+uiZH2=uiTH+2 ! Zeilenhöhe / line height
+uiDH = INT((uiFH-uiTH)/2+0.5)
+
+
+! =============================================================================
+! Dialogaufrufe
+! =============================================================================
+
+! ------------------------------------------------------------------------------
+!  Dialog einrichten
+
+UI_DIALOG uiTXT[1]+" (v"+str("%^.2",version)+" ©2021 dormakaba)", maxX, maxY
+
+ui_current_page gs_ui_current_page
+
+uiY = 0  !»» vertical starting position
+uiX = LM !»» horizontal starting position
+
+ui_page gs_ui_current_page
+
+! ------------------------------------------------------------------------------
+!  Felder
+
+uiL = 290
+uiB = uiSB - uiL
+
+! ------- ----  ----   --    --   ·· ·   ·    · 
+UI_OUTFIELD uiTXT[2], uiX,uiY+uiDH , uiL,uiTH UI_TOOLTIP uiTXT[4]
+GOSUB "SELECT_dk_LOI"
+UI_INFIELD{3} "dk_LOI", uiX+uiL,uiY , uiB,uiFH, 2, 1, 7, 7, 34, 25, 34, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP uiTXT[3]
+uiY = uiY + uiZH
+
+! ------- ----  ----   --    --   ·· ·   ·    · 
+UI_SEPARATOR 0,uiY,maxX,uiY
+uiY = uiY + uiZH2/2
+
+UI_OUTFIELD uiTXT[7], uiX,uiY + (35+uiZH)/2, uiL,27
+
+UI_STYLE 1,1
+uiX = LM+uiL + (uiB-128-40)/2
+UI_OUTFIELD uiTXT[26], uiX,uiY , 50,12, 2+0
+UI_OUTFIELD uiTXT[27], uiX+60,uiY , 52,25, 2+0
+UI_OUTFIELD "3D", uiX+120,uiY , 50,12, 2+0
+
+UI_STYLE 0,0
+UI_PICT 3, uiX+16, uiZH2+10+uiY , 21,21, 1 UI_TOOLTIP uiTXT[28]   !»» "DORMA_LoD_2D 21x21.png"
+UI_PICT 4, uiX+76, uiZH2+10+uiY , 21,21, 1 UI_TOOLTIP uiTXT[29]   !»» "DORMA_LoD_SE 21x21.png"
+UI_PICT 5, uiX+136,uiZH2+10+uiY , 21,21, 1 UI_TOOLTIP uiTXT[30]   !»» "DORMA_LoD_3D 21x21.png"
+
+GOSUB "SELECT_dk_LOD_2D"
+UI_INFIELD{3} dk_LOD_2D, uiX+8,uiZH2+35+uiY , 40,24, 2, 2, 10, 10, 26, 16, 26, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP uiTXT[31]
+GOSUB "SELECT_dk_LOD_SA"
+UI_INFIELD{3} dk_LOD_SE, uiX+68,uiZH2+35+uiY , 40,24, 2, 2, 10, 10, 26, 16, 26, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP uiTXT[32]
+GOSUB "SELECT_dk_LOD_3D"
+UI_INFIELD{3} dk_LOD_3D, uiX+128,uiZH2+35+uiY , 40,24, 2, 2, 10, 10, 26, 16, 26, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP uiTXT[33]
+uiX = LM
+uiY = uiY + uiZH2+35+uiZH
+
+! ------- ----  ----   --    --   ·· ·   ·    · 
+UI_SEPARATOR 0,uiY,maxX,uiY
+uiY = uiY + uiZH2/2
+
+uiFH=24
+uiZH=uiFH+4
+uiDH = INT((uiFH-16)/2+0.5)
+uiS = 35
+
+UI_INFIELD{3} "showUseableClearance", uiX,uiY , uiL-uiS,uiFH, 2, 1, 2, 1, 0, 0, 0, 0, 1,uiTXT[5],0,  1,uiTXT[5],1 UI_TOOLTIP uiTXT[6]
+
+uiX = uiX+uiL-uiS
+UI_PICT "ui_list_contourPen_flat 32x15.png", uiX,uiY+uiDH , 32,15, 1
+uiX = uiX+uiS
+UI_INFIELD{3} dk_cont_pen, uiX,uiY , uiFH*2,uiFH UI_TOOLTIP uiTXT[8]
+uiX = uiX+uiFH*2+5
+UI_PICT "ui_list_contLineType_flat 32x15.png", uiX,uiY+uiDH , 32,15, 1
+uiX = uiX+uiS
+UI_INFIELD{3} dk_linetype, uiX,uiY , RM-uiX,uiFH UI_TOOLTIP uiTXT[12]
+uiX = LM+uiL-uiS
+uiY = uiY + uiZH
+
+UI_PICT "ui_fill_pen_flat 29x16.png", uiX,uiY+uiDH , 29,16, 1
+uiX = uiX+uiS
+UI_INFIELD{3} dk_fill_pen, uiX,uiY , uiFH*2,uiFH UI_TOOLTIP uiTXT[10]
+uiX = uiX+uiFH*2+5
+UI_PICT "ui_fill_bg_pen_flat 29x16.png", uiX,uiY+uiDH , 29,16, 1
+uiX = uiX+uiS
+UI_INFIELD{3} dk_bkg_pen, uiX,uiY , uiFH*2,uiFH UI_TOOLTIP uiTXT[11]
+uiX = uiX+uiFH*2+5
+UI_PICT "ui_fill_type_flat 20x20.png", uiX,uiY+(uiFH-20)/2 , 20,20, 1
+uiX = uiX+uiS
+UI_INFIELD{3} dk_fill, uiX,uiY , RM-uiX,uiFH UI_TOOLTIP uiTXT[9]
+uiX = LM
+uiY = uiY + uiZH
+
+! ------- ----  ----   --    --   ·· ·   ·    · 
+UI_SEPARATOR 0,uiY,maxX,uiY
+uiY = uiY + uiZH2/2
+
+GOSUB "SELECT_showClashBody"
+UI_INFIELD{3} showClashBody, uiX,uiY , 225,24, 2, "", 10, 10, 26, 16, 26, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP uiTXT[13]
+uiX = uiX+uiL-uiS
+
+! Ab Archicad 22 Umstellung auf Building Material. In Paramers.xml:
+        ! <BuildingMaterial Name="dk_clashbodyBM">
+        ! </BuildingMaterial>
+
+
+IF dk_clashbodyBM < 1 THEN
+	UI_PICT "ui_list_surface_flat 32x15.png", uiX,uiY+uiDH , 32,15, 1
+	uiX = uiX+uiS
+	UI_INFIELD{3} dk_clashbodySurface, uiX,uiY , uiFH*4+uiS+5,uiFH UI_TOOLTIP uiTXT[40]
+	! uiX = uiX+uiFH*2+5
+	! UI_PICT "ui_list_buildingmaterial_flat 32x15.png", uiX,uiY+uiDH , 32,15, 1
+	! uiX = uiX+uiS
+	! UI_INFIELD{3} dk_clashbodyBM, uiX,uiY , RM-uiX,uiFH UI_TOOLTIP uiTXT[41]
+	ELSE
+	UI_PICT "ui_list_buildingmaterial_flat 32x15.png", uiX,uiY+uiDH , 32,15, 1
+	uiX = uiX+uiS
+	UI_INFIELD{3} dk_clashbodyBM, uiX,uiY , uiFH*4+uiS+5,uiFH UI_TOOLTIP uiTXT[41]
+	ENDIF
+
+
+
+
+! =============================================================================
+! Dialogende
+! =============================================================================
+
+END
+
+
+! =============================================================================
+! =============================================================================
+! SUBROUTINES
+! =============================================================================
+! =============================================================================
+
+"SELECT_dk_LOI":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = 5 : UItextArray[j] = "   " + uiTXT[14] : UIvaluesArray[j] = 2  ! Vorplanung
+	j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = "   " + uiTXT[15] : UIvaluesArray[j] = 4  ! Entwurfsplanung
+	j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = "   " + uiTXT[16] : UIvaluesArray[j] = 5  ! Ausführungsplanung
+	j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = "   " + uiTXT[17] : UIvaluesArray[j] = 6  ! Werk- und Detailplanung
+	RETURN
+
+"SELECT_dk_LOD":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = uiTXT[19] : UIvaluesArray[j] = 100  ! symbolisch
+	j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = uiTXT[20] : UIvaluesArray[j] = 200  ! einfach
+	j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = uiTXT[21] : UIvaluesArray[j] = 300  ! repräsentativ (1)
+	j=j+1 : UIpicIdxArray[j] = 5 : UItextArray[j] = uiTXT[22] : UIvaluesArray[j] = 350  ! repräsentativ (2)
+	j=j+1 : UIpicIdxArray[j] = 6 : UItextArray[j] = uiTXT[23] : UIvaluesArray[j] = 400  ! exakt
+	j=j+1 : UIpicIdxArray[j] = 7 : UItextArray[j] = uiTXT[24] : UIvaluesArray[j] = 500  ! abgestimmt
+	RETURN
+
+"SELECT_dk_LOD_2D":
+	GOSUB "SELECT_dk_LOD"
+	j=j+1 : UIpicIdxArray[j] = 8 : UItextArray[j] = uiTXT[25] : UIvaluesArray[j] = -1  ! nach Maßstab
+	RETURN
+
+"SELECT_dk_LOD_3D":
+	GOSUB "SELECT_dk_LOD"
+	! j=j+1 : UIpicIdxArray[j] = 10 : UItextArray[j] = "wie Grundriss" : UIvaluesArray[j] = -3
+	RETURN
+
+"SELECT_dk_LOD_SA":
+	GOSUB "SELECT_dk_LOD"
+	j=j+1 : UIpicIdxArray[j] = 8 : UItextArray[j] = uiTXT[25] : UIvaluesArray[j] = -1  ! nach Maßstab
+	! j=j+1 : UIpicIdxArray[j] = 10 : UItextArray[j] = "wie Grundriss" : UIvaluesArray[j] = -3
+	RETURN
+
+"SELECT_showClashBody":
+	j = 0 : DIM  UIpicIdxArray[], UItextArray[], UIvaluesArray[]
+	j=j+1 : UIpicIdxArray[j] = 1 : UItextArray[j] = "   " + uiTXT[33] : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = 2 : UItextArray[j] = "   " + uiTXT[34] : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = 3 : UItextArray[j] = "   " + uiTXT[35] : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = 4 : UItextArray[j] = "   " + uiTXT[36] : UIvaluesArray[j] = 4
+	j=j+1 : UIpicIdxArray[j] = 5 : UItextArray[j] = "   " + uiTXT[37] : UIvaluesArray[j] = 8
+	j=j+1 : UIpicIdxArray[j] = 6 : UItextArray[j] = "   " + uiTXT[38] : UIvaluesArray[j] = 12
+	j=j+1 : UIpicIdxArray[j] = 7 : UItextArray[j] = "   " + uiTXT[39] : UIvaluesArray[j] = 15
+	RETURN

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ParamSection SectVersion="28" SectionFlags="0" SubIdent="0">
+    <ParamSectHeader>
+        <Version>26</Version>
+        <AutoHotspots>false</AutoHotspots>
+        <StatBits>
+            <STBit_FixSize />
+        </StatBits>
+        <WDLeftFrame>0</WDLeftFrame>
+        <WDRightFrame>0</WDRightFrame>
+        <WDTopFrame>0</WDTopFrame>
+        <WDBotFrame>0</WDBotFrame>
+        <LayFlags>65535</LayFlags>
+        <WDMirrorThickness>0</WDMirrorThickness>
+        <WDWallInset>0</WDWallInset>
+        <SymbolColor>0</SymbolColor>
+    </ParamSectHeader>
+    <Parameters>
+        <Length Name="A">
+            <Description><![CDATA["Maß 1"]]></Description>
+            <Fix />
+            <Value>1</Value>
+        </Length>
+        <Length Name="B">
+            <Description><![CDATA["Maß 2"]]></Description>
+            <Fix />
+            <Value>1</Value>
+        </Length>
+        <Integer Name="dk_LOI">
+            <Description><![CDATA["Planungsstand / - kontext"]]></Description>
+            <Value>2</Value>
+        </Integer>
+        <Integer Name="dk_LOD_2D">
+            <Description><![CDATA["Level of Development/Geometry 2D"]]></Description>
+            <Value>350</Value>
+        </Integer>
+        <Integer Name="dk_LOD_SE">
+            <Description><![CDATA["Level of Development/Geometry Schnitt/Ansicht"]]></Description>
+            <Value>350</Value>
+        </Integer>
+        <Integer Name="dk_LOD_3D">
+            <Description><![CDATA["Level of DevelDetailopment/Geometry 3D"]]></Description>
+            <Value>350</Value>
+        </Integer>
+        <Boolean Name="showUseableClearance">
+            <Description><![CDATA["Lichte Durchgangsbreite zeigen?"]]></Description>
+            <Value>0</Value>
+        </Boolean>
+        <FillPattern Name="dk_fill">
+            <Description><![CDATA["Schraffur"]]></Description>
+            <Value>65</Value>
+        </FillPattern>
+        <PenColor Name="dk_fill_pen">
+            <Description><![CDATA["Schraffurstift"]]></Description>
+            <Value>92</Value>
+        </PenColor>
+        <PenColor Name="dk_bkg_pen">
+            <Description><![CDATA["Schraffurhintergrundstift"]]></Description>
+            <Value>0</Value>
+        </PenColor>
+        <PenColor Name="dk_cont_pen">
+            <Description><![CDATA["Konturstift"]]></Description>
+            <Value>1</Value>
+        </PenColor>
+        <LineType Name="dk_linetype">
+            <Description><![CDATA["Linientyp"]]></Description>
+            <Value>21</Value>
+        </LineType>
+        <Integer Name="gs_ui_current_page">
+            <Description><![CDATA["Aktuelle UI-Seite"]]></Description>
+            <Fix />
+            <Flags>
+                <ParFlg_Child />
+                <ParFlg_Hidden />
+            </Flags>
+            <Value>1</Value>
+        </Integer>
+        <Integer Name="showClashBody">
+            <Description><![CDATA["Kollisionskörper darstellen"]]></Description>
+            <Value>0</Value>
+        </Integer>
+        <Integer Name="dk_clashbodyBM">
+            <Description><![CDATA["Baustoff Kollisionskörper"]]></Description>
+            <Value>0</Value>
+        </Integer>
+        <Material Name="dk_clashbodySurface">
+            <Description><![CDATA["Oberfläche Kollisionskörper"]]></Description>
+            <Value>103</Value>
+        </Material>
+    </Parameters>
+</ParamSection>

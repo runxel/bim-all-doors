@@ -1,0 +1,75 @@
+
+LOCK "B"
+PARAMETERS B = A
+
+! =============================================================================
+
+DIM namePARA[], stringPARA[]
+
+IF showWhat = 2 THEN
+	maxLines = 1024
+	Wert = 0
+	WertT = ""
+
+	! request all parameters from main object and
+	! store name and value into the arrays for READING
+
+	n = 1 : i=1 !counter
+	namePARA[n] = "-"
+	stringPARA[n] = "-"
+
+	DO
+
+		GOSUB "readParameter"
+		! GOSUB "interpretation"
+		GOSUB "checkout"
+
+		IF out=1 AND NameP # "" THEN 
+			n = n+1
+			namePARA[n] = NameP
+			! stringPARA[n] = WertT
+			ENDIF
+
+		i=i+1
+		WHILE i<maxLines AND out>-1
+
+	! Testen, ob selektierter Parameter in Liste
+	out = 0
+	FOR i = 1 TO n
+		IF namePARA[n] = showParaName1 THEN
+			out = 1 : i = n
+			ENDIF
+		NEXT i
+
+	IF not(out) THEN  ! Testen, ob der Parameter auslesbar ist
+		sts=REQUEST ("ASSOCLP_PARVALUE",showParaName1, i, Art, Zustand, Dimension_1, Dimension_2, WertT)
+		IF sts > 0 THEN  ! Liste um den Parameternamen verlängern
+			n = n+1
+			namePARA[n] = showParaName1
+			! stringPARA[n] = WertT
+			ENDIF
+		ENDIF
+
+	VALUES "showParaName1" showParaName1, namePARA
+
+	ENDIF
+
+
+! =============================================================================
+
+VALUES{2} "showWhat" 1,"Symbolik", 2, "Parameterwert"
+
+VALUES "Praefix1" CUSTOM
+VALUES "Suffix1" "m", "m²", "m³", CUSTOM
+
+
+! =============================================================================
+
+IF showWhat # 1 THEN HIDEPARAMETER "_sp1"
+IF showWhat # 2 THEN HIDEPARAMETER "_sp0"
+
+END
+
+
+
+! =============================================================================

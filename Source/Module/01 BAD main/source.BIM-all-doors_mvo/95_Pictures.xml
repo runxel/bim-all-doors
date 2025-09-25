@@ -1,0 +1,15 @@
+<AllPictures>
+  <Picture MIME="image/png" path="dormakaba 139x15.png"    SubIdent="0" SectVersion="19" SectionFlags="0" platform="Win"></Picture>
+  
+  <GDLPict MIME="image/png" path="dk_LoI 34x175.png"       SubIdent="1" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="DORMA_LoD 26x160.png"    SubIdent="2" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="DORMA_LoD_2D 21x21.png"  SubIdent="3" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="DORMA_LoD_SE 21x21.png"  SubIdent="4" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="DORMA_LoD_3D 21x21.png"  SubIdent="5" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+
+  <GDLPict MIME="image/png" path="dk_UI_LoI-2 34x7.png"    SubIdent="6" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_UI_LoI-4 34x7.png"    SubIdent="7" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_UI_LoI-5 34x7.png"    SubIdent="8" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dk_UI_LoI-6 34x7.png"    SubIdent="9" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+</AllPictures>

@@ -181,7 +181,7 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 		babel[136] = "Eine Grundauswahl aus vorkonfigurierten Standardtüren findet sich in der Datei \n'BIM-all-doors - Favoriten.prf' und kann in jedem Projekt über das Favoritenfenster \nimportiert werden."
 		babel[137] = "Die Einstellungen werden in jedem Modul auf Plausibilität grob geprüft. \nUnter 'INFORMATIONEN' werden die Warnmeldungen angezeigt."
 		babel[138] = "ZUGANGSKONTROLLE:"
-		uiTXT[1] = "BIM-all-doors "
+		uiTXT[1] = "bim-all-doors "
 		uiTXT[2] = "INFORMATIONEN + MELDUNGEN"
 		uiTXT[3] = "maximale Eingabe (Werk- und Detailplanung)"
 		uiTXT[4] = "genaue Eingabe (Ausführungsplanung)"
@@ -345,7 +345,7 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 		babel[136] = "Eine Grundauswahl aus vorkonfigurierten Standardtüren findet sich in der Datei \n'BIM-all-doors - Favoriten.prf' und kann in jedem Projekt über das Favoritenfenster \nimportiert werden."
 		babel[137] = "Die Einstellungen werden in jedem Modul auf Plausibilität grob geprüft. \nUnter 'INFORMATIONEN' werden die Warnmeldungen angezeigt."
 		babel[138] = "ACCESS CONTROL:"
-		uiTXT[1] = "BIM-all-doors "
+		uiTXT[1] = "bim-all-doors "
 		uiTXT[2] = "INFORMATIONS + REPORTS"
 		uiTXT[3] = "maximum input (construction phase)"
 		uiTXT[4] = "detailed input (construction phase)"
@@ -792,7 +792,7 @@ UIpage_masterparent = -1
 ! #### Dialoginitialisierung
 
 IF ABS(version - versionStamp) < tlr THEN txt = "" ELSE txt = " / v"+str("%^.2",versionStamp)
-UI_DIALOG uiTXT[1] + " (v"+str("%^.2",version) + txt + " ©2021 dormakaba)"
+UI_DIALOG uiTXT[1] + " (v"+str("%^.2",version) + txt + ")"
 UI_CURRENT_PAGE gs_ui_current_page
 
 

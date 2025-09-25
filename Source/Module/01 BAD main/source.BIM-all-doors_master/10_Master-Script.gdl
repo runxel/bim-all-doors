@@ -1,0 +1,224 @@
+
+! #############################################################################
+!
+! BIM-all-doors - DOOR SYSTEM
+!
+! Module: Master GDL to collect libraries
+!
+! © 2018 DORMAKABA / WRITTEN BY FRANK BEISTER
+! 
+! #############################################################################
+
+
+! =============================================================================
+! GLOBAL SETTINGS
+! =============================================================================
+
+tlr = 0.00001	!»» accurancy
+sprache = 1		!»»  Deutsch
+version = 1.00	!»» Objektversion
+
+! #### Common keyword
+
+IF sprache = 1 THEN
+	commonKey = "allgemein"
+	ELSE
+	commonKey = "generic"
+	ENDIF
+
+
+! ----------------------------------- [ Read bitmaps and determine libraries ]
+
+DIM bitmaps[]
+
+sts = APPLICATION_QUERY ("LIBRARY_MANAGER", "USER_IMAGE_FILES", bitmaps)
+
+n = VARDIM1 (bitmaps)
+
+
+! #### Initialization
+
+frm  = 0 : DIM frame_systems_available[]
+pnl  = 0 : DIM panel_systems_available[]
+hng  = 0 : DIM hinge_systems_available[]
+clsr = 0 : DIM closer_systems_available[]
+tmtn = 0 : DIM automation_systems_available[]
+dcs  = 0 : DIM case_systems_available[]
+hndl = 0 : DIM handle_systems_available[]
+acss = 0 : DIM acontrol_systems_available[]
+grp  = 0 : DIM grip_systems_available[]
+! acsy = 0 : DIM accessory_systems_available[]
+
+! Basic Libraries
+
+frm  = 1 : frame_systems_available[frm]="Umfassungszarge"
+frm  = 2 : frame_systems_available[frm]="Eckzarge"
+frm  = 3 : frame_systems_available[frm]="Blockzarge"
+frm  = 4 : frame_systems_available[frm]="Rohrrahmenzarge"
+
+
+! #### loop to request
+
+IF sts > 0 AND n > 0 THEN
+
+	FOR i = 1 TO n
+
+		s = 0
+
+		! #### Door frames
+		
+		IF STRSUB(bitmaps[i],1,21) = "DoorComponent_frames_" THEN
+
+			s = STRSTR(bitmaps[i],".")
+			IF s>21 THEN s = s-22 ELSE s = STRLEN(bitmaps[i])-21
+
+			IF s>0 THEN
+				frm = frm+1
+				frame_systems_available[frm] = STRSUB(bitmaps[i],22,s) 
+				ENDIF
+
+			ENDIF
+
+		! #### Door panels
+		
+		IF STRSUB(bitmaps[i],1,21) = "DoorComponent_panels_" THEN
+
+			s = STRSTR(bitmaps[i],".")
+			IF s>21 THEN s = s-22 ELSE s = STRLEN(bitmaps[i])-21
+
+			IF s>0 THEN
+				pnl = pnl+1
+				panel_systems_available[pnl] = STRSUB(bitmaps[i],22,s) 
+				ENDIF
+
+			ENDIF
+
+		! #### Door hinges
+		
+		IF STRSUB(bitmaps[i],1,21) = "DoorComponent_hinges_" THEN
+
+			s = STRSTR(bitmaps[i],".")
+			IF s>21 THEN s = s-22 ELSE s = STRLEN(bitmaps[i])-21
+
+			IF s>0 THEN
+				hng = hng+1
+				hinge_systems_available[hng] = STRSUB(bitmaps[i],22,s) 
+				ENDIF
+
+			ENDIF
+
+		! #### Door closer
+		
+		IF STRSUB(bitmaps[i],1,21) = "DoorComponent_closer_" THEN
+
+			s = STRSTR(bitmaps[i],".")
+			IF s>21 THEN s = s-22 ELSE s = STRLEN(bitmaps[i])-21
+
+			IF s>0 THEN
+				clsr = clsr+1
+				closer_systems_available[clsr] = STRSUB(bitmaps[i],22,s) 
+				ENDIF
+
+			ENDIF
+
+		! #### Door automation
+		
+		IF STRSUB(bitmaps[i],1,25) = "DoorComponent_automation_" THEN
+
+			s = STRSTR(bitmaps[i],".")
+			IF s>25 THEN s = s-26 ELSE s = STRLEN(bitmaps[i])-25
+
+			IF s>0 THEN
+				tmtn = tmtn+1
+				automation_systems_available[tmtn] = STRSUB(bitmaps[i],26,s) 
+				ENDIF
+
+			ENDIF
+
+		! #### Case
+
+		IF STRSUB(bitmaps[i],1,20) = "DoorComponent_case_" THEN
+
+			s = STRSTR(bitmaps[i],".")
+			IF s>20 THEN s = s-21 ELSE s = STRLEN(bitmaps[i])-20
+
+			IF s>0 THEN
+				dcs = dcs+1
+				case_systems_available[dcs] = STRSUB(bitmaps[i],21,s) 
+				ENDIF
+
+			ENDIF
+
+		! #### Handles
+
+		IF STRSUB(bitmaps[i],1,22) = "DoorComponent_handles_" THEN
+
+			s = STRSTR(bitmaps[i],".")
+			IF s>22 THEN s = s-23 ELSE s = STRLEN(bitmaps[i])-22
+
+			IF s>0 THEN
+				hndl = hndl+1
+				handle_systems_available[hndl] = STRSUB(bitmaps[i],23,s)
+				ENDIF
+
+			ENDIF
+
+		! #### access control system
+		
+		IF STRSUB(bitmaps[i],1,26) = "DoorComponent_access_ctrl_" THEN
+
+			s = STRSTR(bitmaps[i],".")
+			IF s>26 THEN s = s-27 ELSE s = STRLEN(bitmaps[i])-26
+
+			IF s>0 THEN
+				acss = acss+1
+				acontrol_systems_available[acss] = STRSUB(bitmaps[i],27,s) 
+				ENDIF
+				
+			ENDIF
+
+		! #### Grip
+
+		IF STRSUB(bitmaps[i],1,20) = "DoorComponent_grip_" THEN
+
+			s = STRSTR(bitmaps[i],".")
+			IF s>20 THEN s = s-21 ELSE s = STRLEN(bitmaps[i])-20
+
+			IF s>0 THEN
+				grp = grp+1
+				grip_systems_available[grp] = STRSUB(bitmaps[i],21,s) 
+				ENDIF
+
+			ENDIF
+
+		! #### Accessory
+
+		! IF STRSUB(bitmaps[i],1,25) = "DoorComponent_accessory_" THEN
+
+		! 	s = STRSTR(bitmaps[i],".")
+		! 	IF s>20 THEN s = s-26 ELSE s = STRLEN(bitmaps[i])-25
+
+		! 	IF s>0 THEN
+		! 		acsy = acsy+1
+		! 		accessory_systems_available[acsy] = STRSUB(bitmaps[i],26,s) 
+		! 		ENDIF
+
+		! 	ENDIF
+
+		NEXT i
+
+	ENDIF
+
+
+! #### set value list
+
+IF frm  > 0 THEN VALUES "frame_system" frame_systems_available ELSE VALUES "frame_system" commonKey
+IF pnl  > 0 THEN VALUES "panel_system" commonKey, panel_systems_available ELSE VALUES "panel_system" commonKey
+IF clsr > 0 THEN VALUES "closer_system" closer_systems_available ELSE VALUES "closer_system" commonKey
+IF hng  > 0 THEN VALUES "hinge_system" commonKey, hinge_systems_available ELSE VALUES "hinge_system" commonKey
+IF tmtn > 0 THEN VALUES "automation_system" automation_systems_available ELSE VALUES "automation_system" commonKey
+IF dcs > 0  THEN VALUES "case_system" commonKey, case_systems_available ELSE VALUES "case_system" commonKey
+IF hndl > 0 THEN VALUES "handle_system" handle_systems_available ELSE VALUES "handle_system" commonKey
+IF acss > 0 THEN VALUES "access_control_system" acontrol_systems_available ELSE VALUES "access_control_system" commonKey
+IF grp > 0  THEN VALUES "grip_system" commonKey, grip_systems_available ELSE VALUES "grip_system" commonKey
+! IF acsy > 0 THEN VALUES "accessory_system" commonKey, accessory_systems_available ELSE VALUES "accessory_system" commonKey

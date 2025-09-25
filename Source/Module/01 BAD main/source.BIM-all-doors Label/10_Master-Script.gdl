@@ -1,0 +1,83 @@
+
+! ######################################
+!
+! BIM-all-doors - DOOR SYSTEM
+!
+! Module: Symbolic label
+!
+! © 2018 BY DORMAKABA
+! 
+! ######################################
+
+version = 1.51  !»» Objektversion
+
+! =============================================================================
+! GLOBAL SETTINGS
+! =============================================================================
+
+noSpecial = 1
+noUnique  = 1
+noBlocked = 1
+noHidden  = 1
+
+out = 0
+i = 0
+NameP = ""
+Art = 0
+Zustand = 0
+Dimension_1 = 0
+Dimension_2 = 0
+Wert = 0
+WertT = ""
+
+GOTO "MasterScriptEnd"
+
+! =============================================================================
+
+"readParameter":
+	! read parameter setting of associated host object
+	NameP=""
+	sts=REQUEST ("ASSOCLP_PARVALUE", i, NameP, Art, Zustand, Dimension_1, Dimension_2, Wert)
+	RETURN
+
+"interpretation":
+	WertT = ""
+	out=1
+	IF Art=4 THEN  ! Text
+
+		! read again to prevent type conflicts
+		sts=REQUEST ("ASSOCLP_PARVALUE",showParaName1, i, Art, Zustand, Dimension_1, Dimension_2, WertT)
+		! sts=REQUEST ("ASSOCLP_PARVALUE", i, NameP, Art, Zustand, Dimension_1, Dimension_2, WertT)
+
+		ELSE
+
+		IF ART = 1 THEN  ! Boolean
+			IF Wert THEN WertT = "ja" ELSE WertT = "nein"
+			ELSE
+			IF ART = 2 THEN formattext = "%.0"  ! Ganzzahl (integer)
+			IF ART = 3 THEN formattext = "%.3"  ! Gleitkommazahl (real)
+			IF ART = 5 THEN sts = REQUEST ("CALC_LENGTH_UNIT", "", formattext)  ! Länge
+			IF ART = 6 THEN sts = REQUEST ("CALC_ANGLE_UNIT", "", formattext)  ! Winkel				
+			IF ART < 7 THEN WertT = str(formattext, Wert) ELSE out = 0
+			ENDIF
+			
+		ENDIF
+	RETURN
+
+"checkout":
+	! check if it has to be transfered
+	IF  ( Art>13 AND noSpecial ) OR \
+		( BITTEST(Zustand,3) AND noUnique ) OR \
+		( BITTEST(Zustand,6) AND noBlocked ) OR \
+		( BITTEST(Zustand,7) AND noHidden ) OR \
+		Dimension_1 > 0 THEN
+		out=0
+		ELSE
+		IF Art>6 THEN out = 0 ELSE out = 1
+		ENDIF
+	RETURN
+
+! =============================================================================
+
+"MasterScriptEnd":
+

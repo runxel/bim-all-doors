@@ -1,0 +1,624 @@
+
+! ------------------------------------------------------------------------[ Object development settings ]
+
+IF macro_runtype = 0 THEN
+	VALUES{2} "macro_runtype" 0, "IDLE", 1,"handshake page hirarchy", 2,"handshake page names", 3,"CALL UI page", 5,"return element values", 10,"rebuilt VALUE lists"
+ENDIF
+
+
+! =============================================================================
+! PLAUSIBILITY
+! =============================================================================
+
+! ----------------------------------------------------------------- Parameterabhängigkeiten
+
+VALUES "gs_ub_st2" RANGE [0,]
+
+
+! »»» Seitenfelder als Boolean-Parameter setzen
+
+PARAMETERS 	gs_sidelight_left  = gs_sidelight_left,
+			gs_sidelight_right = gs_sidelight_right
+
+
+! »»» Falzabmessungen plausibel?
+IF gs_vt < 0.001 THEN
+	gs_vt = 0.001
+	PARAMETERS gs_vt = gs_vt
+	ENDIF
+IF gs_vt > gs_frame_thk - 0.001 THEN
+	gs_vt = gs_frame_thk - 0.001
+	PARAMETERS gs_vt = gs_vt
+	ENDIF
+
+IF gs_vb < tlr THEN
+	gs_vb = 0
+	PARAMETERS gs_vb = gs_vb
+	ENDIF
+
+
+! »»» Zargen sind alle nicht für Doppeltüren oder Wendeflügel
+	IF bs_door_leafs =2 THEN
+		IF ac_OpeningSide = "L" THEN ac_OpeningSide2 = "R"
+		IF ac_OpeningSide = "R" THEN ac_OpeningSide2 = "L"
+		ELSE
+		ac_OpeningSide2 = "-"
+		ENDIF
+	PARAMETERS	ac_OpeningSide2 = ac_OpeningSide2
+
+
+! »»» Maulweite / relevante Wandstärke
+	bs_internal_rim_width = WALL_THICKNESS - wall_shell_thk_1 - wall_shell_thk_2
+	PARAMETERS	bs_internal_rim_width	= bs_internal_rim_width
+
+
+! »»» Rahmenstärken evt. automatisiert
+
+IF GLOB_MODPAR_NAME = "dk_frame_thk_upper" THEN 
+	! Der Fall dar nach UI eigentlich nicht passieren
+	frameThicknessUpper	= dk_frame_thk_upper
+	frameThickness 		= frameThicknessUpper
+	ELSE
+	! Oberes Profil ist IMMER so breit wie seitliches.
+	frameThicknessUpper	= frameThickness
+	dk_frame_thk_upper	= frameThicknessUpper
+	PARAMETERS dk_frame_thk_upper = dk_frame_thk_upper
+	ENDIF
+
+IF dk_frametype = "UZ" OR dk_frametype = "BZ"  THEN
+	! Zargenstärke
+	PARAMETERS	gs_frame_thk			= frameThickness,
+				dk_frame_thk_upper		= frameThicknessUpper
+
+	ELSE
+
+	! Zargenstärke  -  gs_frame_thk ist immer das ZARGENAUSSENMAS (ZA) !
+	IF GLOB_MODPAR_NAME = "gs_frame_thk" THEN
+		frameThickness = gs_frame_thk
+		ELSE
+		PARAMETERS gs_frame_thk = frameThickness
+		ENDIF
+
+	! ### Spiegelbreite automatisch bei BZ/RR
+	! IF gs_different_framewidth THEN
+	! 	bs_spiegel_br_bs	 = gs_frame_width_left - gs_vb
+	! 	ELSE
+	! 	! bs_spiegel_br_bs	 = gs_frame_width_left - gs_vb
+	! 	! bs_spiegel_br_bs	 = gs_frame_width_right - gs_vb
+	! 	bs_spiegel_br_bs	 = 0
+	! 	ENDIF
+	! bs_spiegel_br_bgs	 = bs_spiegel_br_bs
+	! bs_spiegel_br_ob_bs	 = gs_frame_width_upper - gs_vb
+	! bs_spiegel_br_ob_bgs = bs_spiegel_br_ob_bs
+	! PARAMETERS bs_spiegel_br_bs  = bs_spiegel_br_bs,
+	! 		bs_spiegel_br_bgs	 = bs_spiegel_br_bgs,
+	! 		bs_spiegel_br_ob_bs	 = bs_spiegel_br_ob_bs,
+	! 		bs_spiegel_br_ob_bgs = bs_spiegel_br_ob_bgs
+
+	ENDIF
+
+
+! »»» Rahmenstärken identisch
+IF NOT(dk_different_frame_thk) THEN
+	dk_frame_thk_post     = frameThickness + _tt_plus
+	dk_frame_thk_upper    = frameThickness
+	dk_frame_thk_bottom   = frameThickness
+	dk_frame_thk_transom  = frameThickness + _tt_plus
+	dk_frame_thk_EZ       = frameThickness
+	PARAMETERS	dk_frame_thk_post		= dk_frame_thk_post,
+				dk_frame_thk_upper		= dk_frame_thk_upper,
+				dk_frame_thk_bottom		= dk_frame_thk_bottom,
+				dk_frame_thk_transom	= dk_frame_thk_transom,
+				dk_frame_thk_EZ			= dk_frame_thk_EZ
+	LOCK		"dk_frame_thk_post", 
+				"dk_frame_thk_upper", 
+				"dk_frame_thk_bottom", 
+				"dk_frame_thk_transom"
+	ENDIF
+
+! »»» Rahmenbreiten identisch
+IF NOT(gs_different_framewidth) THEN
+	gs_frame_width_left 	= gs_frame_width
+	gs_frame_width_right 	= gs_frame_width
+	gs_frame_width_left_2 	= gs_frame_width
+	gs_frame_width_right_2 	= gs_frame_width
+	gs_frame_width_upper 	= gs_frame_width
+	gs_frame_width_transom 	= gs_frame_width
+	gs_frame_width_bottom_sl = gs_frame_width
+	PARAMETERS	gs_frame_width_left			= gs_frame_width_left,
+				gs_frame_width_right		= gs_frame_width_right,
+				gs_frame_width_left_2		= gs_frame_width_left_2,
+				gs_frame_width_right_2		= gs_frame_width_right_2,
+				gs_frame_width_upper		= gs_frame_width_upper,
+				gs_frame_width_transom		= gs_frame_width_transom,
+				gs_frame_width_bottom_sl	= gs_frame_width_bottom_sl
+	LOCK 		"gs_frame_width_left", 
+				"gs_frame_width_right", 
+				"gs_frame_width_left_2", 
+				"gs_frame_width_right_2", 
+				"gs_frame_width_upper", 
+				"gs_frame_width_transom", 
+				"gs_frame_width_bottom_sl"
+	ENDIF
+
+
+! »»» Begrenzungswerte Füllungsstärken prüfen
+s = MIN(gs_frame_thk, dk_frame_thk_post, dk_frame_thk_upper, dk_frame_thk_bottom, dk_frame_thk_transom) - tlr
+IF bs_sidelight_filling_thk1 < tlr OR bs_sidelight_filling_thk1 > s  THEN
+	bs_sidelight_filling_thk1 = MIN(MAX(tlr, bs_sidelight_filling_thk1), s)
+	PARAMETERS bs_sidelight_filling_thk1 = bs_sidelight_filling_thk1
+	ENDIF
+IF bs_sidelight_filling_thk2 < tlr OR bs_sidelight_filling_thk2 > s  THEN
+	bs_sidelight_filling_thk2 = MIN(MAX(tlr, bs_sidelight_filling_thk2), s)
+	PARAMETERS bs_sidelight_filling_thk2 = MIN(MAX(tlr, bs_sidelight_filling_thk2), s)
+	ENDIF
+! s = MIN(dk_frame_thk_post, dk_frame_thk_upper, dk_frame_thk_transom) - tlr
+IF bs_fanlight_filling_thk < tlr OR bs_fanlight_filling_thk > s THEN
+	bs_fanlight_filling_thk = MIN(MAX(tlr, bs_fanlight_filling_thk), s)
+	PARAMETERS bs_fanlight_filling_thk = bs_fanlight_filling_thk
+	ENDIF
+
+
+! »»» Stärken der Seitenteile und des Oberlichtes fixieren?
+sts = 0
+! IF gs_leaf_thk < s THEN s = gs_leaf_thk
+IF bs_inner_frame < 2 THEN
+
+	! Keine innere Zarge, alles 1 Material (Glas)
+	bs_fanlight_filling_thk = gs_leaf_thk
+	bs_sidelight_filling_thk1 = gs_leaf_thk
+	bs_sidelight_filling_thk2 = gs_leaf_thk
+	PARAMETERS bs_fanlight_filling_thk = bs_fanlight_filling_thk,
+		bs_sidelight_filling_thk1 = bs_sidelight_filling_thk1,
+		bs_sidelight_filling_thk2 = bs_sidelight_filling_thk2
+	LOCK "bs_fanlight_filling_thk", "bs_sidelight_filling_thk1", "bs_sidelight_filling_thk2"
+
+	ELSE
+
+	! nur Oberblende, Seitenfelder, so vorhanden, in sich abgeschlossen.
+	IF bs_inner_frame < 3 THEN
+		bs_fanlight_filling_thk = gs_leaf_thk
+		PARAMETERS bs_fanlight_filling_thk = bs_fanlight_filling_thk
+		LOCK "bs_fanlight_filling_thk"
+
+		ELSE
+
+		! Prüfen, wie die Felder zusammenhängen
+		! Beginnend von Unten werden die Segmente aufaddiert
+		! Der Sturz kann prinzipiell aus 4 Teilen bestehen
+
+		! LINKS
+		IF gs_sidelight_left AND gs_door_transom > 0 THEN
+			IF dk_sidelight_transom1 THEN
+				felder2 =  1
+				ELSE
+				IF bittest(bs_fanlight_division,2) THEN
+					felder2 =  2
+					ELSE
+					IF (bs_fanlight_division=1 OR bs_fanlight_division=2) THEN
+						felder2 =  3
+						ELSE
+						IF bittest(bs_fanlight_division,3) OR gs_sidelight_right = 0 THEN
+							felder2 =  4
+							ELSE
+							IF dk_sidelight_transom2 THEN
+								felder2 =  5
+								ELSE
+								felder2 =  6
+								ENDIF
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			ELSE
+			! Max. 1 linkes Seitenfeld
+			felder2 = gs_sidelight_left
+			ENDIF
+
+		! RECHTS
+		IF gs_sidelight_right AND gs_door_transom > 0 THEN
+			IF dk_sidelight_transom2 THEN
+				felder1 =  1
+				ELSE
+				IF bittest(bs_fanlight_division,3) THEN
+					felder1 =  2
+					ELSE
+					IF (bs_fanlight_division=1 OR bs_fanlight_division=2) THEN
+						felder1 =  3
+						ELSE
+						IF bittest(bs_fanlight_division,2) OR gs_sidelight_left = 0 THEN
+							felder1 =  4
+							ELSE
+							IF dk_sidelight_transom1 THEN
+								felder1 =  5
+								ELSE
+								felder1 =  6
+								ENDIF
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			ELSE
+			! Max. 1 rechtes Seitenfeld
+			felder1 = gs_sidelight_right
+			ENDIF
+
+		! OBEN
+		IF felder2 + felder1 > 6 THEN
+			! Seitenfelder links und rechts evt. verbunden?
+			bs_fanlight_filling_thk = bs_sidelight_filling_thk1
+			bs_sidelight_filling_thk2 = bs_sidelight_filling_thk1
+			PARAMETERS bs_fanlight_filling_thk = bs_fanlight_filling_thk, bs_sidelight_filling_thk2 = bs_sidelight_filling_thk2
+			LOCK "bs_fanlight_filling_thk", "bs_sidelight_filling_thk2"
+			ELSE
+			IF felder2 > 3 THEN
+				! Seitenfeld links + Oberlicht verbunden
+				bs_fanlight_filling_thk = bs_sidelight_filling_thk1
+				PARAMETERS bs_fanlight_filling_thk = bs_fanlight_filling_thk
+				LOCK "bs_fanlight_filling_thk"
+				ELSE
+				IF felder1 > 3 THEN
+					! Seitenfeld rechts + Oberlicht verbunden
+					bs_fanlight_filling_thk = bs_sidelight_filling_thk2
+					PARAMETERS bs_fanlight_filling_thk = bs_fanlight_filling_thk
+					LOCK "bs_fanlight_filling_thk"
+					ELSE
+					ENDIF
+				ENDIF
+			ENDIF
+
+		ENDIF
+
+	ENDIF
+
+IF gs_sidelight_left  = 0 THEN LOCK "bs_sidelight_filling_thk2"
+IF gs_sidelight_right = 0 THEN LOCK "bs_sidelight_filling_thk1"
+IF gs_door_transom    = 0 THEN LOCK "bs_fanlight_filling_thk"
+
+IF NOT(gs_sidelight_right AND gs_sidelight_left) THEN LOCK "bDiffSidelightWidth"
+
+
+! »»» Elektrifizierung setzen (Bit 1)
+! IF 1=1 THEN
+! 	bs_door_electrified = BITSET(bs_door_electrified, 1)
+! 	ELSE
+! 	bs_door_electrified = BITSET(bs_door_electrified, 1, 0)
+! 	ENDIF
+! PARAMETERS bs_door_electrified = bs_door_electrified
+
+
+! =============================================================================
+! VALUES
+! =============================================================================
+
+! ----------------------------------- PARAMETER VALUE LIST [ECD FRAME] (start)
+
+VALUES{2} "language" 1, "Deutsch", 4, "English"
+VALUES "bs_frame_material" "ST", "HO", "AL", "KU"
+VALUES{2} "bz_typ_einzug" 0, "auf Wandstärke", 1, "festes Maß"
+VALUES "gs_vb" 0.005, 0.01, 0.015, CUSTOM
+VALUES "gs_vt" 0.01, 0.015, 0.02, 0.025, CUSTOM
+VALUES{2} "bs_folding_nmbr" 0, "ohne", 1, "einfach", 2, "zweifach", 3, "dreifach"
+VALUES "bs_frame_surface_BS" "AN", "BE", "FU", "EL", "NA", "XX", CUSTOM
+VALUES "bs_frame_surface_BGS" "AN", "BE", "FU", "EL", "NA", "XX", CUSTOM
+VALUES "bs_door_sidelight" "-", "L", "R", "LR"
+VALUES "dk_sidelight_filling" "G1", "G2", "G3", "PL"
+
+! --------------------------------------------------------------- PARAMETER VALUE LISTS (end)
+
+VALUES "wall_shell_thk_1" 0, 0.01,0.015,0.1,0.115,0.12,0.125,0.15,0.2, CUSTOM
+VALUES "wall_shell_thk_2" 0, 0.01,0.015,0.1,0.115,0.12,0.125,0.15,0.2, CUSTOM
+
+! --------- KONSTANTEN - Bezugsebene der Spiegel auf BS und BGS setzen
+
+dk_frame_indention1 = wall_shell_thk_1
+IF dk_frametype = "UZ" OR ( dk_frametype = "BZ" AND bz_typ_einzug = 0 ) THEN
+	dk_frame_indention1 = dk_frame_indention1 - gs_ub_st2
+ELSE
+	IF ( dk_frametype = "BZ" AND bz_typ_einzug = 1 ) THEN
+		dk_frame_indention1 = dk_frame_indention1 + bz_einzug - gs_ub_st2
+	ELSE
+		IF dk_frametype = "EZ" THEN
+			dk_frame_indention1 = dk_frame_indention1 - gs_ub_st2
+		ELSE
+			! dk_frametype = "RR"
+			dk_frame_indention1 = dk_frame_indention1 + bz_einzug
+		ENDIF 
+	ENDIF 
+ENDIF
+
+PARAMETERS dk_frame_indention1 = dk_frame_indention1
+PARAMETERS dk_frame_indention2 = dk_frame_indention1 + gs_frame_thk
+
+
+! --------- PLAUSIBILITÄT der Füllungsstärken
+
+VALUES "bs_sidelight_filling_thk1"	RANGE [0.001, gs_vt]
+VALUES "bs_sidelight_filling_thk2"	RANGE [0.001, gs_vt]
+VALUES "bs_fanlight_filling_thk"	RANGE [0.001, gs_vt]
+
+
+! --------- PLAUSIBILITÄT der Rahmenbreiten
+
+VALUES "gs_frame_width_left"		RANGE [minFrameWidth, ]
+VALUES "gs_frame_width_right"		RANGE [minFrameWidth, ]
+VALUES "gs_frame_width_left_2"		RANGE [minFrameWidth, ]
+VALUES "gs_frame_width_right_2"		RANGE [minFrameWidth, ]
+VALUES "gs_frame_width_upper"		RANGE [minFrameWidth, ]
+VALUES "gs_frame_width_transom"		RANGE [minFrameWidth, ]
+VALUES "gs_frame_width_bottom_sl"	RANGE [minFrameWidth, ]
+
+VALUES "bs_spiegel_br_ob_bs"		RANGE [gs_frame_width_upper - gs_vb, ]
+VALUES "bs_spiegel_br_ob_bgs"		RANGE [gs_frame_width_upper, ]
+VALUES "bs_spiegel_br_bs"			RANGE [minFrameViewWidth, ]
+VALUES "bs_spiegel_br_bgs"			RANGE [minFrameViewWidth, ]
+
+VALUES "gs_frame_width"				RANGE [minFrameWidth, _range_frame_width ]
+
+
+! --------- PLAUSIBILITÄT der Rahmenstärken
+
+VALUES "dk_frame_thk_post"		RANGE [minFrameThk, ]
+VALUES "dk_frame_thk_upper"		RANGE [minFrameThk, ]
+VALUES "dk_frame_thk_bottom"	RANGE [minFrameThk, ]
+VALUES "dk_frame_thk_transom"	RANGE [minFrameThk, ]
+VALUES "dk_frame_thk_EZ"		RANGE [minFrameThk, ]
+
+VALUES "gs_frame_thk"			RANGE [minFrameThk, ]  !_range_frame_thk]
+
+VALUES "dk_folding_dimensions"		RANGE [ 0, max(0.001,gs_vt, gs_vb) )
+VALUES "dk_design_folding_depth"	RANGE [ 0, max(0.001,gs_frame_thk - gs_vt) )
+
+
+! --------- LoI < 4 - Vereinfachte Parameterauswahl
+
+IF GLOB_MODPAR_NAME = "dk_materials" AND dk_LOI < 5 THEN
+	PARAMETERS	dk_materials[dka_frame_mat_BGS]	= dk_materials[dka_frame_mat_BS]
+	IF unifyingMaterial > 0 THEN 
+		PARAMETERS	dk_materials[dka_side1_mat_BS]	= dk_materials[unifyingMaterial],
+					dk_materials[dka_side1_mat_BGS]	= dk_materials[unifyingMaterial],
+					dk_materials[dka_side2_mat_BS]	= dk_materials[unifyingMaterial],
+					dk_materials[dka_side2_mat_BGS]	= dk_materials[unifyingMaterial],
+					dk_materials[dka_fan_mat_BS]	= dk_materials[unifyingMaterial],
+					dk_materials[dka_fan_mat_BGS]	= dk_materials[unifyingMaterial]
+		ENDIF
+	ENDIF
+
+
+! ----------------------------------------------------------------- Türaufteilung (code by BEISTER - do not change)
+
+! »»» Optionen (nach Plausibilität) Einfassung Türblatt (innere Zargen)
+IF gs_door_transom > 0 THEN
+
+	! Mit Oberlicht/Oberblende
+	IF gs_sidelight_right THEN
+		IF gs_sidelight_left THEN
+			! Beidseitig
+			VALUES{2} "bs_inner_frame" 0, "keine", 2, "seitlich (Oberblende)", 3, "dreiseitig"  !, 4, "allseitig"
+			ELSE
+			! Rechtes Seitenteil
+			VALUES{2} "bs_inner_frame" 0, "nur links", 2, "seitlich (Oberblende)", 3, "dreiseitig"  !, 4, "allseitig"
+			ENDIF
+		ELSE
+		IF gs_sidelight_left THEN
+			! Linkes Seitenteil
+			VALUES{2} "bs_inner_frame" 0, "nur rechts", 2, "seitlich (Oberblende)", 3, "dreiseitig"  !, 4, "allseitig"
+			ELSE
+			! Kein Seitenteil
+			VALUES{2} "bs_inner_frame" , 2, "seitlich (Oberblende)", 3, "dreiseitig"  !, 4, "allseitig"
+			ENDIF
+		ENDIF
+
+	ELSE
+
+	! Ohne Oberlicht/Oberblende
+	IF gs_sidelight_right THEN
+		IF gs_sidelight_left THEN
+			VALUES{2} "bs_inner_frame" 0, "keine", 3, "dreiseitig"  !, 4, "allseitig"
+			ELSE
+			VALUES{2} "bs_inner_frame" 0, "nur rechts", 3, "dreiseitig"  !, 4, "allseitig"
+			ENDIF
+		ELSE
+		IF gs_sidelight_left THEN
+			VALUES{2} "bs_inner_frame" 0, "nur links", 3, "dreiseitig"  !, 4, "allseitig"
+			ELSE
+			VALUES{2} "bs_inner_frame" , 3, "dreiseitig"  !, 4, "allseitig"
+			ENDIF
+		ENDIF
+
+	ENDIF
+
+
+! »»» Verfügbare Teilungen und innere Zargen
+IF bs_inner_frame > 2 THEN
+
+	! mind. dreiseitig Zarge um Türblatt
+	IF gs_door_transom > 0 THEN
+
+		! Mit Oberlicht
+		IF gs_sidelight_right THEN
+
+			IF gs_sidelight_left THEN
+				! Beidseitig
+				VALUES{2} "bs_fanlight_division" 0, "ungeteilt", 1, "symetrisch", 4, "linke Pfostenachse", 8, "rechte Pfostenachse",
+					12, "wie Türöffnung"  !, 2, "asymetrisch"
+				VALUES{2} "dk_sidelight_transom1" 0, "Aus", 1, "auf Kämpferhöhe"
+				VALUES{2} "dk_sidelight_transom2" 0, "Aus", 1, "auf Kämpferhöhe"
+
+				ELSE
+				! Rechtes Seitenteil
+				VALUES{2} "bs_fanlight_division" 0, "ungeteilt", 1, "symetrisch", 8, "wie Türöffnung"  !, 2, "asymetrisch"
+				VALUES{2} "dk_sidelight_transom1" 0, "Aus", 1, "auf Kämpferhöhe"
+				VALUES{2} "dk_sidelight_transom2" 0, "Aus"
+				LOCK "dk_sidelight_transom2"
+
+				ENDIF
+
+			ELSE
+
+			IF gs_sidelight_left THEN
+				! Linkes Seitenteil
+				VALUES{2} "bs_fanlight_division" 0, "ungeteilt", 1, "symetrisch", 4, "wie Türöffnung"  !, 2, "asymetrisch"
+				VALUES{2} "dk_sidelight_transom1" 0, "Aus"
+				VALUES{2} "dk_sidelight_transom2" 0, "Aus", 1, "auf Kämpferhöhe"
+				LOCK "dk_sidelight_transom1"
+
+				ELSE
+				! Kein Seitenteil
+				VALUES{2} "bs_fanlight_division" 0, "ungeteilt", 1, "symetrisch"  !, 2, "asymetrisch"
+				VALUES{2} "dk_sidelight_transom1" 0, "Aus"
+				VALUES{2} "dk_sidelight_transom2" 0, "Aus"
+				LOCK "dk_sidelight_transom1", "dk_sidelight_transom2"
+
+				ENDIF
+
+			ENDIF
+
+		ELSE
+
+		! Kein Oberlicht, dann auch keine Teilungen in den Ecken.
+		VALUES{2} "bs_fanlight_division" 0, "ungeteilt"
+		VALUES{2} "dk_sidelight_transom1" 0, "Aus"
+		VALUES{2} "dk_sidelight_transom2" 0, "Aus"
+		LOCK "bs_fanlight_division", "dk_sidelight_transom1", "dk_sidelight_transom2"
+
+		ENDIF
+
+	ELSE
+
+	! Ohne teilbares Oberlicht
+
+	IF bs_inner_frame = 2 THEN
+
+		! mit seitlichen Zargenprofilen
+		IF gs_sidelight_right THEN
+
+			IF gs_sidelight_left THEN
+				! Beidseitig
+				VALUES{2} "bs_fanlight_division" 12, "wie Türöffnung"
+				VALUES{2} "dk_sidelight_transom1" 0, "Aus", 1, "auf Kämpferhöhe"
+				VALUES{2} "dk_sidelight_transom2" 0, "Aus", 1, "auf Kämpferhöhe"
+				LOCK "bs_fanlight_division"
+
+				ELSE
+				! Rechtes Seitenteil
+				VALUES{2} "bs_fanlight_division" 8, "wie Türöffnung"
+				VALUES{2} "dk_sidelight_transom1" 0, "Aus", 1, "auf Kämpferhöhe"
+				VALUES{2} "dk_sidelight_transom2" 0, "Aus"
+				LOCK "bs_fanlight_division", "dk_sidelight_transom2"
+
+				ENDIF
+
+			ELSE
+
+			IF gs_sidelight_left THEN
+				! Linkes Seitenteil
+				VALUES{2} "bs_fanlight_division" 4, "wie Türöffnung"
+				VALUES{2} "dk_sidelight_transom1" 0, "Aus"
+				VALUES{2} "dk_sidelight_transom2" 0, "Aus", 1, "auf Kämpferhöhe"
+				LOCK "bs_fanlight_division", "dk_sidelight_transom1"
+
+				ELSE
+				! Kein Seitenteil
+				VALUES{2} "bs_fanlight_division" 0, "ungeteilt"
+				VALUES{2} "dk_sidelight_transom1" 0, "Aus"
+				VALUES{2} "dk_sidelight_transom2" 0, "Aus"
+				LOCK "bs_fanlight_division", "dk_sidelight_transom1", "dk_sidelight_transom2"
+
+				ENDIF
+
+			ENDIF
+
+		ELSE
+
+		! Keinerlei Umfassung um Türblatt
+		VALUES{2} "bs_fanlight_division" 0, "ungeteilt"
+		VALUES{2} "dk_sidelight_transom1" 0, "Aus"
+		VALUES{2} "dk_sidelight_transom2" 0, "Aus"
+		LOCK "bs_fanlight_division", "dk_sidelight_transom1", "dk_sidelight_transom2"
+
+		ENDIF
+
+	ENDIF
+
+
+! ----------------------------------------------------------------- Plausibilitätsprüfungen / Abhängigkeiten (code by BEISTER - do not change)
+
+! »»» Glazing dimesions (sidefields)
+
+IF gs_sidelight_left | gs_sidelight_right THEN
+	sidL_maxglass_width		= gs_sidelight_width_left  - (gs_frame_width_left  + gs_frame_width_left_2)  * gs_sidelight_left  - gs_vb
+	sidR_maxglass_width		= gs_sidelight_width_right - (gs_frame_width_right + gs_frame_width_right_2) * gs_sidelight_right - gs_vb
+
+	sidL_maxglass_height	= ac_unit_height - dk_sidelight_transom2 * (gs_transom_height + (gs_frame_width_transom_sl-gs_frame_width_transom)) - not(dk_sidelight_transom2) * gs_frame_width_upper_sl - gs_frame_width_bottom_sl
+	sidR_maxglass_height	= ac_unit_height - dk_sidelight_transom1 * (gs_transom_height + (gs_frame_width_transom_sl-gs_frame_width_transom)) - not(dk_sidelight_transom1) * gs_frame_width_upper_sl - gs_frame_width_bottom_sl
+
+	IF gs_different_framewidth THEN
+
+		IF gs_door_transom THEN
+
+			gs_frame_width_transom_sl = gs_frame_width_transom
+			PARAMETERS gs_frame_width_transom_sl = gs_frame_width_transom_sl
+
+			LOCK "gs_frame_width_transom_sl"
+			HIDEPARAMETER "gs_frame_width_transom_sl"
+
+			ELSE
+
+			gs_frame_width_upper_sl = gs_frame_width_upper
+			PARAMETERS gs_frame_width_upper_sl = gs_frame_width_upper_sl
+
+			LOCK "gs_frame_width_upper_sl"
+			HIDEPARAMETER "gs_frame_width_upper_sl"
+
+			ENDIF
+
+		IF gs_sidelight_left THEN
+			glazingHeight2 = sidL_maxglass_height
+			PARAMETERS glazingHeight2 = glazingHeight2
+			LOCK "glazingHeight2"
+			ENDIF
+
+		IF gs_sidelight_right THEN
+			glazingHeight = sidR_maxglass_height
+			PARAMETERS glazingHeight = glazingHeight
+			LOCK "glazingHeight"
+			ENDIF
+
+		ELSE
+
+		glazingHeight = sidL_maxglass_height
+		PARAMETERS glazingHeight = glazingHeight
+
+		IF gs_sidelight_left THEN
+			glazingWidthLeft = sidL_maxglass_width
+			PARAMETERS glazingWidthLeft = glazingWidthLeft
+			lock	"glazingWidthLeft"
+			ENDIF
+
+		IF gs_sidelight_right THEN
+			glazingWidthRight = sidR_maxglass_width
+			PARAMETERS glazingWidthRight = glazingWidthRight
+			lock	"glazingWidthRight"
+			ENDIF
+
+		ENDIF
+
+	ENDIF
+
+
+! ---------------------------------------------------------------------- !
+
+END offsetFrameSurfaceBGS,
+		facingLintelBS, facingLintelBGS,
+		frame2wallSurfaceBS, frame2wallSurfaceBGS,
+		bs_door_electrified
+
+! =============================================================================
+! =============================================================================
+!
+! SUBROUTINES
+!
+! =============================================================================
+! =============================================================================
+
