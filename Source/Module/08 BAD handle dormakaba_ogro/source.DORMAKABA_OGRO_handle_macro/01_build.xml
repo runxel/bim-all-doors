@@ -26,11 +26,10 @@
     <!-- insert:90_Parameters.xml -->
   </ParamSection>
   <Copyright SectVersion="1" SectionFlags="0" SubIdent="0">
-    <Author>©2016 Frank Beister, Hamburg, Germany</Author>
+    <Author>originally by Frank Beister, Hamburg, Germany</Author>
     <License>
-      <Type>Commercial</Type>
-      <Version>
-      </Version>
+      <Type>CC0</Type>
+      <Version>1.0</Version>
     </License>
   </Copyright>
   <Keywords SectVersion="1" SectionFlags="0" SubIdent="0"><![CDATA[]]></Keywords>

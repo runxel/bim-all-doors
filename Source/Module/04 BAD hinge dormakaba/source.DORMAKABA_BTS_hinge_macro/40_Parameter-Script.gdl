@@ -43,7 +43,7 @@ IF holz THEN
 PARAMETERS bs_hinge_nmbr = 2
 PARAMETERS bs_hinge_reel_diameter = 0.035
 PARAMETERS bs_hinge_height = 0.02
-PARAMETERS bs_hinge_manufacturer = "Dormakaba"
+PARAMETERS bs_hinge_manufacturer = "(dormakaba)"
 PARAMETERS bs_hinge_material = "ST"
 
 ! "Zapfenbandpaar"

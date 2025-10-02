@@ -595,14 +595,12 @@ END
 	UI_INFIELD{3} "bs_control_side", 174, jjj-5 , 224,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[8]
 
 	IF  bs_control_side = "-" THEN RETURN
-	
-
 
 	jjj=jjj+23			! 49
 
-!	UI_STYLE 0,1
+	!UI_STYLE 0,1
 	UI_OUTFIELD babel[4], 40,jjj , 125,15, 0+0
-!	UI_STYLE 0,0
+	!UI_STYLE 0,0
 
 	GOSUB "VALUES_bs_access_control_system"
 	UI_INFIELD{3} "bs_access_control_system", 174, jjj-5 , 224,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[5]
@@ -619,14 +617,12 @@ END
 		jjj=jjj+23			! 95
 	ENDIF
  
+	! !!! Produktcode !!!
+	! UI_OUTFIELD babel[3], 40, jjj , 125,15, 0+0
 
-!	!!! Produktcode !!!
-!	UI_OUTFIELD babel[3], 40, jjj , 125,15, 0+0
-!
-!	UI_OUTFIELD bs_acs_model, 174,jjj , 262,19 UI_TOOLTIP bubble[5]+ " (" + bs_acs_model + ")"
-!
-!	jjj=jjj+20			! 115
+	! UI_OUTFIELD bs_acs_model, 174,jjj , 262,19 UI_TOOLTIP bubble[5]+ " (" + bs_acs_model + ")"
 
+	! jjj=jjj+20			! 115
 
 	UI_SEPARATOR 40,jjj, 407,jjj
 
@@ -684,19 +680,13 @@ END
 		ENDIF
 	ENDIF
 
-
-
 	RETURN
 
-
-
-
+! ------------------------------------------------------------- MAIN PAGE [ 7001 ]
 	7001:   ! #### LOI 5+ - Schloss und Beschlag Access Control
 	GOSUB 9900
 
 	jjj = 26			! Zeilenzähler
-
-
 
 	IF bs_access_control_system <> "c-lever compact" AND bs_access_control_system <> "Digitalzylinder"	THEN
 		UI_OUTFIELD babel[18], 40, jjj , 125,15, 0+0
@@ -824,24 +814,13 @@ END
 
 	RETURN
 
-
-
-
-
-
-
+! ------------------------------------------------------------- MAIN PAGE [ 7003 ]
 	7003:   ! #### LOI 5+ - Materialien Access Control
 	GOSUB 9900
 
 	jjj = 26			! Zeilenzähler
 
-
-
-
 	RETURN
-
-
-
 
 ! -------------------------------------------------------------TITLE [ 9900 ]
 	9900:	  ! #### TITEL on all pages
@@ -852,8 +831,8 @@ END
 		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
 		ENDIF   !»» "dk_attention 16x16.png"
 	UI_STYLE 0,0
-	UI_PICT 1, 279,-2 , 139,15, 1
-	UI_SEPARATOR 0,15, 419,15
-	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 422,-5 , 22,22, 0, "https://www.dormakaba.com/de-de/produkte-loesungen/produkte/systemloesungen-zutritt-und-zeit/elektronische-tuerbeschlaege-und--schloesser" UI_TOOLTIP bubble[6]
+	UI_PICT 1, 315,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 455,15
+	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 458,-5 , 22,22, 0, "https://www.dormakaba.com/de-de/produkte-loesungen/produkte/systemloesungen-zutritt-und-zeit/elektronische-tuerbeschlaege-und--schloesser" UI_TOOLTIP bubble[6]
 	RETURN
 

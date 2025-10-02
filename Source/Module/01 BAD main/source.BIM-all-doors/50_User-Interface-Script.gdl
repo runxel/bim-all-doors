@@ -46,7 +46,7 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 ! --------- User Interface - UI_xxxFIELD text (Deutsch)
 	IF sprache = 1 THEN
 		babel[1] = "PLANUNGSPHASE  /\nKOMPLEXITÄT DER KONFIGURATION:"
-		babel[2] = "bim-all-doors - Die erweiterbare Komponententür"
+		babel[2] = "Die erweiterbare Komponententür"
 		babel[3] = "GRUNDLEGENDE ANFORDERUNGEN AN ..."
 		babel[4] = "Türflügel:"
 		babel[5] = "Ausrichtung:"
@@ -175,10 +175,10 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 		babel[129] = "... ist eine generische Tür. Sie deckt eine Maximalzahl an Türvarianten ab."
 		babel[131] = "Auf der Seite 'TÜRKOMPONENTEN' werden die verfügbaren Module, aus denen die Tür zusammengesetzt werden kann, ausgewählt."
 		babel[132] = "Favoriten (voreingestellte Beispieltüren), Türlisten (als interaktive Auswertungen)\nund zusätzliche Türeigenschaften (XML Import-Datei)."
-		babel[133] = "Die Abfrage der einstellbaren Parameter lässt sich abhängig von der Planungs-\nstadium auf der Seite 'GRUNDEINSTELLUNGEN' eingrenzen. Die Einstellung ist auf jeder Dialogseite links oben dargestellt:"
-		babel[134] = "Die Ausgabegenauigkeit wird auf der Einstellungsseite 'DARSTELLUNG' für Grundriss, Schnitt + Ansicht und 3D differenziert eingestellt."
+		babel[133] = "Die Abfrage der einstellbaren Parameter lässt sich abhängig von der Planungsstadium auf der Seite 'GRUNDEINSTELLUNGEN' eingrenzen. Die Einstellung ist auf jeder Dialogseite links oben dargestellt:"
+		babel[134] = "Die Ausgabegenauigkeit wird auf der Einstellungsseite 'DARSTELLUNG' für Grundriss, \nSchnitt + Ansicht und 3D differenziert eingestellt."
 		babel[135] = "Die Vielzahl an Parametern kann nicht mit jeder Tür komplett von den Grundeinstellungen aus neu eingestellt werden. Arbeiten sie daher mit Favoriten."
-		babel[136] = "Eine Grundauswahl aus vorkonfigurierten Standardtüren findet sich in der Datei \n'BIM-all-doors - Favoriten.prf' und kann in jedem Projekt über das Favoritenfenster \nimportiert werden."
+		babel[136] = "Eine Grundauswahl aus vorkonfigurierten Standardtüren findet sich in der Datei \n'bim-all-doors - Favoriten.prf' und kann in jedem Projekt über das Favoritenfenster \nimportiert werden."
 		babel[137] = "Die Einstellungen werden in jedem Modul auf Plausibilität grob geprüft. \nUnter 'INFORMATIONEN' werden die Warnmeldungen angezeigt."
 		babel[138] = "ZUGANGSKONTROLLE:"
 		uiTXT[1] = "bim-all-doors "
@@ -210,7 +210,7 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 ! --------- User Interface - UI_xxxFIELD text (Englisch)
 	IF sprache = 4 THEN
 		babel[1] = "PLANNING PHASE  /\n COMPLEXITY OF CONFIGURATION:"
-		babel[2] = "bim-all-doors - The extendable components door"
+		babel[2] = "The extendable components door"
 		babel[3] = "FUNDAMENTAL REQUIREMENTS TO ..."
 		babel[4] = "Door leaves:"
 		babel[5] = "Orientation:"
@@ -339,10 +339,10 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 		babel[129] = "... ist eine generische Tür. Sie deckt eine Maximalzahl an Türvarianten ab."
 		babel[131] = "Auf der Seite 'TÜRKOMPONENTEN' werden die verfügbaren Module, aus denen die Tür zusammengesetzt werden kann, ausgewählt."
 		babel[132] = "Favoriten (voreingestellte Beispieltüren), Türlisten (als interaktive Auswertungen)\nund zusätzliche Türeigenschaften (XML Import-Datei)."
-		babel[133] = "Die Abfrage der einstellbaren Parameter lässt sich abhängig von der Planungs-\nstadium auf der Seite 'GRUNDEINSTELLUNGEN' eingrenzen. Die Einstellung ist auf jeder Dialogseite links oben dargestellt:"
-		babel[134] = "Die Ausgabegenauigkeit wird auf der Einstellungsseite 'DARSTELLUNG' für Grundriss, Schnitt + Ansicht und 3D differenziert eingestellt."
+		babel[133] = "Die Abfrage der einstellbaren Parameter lässt sich abhängig von der Planungsstadium auf der Seite 'GRUNDEINSTELLUNGEN' eingrenzen. Die Einstellung ist auf jeder Dialogseite links oben dargestellt:"
+		babel[134] = "Die Ausgabegenauigkeit wird auf der Einstellungsseite 'DARSTELLUNG' für Grundriss, \nSchnitt + Ansicht und 3D differenziert eingestellt."
 		babel[135] = "Die Vielzahl an Parametern kann nicht mit jeder Tür komplett von den Grundeinstellungen aus neu eingestellt werden. Arbeiten sie daher mit Favoriten."
-		babel[136] = "Eine Grundauswahl aus vorkonfigurierten Standardtüren findet sich in der Datei \n'BIM-all-doors - Favoriten.prf' und kann in jedem Projekt über das Favoritenfenster \nimportiert werden."
+		babel[136] = "Eine Grundauswahl aus vorkonfigurierten Standardtüren findet sich in der Datei \n'bim-all-doors - Favoriten.prf' und kann in jedem Projekt über das Favoritenfenster \nimportiert werden."
 		babel[137] = "Die Einstellungen werden in jedem Modul auf Plausibilität grob geprüft. \nUnter 'INFORMATIONEN' werden die Warnmeldungen angezeigt."
 		babel[138] = "ACCESS CONTROL:"
 		uiTXT[1] = "bim-all-doors "
@@ -708,7 +708,6 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 		bubble[169] = "Platzbedarf Bandseite in der Tiefe"
 		bubble[170] = "Verfügbare Zugangskontrollsysteme"
 		ENDIF
-
 
 ! ----------------------------------- MULTILINGUAL TEXT (end)
 
@@ -1617,50 +1616,50 @@ END
 	UI_OUTFIELD babel[7], 0,43 , 70,15, 0+0 UI_TOOLTIP bubble[1]
 	UI_OUTFIELD babel[8], 0,67 , 70,15, 0+0 UI_TOOLTIP bubble[2]
 	UI_OUTFIELD babel[9], 0,94 , 70,15, 0+0 UI_TOOLTIP bubble[16]
-	UI_OUTFIELD babel[5], 104,94 , 73,15, 1+0 UI_TOOLTIP bubble[4]
+	UI_OUTFIELD babel[5], 120,94 , 73,15, 1+0 UI_TOOLTIP bubble[4]
 	UI_OUTFIELD babel[4], 0,121 , 70,15, 0+0 UI_TOOLTIP bubble[3]
-	UI_OUTFIELD babel[6], 104,118 , 73,15, 1+0 UI_TOOLTIP bubble[6]
+	UI_OUTFIELD babel[6], 120,118 , 73,15, 1+0 UI_TOOLTIP bubble[6]
 	UI_STYLE 0,1
-	UI_OUTFIELD "+", 212,119 , 12,15, 2+0
+	UI_OUTFIELD "+", 238,119 , 12,15, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD "+", 258,119 , 12,15, 2+0
+	UI_OUTFIELD "+", 287,119 , 12,15, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 0,2
-	UI_OUTFIELD "= » " + BS_ID + " «", 179,137 , 124,15, 0+0 UI_TOOLTIP bubble[9]
+	UI_OUTFIELD "= » " + BS_ID + " «", 203,137 , 135,15, 0+0 UI_TOOLTIP bubble[9]
 	UI_STYLE 0,0
-	UI_INFIELD{3} "bs_door_manufacturer", 71,41 , 232,19 UI_TOOLTIP bubble[1]
-	UI_INFIELD{3} "bs_door_model", 71,65 , 232,19 UI_TOOLTIP bubble[2]
-	UI_INFIELD{3} "dk_refRoom_orientation", 70,88 , 33,24, 2, 61, 6, 1, 18, 18, 18, 18, 4,"BS","BS", 5,"BGS","BGS" UI_TOOLTIP bubble[14]
-	UI_INFIELD{3} "bs_door_leafs", 70,114 , 33,24, 9, "dk_DoorNumber 72x18.png", 4, 1, 18, 18, 18, 18, 1, "0",0, 2,"1",1, 4-symm,"2",2 UI_TOOLTIP bubble[3]
-	UI_INFIELD{3} "gs_list_orientationDef_m", 178,88 , 34,24, 6, "dk_lock 32x16.png", 2, 1, 16, 16, 16, 16, 1,"automatisch",1, 2,"fixiertl",0 UI_TOOLTIP bubble[5]
+	UI_INFIELD{3} "bs_door_manufacturer", 79,41 , 260,19 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} "bs_door_model", 79,65 , 260,19 UI_TOOLTIP bubble[2]
+	UI_INFIELD{3} "dk_refRoom_orientation", 78,88 , 33,24, 2, 61, 6, 1, 18, 18, 18, 18, 4,"BS","BS", 5,"BGS","BGS" UI_TOOLTIP bubble[14]
+	UI_INFIELD{3} "bs_door_leafs", 78,114 , 33,24, 9, "dk_DoorNumber 72x18.png", 4, 1, 18, 18, 18, 18, 1, "0",0, 2,"1",1, 4-symm,"2",2 UI_TOOLTIP bubble[3]
+	UI_INFIELD{3} "gs_list_orientationDef_m", 202,88 , 34,24, 6, "dk_lock 32x16.png", 2, 1, 16, 16, 16, 16, 1,"automatisch",1, 2,"fixiertl",0 UI_TOOLTIP bubble[5]
 	IF NOT(gs_list_orientationDef_m) THEN
 		GOSUB "SELECT_ac_OpeningSide"
-		UI_INFIELD{3} "ac_OpeningSide", 225,88 , 79,24, 2, "", 3, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[4]
+		UI_INFIELD{3} "ac_OpeningSide", 253,88 , 86,24, 2, "", 3, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[4]
 		ENDIF
-	UI_INFIELD{3} dk_id_PrefixSuffix[1], 179,116 , 32,19 UI_TOOLTIP bubble[7]
+	UI_INFIELD{3} dk_id_PrefixSuffix[1], 203,116 , 32,19 UI_TOOLTIP bubble[7]
 	GOSUB "SELECT_dk_id_zoneOrientation"
-	UI_INFIELD{3} "dk_id_zoneOrientation", 225,115 , 32,21, 2, 61, 6, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[15]
-	UI_INFIELD{3} dk_id_PrefixSuffix[2], 271,116 , 32,19 UI_TOOLTIP bubble[8]
+	UI_INFIELD{3} "dk_id_zoneOrientation", 253,115 , 32,21, 2, 61, 6, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[15]
+	UI_INFIELD{3} dk_id_PrefixSuffix[2], 302,116 , 36,19 UI_TOOLTIP bubble[8]
 	UI_STYLE 2,1
-	UI_OUTFIELD babel[3], 100,156 , 260,15, 2+0
+	UI_OUTFIELD babel[3], 118,156 , 260,15, 2+0
 	UI_STYLE 0,0
 	UI_PICT "dk_ui_demands_fire 36x36.png", 3,174 , 20,20, 1 UI_TOOLTIP bubble[21]
-	UI_PICT "dk_ui_demands_smoke 36x36.png", 69,174 , 20,20, 1 UI_TOOLTIP bubble[22]
-	UI_PICT "dk_ui_demands_noise 36x36.png", 132,174 , 20,20, 1 UI_TOOLTIP bubble[23]
-	UI_PICT "dk_ui_demands_accessability 36x36.png", 196,174 , 20,20, 1 UI_TOOLTIP bubble[24]
-	UI_PICT "dk_ui_demands_admission 36x36.png", 259,174 , 20,20, 1 UI_TOOLTIP bubble[25]
-	UI_PICT "dk_ui_demands_moisture 36x36.png", 323,174 , 20,20, 1 UI_TOOLTIP bubble[26]
-	UI_PICT "dk_ui_demands_escape 36x36.png", 386,174 , 20,20, 1 UI_TOOLTIP bubble[27]
+	UI_PICT "dk_ui_demands_smoke 36x36.png", 75,174 , 20,20, 1 UI_TOOLTIP bubble[22]
+	UI_PICT "dk_ui_demands_noise 36x36.png", 144,174 , 20,20, 1 UI_TOOLTIP bubble[23]
+	UI_PICT "dk_ui_demands_accessability 36x36.png", 214,174 , 20,20, 1 UI_TOOLTIP bubble[24]
+	UI_PICT "dk_ui_demands_admission 36x36.png", 283,174 , 20,20, 1 UI_TOOLTIP bubble[25]
+	UI_PICT "dk_ui_demands_moisture 36x36.png", 353,174 , 20,20, 1 UI_TOOLTIP bubble[26]
+	UI_PICT "dk_ui_demands_escape 36x36.png", 422,174 , 20,20, 1 UI_TOOLTIP bubble[27]
 	UI_INFIELD{3} "bs_demand_FireResistance", 29,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[21]   !»» "dk_yes_no_na 72x18.png"
-	UI_INFIELD{3} "bs_demand_SmokeResistance", 95,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[22]   !»» "dk_yes_no_na 72x18.png"
-	UI_INFIELD{3} "bs_demand_NoiseInsulaion", 158,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[23]   !»» "dk_yes_no_na 72x18.png"
-	UI_INFIELD{3} "bs_demand_Accessibility", 222,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[24]   !»» "dk_yes_no_na 72x18.png"
-	UI_INFIELD{3} "bs_demand_AdmissionControl", 285,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[25]   !»» "dk_yes_no_na 72x18.png"
-	UI_INFIELD{3} "bs_demand_MoistureProofing", 349,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[26]   !»» "dk_yes_no_na 72x18.png"
-	UI_INFIELD{3} "bs_demand_EscapeRoute", 412,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[27]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_demand_SmokeResistance", 101,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[22]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_demand_NoiseInsulaion", 170,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[23]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_demand_Accessibility", 240,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[24]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_demand_AdmissionControl", 309,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[25]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_demand_MoistureProofing", 379,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[26]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_demand_EscapeRoute", 448,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[27]   !»» "dk_yes_no_na 72x18.png"
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[1], 0,219 , 221,28, 2+0 UI_TOOLTIP bubble[11]
+	UI_OUTFIELD babel[1], 10,219 , 221,28, 2+0 UI_TOOLTIP bubble[11]
 	UI_STYLE 0,0
 	UI_STYLE 1,2
 	IF dk_LoI > -1 AND dk_LoI < 6 THEN
@@ -1669,33 +1668,33 @@ END
 	UI_STYLE 0,0
 	UI_STYLE 1,2
 	IF ef_LoI < 0 THEN
-		UI_OUTFIELD dk_LoItxt, 206,251 , 200,15, 2+0
+		UI_OUTFIELD dk_LoItxt, 247,251 , 200,15, 2+0
 		ENDIF
 	UI_STYLE 0,0
 	GOSUB "SELECT_dk_LOI"
-	UI_INFIELD{3} "dk_LOI", 221,218 , 164,33, 2, 60, 7, 7, 34, 25, 34, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[10]
+	UI_INFIELD{3} "dk_LOI", 262,218 , 164,33, 2, 60, 7, 7, 34, 25, 34, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[10]
 	GOSUB "DYNVALUES_ICON"
 	IF iconLeft > 4 THEN
-		UI_PICT 21 + iconLeft, 397,41 , 20,80, 1 UI_TOOLTIP bubble[17]
+		UI_PICT 21 + iconLeft, 433,41 , 20,80, 1 UI_TOOLTIP bubble[17]
 		ELSE
-		UI_PICT 21 + iconLeft, 397,41 , 7,80, 1 UI_TOOLTIP bubble[17]
+		UI_PICT 21 + iconLeft, 433,41 , 7,80, 1 UI_TOOLTIP bubble[17]
 		ENDIF
 	IF iconRight > 4 THEN
-		UI_PICT 21 + iconRight, 337,41 , 20,80, 1 UI_TOOLTIP bubble[17]
+		UI_PICT 21 + iconRight, 373,41 , 20,80, 1 UI_TOOLTIP bubble[17]
 		ELSE
-		UI_PICT 21 + iconRight, 350,41 , 7,80, 1 UI_TOOLTIP bubble[17]
+		UI_PICT 21 + iconRight, 386,41 , 7,80, 1 UI_TOOLTIP bubble[17]
 		ENDIF
-	UI_PICT 17 + iconTop, 355,41 , 44,7, 1 UI_TOOLTIP bubble[17]
-	IF iconDoor > 0 THEN UI_PICT 29 + iconDoor, 355,46 , 44,75, 1 UI_TOOLTIP bubble[17]
-	IF iconTransom > 0 AND iconTransom < 10 THEN UI_PICT 8 + iconTransom, 355,48 , 44,12, 1 UI_TOOLTIP bubble[17]
-	IF bs_door_electrified > 0 THEN UI_PICT "dk_electric 16x16.png", 422,41 , 16,16, 1 UI_TOOLTIP bubble[28]
+	UI_PICT 17 + iconTop, 391,41 , 44,7, 1 UI_TOOLTIP bubble[17]
+	IF iconDoor > 0 THEN UI_PICT 29 + iconDoor, 391,46 , 44,75, 1 UI_TOOLTIP bubble[17]
+	IF iconTransom > 0 AND iconTransom < 10 THEN UI_PICT 8 + iconTransom, 391,48 , 44,12, 1 UI_TOOLTIP bubble[17]
+	IF bs_door_electrified > 0 THEN UI_PICT "dk_electric 16x16.png", 458,41 , 16,16, 1 UI_TOOLTIP bubble[28]
 	UI_STYLE 0,0
-	UI_OUTFIELD txt, 307,121 , 137,30, 2+0 UI_TOOLTIP txt + " (" + bs_door_ConstructionType + ")"
+	UI_OUTFIELD txt, 343,121 , 137,30, 2+0 UI_TOOLTIP txt + " (" + bs_door_ConstructionType + ")"
 	UI_STYLE 0,0
-	UI_SEPARATOR 0,152, 445,152
-	UI_SEPARATOR 0,199, 445,199
+	UI_SEPARATOR 0,152, 481,152
+	UI_SEPARATOR 0,199, 481,199
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[2], 12,20 , 420,15, 2+0
+	UI_OUTFIELD babel[2], 30,20 , 420,15, 2+0
 	UI_STYLE 0,0
 	RETURN
 ! ------------------------------------------------------------- PROTECTION DEMANDS / SCHUTZANFORDERUNGEN [ 1100 ]
@@ -1704,44 +1703,44 @@ END
 	UI_PAGE UIpage, UIpage_masterparent, babel[81], "dk_title_protectionaims 18x18.png"
 	GOSUB 9900
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[11], 36,18 , 392,15, 2+0
+	UI_OUTFIELD babel[11], 54,18 , 392,15, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
 	UI_OUTFIELD babel[20], 9,42 , 125,15, 1+0
 	UI_STYLE 0,0
-	UI_INFIELD{3} "bs_quality_FireResistanceRating", 139,39 , 74,19 UI_TOOLTIP bubble[21]
+	UI_INFIELD{3} "bs_quality_FireResistanceRating", 139,39 , 84,19 UI_TOOLTIP bubble[21]
 	UI_STYLE 0,1
 	UI_OUTFIELD babel[21], 9,76 , 125,15, 1+0
 	UI_STYLE 0,0
-	UI_INFIELD{3} "bs_quality_SmokeResistance", 139,73 , 74,19 UI_TOOLTIP bubble[22]
+	UI_INFIELD{3} "bs_quality_SmokeResistance", 139,73 , 84,19 UI_TOOLTIP bubble[22]
 	UI_STYLE 0,1
 	UI_OUTFIELD babel[22], 9,110 , 125,15, 1+0
 	UI_STYLE 0,0
-	UI_INFIELD{3} "bs_quality_NoiseInsulaion", 139,107 , 74,19 UI_TOOLTIP bubble[23]
+	UI_INFIELD{3} "bs_quality_NoiseInsulaion", 139,107 , 84,19 UI_TOOLTIP bubble[23]
 	UI_STYLE 0,1
 	UI_OUTFIELD babel[23], 9,144 , 125,15, 1+0
 	UI_STYLE 0,0
-	UI_INFIELD{3} "bs_quality_ThermalInsulaion", 139,141 , 74,19 UI_TOOLTIP bubble[29]
-	UI_OUTFIELD babel[25], 231,76 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_GasDefense", 361,39 , 74,19 UI_TOOLTIP bubble[37]
+	UI_INFIELD{3} "bs_quality_ThermalInsulaion", 139,141 , 84,19 UI_TOOLTIP bubble[29]
+	UI_OUTFIELD babel[25], 249,76 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_GasDefense", 379,39 , 84,19 UI_TOOLTIP bubble[37]
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[24], 231,178 , 125,15, 1+0
+	UI_OUTFIELD babel[24], 249,178 , 125,15, 1+0
 	UI_STYLE 0,0
-	UI_INFIELD{3} "bs_quality_BurglaryProtection", 361,175 , 74,19 UI_TOOLTIP bubble[31]
+	UI_INFIELD{3} "bs_quality_BurglaryProtection", 379,175 , 84,19 UI_TOOLTIP bubble[31]
 	UI_OUTFIELD babel[27], 9,178 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_StrafingProtection", 139,175 , 74,19 UI_TOOLTIP bubble[32]
+	UI_INFIELD{3} "bs_quality_StrafingProtection", 139,175 , 84,19 UI_TOOLTIP bubble[32]
 	UI_OUTFIELD babel[28], 9,212 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_DetonationProtection", 139,209 , 74,19 UI_TOOLTIP bubble[33]
-	UI_OUTFIELD babel[29], 231,110 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_LaserProtection", 361,107 , 74,19 UI_TOOLTIP bubble[34]
-	UI_OUTFIELD babel[30], 231,144 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_FloodProtection", 361,141 , 74,19 UI_TOOLTIP bubble[35]
-	UI_OUTFIELD babel[31], 231,42 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_RadiationProtection", 361,73 , 74,19 UI_TOOLTIP bubble[30]
-	UI_OUTFIELD babel[26], 231,212 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_VandalismProtection", 361,209 , 74,19 UI_TOOLTIP bubble[36]
+	UI_INFIELD{3} "bs_quality_DetonationProtection", 139,209 , 84,19 UI_TOOLTIP bubble[33]
+	UI_OUTFIELD babel[29], 249,110 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_LaserProtection", 379,107 , 84,19 UI_TOOLTIP bubble[34]
+	UI_OUTFIELD babel[30], 249,144 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_FloodProtection", 379,141 , 84,19 UI_TOOLTIP bubble[35]
+	UI_OUTFIELD babel[31], 249,42 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_RadiationProtection", 379,73 , 84,19 UI_TOOLTIP bubble[30]
+	UI_OUTFIELD babel[26], 249,212 , 125,15, 1+0
+	UI_INFIELD{3} "bs_quality_VandalismProtection", 379,209 , 84,19 UI_TOOLTIP bubble[36]
 	UI_STYLE 0,2
-	UI_OUTFIELD babel[19], 25,236 , 400,30, 2+4
+	UI_OUTFIELD babel[19], 25,236 , 436,30, 2+4
 	RETURN
 ! ------------------------------------------------------------- MINIMAL DEMANDS [ 1200 ]
 	1200:   ! #### SEITE 4 - Anforderungen Abmessung und Zugangskontrolle
@@ -1904,26 +1903,26 @@ END
 	UIpage = UIpage + 1
 	UI_PAGE UIpage, UIpage_masterparent, babel[84], "dk_title_components 18x18.png"
 	GOSUB 9900
-	UI_PICT 63, 127,23 , 190,237, 1 UI_TOOLTIP bubble[86]
-	UI_INFIELD{3} "frame_system", 0,31 , 125,19 UI_TOOLTIP bubble[84]
-	UI_INFIELD{3} "panel_system", 319,125 , 125,19 UI_TOOLTIP bubble[83]
-	UI_INFIELD{3} "closer_system", 319,31 , 125,19 UI_TOOLTIP bubble[81]
-	UI_INFIELD{3} "hinge_system", 319,225 , 125,19 UI_TOOLTIP bubble[79]
-	UI_INFIELD{3} "automation_system", 319,66 , 125,19 UI_TOOLTIP bubble[82]
-	UI_INFIELD{3} "case_system", 0,150 , 125,19 UI_TOOLTIP bubble[78]
-	UI_INFIELD{3} "access_control_system", 0,185 , 125,19 UI_TOOLTIP bubble[170]
-	UI_INFIELD{3} "handle_system", 0,115 , 125,19 UI_TOOLTIP bubble[80]
-	UI_INFIELD{3} "grip_system", 0,225 , 125,19 UI_TOOLTIP bubble[85]
+	UI_PICT 63, 145,23 , 190,237, 1 UI_TOOLTIP bubble[86]
+	UI_INFIELD{3} "frame_system", 0,31 , 140,19 UI_TOOLTIP bubble[84]
+	UI_INFIELD{3} "panel_system", 340,125 , 140,19 UI_TOOLTIP bubble[83]
+	UI_INFIELD{3} "closer_system", 340,31 , 140,19 UI_TOOLTIP bubble[81]
+	UI_INFIELD{3} "hinge_system", 340,225 , 140,19 UI_TOOLTIP bubble[79]
+	UI_INFIELD{3} "automation_system", 340,66 , 140,19 UI_TOOLTIP bubble[82]
+	UI_INFIELD{3} "case_system", 0,150 , 140,19 UI_TOOLTIP bubble[78]
+	UI_INFIELD{3} "access_control_system", 0,185 , 140,19 UI_TOOLTIP bubble[170]
+	UI_INFIELD{3} "handle_system", 0,115 , 140,19 UI_TOOLTIP bubble[80]
+	UI_INFIELD{3} "grip_system", 0,225 , 140,19 UI_TOOLTIP bubble[85]
 	UI_STYLE 1,2
 	UI_OUTFIELD babel[77], 4,18 , 102,12, 0+0
 	UI_OUTFIELD babel[78], 4,102 , 102,12, 0+0
 	UI_OUTFIELD babel[72], 4,137 , 102,12, 0+0
 	UI_OUTFIELD babel[138], 4,172 , 102,12, 0+0
 	UI_OUTFIELD babel[73], 4,212 , 102,12, 0+0
-	UI_OUTFIELD babel[79], 323,18 , 102,12, 0+0
-	UI_OUTFIELD babel[76], 323,53 , 102,12, 0+0
-	UI_OUTFIELD babel[75], 323,112 , 102,12, 0+0
-	UI_OUTFIELD babel[74], 323,212 , 102,12, 0+0
+	UI_OUTFIELD babel[79], 344,18 , 102,12, 0+0
+	UI_OUTFIELD babel[76], 344,53 , 102,12, 0+0
+	UI_OUTFIELD babel[75], 344,112 , 102,12, 0+0
+	UI_OUTFIELD babel[74], 344,212 , 102,12, 0+0
 	UI_STYLE 0,0
 	RETURN
 ! ------------------------------------------------------------- BASIC DIMENSIONS 5+ / HAUPTABMESSUNGEN 5+ [ 2000 ]
@@ -2334,9 +2333,9 @@ END
 	UI_STYLE 0,0
 	GOSUB "VALUES_msType"
 	UI_INFIELD{3} "msType", 0,45 , 141,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[136]
-	IF NOT(msType) THEN RETURN
-	IF BITTEST(msType,1) THEN 3500
 	IF bs_door_leafs = 2 THEN 3400
+	IF BITTEST(msType,1) THEN 3500
+	IF NOT(msType) THEN RETURN
 	IF ac_OpeningSide = "L" THEN UI_PICT 79, 210,50 , 55,186, 1
 	IF ac_OpeningSide = "R" THEN UI_PICT 78, 210,50 , 55,186, 1
 	UI_PICT "minSpace_top_smallL 51x95.tiff", 159,50 , 51,95, 1
@@ -2428,56 +2427,57 @@ END
 	UIpage = UIpage + 1
 	UI_PAGE UIpage, -1, babel[91], "uiTab_Info.png"
 	UI_STYLE 0,0
-	UI_PICT 1, 305,-2 , 139,15, 1
-	UI_SEPARATOR 0,15, 445,15
+	UI_PICT 1, 341,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 481,15
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[2], 11,32 , 420,15, 2+0
+	UI_OUTFIELD babel[2], 11,32 , 456,15, 2+0
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[129], 0,55 , 444,16, 2+0
-	UI_OUTFIELD babel[16], 0,76 , 444,70, 2+0
-	UI_OUTFIELD babel[132], 0,153 , 444,36, 2+0
-	UI_BUTTON UI_LINK, babel[17], 123,198 , 211,20, 0, "http://www.bim-all-doors.de" UI_TOOLTIP bubble[88]
-	UI_INFIELD{3} "show_start_screen", 358,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"zur Eingabe",0, 1,"zur Eingabe",1 UI_TOOLTIP bubble[144]
-	UI_INFIELD{3} "show_start_screen", 265,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"Kurzinfo",2, 1,"Kurzinfo",1 UI_TOOLTIP bubble[148]
+	UI_OUTFIELD babel[129], 0,55 , 480,16, 2+0
+	UI_OUTFIELD babel[16], 0,76 , 480,70, 2+0
+	UI_OUTFIELD babel[132], 0,153 , 480,36, 2+0
+	UI_BUTTON UI_LINK, babel[17], 141,198 , 211,20, 0, "http://www.bim-all-doors.de" UI_TOOLTIP bubble[88]
+	UI_INFIELD{3} "show_start_screen", 394,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"zur Eingabe",0, 1,"zur Eingabe",1 UI_TOOLTIP bubble[144]
+	UI_INFIELD{3} "show_start_screen", 301,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"Kurzinfo",2, 1,"Kurzinfo",1 UI_TOOLTIP bubble[148]
 	RETURN
 ! ------------------------------------------------------------- SHORT INFO [ 9800]
 	9800:   ! #### SHORT INFORMATION
 	UIpage = UIpage + 1
 	UI_PAGE UIpage, -1, babel[92], "uiTab_Info.png"
 	UI_STYLE 0,0
-	UI_PICT 1, 305,-2 , 139,15, 1
-	UI_SEPARATOR 0,15, 445,15
-	UI_OUTFIELD babel[131], 0,19 , 444,32, 0+0
-	UI_OUTFIELD babel[133], 0,51 , 444,50, 0+0
-	UI_OUTFIELD babel[134], 0,101 , 444,32, 0+0
-	UI_OUTFIELD babel[135], 0,133 , 444,32, 0+0
-	UI_OUTFIELD babel[136], 0,165 , 444,50, 0+0
-	UI_OUTFIELD babel[137], 0,215 , 444,32, 0+0
-	UI_INFIELD{3} "show_start_screen", 358,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"zur Eingabe",0, 1,"zur Eingabe",2 UI_TOOLTIP bubble[144]
-	UI_PICT 6, 410,88 , 34,7, 1
-	UI_PICT "dk_attention 16x16.png", 428,222 , 16,16, 1
+	UI_PICT 1, 341,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 481,15
+	UI_OUTFIELD babel[131], 0,19 , 480,32, 0+0
+	UI_OUTFIELD babel[133], 0,51 , 480,48, 0+0
+	UI_OUTFIELD babel[134], 0,99 , 480,32, 0+0
+	UI_OUTFIELD babel[135], 0,131 , 480,32, 0+0
+	UI_OUTFIELD babel[136], 0,163 , 480,48, 0+0
+	UI_OUTFIELD babel[137], 0,211 , 444,32, 0+0
+	UI_INFIELD{3} "show_start_screen", 394,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"zur Eingabe",0, 1,"zur Eingabe",2 UI_TOOLTIP bubble[144]
+	UI_PICT 6, 444,88 , 34,7, 1
+	UI_PICT "dk_attention 16x16.png", 461,220 , 16,16, 1
 	RETURN
 ! ------------------------------------------------------------- TITLE [ 9900 ]
 	9900:   ! #### TITEL on all pages
 	IF develop THEN GOSUB "devshow" ELSE GOSUB "allshow"
 	UI_STYLE 0,0
-	UI_PICT 2, 305,-2 , 139,15, 1
-	UI_SEPARATOR 0,15, 445,15
+	UI_PICT 2, 341,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 481,15
 	IF errorI>0 THEN
 		txt = ""
 		FOR i=1 TO errorI
 		txt = txt + errorQ[i]
 		NEXT i
-		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
+		UI_PICT "dk_attention 16x16.png", 0,-2 , 16,16, 1 UI_TOOLTIP txt
 		ENDIF
 	RETURN
 ! ------------------------------------------------------------- INFOTITLE [ 9950 ]
 	9950:   ! #### TITEL on info page
 	IF develop THEN GOSUB "devshow" ELSE GOSUB "allshow"
-	UI_PICT 2, 280,-2 , 139,15, 1
-	UI_SEPARATOR 0,15, 420,15
-	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 422,-5 , 22,22, 0, "http://www.bim-all-doors.de" UI_TOOLTIP "Homepage »BIM-all-doors«"
+	UI_PICT 2, 316,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 456,15
+	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 458,-5 , 22,22, 0, "http://www.bim-all-doors.de" UI_TOOLTIP "Homepage »bim-all-doors«"
 	RETURN
+
 
 ! ------------------------------------------------------------- Plausibilitätschecks
 "checkUsableClearance":
@@ -3031,10 +3031,10 @@ END
 
 	GOSUB 9950
 
-	UI_OUTFIELD uiTXT[12], 0,16 , 444,28, 2+0
+	UI_OUTFIELD uiTXT[12], 0,16 , 444,32, 2+0
 
 	IF errorI<1 THEN
-		UI_OUTFIELD uiTXT[13], 0,60 , 444,28, 2+0							
+		UI_OUTFIELD uiTXT[13], 0,60 , 444,32, 2+0							
 		ENDIF
 
 	IF errorI<9 THEN

@@ -540,7 +540,7 @@ IF bs_door_leafs > 1 THEN
 ! VALUES
 ! =============================================================================
 
-! ----------------------------------- PARAMETER VALUE LIST [DORMAKABA OGRO] (start)
+! ----------------------------------- PARAMETER VALUE LIST [OGRO] (start)
 
 VALUES "bs_handle_product_line" "OGRO", "OGRO by ARCHITECTS"
 VALUES "bs_handle_model" "-", "8016", "8056", "8100", "8100A", "8100V", "8101", "8101A", "8103", "8111", "8112",

@@ -2817,29 +2817,29 @@ END
 	UI_OUTFIELD babel[3], 0,23 , 100,15, 0+0
 	UI_STYLE 0,0
 	GOSUB "SELECT_bs_automation_type"
-	UI_INFIELD{3} "bs_automation_type", 113,19 , 198,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+	UI_INFIELD{3} "bs_automation_type", 122,19 , 216,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
 	IF bs_automation_type = "-" THEN RETURN
 	UI_OUTFIELD babel[8], 0,47 , 73,15, 0+0
-	UI_OUTFIELD babel[4], 325,23 , 60,15, 1+0
-	UI_OUTFIELD babel[6], 113,47 , 31,15, 0+0 UI_TOOLTIP bubble[5]
-	UI_OUTFIELD babel[7], 220,47 , 31,15, 0+0 UI_TOOLTIP bubble[6]
+	UI_OUTFIELD babel[4], 361,23 , 60,15, 1+0
+	UI_OUTFIELD babel[6], 122,47 , 31,15, 0+0 UI_TOOLTIP bubble[5]
+	UI_OUTFIELD babel[7], 247,47 , 31,15, 0+0 UI_TOOLTIP bubble[6]
 	UI_OUTFIELD babel[1], 0,77 , 100,15, 0+0
 	IF ACT#2 THEN
 		UI_STYLE 0,2
-		UI_OUTFIELD babel[14], 0,250 , 444,16, 2+0
+		UI_OUTFIELD babel[14], 0,250 , 480,16, 2+0
 		UI_STYLE 0,0
 		ENDIF
 	UI_OUTFIELD babel[13], 0,203 , 110,15, 0+0
 	UI_OUTFIELD babel[9], 0,225 , 110,15, 0+0
 	GOSUB "VALUES_bs_automation_orientation"
 	bitmapIDX = 2 + (oberLichtBlende > 0)
-	UI_INFIELD{3} "bs_automation_orientation", 394,19 , 50,47, 2, bitmapIDX, 8, 1, 35, 35, 35, 35, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[4]   !»» "Dorma_closer_orientation_O 280x35.png"
+	UI_INFIELD{3} "bs_automation_orientation", 430,19 , 50,47, 2, bitmapIDX, 8, 1, 35, 35, 35, 35, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[4]   !»» "Dorma_closer_orientation_O 280x35.png"
 	GOSUB "VALUES_bs_automation_activation_BS"
-	UI_INFIELD{3} "bs_automation_activation_BS", 144,42 , 55,24, 2, 4, 6, 1, 36, 18, 36, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[7]
+	UI_INFIELD{3} "bs_automation_activation_BS", 153,42 , 55,24, 2, 4, 6, 1, 36, 18, 36, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[7]
 	GOSUB "VALUES_bs_automation_activation_BGS"
-	UI_INFIELD{3} "bs_automation_activation_BGS", 256,42 , 55,24, 2, 4, 6, 1, 36, 18, 36, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[8]
+	UI_INFIELD{3} "bs_automation_activation_BGS", 283,42 , 55,24, 2, 4, 6, 1, 36, 18, 36, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[8]
 	UI_STYLE 0,1
-	UI_INFIELD{3} "bs_automation_manufacturer", 114,74 , 329,19 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} "bs_automation_manufacturer", 123,74 , 357,19 UI_TOOLTIP bubble[1]
 	UI_STYLE 0,0
 	IF bs_door_leafs >1 THEN
 		txt = babel[4]
@@ -2849,121 +2849,121 @@ END
 	UI_OUTFIELD txt, 0,104 , 100,15, 0+0
 	
 	UI_OUTFIELD babel[10], 0,128 , 100,15, 0+0
-	UI_SEPARATOR 114,126, 130,143
-	UI_SEPARATOR 133,126, 149,143
-	UI_SEPARATOR 152,126, 168,143
-	UI_SEPARATOR 171,126, 187,143
-	UI_INFIELD{3} "bs_automation_model", 113,98 , 331,24, 2, "", 99, 1, 0, 0, 0, 0, UIautomationModelPic, UIautomationModelText, UIautomationModelVal UI_TOOLTIP bubble[2]
-	IF brandschutz = 1 THEN UI_PICT "dk_ui_handle_eligibility_F 13x14.png", 115,127 , 13,14, 1 UI_TOOLTIP bubble[10]
-	IF brandschutz = 2 THEN UI_PICT 5, 115,127 , 13,14, 1 UI_TOOLTIP bubble[11]
-	IF barrierefreiheit THEN UI_PICT "dk_ui_closer_handicap 13x14.png", 134,127 , 13,14, 1 UI_TOOLTIP bubble[12]
-	IF schliessfolge THEN UI_PICT "dk_ui_closer_order 13x14.png", 153,127 , 13,14, 1 UI_TOOLTIP bubble[15]
-	IF feststellung # "" THEN UI_PICT "dk_ui_closer_break 13x14.png", 172,127 , 13,14, 1 UI_TOOLTIP bubble[13]
+	UI_SEPARATOR 123,126, 139,143
+	UI_SEPARATOR 142,126, 158,143
+	UI_SEPARATOR 161,126, 177,143
+	UI_SEPARATOR 180,126, 196,143
+	UI_INFIELD{3} "bs_automation_model", 122,98 , 358,24, 2, "", 99, 1, 0, 0, 0, 0, UIautomationModelPic, UIautomationModelText, UIautomationModelVal UI_TOOLTIP bubble[2]
+	IF brandschutz = 1 THEN UI_PICT "dk_ui_handle_eligibility_F 13x14.png", 124,127 , 13,14, 1 UI_TOOLTIP bubble[10]
+	IF brandschutz = 2 THEN UI_PICT 5, 124,127 , 13,14, 1 UI_TOOLTIP bubble[11]
+	IF barrierefreiheit THEN UI_PICT "dk_ui_closer_handicap 13x14.png", 143,127 , 13,14, 1 UI_TOOLTIP bubble[12]
+	IF schliessfolge THEN UI_PICT "dk_ui_closer_order 13x14.png", 162,127 , 13,14, 1 UI_TOOLTIP bubble[15]
+	IF feststellung # "" THEN UI_PICT "dk_ui_closer_break 13x14.png", 181,127 , 13,14, 1 UI_TOOLTIP bubble[13]
 	IF maxKRAFT > 0 THEN
 		UI_STYLE 1,1
 		txt = "EN "+str(minKRAFT,1,0)+"-"+str(maxKRAFT,1,0)
-		UI_OUTFIELD txt, 190,127 , 35,15, 0+0 UI_TOOLTIP bubble[16]
+		UI_OUTFIELD txt, 199,127 , 35,15, 0+0 UI_TOOLTIP bubble[16]
 		UI_STYLE 0,0
 		ENDIF
 	IF maxTB > tlr THEN
 		UI_STYLE 1,1
 		txt ="max. " + str(maxTB * 1000,1,0)+"mm"
-		UI_OUTFIELD txt, 228,127 , 63,15, 0+0 UI_TOOLTIP bubble[9]
+		UI_OUTFIELD txt, 237,127 , 63,15, 0+0 UI_TOOLTIP bubble[9]
 		UI_STYLE 0,0
 		ENDIF
 	IF ACT # 4 THEN
 		GOSUB "Antrieb2"
 		UI_STYLE 0,2
-		UI_OUTFIELD txt, 113,152 , 331,16, 0+0
+		UI_OUTFIELD txt, 122,152 , 358,16, 0+0
 		UI_STYLE 0,0
 		IF txt # "" THEN UI_OUTFIELD babel[5], 0,152 , 100,15, 0+0
 		ELSE
 		UI_OUTFIELD babel[5], 0,152 , 100,15, 0+0
 		UI_OUTFIELD babel[10], 0,176 , 100,15, 0+0
-		UI_SEPARATOR 114,174, 130,191
-		UI_SEPARATOR 133,174, 149,191
-		UI_INFIELD{3} "bs_automation_model2", 113,146 , 331,24, 2, "", 99, 1, 0, 0, 0, 0, UIautomation2ModelPic, UIautomation2ModelText, UIautomation2ModelVal UI_TOOLTIP bubble[2]
-		IF barrierefreiheit2 THEN UI_PICT "dk_ui_closer_handicap 13x14.png", 115,175 , 13,14, 1 UI_TOOLTIP bubble[12]
-		IF feststellung2 # "" THEN UI_PICT "dk_ui_closer_break 13x14.png", 134,175 , 13,14, 1 UI_TOOLTIP bubble[13]
+		UI_SEPARATOR 123,174, 139,191
+		UI_SEPARATOR 142,174, 158,191
+		UI_INFIELD{3} "bs_automation_model2", 122,146 , 358,24, 2, "", 99, 1, 0, 0, 0, 0, UIautomation2ModelPic, UIautomation2ModelText, UIautomation2ModelVal UI_TOOLTIP bubble[2]
+		IF barrierefreiheit2 THEN UI_PICT "dk_ui_closer_handicap 13x14.png", 124,175 , 13,14, 1 UI_TOOLTIP bubble[12]
+		IF feststellung2 # "" THEN UI_PICT "dk_ui_closer_break 13x14.png", 143,175 , 13,14, 1 UI_TOOLTIP bubble[13]
 		IF maxKRAFT2 > 0 THEN
 			UI_STYLE 1,1
 			txt = "EN "+str(minKRAFT2,1,0)+"-"+str(maxKRAFT2,1,0)
-			UI_OUTFIELD txt, 152,175 , 35,15, 0+0 UI_TOOLTIP bubble[16]
+			UI_OUTFIELD txt, 161,175 , 35,15, 0+0 UI_TOOLTIP bubble[16]
 			UI_STYLE 0,0
 			ENDIF
 		IF maxTB2 > tlr THEN
 			UI_STYLE 1,1
 			txt ="max. " + str(maxTB2 * 1000,1,0)+"mm"
-			UI_OUTFIELD txt, 190,175 , 63,15, 0+0 UI_TOOLTIP bubble[9]
+			UI_OUTFIELD txt, 199,175 , 63,15, 0+0 UI_TOOLTIP bubble[9]
 			UI_STYLE 0,0
 			ENDIF
 		ENDIF
 	GOSUB "SELECT_bs_automation_material"
 	IF sts THEN
-		UI_INFIELD{3} "bs_automation_material", 113,198 , 163,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+		UI_INFIELD{3} "bs_automation_material", 122,198 , 171,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
 		ENDIF
-	IF not(sts) THEN UI_INFIELD{3} "bs_automation_material", 114,198 , 161,21 UI_TOOLTIP bubble[17]
+	IF not(sts) THEN UI_INFIELD{3} "bs_automation_material", 123,198 , 170,21 UI_TOOLTIP bubble[17]
 	GOSUB "SELECT_bs_automation_surface"
 	IF sts THEN
-		UI_INFIELD{3} "bs_automation_surface", 281,198 , 163,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[18]
+		UI_INFIELD{3} "bs_automation_surface", 317,198 , 163,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[18]
 		ENDIF
-	IF not(sts) THEN UI_INFIELD{3} "bs_automation_surface", 282,198 , 162,21 UI_TOOLTIP bubble[14]
-	UI_PICT "ui_list_surface_flat 32x15.png", 111,225 , 32,15, 1 UI_TOOLTIP bubble[20]
-	UI_PICT "ui_list_contourPen_flat 32x15.png", 226,226 , 32,15, 1
-	UI_PICT "ui_list_3DPen_flat 32x15.png", 342,225 , 32,15, 1
-	UI_INFIELD{3} dk_materials[dka_automation_mat], 143,222 , 70,21 UI_TOOLTIP bubble[19]
-	UI_INFIELD{3} dk_cont_pens[dka_automation_penSA], 258,222 , 70,21 UI_TOOLTIP bubble[22]
-	UI_INFIELD{3} dk_cont_pens[dka_automation_penC3], 374,222 , 70,21 UI_TOOLTIP bubble[23]
-	UI_SEPARATOR 0,69, 445,69
-	UI_SEPARATOR 0,194, 445,194
-	IF ACT#2 THEN UI_SEPARATOR 0,246, 445,246
+	IF not(sts) THEN UI_INFIELD{3} "bs_automation_surface", 309,198 , 171,21 UI_TOOLTIP bubble[14]
+	UI_PICT "ui_list_surface_flat 32x15.png", 120,225 , 32,15, 1 UI_TOOLTIP bubble[20]
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 248,226 , 32,15, 1
+	UI_PICT "ui_list_3DPen_flat 32x15.png", 378,225 , 32,15, 1
+	UI_INFIELD{3} dk_materials[dka_automation_mat], 152,222 , 70,21 UI_TOOLTIP bubble[19]
+	UI_INFIELD{3} dk_cont_pens[dka_automation_penSA], 280,222 , 70,21 UI_TOOLTIP bubble[22]
+	UI_INFIELD{3} dk_cont_pens[dka_automation_penC3], 410,222 , 70,21 UI_TOOLTIP bubble[23]
+	UI_SEPARATOR 0,69, 481,69
+	UI_SEPARATOR 0,194, 481,194
+	IF ACT#2 THEN UI_SEPARATOR 0,246, 481,246
 	RETURN
 ! --------------------LOI < 4 SETTINGS [ 7400 ]
 	7400:   ! #### LOI <4 -Grundeinstellungen DORMAKABA  Türautomation
 	GOSUB 9900
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[2], 26,27 , 110,15, 0+0
+	UI_OUTFIELD babel[2], 71,27 , 110,15, 0+0
 	UI_STYLE 0,0
 	GOSUB "SELECT_bs_automation_type"
-	UI_INFIELD{3} "bs_automation_type", 138,22 , 216,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+	UI_INFIELD{3} "bs_automation_type", 183,22 , 216,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
 	IF bs_automation_type = "-" THEN RETURN
 	IF bs_door_leafs >1 THEN
 		txt = "Typ Gangflügel:"
 		ELSE
 		txt = "Typ:"
 		ENDIF
-	UI_OUTFIELD txt, 26,54 , 100,15, 0+0
+	UI_OUTFIELD txt, 71,54 , 100,15, 0+0
 	
-	UI_INFIELD{3} "bs_automation_model", 138,48 , 216,24, 2, "", 99, 1, 0, 0, 0, 0, UIautomationModelPic, UIautomationModelText, UIautomationModelVal UI_TOOLTIP bubble[2]
+	UI_INFIELD{3} "bs_automation_model", 183,48 , 216,24, 2, "", 99, 1, 0, 0, 0, 0, UIautomationModelPic, UIautomationModelText, UIautomationModelVal UI_TOOLTIP bubble[2]
 	IF ACT = 4 THEN
-		UI_OUTFIELD babel[5], 26,83 , 100,15, 0+0
+		UI_OUTFIELD babel[5], 71,83 , 100,15, 0+0
 		
-		UI_INFIELD{3} "bs_automation_model2", 138,77 , 216,24, 2, "", 99, 1, 0, 0, 0, 0, UIautomation2ModelPic, UIautomation2ModelText, UIautomation2ModelVal UI_TOOLTIP bubble[2]
+		UI_INFIELD{3} "bs_automation_model2", 183,77 , 216,24, 2, "", 99, 1, 0, 0, 0, 0, UIautomation2ModelPic, UIautomation2ModelText, UIautomation2ModelVal UI_TOOLTIP bubble[2]
 		ENDIF
 	GOSUB "SELECT_bs_automation_material"
 	IF sts THEN
-		UI_INFIELD{3} "bs_automation_material", 139,131 , 215,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+		UI_INFIELD{3} "bs_automation_material", 184,131 , 215,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
 		ENDIF
-	IF not(sts) THEN UI_INFIELD{3} "bs_automation_material", 140,132 , 214,19 UI_TOOLTIP bubble[21]
+	IF not(sts) THEN UI_INFIELD{3} "bs_automation_material", 185,132 , 214,19 UI_TOOLTIP bubble[21]
 	GOSUB "SELECT_bs_automation_surface"
 	IF sts THEN
-		UI_INFIELD{3} "bs_automation_surface", 139,155 , 215,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[14]
+		UI_INFIELD{3} "bs_automation_surface", 184,155 , 215,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[14]
 		ENDIF
-	IF not(sts) THEN UI_INFIELD{3} "bs_automation_surface", 140,156 , 214,19 UI_TOOLTIP bubble[14]
-	UI_INFIELD{3} dk_materials[dka_automation_mat], 169,179 , 185,21 UI_TOOLTIP bubble[19]
-	UI_INFIELD{3} dk_cont_pens[dka_automation_penSA], 169,203 , 75,21 UI_TOOLTIP bubble[22]
-	UI_INFIELD{3} dk_cont_pens[dka_automation_penC3], 279,203 , 75,21 UI_TOOLTIP bubble[23]
-	UI_PICT "ui_list_surface_flat 32x15.png", 137,182 , 32,15, 1 UI_TOOLTIP bubble[20]
-	UI_PICT "ui_list_contourPen_flat 32x15.png", 137,207 , 32,15, 1
-	UI_PICT "ui_list_3DPen_flat 32x15.png", 246,206 , 32,15, 1
-	UI_OUTFIELD babel[12], 26,136 , 110,15, 0+0
-	UI_OUTFIELD babel[11], 26,160 , 110,15, 0+0
-	UI_OUTFIELD babel[9], 26,184 , 110,15, 0+0
-	UI_SEPARATOR 26,125, 355,125
+	IF not(sts) THEN UI_INFIELD{3} "bs_automation_surface", 185,156 , 214,19 UI_TOOLTIP bubble[14]
+	UI_INFIELD{3} dk_materials[dka_automation_mat], 214,179 , 185,21 UI_TOOLTIP bubble[19]
+	UI_INFIELD{3} dk_cont_pens[dka_automation_penSA], 214,203 , 75,21 UI_TOOLTIP bubble[22]
+	UI_INFIELD{3} dk_cont_pens[dka_automation_penC3], 324,203 , 75,21 UI_TOOLTIP bubble[23]
+	UI_PICT "ui_list_surface_flat 32x15.png", 182,182 , 32,15, 1 UI_TOOLTIP bubble[20]
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 182,207 , 32,15, 1
+	UI_PICT "ui_list_3DPen_flat 32x15.png", 291,206 , 32,15, 1
+	UI_OUTFIELD babel[12], 71,136 , 110,15, 0+0
+	UI_OUTFIELD babel[11], 71,160 , 110,15, 0+0
+	UI_OUTFIELD babel[9], 71,184 , 110,15, 0+0
+	UI_SEPARATOR 71,125, 400,125
 	IF NOT( bs_door_leafs > 1 AND bs_automation_type # "2S" ) THEN
-		UI_SEPARATOR 26,229, 355,229
+		UI_SEPARATOR 71,229, 400,229
 		UI_STYLE 0,2
-		UI_OUTFIELD babel[15], 26,236 , 328,30, 2+0
+		UI_OUTFIELD babel[15], 71,236 , 328,30, 2+0
 		UI_STYLE 0,0
 		ENDIF
 	RETURN
@@ -2971,21 +2971,21 @@ END
 	7600:   ! #### LOI <3 -Grundeinstellungen DORMAKABA  Türautomation
 	GOSUB 9900
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[2], 26,27 , 110,15, 0+0
+	UI_OUTFIELD babel[2], 71,27 , 110,15, 0+0
 	UI_STYLE 0,0
 	GOSUB "SELECT_bs_automation_type"
-	UI_INFIELD{3} "bs_automation_type", 138,22 , 216,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+	UI_INFIELD{3} "bs_automation_type", 183,22 , 216,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
 	IF bs_automation_type = "-" THEN RETURN
-	UI_INFIELD{3} dk_cont_pens[dka_automation_penSA], 169,202 , 75,21 UI_TOOLTIP bubble[22]
-	UI_INFIELD{3} dk_cont_pens[dka_automation_penC3], 279,202 , 75,21 UI_TOOLTIP bubble[23]
-	UI_PICT "ui_list_contourPen_flat 32x15.png", 137,206 , 32,15, 1
-	UI_PICT "ui_list_3DPen_flat 32x15.png", 246,205 , 32,15, 1
-	UI_OUTFIELD babel[9], 26,205 , 110,15, 0+0
-	UI_SEPARATOR 26,195, 355,195
+	UI_INFIELD{3} dk_cont_pens[dka_automation_penSA], 214,202 , 75,21 UI_TOOLTIP bubble[22]
+	UI_INFIELD{3} dk_cont_pens[dka_automation_penC3], 324,202 , 75,21 UI_TOOLTIP bubble[23]
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 182,206 , 32,15, 1
+	UI_PICT "ui_list_3DPen_flat 32x15.png", 291,205 , 32,15, 1
+	UI_OUTFIELD babel[9], 71,205 , 110,15, 0+0
+	UI_SEPARATOR 71,195, 400,195
 	IF NOT( bs_door_leafs > 1 AND bs_automation_type # "2S" ) THEN
-		UI_SEPARATOR 26,229, 355,229
+		UI_SEPARATOR 71,229, 400,229
 		UI_STYLE 0,2
-		UI_OUTFIELD babel[15], 26,236 , 328,30, 2+0
+		UI_OUTFIELD babel[15], 71,236 , 328,30, 2+0
 		UI_STYLE 0,0
 		ENDIF
 	RETURN
@@ -2993,9 +2993,9 @@ END
 	9900:   ! #### TITEL on all pages
 	IF develop THEN GOSUB "devshow"
 	UI_STYLE 0,0
-	UI_PICT 1, 280,-2 , 139,15, 1
-	UI_SEPARATOR 0,15, 420,15
-	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 422,-5 , 22,22, 0, "https://www.dormakaba.com/de-de/produkte-loesungen/produkte/automatische-tuersysteme/drehtuerantriebe/drehtuerantriebe-397884" UI_TOOLTIP bubble[24]
+	UI_PICT 1, 316,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 456,15
+	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 458,-5 , 22,22, 0, "https://www.dormakaba.com/de-de/angebot/produkte/automatische-tuersysteme/drehtuerantriebe" UI_TOOLTIP bubble[24]
 	IF errorI>0 THEN
 		txt = ""
 		FOR i=1 TO errorI
@@ -3004,6 +3004,7 @@ END
 		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
 		ENDIF
 	RETURN
+
 ]]></Script_UI>
   <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
   <Script_VL SectVersion="20" SectionFlags="0" SubIdent="0"><![CDATA[! ------------------------------------------------------------------------[ Module development settings ]

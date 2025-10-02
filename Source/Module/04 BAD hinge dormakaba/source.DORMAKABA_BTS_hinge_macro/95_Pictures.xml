@@ -1,6 +1,6 @@
 <AllPictures>
   <Picture MIME="image/png" path="icon bim-all-doors 150x150.png" SubIdent="0" SectVersion="19" SectionFlags="0"></Picture>
-  <GDLPict MIME="image/png" path="dormakaba 139x15.png" SubIdent="1" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
+  <GDLPict MIME="image/png" path="dormakaba_grey 139x15.png" SubIdent="1" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
   <GDLPict MIME="image/png" path="dk_ui_BTS_hingeXY_AF1 80x90.png" SubIdent="2" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
   <GDLPict MIME="image/png" path="dk_ui_BTS_hingeXY_AF2 80x90.png" SubIdent="3" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>
   <GDLPict MIME="image/png" path="dk_ui_BTS_hingeXY_AF3 80x90.png" SubIdent="4" platform="Win" SectVersion="19" SectionFlags="0"></GDLPict>

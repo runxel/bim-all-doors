@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ParamSection SectVersion="21" SectionFlags="0" SubIdent="0">
  <ParamSectHeader>
      <Version>21</Version>
@@ -4853,14 +4853,14 @@
          <Flags>
                <ParFlg_Child/>
          </Flags>
-         <Value><![CDATA["dormakaba"]]></Value>
+         <Value><![CDATA["OGRO"]]></Value>
      </String>
      <String Name="bs_handle_product_line">
          <Description><![CDATA["Produktgruppe"]]></Description>
          <Flags>
                <ParFlg_Child/>
          </Flags>
-         <Value><![CDATA["OGRO"]]></Value>
+         <Value><![CDATA["OGRO+DENI GmbH"]]></Value>
      </String>
      <String Name="gs_handle_type">
          <Description><![CDATA["Grifftyp Bandseite"]]></Description>

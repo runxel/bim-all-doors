@@ -237,33 +237,33 @@ END
 	UI_OUTFIELD babel[2], 57,104 , 125,15, 0+0
 	UI_OUTFIELD babel[6], 57,126 , 125,15, 0+0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[12], 222,240 , 163,33, 0+0
+	UI_OUTFIELD babel[12], 234,240 , 188,33, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[5], 222,156 , 163,15, 0+0
+	UI_OUTFIELD babel[5], 234,156 , 163,15, 0+0
 	UI_STYLE 0,0
-	IF rolle THEN UI_OUTFIELD babel[7], 222,176 , 98,15, 0+0
-	UI_OUTFIELD babel[9], 222,199 , 98,15, 0+0
-	UI_OUTFIELD babel[10], 222,222 , 98,15, 0+0
+	IF rolle THEN UI_OUTFIELD babel[7], 234,176 , 98,15, 0+0
+	UI_OUTFIELD babel[9], 234,199 , 98,15, 0+0
+	UI_OUTFIELD babel[10], 234,222 , 98,15, 0+0
 	GOSUB "VALUES_bs_hinge_type"
-	UI_INFIELD{3} "bs_hinge_type", 183,21 , 204,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[9]
-	UI_INFIELD{3} "bs_hinge_manufacturer", 184,44 , 202,19 UI_TOOLTIP bubble[1]
-	UI_INFIELD{3} "bs_hinge_model", 184,66 , 202,19 UI_TOOLTIP bubble[8]
+	UI_INFIELD{3} "bs_hinge_type", 195,21 , 228,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[9]
+	UI_INFIELD{3} "bs_hinge_manufacturer", 196,44 , 226,19 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} "bs_hinge_model", 196,66 , 226,19 UI_TOOLTIP bubble[8]
 	GOSUB "SELECT_bs_hinge_material"
 	IF sts THEN
-		UI_INFIELD{3} "bs_hinge_material", 184,99 , 100,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
+		UI_INFIELD{3} "bs_hinge_material", 196,99 , 108,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
 		ENDIF
-	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_material", 184,99 , 100,21 UI_TOOLTIP bubble[2]
+	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_material", 196,99 , 108,21 UI_TOOLTIP bubble[2]
 	GOSUB "SELECT_bs_hinge_surface"
 	IF sts THEN
-		UI_INFIELD{3} "bs_hinge_surface", 287,99 , 100,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[6]
+		UI_INFIELD{3} "bs_hinge_surface", 314,99 , 108,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[6]
 		ENDIF
-	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_surface", 287,99 , 100,21 UI_TOOLTIP bubble[6]
-	UI_INFIELD{3} dk_materials[dka_hinge_mat], 209,122 , 178,21 UI_TOOLTIP bubble[4]
-	IF rolle THEN UI_INFIELD{3} "bs_hinge_reel_diameter", 320,174 , 65,19 UI_TOOLTIP bubble[5]
-	UI_INFIELD{3} "bs_ancor_hinge_X", 320,197 , 65,19 UI_TOOLTIP bubble[111]
-	UI_INFIELD{3} "bs_ancor_hinge_Y", 320,220 , 65,19 UI_TOOLTIP bubble[10]
-	UI_PICT "ui_general_surface_flat 23x23", 183,122 , 23,23, 1
+	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_surface", 314,99 , 108,21 UI_TOOLTIP bubble[6]
+	UI_INFIELD{3} dk_materials[dka_hinge_mat], 221,122 , 201,21 UI_TOOLTIP bubble[4]
+	IF rolle THEN UI_INFIELD{3} "bs_hinge_reel_diameter", 344,174 , 78,19 UI_TOOLTIP bubble[5]
+	UI_INFIELD{3} "bs_ancor_hinge_X", 344,197 , 78,19 UI_TOOLTIP bubble[111]
+	UI_INFIELD{3} "bs_ancor_hinge_Y", 344,220 , 78,19 UI_TOOLTIP bubble[10]
+	UI_PICT "ui_general_surface_flat 23x23", 195,122 , 23,23, 1
 	GOSUB "SELECT_HingePosBitmap2"
 	UI_PICT uiBitmapIDX, 81,157 , 80,90, 1 UI_TOOLTIP bubble[3]
 	UI_STYLE 1,2
@@ -272,16 +272,15 @@ END
 	UI_STYLE 1,2
 	UI_OUTFIELD babel[8], 164,207 , 47,12, 0+0
 	UI_STYLE 0,0
-	UI_SEPARATOR 57,92, 387,92
-	UI_SEPARATOR 57,149, 387,149
+	UI_SEPARATOR 57,92, 423,92
+	UI_SEPARATOR 57,149, 423,149
 	RETURN
 ! -------------------------------------------------------------TITLE [ 9900 ]
-	9900:	  ! #### TITEL on all pages
+	9900:   ! #### TITEL on all pages
 	IF develop THEN GOSUB "devshow"
 	UI_STYLE 0,0
-	UI_PICT 1, 279,-2 , 139,15, 1
-	UI_SEPARATOR 0,15, 419,15
-	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 422,-5 , 22,22, 0, "https://www.dormakaba.com/resource/blob/139662/c6ffd5d35b18a249add08e24058fc102/050639-51532-0614-technikprospekt-bts-zubehoer-de-pdf-data.pdf" UI_TOOLTIP bubble[7]
+	UI_PICT 1, 341,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 481,15
 	IF errorI>0 THEN
 		txt = ""
 		FOR i=1 TO errorI
