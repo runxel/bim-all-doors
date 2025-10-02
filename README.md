@@ -12,4 +12,3 @@ Für die Nutzung in Archicad ist zunächst nur die Einbindung der bim-all-doors.
 
 Kurzeinführung von Roland Baier in der Build-Ing.:  
 ["Jede Tür ist anders"](https://www.build-ing.de/fachartikel/detail/jede-tuer-ist-anders/)
-<a href="https://www.build-ing.de/fachartikel/detail/jede-tuer-ist-anders/" target="_blank">"Jede Tür ist anders"</a>
