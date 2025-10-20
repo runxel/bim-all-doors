@@ -56,8 +56,8 @@ GOSUB "out_values"
 		babel[35] = "VERTIKALSCHNITTE - UMFASSUNGSZARGE"
 		babel[36] = "HORIZONTALSCHNITT - BLOCKZARGE"
 		babel[37] = "HORIZONTALSCHNITT - ECKZARGE"
-		babel[38] = "HORIZONTALSCHNITT\nROHRRAHMENZARGE"
-		babel[39] = "HORIZONTALSCHNITT\nUMFASSUNGSZARGE"
+		babel[38] = "HORIZONTALSCHNITT ROHRRAHMENZARGE"
+		babel[39] = "HORIZONTALSCHNITT UMFASSUNGSZARGE"
 		babel[40] = "Zarge BGS:"
 		babel[41] = "Zarge BS:"
 		babel[42] = "(*) BS = Bandseite, \nBGS = Bandgegenseite"
@@ -104,8 +104,8 @@ GOSUB "out_values"
 		babel[35] = "VERTIKALSCHNITTE - UMFASSUNGSZARGE"
 		babel[36] = "HORIZONTALSCHNITT - BLOCKZARGE"
 		babel[37] = "HORIZONTALSCHNITT - ECKZARGE"
-		babel[38] = "HORIZONTALSCHNITT\nROHRRAHMENZARGE"
-		babel[39] = "HORIZONTALSCHNITT\nUMFASSUNGSZARGE"
+		babel[38] = "HORIZONTALSCHNITT ROHRRAHMENZARGE"
+		babel[39] = "HORIZONTALSCHNITT UMFASSUNGSZARGE"
 		babel[40] = "Zarge BGS:"
 		babel[41] = "Zarge BS:"
 		babel[42] = "(*) BS = Bandseite, \nBGS = Bandgegenseite"
@@ -1027,226 +1027,226 @@ END offsetFrameSurfaceBGS,
 	UI_OUTFIELD babel[4], 28,144 , 109,15, 0+0
 	UI_OUTFIELD babel[6], 28,98 , 125,15, 0+0
 	UI_OUTFIELD babel[7], 28,121 , 125,15, 0+0
-	UI_INFIELD{3} dk_cont_pens[dka_frame_penC2], 154,142 , 122,21 UI_TOOLTIP bubble[8]
-	UI_INFIELD{3} dk_cont_pens[dka_frame_penC3], 284,142 , 122,21 UI_TOOLTIP bubble[7]
-	UI_INFIELD{3} "bs_frame_manufacturer", 155,44 , 250,19 UI_TOOLTIP bubble[1]
-	UI_INFIELD{3} "bs_frame_model", 155,67 , 250,19 UI_TOOLTIP bubble[9]
+	UI_INFIELD{3} dk_cont_pens[dka_frame_penC2], 154,142 , 136,21 UI_TOOLTIP bubble[8]
+	UI_INFIELD{3} dk_cont_pens[dka_frame_penC3], 305,142 , 137,21 UI_TOOLTIP bubble[7]
+	UI_INFIELD{3} "bs_frame_manufacturer", 155,44 , 286,19 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} "bs_frame_model", 155,67 , 286,19 UI_TOOLTIP bubble[9]
 	GOSUB "VALUES_bs_frame_material"
-	UI_INFIELD{3} "bs_frame_material", 154,20 , 252,21, 2, "", 999, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
+	UI_INFIELD{3} "bs_frame_material", 154,20 , 286,21, 2, "", 999, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
 	GOSUB "SELECT_bs_frame_surface_BS"
 	IF sts THEN
-		UI_INFIELD{3} "bs_frame_surface_BS", 154,94 , 122,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+		UI_INFIELD{3} "bs_frame_surface_BS", 154,94 , 137,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
 		ELSE
-		UI_INFIELD{3} "bs_frame_surface_BS", 155,95 , 121,19 UI_TOOLTIP bubble[3]
+		UI_INFIELD{3} "bs_frame_surface_BS", 155,95 , 136,19 UI_TOOLTIP bubble[3]
 		ENDIF
-	UI_INFIELD{3} "bs_frame_colour_BS", 155,118 , 120,19 UI_TOOLTIP bubble[5]
-	UI_INFIELD{3} "bs_frame_colour_BGS", 285,118 , 120,19 UI_TOOLTIP bubble[6]
+	UI_INFIELD{3} "bs_frame_colour_BS", 155,118 , 135,19 UI_TOOLTIP bubble[5]
+	UI_INFIELD{3} "bs_frame_colour_BGS", 306,118 , 135,19 UI_TOOLTIP bubble[6]
 	GOSUB "SELECT_bs_frame_surface_BGS"
 	IF sts THEN
-		UI_INFIELD{3} "bs_frame_surface_BGS", 284,94 , 122,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[4]
+		UI_INFIELD{3} "bs_frame_surface_BGS", 305,94 , 137,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[4]
 		ELSE
-		UI_INFIELD{3} "bs_frame_surface_BGS", 285,95 , 121,19 UI_TOOLTIP bubble[4]
+		UI_INFIELD{3} "bs_frame_surface_BGS", 306,95 , 136,19 UI_TOOLTIP bubble[4]
 		ENDIF
-	UI_SEPARATOR -1,90, 445,90
-	UI_SEPARATOR 0,169, 445,169
+	UI_SEPARATOR -1,90, 481,90
+	UI_SEPARATOR 0,169, 481,169
 	IF bs_door_leafs > 1 THEN GOSUB 5050   !»» Zargen- und Oberblendenfugenfalzmaße
 	IF bs_door_leafs < 2 THEN GOSUB 5050   !»» Nur Zargenfalzmaße
 	RETURN
 ! ------------------ MAIN PAGE LoI < 5 [ 2600 ]
 	2600:   ! #### Vereinfachte Zargenparameter
 	GOSUB 9900
-	UI_OUTFIELD babel[11], 96,26 , 125,15, 0+0
-	UI_OUTFIELD babel[8], 96,58 , 130,15, 0+0
-	IF unifyingMaterial THEN UI_OUTFIELD babel[12], 96,87 , 130,15, 0+0
-	UI_OUTFIELD babel[9], 96,122 , 130,15, 0+0
-	UI_OUTFIELD babel[5], 96,214 , 130,15, 0+0
-	UI_OUTFIELD babel[10], 96,243 , 130,15, 0+0
+	UI_OUTFIELD babel[11], 105,26 , 139,15, 0+0
+	UI_OUTFIELD babel[8], 105,58 , 139,15, 0+0
+	IF unifyingMaterial THEN UI_OUTFIELD babel[12], 105,87 , 139,15, 0+0
+	UI_OUTFIELD babel[9], 105,122 , 139,15, 0+0
+	UI_OUTFIELD babel[5], 105,214 , 139,15, 0+0
+	UI_OUTFIELD babel[10], 105,243 , 139,15, 0+0
 	GOSUB "VALUES_bs_frame_material"
-	UI_INFIELD{3} "bs_frame_material", 222,20 , 124,21, 2, "", 999, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
-	UI_INFIELD{3} dk_materials[dka_frame_mat_BS], 266,54 , 80,21 UI_TOOLTIP bubble[10]
+	UI_INFIELD{3} "bs_frame_material", 240,20 , 124,21, 2, "", 999, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
+	UI_INFIELD{3} dk_materials[dka_frame_mat_BS], 284,54 , 80,21 UI_TOOLTIP bubble[10]
 	IF unifyingMaterial THEN
-		UI_INFIELD{3} dk_materials[unifyingMaterial], 266,83 , 80,21 UI_TOOLTIP bubble[10]
+		UI_INFIELD{3} dk_materials[unifyingMaterial], 284,83 , 80,21 UI_TOOLTIP bubble[10]
 		ENDIF
-	UI_INFIELD{3} dk_fills[dka_frame_fill], 266,117 , 80,21 UI_TOOLTIP bubble[13]
-	UI_INFIELD{3} dk_fill_pens[dka_frame_penF], 266,146 , 80,21 UI_TOOLTIP bubble[12]
-	UI_INFIELD{3} dk_bkg_pens[dka_frame_penB], 266,175 , 80,21 UI_TOOLTIP bubble[11]
-	UI_INFIELD{3} dk_cont_pens[dka_frame_penC2], 266,209 , 80,21 UI_TOOLTIP bubble[8]
-	UI_INFIELD{3} dk_cont_pens[dka_frame_penC3], 266,238 , 80,21 UI_TOOLTIP bubble[7]
-	UI_PICT "ui_fill_type_flat 20x20.png", 226,117 , 20,20, 1 UI_TOOLTIP bubble[13]
-	UI_PICT "ui_list_surface_flat 32x15.png", 226,58 , 32,15, 1 UI_TOOLTIP bubble[10]
-	IF unifyingMaterial THEN UI_PICT "ui_list_surface_flat 32x15.png", 226,87 , 32,15, 1 UI_TOOLTIP bubble[10]
-	UI_PICT "ui_fill_pen_flat 29x16.png", 226,149 , 29,16, 1 UI_TOOLTIP bubble[12]
-	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 226,177 , 29,16, 1 UI_TOOLTIP bubble[11]
-	UI_PICT "ui_list_contourPen_flat 32x15.png", 226,212 , 32,15, 1
-	UI_PICT "ui_list_3DPen_flat 32x15.png", 226,241 , 32,15, 1
-	UI_SEPARATOR 96,47, 346,47
-	UI_SEPARATOR 96,110, 346,110
-	UI_SEPARATOR 96,202, 346,202
+	UI_INFIELD{3} dk_fills[dka_frame_fill], 284,117 , 80,21 UI_TOOLTIP bubble[13]
+	UI_INFIELD{3} dk_fill_pens[dka_frame_penF], 284,146 , 80,21 UI_TOOLTIP bubble[12]
+	UI_INFIELD{3} dk_bkg_pens[dka_frame_penB], 284,175 , 80,21 UI_TOOLTIP bubble[11]
+	UI_INFIELD{3} dk_cont_pens[dka_frame_penC2], 284,209 , 80,21 UI_TOOLTIP bubble[8]
+	UI_INFIELD{3} dk_cont_pens[dka_frame_penC3], 284,238 , 80,21 UI_TOOLTIP bubble[7]
+	UI_PICT "ui_fill_type_flat 20x20.png", 244,117 , 20,20, 1 UI_TOOLTIP bubble[13]
+	UI_PICT "ui_list_surface_flat 32x15.png", 244,58 , 32,15, 1 UI_TOOLTIP bubble[10]
+	IF unifyingMaterial THEN UI_PICT "ui_list_surface_flat 32x15.png", 244,87 , 32,15, 1 UI_TOOLTIP bubble[10]
+	UI_PICT "ui_fill_pen_flat 29x16.png", 244,149 , 29,16, 1 UI_TOOLTIP bubble[12]
+	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 244,177 , 29,16, 1 UI_TOOLTIP bubble[11]
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 244,212 , 32,15, 1
+	UI_PICT "ui_list_3DPen_flat 32x15.png", 244,241 , 32,15, 1
+	UI_SEPARATOR 105,47, 365,47
+	UI_SEPARATOR 105,110, 365,110
+	UI_SEPARATOR 105,202, 365,202
 	RETURN
 ! ------------------ DOOR DIVISION / TÜRAUFTEILUNG [ 2700 ]
 	2700:   ! #### LOI 3+ - Türaufteilung
 	GOSUB 9900
 	GOSUB "DYNVALUES_division"   !»» Titel + Bitmaps für Türaufteilung bestimmen
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[44], 352,240 , 92,26, 2+0
+	UI_OUTFIELD babel[44], 364,240 , 92,32, 2+0
 	UI_STYLE 0,0
-	UI_OUTFIELD "*", 114,138 , 12,15, 2+0
-	UI_OUTFIELD "*", 247,21 , 12,15, 2+0
+	UI_OUTFIELD "*", 126,138 , 12,15, 2+0
+	UI_OUTFIELD "*", 259,21 , 12,15, 2+0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[13], 0,20 , 134,15, 0+0
+	UI_OUTFIELD babel[13], 0,20 , 160,15, 0+0
 	UI_STYLE 0,0
 	out_value = STR (format, gs_sidelight_width_right)
 	IF gs_sidelight_right AND NOT(gs_sidelight_left AND bDiffSidelightWidth) THEN
-		UI_OUTFIELD out_value, 124,249 , 62,14, 2+0
+		UI_OUTFIELD out_value, 136,249 , 62,14, 2+0
 		ENDIF
 	out_value = STR (format, gs_sidelight_width_left)
 	IF gs_sidelight_left THEN
-		UI_OUTFIELD out_value, 254,249 , 62,14, 2+0
+		UI_OUTFIELD out_value, 266,249 , 62,14, 2+0
 		ENDIF
-	UI_PICT dk_slices_T, 176,95 , 90,140, 1
-	UI_PICT dk_slices_OM, 176,55 , 90,40, 1
-	UI_PICT dk_slices_SR, 266,95 , 40,140, 1
-	UI_PICT dk_slices_OR, 266,55 , 40,40, 1
-	UI_PICT dk_slices_SL, 136,95 , 40,140, 1
-	UI_PICT dk_slices_OL, 136,55 , 40,40, 1
-	UI_PICT dk_chain_ZMV, 126,55 , 8,180, 1
-	IF gs_door_transom>0 THEN UI_PICT dk_chain_TMV, 308,55 , 8,180, 1
-	UI_PICT dk_chain_TM, 136,237 , 170,8, 1
-	UI_PICT dk_chain_ZM, 136,45 , 170,8, 1
-	UI_INFIELD{3} "ac_egress_width", 195,247 , 57,19 UI_TOOLTIP bubble[14]
-	IF gs_sidelight_right AND gs_sidelight_left AND bDiffSidelightWidth THEN UI_INFIELD{3} "gs_sidelight_width_right", 135,247 , 57,19 UI_TOOLTIP bubble[22]
-	IF gs_door_transom>0 THEN UI_INFIELD{3} "gs_transom_height", 321,59 , 57,19 UI_TOOLTIP bubble[16]
-	IF gs_door_transom>0 THEN UI_INFIELD{3} "ac_egress_height", 321,143 , 57,19 UI_TOOLTIP bubble[15]
-	UI_INFIELD{3} "ac_unit_width", 187,23 , 60,19 UI_TOOLTIP bubble[18]
-	UI_INFIELD{3} "ac_unit_height", 54,143 , 57,19 UI_TOOLTIP bubble[48]
+	UI_PICT dk_slices_T, 188,95 , 90,140, 1
+	UI_PICT dk_slices_OM, 188,55 , 90,40, 1
+	UI_PICT dk_slices_SR, 278,95 , 40,140, 1
+	UI_PICT dk_slices_OR, 278,55 , 40,40, 1
+	UI_PICT dk_slices_SL, 148,95 , 40,140, 1
+	UI_PICT dk_slices_OL, 148,55 , 40,40, 1
+	UI_PICT dk_chain_ZMV, 138,55 , 8,180, 1
+	IF gs_door_transom>0 THEN UI_PICT dk_chain_TMV, 320,55 , 8,180, 1
+	UI_PICT dk_chain_TM, 148,237 , 170,8, 1
+	UI_PICT dk_chain_ZM, 148,45 , 170,8, 1
+	UI_INFIELD{3} "ac_egress_width", 207,247 , 57,19 UI_TOOLTIP bubble[14]
+	IF gs_sidelight_right AND gs_sidelight_left AND bDiffSidelightWidth THEN UI_INFIELD{3} "gs_sidelight_width_right", 147,247 , 57,19 UI_TOOLTIP bubble[22]
+	IF gs_door_transom>0 THEN UI_INFIELD{3} "gs_transom_height", 333,59 , 57,19 UI_TOOLTIP bubble[16]
+	IF gs_door_transom>0 THEN UI_INFIELD{3} "ac_egress_height", 333,143 , 57,19 UI_TOOLTIP bubble[15]
+	UI_INFIELD{3} "ac_unit_width", 199,23 , 60,19 UI_TOOLTIP bubble[18]
+	UI_INFIELD{3} "ac_unit_height", 66,143 , 57,19 UI_TOOLTIP bubble[48]
 	UI_STYLE 0,0
-	UI_INFIELD{3} "gs_door_transom", 53,58 , 23,23, 6, 4, 4, 1, 18, 18, 18, 18, 1,"-",0, 2,"X",1 UI_TOOLTIP bubble[17]
+	UI_INFIELD{3} "gs_door_transom", 65,58 , 23,23, 6, 4, 4, 1, 18, 18, 18, 18, 1,"-",0, 2,"X",1 UI_TOOLTIP bubble[17]
 	GOSUB "DYNVALUES_bs_door_sidelight1"
-	UI_INFIELD{3} "bs_door_sidelight", 53,174 , 23,23, 6, 4, 4, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
-	IF gs_door_transom > 0 AND gs_sidelight_right THEN UI_INFIELD{3} "dk_sidelight_transom1", 101,78 , 22,23, 6, 4, 4, 1, 18, 18, 18, 18, 1,"-",0, 2,"X",1
-	IF gs_door_transom > 0 AND gs_sidelight_left THEN UI_INFIELD{3} "dk_sidelight_transom2", 330,81 , 22,23, 6, 4, 4, 1, 18, 18, 18, 18, 1,"-",0, 2,"X",1
-	IF gs_door_transom > 0 AND gs_sidelight_right THEN UI_INFIELD{3} "bs_fanlight_division", 159,20 , 22,23, 6, 4, 4, 1, 18, 18, 18, 18, 1,"-",BITSET(bs_fanlight_division,3,0), 2,"X",BITSET(bs_fanlight_division,3,1)
-	IF gs_door_transom > 0 AND gs_sidelight_left THEN UI_INFIELD{3} "bs_fanlight_division", 262,20 , 22,23, 6, 4, 4, 1, 18, 18, 18, 18, 1,"-",BITSET(bs_fanlight_division,2,0), 2,"X",BITSET(bs_fanlight_division,2,1)
+	UI_INFIELD{3} "bs_door_sidelight", 65,174 , 23,23, 6, 4, 4, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+	IF gs_door_transom > 0 AND gs_sidelight_right THEN UI_INFIELD{3} "dk_sidelight_transom1", 113,78 , 22,23, 6, 4, 4, 1, 18, 18, 18, 18, 1,"-",0, 2,"X",1
+	IF gs_door_transom > 0 AND gs_sidelight_left THEN UI_INFIELD{3} "dk_sidelight_transom2", 342,81 , 22,23, 6, 4, 4, 1, 18, 18, 18, 18, 1,"-",0, 2,"X",1
+	IF gs_door_transom > 0 AND gs_sidelight_right THEN UI_INFIELD{3} "bs_fanlight_division", 171,20 , 22,23, 6, 4, 4, 1, 18, 18, 18, 18, 1,"-",BITSET(bs_fanlight_division,3,0), 2,"X",BITSET(bs_fanlight_division,3,1)
+	IF gs_door_transom > 0 AND gs_sidelight_left THEN UI_INFIELD{3} "bs_fanlight_division", 274,20 , 22,23, 6, 4, 4, 1, 18, 18, 18, 18, 1,"-",BITSET(bs_fanlight_division,2,0), 2,"X",BITSET(bs_fanlight_division,2,1)
 	GOSUB "DYNVALUES_bs_door_sidelight2"
-	UI_INFIELD{3} "bs_door_sidelight", 355,174 , 23,23, 6, 4, 4, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+	UI_INFIELD{3} "bs_door_sidelight", 367,174 , 23,23, 6, 4, 4, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
 	IF gs_sidelight_left AND gs_sidelight_right THEN UI_INFIELD{3} "bDiffSidelightWidth", 0,235 , 66,31, 6, 5, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[24]
-	IF gs_door_transom>0 THEN UI_OUTFIELD babel[14], 388,22 , 53,28, 2+4*(gs_door_transom > 0)
+	IF gs_door_transom>0 THEN UI_OUTFIELD babel[14], 424,22 , 53,32, 2+4*(gs_door_transom > 0)
 	IF gs_door_transom>0 THEN
 		GOSUB "SELECT_bs_fanlight_division"
-		UI_INFIELD{3} "bs_fanlight_division", 395,53 , 40,31, 2, 2, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[25]
+		UI_INFIELD{3} "bs_fanlight_division", 431,53 , 40,31, 2, 2, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[25]
 		ENDIF
 	IF gs_door_transom>0 THEN
 		GOSUB "SELECT_bs_inner_frame"
-		UI_INFIELD{3} "bs_inner_frame", 395,86 , 40,56, 2, 3, 2, 1, 25, 50, 25, 50, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[26]
+		UI_INFIELD{3} "bs_inner_frame", 431,86 , 40,56, 2, 3, 2, 1, 25, 50, 25, 50, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[26]
 		ENDIF
-	UI_SEPARATOR 79,71, 186,71
-	UI_SEPARATOR 79,185, 155,185
-	UI_SEPARATOR 285,185, 352,185
+	UI_SEPARATOR 91,71, 198,71
+	UI_SEPARATOR 91,185, 167,185
+	UI_SEPARATOR 297,185, 364,185
 	RETURN
 ! ------------------ BLOCKZARGE [ 3000 ]
 	3000:   ! #### LOI 1+ - Blockzarge Horizontale Abmessungen
 	GOSUB 9900
 	GOSUB "SLICES_division"
-	UI_OUTFIELD babel[19], 0,232 , 71,30, 0+0
+	UI_OUTFIELD babel[19], 0,232 , 71,32, 0+0
 	out_val = bs_internal_rim_width
 	GOSUB "out_format"
 	UI_OUTFIELD out_txt, 71,245 , 42,15, 0+0 UI_TOOLTIP bubble[34]
-	IF rightWi THEN UI_PICT "dk_label_line 1x17.png", 160,182 , 1,17, 1
-	UI_PICT "dk_label_line 1x17.png", 221,182 , 1,17, 1
-	IF leftWi THEN UI_PICT "dk_label_line 1x17.png", 283,182 , 1,17, 1
+	IF rightWi THEN UI_PICT "dk_label_line 1x17.png", 178,182 , 1,17, 1
+	UI_PICT "dk_label_line 1x17.png", 239,182 , 1,17, 1
+	IF leftWi THEN UI_PICT "dk_label_line 1x17.png", 301,182 , 1,17, 1
 	GOSUB "SELECT_bz_typ_einzug"
 	UI_INFIELD{3} "bz_typ_einzug", 117,226 , 128,40, 2, 9, 3, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[31]
-	IF bz_typ_einzug=1 THEN UI_INFIELD{3} "bz_einzug", 379,226 , 65,19 UI_TOOLTIP bubble[74]
-	IF bz_typ_einzug=1 THEN UI_INFIELD{3} "bz_tiefe", 379,247 , 65,19 UI_TOOLTIP bubble[33]
-	IF bz_typ_einzug=1 THEN UI_OUTFIELD babel[16], 249,229 , 130,16, 0+0
-	IF bz_typ_einzug=1 THEN UI_OUTFIELD babel[15], 249,250 , 130,16, 0+0
-	IF bz_typ_einzug=0 THEN UI_OUTFIELD babel[17], 249,239 , 130,16, 0+0
+	IF bz_typ_einzug=1 THEN UI_INFIELD{3} "bz_einzug", 415,226 , 65,19 UI_TOOLTIP bubble[74]
+	IF bz_typ_einzug=1 THEN UI_INFIELD{3} "bz_tiefe", 415,247 , 65,19 UI_TOOLTIP bubble[33]
+	IF bz_typ_einzug=1 THEN UI_OUTFIELD babel[16], 269,229 , 145,16, 0+0
+	IF bz_typ_einzug=1 THEN UI_OUTFIELD babel[15], 269,250 , 145,16, 0+0
+	IF bz_typ_einzug=0 THEN UI_OUTFIELD babel[17], 269,239 , 145,16, 0+0
 	IF bz_typ_einzug=0 THEN
 		out_val = gs_frame_thk
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 383,239 , 61,16, 0+0 UI_TOOLTIP bubble[75]
+		UI_OUTFIELD out_txt, 419,239 , 61,16, 0+0 UI_TOOLTIP bubble[75]
 		ENDIF   !»» gs_frame_width_right
 	UI_STYLE 2,1
-	UI_OUTFIELD babel[36], 0,26 , 233,31, 0+0
+	UI_OUTFIELD babel[36], 0,26 , 261,16, 0+0
 	UI_STYLE 0,0
 	IF NOT(gs_different_framewidth) THEN
-		UI_INFIELD{3} "gs_frame_width", 391,140 , 53,19 UI_TOOLTIP bubble[18]
+		UI_INFIELD{3} "gs_frame_width", 418,140 , 62,19 UI_TOOLTIP bubble[18]
 		ENDIF
 	IF rightTi = 1 THEN
-		UI_INFIELD{3} "dk_frame_thk_post", 161,61 , 53,19 UI_TOOLTIP bubble[32]
+		UI_INFIELD{3} "dk_frame_thk_post", 170,61 , 62,19 UI_TOOLTIP bubble[32]
 		ENDIF
 	IF leftTi =1 THEN
-		UI_INFIELD{3} "dk_frame_thk_post", 240,61 , 53,19 UI_TOOLTIP bubble[32]
+		UI_INFIELD{3} "dk_frame_thk_post", 249,61 , 62,19 UI_TOOLTIP bubble[32]
 		ENDIF
 	IF gs_sidelight_right THEN
-		UI_INFIELD{3} "bs_sidelight_filling_thk1", 105,61 , 53,19 UI_TOOLTIP bubble[41]
+		UI_INFIELD{3} "bs_sidelight_filling_thk1", 105,61 , 62,19 UI_TOOLTIP bubble[41]
 		ENDIF
-	UI_INFIELD{3} "wall_shell_thk_1", 0,86 , 53,19 UI_TOOLTIP bubble[44]
-	UI_INFIELD{3} "wall_shell_thk_2", 0,161 , 53,19 UI_TOOLTIP bubble[43]
+	UI_INFIELD{3} "wall_shell_thk_1", 0,86 , 62,19 UI_TOOLTIP bubble[44]
+	UI_INFIELD{3} "wall_shell_thk_2", 0,161 , 62,19 UI_TOOLTIP bubble[43]
 	IF rightS = 1 THEN
-		UI_INFIELD{3} "gs_sidelight_width_right", 89,182 , 53,19 UI_TOOLTIP bubble[22]
+		UI_INFIELD{3} "gs_sidelight_width_right", 98,182 , 53,19 UI_TOOLTIP bubble[22]
 		ENDIF
-	UI_INFIELD{3} "ac_egress_width", 204,200 , 53,19 UI_TOOLTIP bubble[14]
-	UI_INFIELD{3} "gs_fuge", 0,107 , 53,19 UI_TOOLTIP bubble[29]
-	UI_INFIELD{3} "gs_ub_st2", 391,86 , 53,19 UI_TOOLTIP bubble[30]
+	UI_INFIELD{3} "ac_egress_width", 213,200 , 62,19 UI_TOOLTIP bubble[14]
+	UI_INFIELD{3} "gs_fuge", 0,107 , 62,19 UI_TOOLTIP bubble[29]
+	UI_INFIELD{3} "gs_ub_st2", 418,86 , 62,19 UI_TOOLTIP bubble[30]
 	IF leftWi = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_left_2", 265,200 , 53,19 UI_TOOLTIP bubble[27]
+		UI_INFIELD{3} "gs_frame_width_left_2", 279,200 , 62,19 UI_TOOLTIP bubble[27]
 		ENDIF
 	IF rightWi = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_right_2", 142,200 , 53,19 UI_TOOLTIP bubble[28]
+		UI_INFIELD{3} "gs_frame_width_right_2", 146,200 , 62,19 UI_TOOLTIP bubble[28]
 		ENDIF
-	IF gs_different_framewidth THEN UI_INFIELD{3} "gs_frame_width_right", 0,140 , 53,19 UI_TOOLTIP bubble[37]
+	IF gs_different_framewidth THEN UI_INFIELD{3} "gs_frame_width_right", 0,140 , 62,19 UI_TOOLTIP bubble[37]
 	IF gs_different_framewidth THEN
-		UI_INFIELD{3} "gs_frame_width_left", 391,140 , 53,19 UI_TOOLTIP bubble[36]
+		UI_INFIELD{3} "gs_frame_width_left", 418,140 , 62,19 UI_TOOLTIP bubble[36]
 		ENDIF
 	IF gs_sidelight_left THEN
-		UI_INFIELD{3} "bs_sidelight_filling_thk2", 296,61 , 53,19 UI_TOOLTIP bubble[40]
+		UI_INFIELD{3} "bs_sidelight_filling_thk2", 314,61 , 62,19 UI_TOOLTIP bubble[40]
 		ENDIF
-	UI_INFIELD{3} "gs_different_framewidth", 373,26 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[42]
-	IF gs_sidelight_left OR gs_sidelight_right THEN UI_INFIELD{3} "dk_different_frame_thk", 305,26 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[38]
-	IF gs_sidelight_left AND gs_sidelight_right THEN UI_INFIELD{3} "bDiffSidelightWidth", 237,26 , 66,31, 6, 5, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[24]
+	UI_INFIELD{3} "gs_different_framewidth", 409,26 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[42]
+	IF gs_sidelight_left OR gs_sidelight_right THEN UI_INFIELD{3} "dk_different_frame_thk", 341,26 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[38]
+	IF gs_sidelight_left AND gs_sidelight_right THEN UI_INFIELD{3} "bDiffSidelightWidth", 273,26 , 66,31, 6, 5, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[24]
 	IF rightTi = 2 THEN
 		out_val = dk_frame_thk_post
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 167,64 , 51,16, 0+0 UI_TOOLTIP bubble[32]
+		UI_OUTFIELD out_txt, 185,64 , 51,16, 0+0 UI_TOOLTIP bubble[32]
 		ENDIF
 	IF leftTi =2 THEN
 		out_val = dk_frame_thk_post
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 220,64 , 50,16, 1+0 UI_TOOLTIP bubble[32]
+		UI_OUTFIELD out_txt, 238,64 , 50,16, 1+0 UI_TOOLTIP bubble[32]
 		ENDIF
 	IF NOT(gs_different_framewidth) THEN
 		out_val = gs_frame_width_right
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 0,143 , 52,16, 1+0
+		UI_OUTFIELD out_txt, 0,143 , 61,16, 1+0
 		ENDIF
 	IF rightS = 2 THEN
 		out_val = gs_sidelight_width_right
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 88,185 , 53,16, 2+0 UI_TOOLTIP bubble[22]
+		UI_OUTFIELD out_txt, 100,185 , 62,16, 2+0 UI_TOOLTIP bubble[22]
 		ENDIF
 	IF rightWi = 2 THEN
 		out_val = gs_frame_width_right_2
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 139,203 , 50,16, 2+0 UI_TOOLTIP bubble[28]
+		UI_OUTFIELD out_txt, 157,203 , 50,16, 2+0 UI_TOOLTIP bubble[28]
 		ENDIF
 	IF leftWi = 2 THEN
 		out_val = gs_frame_width_left_2
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 262,203 , 53,16, 2+0 UI_TOOLTIP bubble[27]
+		UI_OUTFIELD out_txt, 285,203 , 53,16, 2+0 UI_TOOLTIP bubble[27]
 		ENDIF
 	IF gs_sidelight_left THEN
 		out_val = gs_sidelight_width_left
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 315,185 , 57,16, 0+0 UI_TOOLTIP bubble[23]
+		UI_OUTFIELD out_txt, 333,185 , 57,16, 0+0 UI_TOOLTIP bubble[23]
 		ENDIF
-	UI_PICT dk_slices_01, 54,82 , 74,87, 1   !»» "dk_dims_BZ_SR_74x87.png"
-	UI_PICT dk_slices_02, 128,82 , 74,87, 1   !»» "dk_dims_Allg_MiRe_Se_Pfeil_74x87.png"
-	UI_PICT dk_slices_03, 202,82 , 52,87, 1   !»» "dk_dims_MiMi_2_52x87.png"
-	UI_PICT dk_slices_04, 254,82 , 65,87, 1   !»» "dk_dims_Allg_MiLi_Se_Pfeil_65x87.png"
-	UI_PICT dk_slices_05, 319,82 , 70,87, 1   !»» "dk_dims_BZ_SL_70x87.png"
-	UI_PICT dk_slices_dims, 54,169 , 336,13, 1   !»» "dk_dims_kette_beidseitig_336x13.png"
-	UI_SEPARATOR 0,222, 445,222
+	UI_PICT dk_slices_01, 72,82 , 74,87, 1   !»» "dk_dims_BZ_SR_74x87.png"
+	UI_PICT dk_slices_02, 146,82 , 74,87, 1   !»» "dk_dims_Allg_MiRe_Se_Pfeil_74x87.png"
+	UI_PICT dk_slices_03, 220,82 , 52,87, 1   !»» "dk_dims_MiMi_2_52x87.png"
+	UI_PICT dk_slices_04, 272,82 , 65,87, 1   !»» "dk_dims_Allg_MiLi_Se_Pfeil_65x87.png"
+	UI_PICT dk_slices_05, 337,82 , 70,87, 1   !»» "dk_dims_BZ_SL_70x87.png"
+	UI_PICT dk_slices_dims, 72,169 , 336,13, 1   !»» "dk_dims_kette_beidseitig_336x13.png"
+	UI_SEPARATOR 0,222, 481,222
 	RETURN
 ! ------------------ BLOCKZARGE [ 3100 ]
 	3100:   ! #### LOI 1+ - Blockzarge Vertikale Abmessungen
@@ -1255,199 +1255,199 @@ END offsetFrameSurfaceBGS,
 	IF lowerW = 2 THEN
 		out_val = gs_frame_width_bottom_sl
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 393,247 , 51,16, 0+0 UI_TOOLTIP bubble[58]
+		UI_OUTFIELD out_txt, 418,247 , 51,16, 0+0 UI_TOOLTIP bubble[58]
 		ENDIF
 	IF upperWi = 2 THEN
 		out_val = gs_frame_width_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 163,183 , 55,16, 0+0 UI_TOOLTIP bubble[57]
+		UI_OUTFIELD out_txt, 172,183 , 55,16, 0+0 UI_TOOLTIP bubble[57]
 		ENDIF
 	IF gs_door_transom THEN
 		out_val = gs_transom_height - gs_frame_width_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 163,143 , 55,16, 0+0 UI_TOOLTIP bubble[55]
+		UI_OUTFIELD out_txt, 171,143 , 55,16, 0+0 UI_TOOLTIP bubble[55]
 		ENDIF
 	IF lowerT = 2 THEN
 		out_val = dk_frame_thk_bottom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 230,247 , 55,16, 1+0 UI_TOOLTIP bubble[51]
+		UI_OUTFIELD out_txt, 245,247 , 62,16, 1+0 UI_TOOLTIP bubble[51]
 		ENDIF
 	IF upperTi = 2 THEN
 		out_val = dk_frame_thk_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 0,183 , 54,16, 1+0 UI_TOOLTIP bubble[50]
+		UI_OUTFIELD out_txt, 8,183 , 54,16, 1+0 UI_TOOLTIP bubble[50]
 		ENDIF
 	IF gs_sidelight_left OR gs_sidelight_right THEN
 		out_val =dk_frame_thk_upper
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 230,120 , 55,16, 1+0
+		UI_OUTFIELD out_txt, 253,120 , 55,16, 1+0
 		ENDIF
 	IF upperTsi = 2 THEN
 		out_val =dk_frame_thk_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 230,183 , 55,16, 1+0
+		UI_OUTFIELD out_txt, 253,183 , 55,16, 1+0
 		ENDIF
 	IF gs_different_framewidth THEN
-		UI_INFIELD{3} "gs_frame_width_upper", 70,77 , 55,19 UI_TOOLTIP bubble[45]
+		UI_INFIELD{3} "gs_frame_width_upper", 78,77 , 62,19 UI_TOOLTIP bubble[45]
 		ELSE
-		UI_INFIELD{3} "gs_frame_width", 70,77 , 55,19 UI_TOOLTIP bubble[35]
+		UI_INFIELD{3} "gs_frame_width", 78,77 , 62,19 UI_TOOLTIP bubble[35]
 		ENDIF
 	UI_STYLE 2,1
-	UI_OUTFIELD babel[32], 0,22 , 233,16, 0+0
+	UI_OUTFIELD babel[32], 0,22 , 252,16, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 2,1
-	UI_OUTFIELD babel[20], 29,57 , 163,16, 2+0
+	UI_OUTFIELD babel[20], 35,57 , 163,16, 2+0
 	UI_STYLE 0,0
 	IF gs_sidelight_left OR gs_sidelight_right THEN
 		UI_STYLE 2,1
 		
-		UI_OUTFIELD babel[21], 263,57 , 163,16, 2+0
+		UI_OUTFIELD babel[21], 293,57 , 163,16, 2+0
 		UI_STYLE 0,0
 		ENDIF
-	UI_PICT dk_slices_blatt_01, 56,99 , 100,60, 1
-	UI_PICT dk_slices_blatt_02, 56,159 , 100,65, 1
-	UI_PICT dk_slices_blatt_03, 56,224 , 100,40, 1
+	UI_PICT dk_slices_blatt_01, 64,99 , 100,60, 1
+	UI_PICT dk_slices_blatt_02, 64,159 , 100,65, 1
+	UI_PICT dk_slices_blatt_03, 64,224 , 100,40, 1
 	IF gs_sidelight_left OR gs_sidelight_right THEN
-		UI_PICT dk_slices_feld_01, 287,99 , 100,60, 1
+		UI_PICT dk_slices_feld_01, 310,99 , 100,60, 1
 		ENDIF
 	IF gs_sidelight_left OR gs_sidelight_right THEN
-		UI_PICT dk_slices_feld_02, 287,159 , 100,65, 1
+		UI_PICT dk_slices_feld_02, 310,159 , 100,65, 1
 		ENDIF
 	IF gs_sidelight_left OR gs_sidelight_right THEN
-		UI_PICT dk_slices_feld_03, 287,224 , 100,40, 1
+		UI_PICT dk_slices_feld_03, 310,224 , 100,40, 1
 		ENDIF
-	IF upperTi = 1 THEN UI_INFIELD{3} "dk_frame_thk_transom", 0,181 , 55,19 UI_TOOLTIP bubble[50]
+	IF upperTi = 1 THEN UI_INFIELD{3} "dk_frame_thk_transom", 0,181 , 62,19 UI_TOOLTIP bubble[50]
 	IF lowerW = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_bottom_sl", 389,244 , 55,19 UI_TOOLTIP bubble[47]
+		UI_INFIELD{3} "gs_frame_width_bottom_sl", 418,244 , 62,19 UI_TOOLTIP bubble[47]
 		ENDIF
 	IF lowerT = 1 THEN
-		UI_INFIELD{3} "dk_frame_thk_bottom", 231,244 , 55,19 UI_TOOLTIP bubble[51]
+		UI_INFIELD{3} "dk_frame_thk_bottom", 245,244 , 62,19 UI_TOOLTIP bubble[51]
 		ENDIF
-	IF gs_door_transom AND bs_inner_frame # 2 THEN UI_INFIELD{3} "bs_fanlight_filling_thk", 0,159 , 55,19 UI_TOOLTIP bubble[71]
+	IF gs_door_transom AND bs_inner_frame # 2 THEN UI_INFIELD{3} "bs_fanlight_filling_thk", 0,159 , 62,19 UI_TOOLTIP bubble[71]
 	IF bz_typ_einzug = 0 THEN
 		out_val =dk_frame_thk_upper
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 0,120 , 55,16, 1+0 UI_TOOLTIP bubble[49]
+		UI_OUTFIELD out_txt, 7,120 , 55,16, 1+0 UI_TOOLTIP bubble[49]
 		ENDIF
 	IF bz_typ_einzug THEN
-		UI_INFIELD{3} "bz_tiefe", 0,117 , 55,19 UI_TOOLTIP bubble[49]
+		UI_INFIELD{3} "bz_tiefe", 0,117 , 62,19 UI_TOOLTIP bubble[49]
 		ENDIF
 	IF upperWi = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_transom", 158,181 , 55,19 UI_TOOLTIP bubble[46]
+		UI_INFIELD{3} "gs_frame_width_transom", 172,181 , 62,19 UI_TOOLTIP bubble[46]
 		ENDIF
-	IF gs_door_transom THEN UI_INFIELD{3} "ac_egress_height", 158,213 , 55,19 UI_TOOLTIP bubble[15]
-	IF gs_door_transom = 0 THEN UI_INFIELD{3} "ac_unit_height", 158,176 , 55,19 UI_TOOLTIP bubble[48]
-	UI_INFIELD{3} "gs_different_framewidth", 373,20 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[53]
+	IF gs_door_transom THEN UI_INFIELD{3} "ac_egress_height", 172,213 , 62,19 UI_TOOLTIP bubble[15]
+	IF gs_door_transom = 0 THEN UI_INFIELD{3} "ac_unit_height", 172,176 , 62,19 UI_TOOLTIP bubble[48]
+	UI_INFIELD{3} "gs_different_framewidth", 409,20 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[53]
 	sts = (oberLichtBlende = 1 OR gs_sidelight_left OR gs_sidelight_right)
-	IF sts THEN UI_INFIELD{3} "dk_different_frame_thk", 305,20 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[54]
+	IF sts THEN UI_INFIELD{3} "dk_different_frame_thk", 341,20 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[54]
 	IF upperWo = 2 THEN
 		out_val =gs_frame_width_upper
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 291,80 , 60,16, 2+0 UI_TOOLTIP bubble[56]
+		UI_OUTFIELD out_txt, 314,80 , 60,16, 2+0 UI_TOOLTIP bubble[56]
 		ENDIF
 	RETURN
 ! ------------------ ECKZARGE [ 3500 ]
 	3500:   ! #### LOI 1+ - Eckzarge Horizontale Abmessungen
 	GOSUB 9900
 	GOSUB "SLICES_division"
-	UI_PICT dk_slices_01, 54,95 , 74,87, 1   !»» "dk_dims_EZ_SR_74x87.png"
-	UI_PICT dk_slices_02, 128,95 , 74,87, 1   !»» "dk_dims_Allg_MiRe_Se_Pfeil_74x87.png"
-	UI_PICT dk_slices_03, 202,95 , 52,87, 1   !»» "dk_dims_MiMi_2_52x87.png"
-	UI_PICT dk_slices_04, 254,95 , 65,87, 1   !»» "dk_dims_Allg_MiLi_Se_Pfeil_65x87.png"
-	UI_PICT dk_slices_05, 319,95 , 70,87, 1   !»» "dk_dims_EZ_SL_70x87.png"
+	UI_PICT dk_slices_01, 72,95 , 74,87, 1   !»» "dk_dims_EZ_SR_74x87.png"
+	UI_PICT dk_slices_02, 146,95 , 74,87, 1   !»» "dk_dims_Allg_MiRe_Se_Pfeil_74x87.png"
+	UI_PICT dk_slices_03, 220,95 , 52,87, 1   !»» "dk_dims_MiMi_2_52x87.png"
+	UI_PICT dk_slices_04, 272,95 , 65,87, 1   !»» "dk_dims_Allg_MiLi_Se_Pfeil_65x87.png"
+	UI_PICT dk_slices_05, 337,95 , 70,87, 1   !»» "dk_dims_EZ_SL_70x87.png"
 	IF leftTi = 2 THEN
 		out_val = dk_frame_thk_post
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 235,75 , 45,16, 2+0 UI_TOOLTIP "Rahmenstärke des Pfostens "
+		UI_OUTFIELD out_txt, 250,75 , 45,16, 2+0 UI_TOOLTIP "Rahmenstärke des Pfostens "
 		ENDIF
 	UI_STYLE 2,1
-	UI_OUTFIELD babel[37], 0,26 , 233,31, 0+0
+	UI_OUTFIELD babel[37], 0,26 , 256,16, 0+0
 	UI_STYLE 0, 0
 	IF rightTi = 2 THEN
 		out_val = dk_frame_thk_post
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 156,75 , 53,16, 2+0 UI_TOOLTIP "Rahmenstärke des Pfostens  "
+		UI_OUTFIELD out_txt, 174,75 , 53,16, 2+0 UI_TOOLTIP "Rahmenstärke des Pfostens  "
 		ENDIF
-	IF leftWi THEN UI_PICT "dk_label_line 1x17.png", 283,195 , 1,17, 1
+	IF leftWi THEN UI_PICT "dk_label_line 1x17.png", 301,195 , 1,17, 1
 	IF NOT(gs_different_framewidth) THEN
-		UI_INFIELD{3} "gs_frame_width", 391,144 , 53,19 UI_TOOLTIP babel[18]
+		UI_INFIELD{3} "gs_frame_width", 418,144 , 62,19 UI_TOOLTIP babel[18]
 		ENDIF
 	IF rightTi = 1 THEN
-		UI_INFIELD{3} "dk_frame_thk_post", 160,72 , 53,19 UI_TOOLTIP bubble[32]
+		UI_INFIELD{3} "dk_frame_thk_post", 178,72 , 53,19 UI_TOOLTIP bubble[32]
 		ENDIF
-	UI_PICT dk_slices_dims, 54,182 , 336,13, 1   !»» "dk_dims_kette_beidseitig_336x13.png"
+	UI_PICT dk_slices_dims, 72,182 , 336,13, 1   !»» "dk_dims_kette_beidseitig_336x13.png"
 	IF leftTi = 1 THEN
-		UI_INFIELD{3} "dk_frame_thk_post", 224,72 , 53,19 UI_TOOLTIP bubble[32]
+		UI_INFIELD{3} "dk_frame_thk_post", 242,72 , 53,19 UI_TOOLTIP bubble[32]
 		ENDIF
 	IF gs_sidelight_right THEN
-		UI_INFIELD{3} "bs_sidelight_filling_thk1", 103,72 , 53,19 UI_TOOLTIP bubble[41]
+		UI_INFIELD{3} "bs_sidelight_filling_thk1", 121,72 , 53,19 UI_TOOLTIP bubble[41]
 		ENDIF
-	UI_INFIELD{3} "wall_shell_thk_1", 0,96 , 53,19 UI_TOOLTIP bubble[44]
-	UI_INFIELD{3} "wall_shell_thk_2", 0,174 , 53,19 UI_TOOLTIP bubble[43]
-	IF rightWi THEN UI_PICT "dk_label_line 1x17.png", 160,195 , 1,17, 1
+	UI_INFIELD{3} "wall_shell_thk_1", 0,96 , 62,19 UI_TOOLTIP bubble[44]
+	UI_INFIELD{3} "wall_shell_thk_2", 0,174 , 62,19 UI_TOOLTIP bubble[43]
+	IF rightWi THEN UI_PICT "dk_label_line 1x17.png", 178,195 , 1,17, 1
 	IF gs_sidelight_left THEN
-		UI_INFIELD{3} "bs_sidelight_filling_thk2", 280,72 , 53,19 UI_TOOLTIP bubble[40]
+		UI_INFIELD{3} "bs_sidelight_filling_thk2", 298,72 , 53,19 UI_TOOLTIP bubble[40]
 		ENDIF
-	UI_INFIELD{3} "ac_egress_width", 204,214 , 53,19 UI_TOOLTIP bubble[14]
-	UI_PICT "dk_label_line 1x17.png", 221,195 , 1,17, 1
-	UI_INFIELD{3} "gs_ub_st2", 391,99 , 53,19 UI_TOOLTIP bubble[30]
+	UI_INFIELD{3} "ac_egress_width", 222,214 , 53,19 UI_TOOLTIP bubble[14]
+	UI_PICT "dk_label_line 1x17.png", 239,195 , 1,17, 1
+	UI_INFIELD{3} "gs_ub_st2", 418,99 , 62,19 UI_TOOLTIP bubble[30]
 	IF gs_sidelight_left AND gs_different_framewidth THEN
-		UI_INFIELD{3} "gs_frame_width_left_2", 266,214 , 53,19 UI_TOOLTIP bubble[27]
+		UI_INFIELD{3} "gs_frame_width_left_2", 284,214 , 53,19 UI_TOOLTIP bubble[27]
 		ENDIF
 	IF rightWi = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_right_2", 142,214 , 53,19 UI_TOOLTIP bubble[28]
+		UI_INFIELD{3} "gs_frame_width_right_2", 160,214 , 53,19 UI_TOOLTIP bubble[28]
 		ENDIF
-	UI_INFIELD{3} "bs_spiegel_br_bs", 46,72 , 53,19 UI_TOOLTIP bubble[65]
+	UI_INFIELD{3} "bs_spiegel_br_bs", 64,72 , 53,19 UI_TOOLTIP bubble[65]
 	IF NOT(gs_different_framewidth) THEN
 		out_val = gs_frame_width_right
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 0,147 , 52,16, 1+0 UI_TOOLTIP "Rahmenbreite rechts"
+		UI_OUTFIELD out_txt, 10,147 , 52,16, 1+0 UI_TOOLTIP "Rahmenbreite rechts"
 		ENDIF
 	IF gs_different_framewidth THEN
-		UI_INFIELD{3} "gs_frame_width_left", 391,144 , 53,19 UI_TOOLTIP bubble[36]
+		UI_INFIELD{3} "gs_frame_width_left", 418,144 , 62,19 UI_TOOLTIP bubble[36]
 		ENDIF
-	IF gs_different_framewidth THEN UI_INFIELD{3} "gs_frame_width_right", 0,144 , 53,19 UI_TOOLTIP bubble[37]
+	IF gs_different_framewidth THEN UI_INFIELD{3} "gs_frame_width_right", 0,144 , 62,19 UI_TOOLTIP bubble[37]
 	IF rightWi = 2 THEN
 		out_val = gs_frame_width_left_2
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 131,217 , 55,16, 2+0 UI_TOOLTIP "Breite Pfosten rechts"
+		UI_OUTFIELD out_txt, 149,217 , 55,16, 2+0 UI_TOOLTIP "Breite Pfosten rechts"
 		ENDIF
 	IF rightS = 1 THEN
-		UI_INFIELD{3} "gs_sidelight_width_right", 97,195 , 53,19 UI_TOOLTIP bubble[22]
+		UI_INFIELD{3} "gs_sidelight_width_right", 115,195 , 53,19 UI_TOOLTIP bubble[22]
 		ENDIF
 	IF gs_sidelight_left THEN
 		out_val = gs_sidelight_width_left
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 296,198 , 57,16, 2+0 UI_TOOLTIP "Breite Seitenfeld links"
+		UI_OUTFIELD out_txt, 314,198 , 57,16, 2+0 UI_TOOLTIP "Breite Seitenfeld links"
 		ENDIF
 	IF rightS = 2 THEN
 		out_val = gs_sidelight_width_left
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 94,198 , 57,16, 2+0 UI_TOOLTIP "Breite Seitenfeld rechts"
+		UI_OUTFIELD out_txt, 112,198 , 57,16, 2+0 UI_TOOLTIP "Breite Seitenfeld rechts"
 		ENDIF
 	IF leftWi = 2 THEN
 		out_val = gs_frame_width_left_2
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 258,217 , 53,16, 2+0 UI_TOOLTIP "Breite Pfosten links"
+		UI_OUTFIELD out_txt, 276,217 , 53,16, 2+0 UI_TOOLTIP "Breite Pfosten links"
 		ENDIF
-	UI_INFIELD{3} "gs_different_framewidth", 373,26 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[42]
-	IF gs_sidelight_left AND gs_sidelight_right THEN UI_INFIELD{3} "bDiffSidelightWidth", 237,26 , 66,31, 6, 5, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[24]
-	IF gs_sidelight_left OR gs_sidelight_right THEN UI_INFIELD{3} "dk_different_frame_thk", 305,26 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[38]
+	UI_INFIELD{3} "gs_different_framewidth", 409,26 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[42]
+	IF gs_sidelight_left AND gs_sidelight_right THEN UI_INFIELD{3} "bDiffSidelightWidth", 273,26 , 66,31, 6, 5, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[24]
+	IF gs_sidelight_left OR gs_sidelight_right THEN UI_INFIELD{3} "dk_different_frame_thk", 341,26 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[38]
 	IF dk_different_frame_thk THEN
-		UI_INFIELD{3} "dk_frame_thk_EZ", 336,72 , 53,19 UI_TOOLTIP bubble[49]
+		UI_INFIELD{3} "dk_frame_thk_EZ", 354,72 , 53,19 UI_TOOLTIP bubble[49]
 		ENDIF   !»»
 	IF NOT(dk_different_frame_thk) THEN
-		UI_INFIELD{3} "gs_frame_thk", 336,72 , 53,19 UI_TOOLTIP bubble[49]
+		UI_INFIELD{3} "gs_frame_thk", 354,72 , 53,19 UI_TOOLTIP bubble[49]
 		ENDIF
-	UI_OUTFIELD babel[24], 0,250 , 130,16, 0+0
+	UI_OUTFIELD babel[24], 0,250 , 147,16, 0+0
 	out_val = bs_internal_rim_width
 	GOSUB "out_format"
-	UI_OUTFIELD out_txt, 135,250 , 57,16, 0+0 UI_TOOLTIP "Wandstärke ohne Wandschalen/Bekleidungen"
-	UI_OUTFIELD babel[25], 222,250 , 109,16, 0+0
+	UI_OUTFIELD out_txt, 147,250 , 57,16, 0+0 UI_TOOLTIP "Wandstärke ohne Wandschalen/Bekleidungen"
+	UI_OUTFIELD babel[25], 246,250 , 121,16, 0+0
 	out_val = gs_frame_thk
 	GOSUB "out_format"
-	UI_OUTFIELD out_txt, 334,250 , 57,16, 0+0 UI_TOOLTIP "Nominale Zargenstärke"
-	UI_SEPARATOR 0,245, 445,245
+	UI_OUTFIELD out_txt, 367,250 , 57,16, 0+0 UI_TOOLTIP "Nominale Zargenstärke"
+	UI_SEPARATOR 0,245, 481,245
 	RETURN
 ! ------------------ ECKZARGE [ 3600 ]
 	3600:   ! #### LOI 1+ - Eckzarge Vertikale Abmessungen
@@ -1456,164 +1456,164 @@ END offsetFrameSurfaceBGS,
 	IF lowerT = 2 THEN
 		out_val = dk_frame_thk_bottom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 230,247 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke Sockelprofil"
+		UI_OUTFIELD out_txt, 254,247 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke Sockelprofil"
 		ENDIF
 	IF lowerW = 2 THEN
 		out_val = gs_frame_width_bottom_sl
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 393,247 , 51,16, 0+0 UI_TOOLTIP "Rahmenbreite Sockelprofil"
+		UI_OUTFIELD out_txt, 418,247 , 62,16, 0+0 UI_TOOLTIP "Rahmenbreite Sockelprofil"
 		ENDIF
 	IF upperWi = 2 THEN
 		out_val = gs_frame_width_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 163,183 , 55,16, 0+0 UI_TOOLTIP "Rahmenbreite Kämpfer"
+		UI_OUTFIELD out_txt, 167,183 , 55,16, 0+0 UI_TOOLTIP "Rahmenbreite Kämpfer"
 		ENDIF
 	IF gs_door_transom THEN
 		out_val = gs_transom_height - gs_frame_width_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 163,143 , 55,16, 0+0 UI_TOOLTIP "Oberlicht/Oberblende"
+		UI_OUTFIELD out_txt, 172,143 , 55,16, 0+0 UI_TOOLTIP "Oberlicht/Oberblende"
 		ENDIF
 	IF upperTi = 2 THEN
 		out_val = dk_frame_thk_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 0,183 , 54,16, 1+0 UI_TOOLTIP "Rahmenstärke Kämpfer"
+		UI_OUTFIELD out_txt, 8,183 , 54,16, 1+0 UI_TOOLTIP "Rahmenstärke Kämpfer"
 		ENDIF
 	IF gs_sidelight_left OR gs_sidelight_right THEN
 		out_val = bs_spiegel_br_ob_bs
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 230,112 , 55,16, 1+0 UI_TOOLTIP "Spiegelbreite oben"
+		UI_OUTFIELD out_txt, 254,112 , 55,16, 1+0 UI_TOOLTIP "Spiegelbreite oben"
 		ENDIF
 	IF upperTsi = 2 AND bs_inner_frame # 2 THEN
 		out_val =dk_frame_thk_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 230,183 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke Kämpfer"
+		UI_OUTFIELD out_txt, 254,183 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke Kämpfer"
 		ENDIF
 	IF gs_different_framewidth THEN
-		UI_INFIELD{3} "gs_frame_width_upper", 112,77 , 55,19 UI_TOOLTIP bubble[45]
+		UI_INFIELD{3} "gs_frame_width_upper", 121,77 , 62,19 UI_TOOLTIP bubble[45]
 		ELSE
-		UI_INFIELD{3} "gs_frame_width", 112,77 , 55,19 UI_TOOLTIP babel[18]
+		UI_INFIELD{3} "gs_frame_width", 121,77 , 62,19 UI_TOOLTIP babel[18]
 		ENDIF
 	UI_STYLE 2,1
-	UI_OUTFIELD babel[33], 0,22 , 233,16, 0+0
+	UI_OUTFIELD babel[33], 0,22 , 271,16, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 2,1
-	UI_OUTFIELD babel[20], 29,57 , 163,16, 2+0
+	UI_OUTFIELD babel[20], 38,57 , 163,16, 2+0
 	UI_STYLE 0,0
 	IF gs_sidelight_left OR gs_sidelight_right THEN
 		UI_STYLE 2,1
 		
-		UI_OUTFIELD babel[21], 263,57 , 163,16, 2+0
+		UI_OUTFIELD babel[21], 280,57 , 163,16, 2+0
 		UI_STYLE 0,0
 		ENDIF
-	UI_PICT dk_slices_blatt_01, 56,99 , 100,60, 1
-	UI_PICT dk_slices_blatt_02, 56,159 , 100,65, 1
-	UI_PICT dk_slices_blatt_03, 56,224 , 100,40, 1
+	UI_PICT dk_slices_blatt_01, 65,99 , 100,60, 1
+	UI_PICT dk_slices_blatt_02, 65,159 , 100,65, 1
+	UI_PICT dk_slices_blatt_03, 65,224 , 100,40, 1
 	IF gs_sidelight_left OR gs_sidelight_right THEN
-		UI_PICT dk_slices_feld_01, 287,99 , 100,60, 1
+		UI_PICT dk_slices_feld_01, 311,99 , 100,60, 1
 		ENDIF
 	IF gs_sidelight_left OR gs_sidelight_right THEN
-		UI_PICT dk_slices_feld_02, 287,159 , 100,65, 1
+		UI_PICT dk_slices_feld_02, 311,159 , 100,65, 1
 		ENDIF
 	IF gs_sidelight_left OR gs_sidelight_right THEN
-		UI_PICT dk_slices_feld_03, 287,224 , 100,40, 1
+		UI_PICT dk_slices_feld_03, 311,224 , 100,40, 1
 		ENDIF
-	IF upperTi = 1 THEN UI_INFIELD{3} "dk_frame_thk_transom", 0,181 , 55,19 UI_TOOLTIP bubble[50]
+	IF upperTi = 1 THEN UI_INFIELD{3} "dk_frame_thk_transom", 0,181 , 62,19 UI_TOOLTIP bubble[50]
 	IF lowerT = 1 THEN
-		UI_INFIELD{3} "dk_frame_thk_bottom", 231,244 , 55,19 UI_TOOLTIP bubble[51]
+		UI_INFIELD{3} "dk_frame_thk_bottom", 248,244 , 62,19 UI_TOOLTIP bubble[51]
 		ENDIF
 	IF lowerW = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_bottom_sl", 389,244 , 55,19 UI_TOOLTIP bubble[47]
+		UI_INFIELD{3} "gs_frame_width_bottom_sl", 418,244 , 62,19 UI_TOOLTIP bubble[47]
 		ENDIF
-	IF gs_door_transom AND bs_inner_frame # 2 THEN UI_INFIELD{3} "bs_fanlight_filling_thk", 0,159 , 55,19 UI_TOOLTIP bubble[71]
-	UI_INFIELD{3} "dk_frame_thk_EZ", 53,77 , 55,19 UI_TOOLTIP bubble[49]
-	UI_INFIELD{3} "bs_spiegel_br_ob_bs", 0,108 , 55,19 UI_TOOLTIP bubble[67]
+	IF gs_door_transom AND bs_inner_frame # 2 THEN UI_INFIELD{3} "bs_fanlight_filling_thk", 0,159 , 62,19 UI_TOOLTIP bubble[71]
+	UI_INFIELD{3} "dk_frame_thk_EZ", 53,77 , 62,19 UI_TOOLTIP bubble[49]
+	UI_INFIELD{3} "bs_spiegel_br_ob_bs", 0,108 , 62,19 UI_TOOLTIP bubble[67]
 	IF upperWi = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_transom", 158,181 , 55,19 UI_TOOLTIP bubble[46]
+		UI_INFIELD{3} "gs_frame_width_transom", 172,181 , 62,19 UI_TOOLTIP bubble[46]
 		ENDIF
-	IF gs_door_transom THEN UI_INFIELD{3} "ac_egress_height", 158,213 , 55,19 UI_TOOLTIP bubble[15]
-	IF gs_door_transom = 0 THEN UI_INFIELD{3} "ac_unit_height", 158,176 , 55,19 UI_TOOLTIP bubble[48]
-	UI_INFIELD{3} "gs_different_framewidth", 373,20 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[42]
+	IF gs_door_transom THEN UI_INFIELD{3} "ac_egress_height", 172,213 , 62,19 UI_TOOLTIP bubble[15]
+	IF gs_door_transom = 0 THEN UI_INFIELD{3} "ac_unit_height", 172,176 , 62,19 UI_TOOLTIP bubble[48]
+	UI_INFIELD{3} "gs_different_framewidth", 409,20 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[42]
 	IF gs_sidelight_left OR gs_sidelight_right THEN
 		out_val =dk_frame_thk_upper
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 277,80 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke"
+		UI_OUTFIELD out_txt, 301,80 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke"
 		ENDIF
 	sts = (oberLichtBlende = 1 OR gs_sidelight_left OR gs_sidelight_right)
-	IF sts THEN UI_INFIELD{3} "dk_different_frame_thk", 305,20 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[54]
+	IF sts THEN UI_INFIELD{3} "dk_different_frame_thk", 341,20 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[54]
 	IF upperWo = 2 THEN
 		out_val =gs_frame_width_upper
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 338,80 , 60,16, 0+0 UI_TOOLTIP "Rahmenbreite"
+		UI_OUTFIELD out_txt, 362,80 , 60,16, 0+0 UI_TOOLTIP "Rahmenbreite"
 		ENDIF
 	RETURN
-! ------------------ UMFASSUNGSTARGE [ 4000 ]
+! ------------------ UMFASSUNGSZARGE [ 4000 ]
 	4000:   ! #### LOI 1+ - Umfassungszarge Horizontale Abmessungen
 	GOSUB 9900
 	GOSUB "SLICES_division"
 	UI_STYLE 2,1
-	UI_OUTFIELD babel[39], 0,26 , 233,31, 0+0
+	UI_OUTFIELD babel[39], 0,26 , 268,16, 0+0
 	UI_STYLE 0, 0
-	UI_OUTFIELD babel[18], 0,250 , 74,16, 0+0
+	UI_OUTFIELD babel[18], 0,250 , 87,16, 0+0
 	out_val = bs_internal_rim_width
 	GOSUB "out_format"
-	UI_OUTFIELD out_txt, 78,250 , 57,16, 0+0 UI_TOOLTIP "Wandstärke ohne Wandschalen/Bekleidungen"
-	UI_OUTFIELD babel[15], 222,250 , 109,16, 0+0
+	UI_OUTFIELD out_txt, 87,250 , 57,16, 0+0 UI_TOOLTIP "Wandstärke ohne Wandschalen/Bekleidungen"
+	UI_OUTFIELD babel[15], 246,250 , 124,16, 0+0
 	out_val = gs_frame_thk
 	GOSUB "out_format"
-	UI_OUTFIELD out_txt, 334,250 , 57,16, 0+0 UI_TOOLTIP "Nominale Zargenstärke"
-	UI_SEPARATOR 0,245, 445,245
-	UI_PICT dk_slices_01, 54,95 , 74,87, 1   !»» "dk_dims_UZ_SR_74x87.png"
-	UI_PICT dk_slices_02, 128,95 , 74,87, 1   !»» "dk_dims_Allg_MiRe_Se_Pfeil_74x87.png"
-	UI_PICT dk_slices_03, 202,95 , 52,87, 1   !»» "dk_dims_MiMi_2_52x87.png"
-	UI_PICT dk_slices_04, 254,95 , 65,87, 1   !»» "dk_dims_Allg_MiLi_Se_Pfeil_65x87.png"
-	UI_PICT dk_slices_05, 319,95 , 70,87, 1   !»» "dk_dims_UZ_SL_70x87.png"
-	UI_PICT dk_slices_dims, 54,182 , 336,13, 1   !»» "dk_dims_kette_beidseitig_UZ_336x13.png"
-	IF rightWi THEN UI_PICT "dk_label_line 1x17.png", 160,197 , 1,17, 1
-	UI_PICT "dk_label_line 1x17.png", 221,197 , 1,17, 1
-	IF leftWi THEN UI_PICT "dk_label_line 1x17.png", 283,197 , 1,17, 1
+	UI_OUTFIELD out_txt, 370,250 , 57,16, 0+0 UI_TOOLTIP "Nominale Zargenstärke"
+	UI_SEPARATOR 0,245, 481,245
+	UI_PICT dk_slices_01, 72,95 , 74,87, 1   !»» "dk_dims_UZ_SR_74x87.png"
+	UI_PICT dk_slices_02, 146,95 , 74,87, 1   !»» "dk_dims_Allg_MiRe_Se_Pfeil_74x87.png"
+	UI_PICT dk_slices_03, 220,95 , 52,87, 1   !»» "dk_dims_MiMi_2_52x87.png"
+	UI_PICT dk_slices_04, 272,95 , 65,87, 1   !»» "dk_dims_Allg_MiLi_Se_Pfeil_65x87.png"
+	UI_PICT dk_slices_05, 337,95 , 70,87, 1   !»» "dk_dims_UZ_SL_70x87.png"
+	UI_PICT dk_slices_dims, 72,182 , 336,13, 1   !»» "dk_dims_kette_beidseitig_UZ_336x13.png"
+	IF rightWi THEN UI_PICT "dk_label_line 1x17.png", 178,197 , 1,17, 1
+	UI_PICT "dk_label_line 1x17.png", 239,197 , 1,17, 1
+	IF leftWi THEN UI_PICT "dk_label_line 1x17.png", 301,197 , 1,17, 1
 	IF NOT(gs_different_framewidth) THEN
-		UI_INFIELD{3} "gs_frame_width", 391,144 , 53,19 UI_TOOLTIP babel[18]
+		UI_INFIELD{3} "gs_frame_width", 427,144 , 53,19 UI_TOOLTIP babel[18]
 		ENDIF
 	IF rightTi = 1 THEN
-		UI_INFIELD{3} "dk_frame_thk_post", 160,72 , 53,19 UI_TOOLTIP bubble[32]
+		UI_INFIELD{3} "dk_frame_thk_post", 178,72 , 53,19 UI_TOOLTIP bubble[32]
 		ENDIF
 	IF leftTi = 1 THEN
-		UI_INFIELD{3} "dk_frame_thk_post", 234,72 , 53,19 UI_TOOLTIP bubble[32]
+		UI_INFIELD{3} "dk_frame_thk_post", 252,72 , 53,19 UI_TOOLTIP bubble[32]
 		ENDIF
 	IF gs_sidelight_right THEN
-		UI_INFIELD{3} "bs_sidelight_filling_thk1", 103,72 , 53,19 UI_TOOLTIP bubble[41]
+		UI_INFIELD{3} "bs_sidelight_filling_thk1", 121,72 , 53,19 UI_TOOLTIP bubble[41]
 		ENDIF
-	UI_INFIELD{3} "wall_shell_thk_1", 0,96 , 53,19 UI_TOOLTIP bubble[44]
-	UI_INFIELD{3} "wall_shell_thk_2", 0,174 , 53,19 UI_TOOLTIP bubble[43]
+	UI_INFIELD{3} "wall_shell_thk_1", 0,96 , 62,19 UI_TOOLTIP bubble[44]
+	UI_INFIELD{3} "wall_shell_thk_2", 0,174 , 62,19 UI_TOOLTIP bubble[43]
 	IF rightS = 1 THEN
-		UI_INFIELD{3} "gs_sidelight_width_right", 103,196 , 53,19 UI_TOOLTIP bubble[22]
+		UI_INFIELD{3} "gs_sidelight_width_right", 121,196 , 53,19 UI_TOOLTIP bubble[22]
 		ENDIF
-	UI_INFIELD{3} "ac_egress_width", 204,215 , 53,19 UI_TOOLTIP bubble[14]
-	UI_INFIELD{3} "gs_ub_st2", 391,99 , 53,19 UI_TOOLTIP bubble[30]
+	UI_INFIELD{3} "ac_egress_width", 222,215 , 53,19 UI_TOOLTIP bubble[14]
+	UI_INFIELD{3} "gs_ub_st2", 418,99 , 62,19 UI_TOOLTIP bubble[30]
 	IF leftWi = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_left_2", 261,215 , 53,19 UI_TOOLTIP bubble[27]
+		UI_INFIELD{3} "gs_frame_width_left_2", 279,215 , 53,19 UI_TOOLTIP bubble[27]
 		ENDIF
 	IF rightWi = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_right_2", 147,215 , 53,19 UI_TOOLTIP bubble[28]
+		UI_INFIELD{3} "gs_frame_width_right_2", 165,215 , 53,19 UI_TOOLTIP bubble[28]
 		ENDIF
-	IF gs_different_framewidth THEN UI_INFIELD{3} "gs_frame_width_right", 0,144 , 53,19 UI_TOOLTIP bubble[37]
+	IF gs_different_framewidth THEN UI_INFIELD{3} "gs_frame_width_right", 0,144 , 62,19 UI_TOOLTIP bubble[37]
 	IF gs_different_framewidth THEN
-		UI_INFIELD{3} "gs_frame_width_left", 391,144 , 53,19 UI_TOOLTIP bubble[36]
+		UI_INFIELD{3} "gs_frame_width_left", 418,144 , 62,19 UI_TOOLTIP bubble[36]
 		ENDIF
-	UI_INFIELD{3} "bs_spiegel_br_bs", 46,72 , 53,19 UI_TOOLTIP bubble[65]
-	UI_INFIELD{3} "bs_spiegel_br_bgs", 46,196 , 53,19 UI_TOOLTIP bubble[66]
+	UI_INFIELD{3} "bs_spiegel_br_bs", 64,72 , 53,19 UI_TOOLTIP bubble[65]
+	UI_INFIELD{3} "bs_spiegel_br_bgs", 64,196 , 53,19 UI_TOOLTIP bubble[66]
 	IF gs_sidelight_left THEN
-		UI_INFIELD{3} "bs_sidelight_filling_thk2", 291,72 , 53,19 UI_TOOLTIP bubble[40]
+		UI_INFIELD{3} "bs_sidelight_filling_thk2", 309,72 , 53,19 UI_TOOLTIP bubble[40]
 		ENDIF
 	IF rightTi = 2 THEN
 		out_val = dk_frame_thk_post
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 160,75 , 54,16, 0+0 UI_TOOLTIP "Rahmenstärke des Pfostens"
+		UI_OUTFIELD out_txt, 178,75 , 54,16, 0+0 UI_TOOLTIP "Rahmenstärke des Pfostens"
 		ENDIF
 	IF leftTi = 2 THEN
 		out_val = dk_frame_thk_post
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 237,75 , 50,16, 2+0 UI_TOOLTIP "Rahmenstärke des Pfostens"
+		UI_OUTFIELD out_txt, 255,75 , 50,16, 2+0 UI_TOOLTIP "Rahmenstärke des Pfostens"
 		ENDIF
 	IF NOT(gs_different_framewidth) THEN
 		out_val = gs_frame_width_right
@@ -1623,129 +1623,129 @@ END offsetFrameSurfaceBGS,
 	IF rightS = 2 THEN
 		out_val = gs_sidelight_width_left
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 100,199 , 57,16, 2+0 UI_TOOLTIP "Breite Seitenfeld rechts"
+		UI_OUTFIELD out_txt, 118,199 , 57,16, 2+0 UI_TOOLTIP "Breite Seitenfeld rechts"
 		ENDIF
 	IF rightWi = 2 THEN
 		out_val = gs_frame_width_left_2
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 131,218 , 55,16, 2+0 UI_TOOLTIP "Breite Pfosten rechts"
+		UI_OUTFIELD out_txt, 149,218 , 55,16, 2+0 UI_TOOLTIP "Breite Pfosten rechts"
 		ENDIF
 	IF leftWi = 2 THEN
 		out_val = gs_frame_width_left_2
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 258,218 , 53,16, 2+0 UI_TOOLTIP "Breite Pfosten links"
+		UI_OUTFIELD out_txt, 276,218 , 53,16, 2+0 UI_TOOLTIP "Breite Pfosten links"
 		ENDIF
 	out_val = gs_frame_thk
 	GOSUB "out_format"
-	UI_OUTFIELD out_txt, 395,127 , 49,16, 0+0 UI_TOOLTIP "Rahmenstärke"
+	UI_OUTFIELD out_txt, 418,127 , 49,16, 0+0 UI_TOOLTIP "Rahmenstärke"
 	IF gs_sidelight_left THEN
 		out_val = gs_sidelight_width_left
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 293,199 , 57,16, 2+0 UI_TOOLTIP "Breite Seitenfeld links"
+		UI_OUTFIELD out_txt, 311,199 , 57,16, 2+0 UI_TOOLTIP "Breite Seitenfeld links"
 		ENDIF
-	IF gs_sidelight_left AND gs_sidelight_right THEN UI_INFIELD{3} "bDiffSidelightWidth", 237,26 , 66,31, 6, 5, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[24]
-	IF gs_sidelight_left OR gs_sidelight_right THEN UI_INFIELD{3} "dk_different_frame_thk", 305,26 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[38]
-	UI_INFIELD{3} "gs_different_framewidth", 373,26 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[39]
+	IF gs_sidelight_left AND gs_sidelight_right THEN UI_INFIELD{3} "bDiffSidelightWidth", 273,26 , 66,31, 6, 5, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[24]
+	IF gs_sidelight_left OR gs_sidelight_right THEN UI_INFIELD{3} "dk_different_frame_thk", 341,26 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[38]
+	UI_INFIELD{3} "gs_different_framewidth", 409,26 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[39]
 	RETURN
-! ------------------ UMFASSUNGSTARGE [ 4100 ]
+! ------------------ UMFASSUNGSZARGE [ 4100 ]
 	4100:   ! #### LOI 1+ - Umfassungszarge Vertikale Abmessungen
 	GOSUB 9900
 	GOSUB "SLICES_division_vertical"
 	IF lowerW = 2 THEN
 		out_val = gs_frame_width_bottom_sl
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 393,247 , 51,16, 0+0 UI_TOOLTIP "Rahmenbreite Sockelprofil"
+		UI_OUTFIELD out_txt, 418,247 , 51,16, 0+0 UI_TOOLTIP "Rahmenbreite Sockelprofil"
 		ENDIF
 	IF gs_door_transom THEN
 		out_val = gs_transom_height - gs_frame_width_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 163,143 , 55,16, 0+0 UI_TOOLTIP "Oberlicht/Oberblende"
+		UI_OUTFIELD out_txt, 172,143 , 55,16, 0+0 UI_TOOLTIP "Oberlicht/Oberblende"
 		ENDIF
 	IF lowerT = 2 THEN
 		out_val = dk_frame_thk_bottom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 230,247 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke Sockelprofil"
+		UI_OUTFIELD out_txt, 253,247 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke Sockelprofil"
 		ENDIF
 	IF upperTsi = 2 THEN
 		out_val =dk_frame_thk_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 230,183 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke Kämpfer"
+		UI_OUTFIELD out_txt, 253,183 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke Kämpfer"
 		ENDIF
 	IF upperTi = 2 THEN
 		out_val = dk_frame_thk_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 0,183 , 54,16, 1+0 UI_TOOLTIP "Rahmenstärke Kämpfer"
+		UI_OUTFIELD out_txt, 8,183 , 54,16, 1+0 UI_TOOLTIP "Rahmenstärke Kämpfer"
 		ENDIF
 	out_val = gs_frame_thk
 	GOSUB "out_format"
-	UI_OUTFIELD out_txt, 62,80 , 49,16, 2+0 UI_TOOLTIP "Rahmenstärke"
+	UI_OUTFIELD out_txt, 70,80 , 49,16, 2+0 UI_TOOLTIP "Rahmenstärke"
 	IF gs_sidelight_left OR gs_sidelight_right THEN
 		out_val = bs_spiegel_br_ob_bs
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 230,111 , 55,16, 1+0 UI_TOOLTIP "Spiegelbreite oben"
+		UI_OUTFIELD out_txt, 253,111 , 55,16, 1+0 UI_TOOLTIP "Spiegelbreite oben"
 		ENDIF
 	IF upperWi = 2 THEN
 		out_val = gs_frame_width_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 163,183 , 55,16, 0+0 UI_TOOLTIP "Rahmenbreite Kämpfer"
+		UI_OUTFIELD out_txt, 172,183 , 55,16, 0+0 UI_TOOLTIP "Rahmenbreite Kämpfer"
 		ENDIF
 	IF gs_different_framewidth THEN
-		UI_INFIELD{3} "gs_frame_width_upper", 112,77 , 55,19 UI_TOOLTIP bubble[45]
+		UI_INFIELD{3} "gs_frame_width_upper", 120,77 , 62,19 UI_TOOLTIP bubble[45]
 		ELSE
-		UI_INFIELD{3} "gs_frame_width", 112,77 , 55,19 UI_TOOLTIP babel[18]
+		UI_INFIELD{3} "gs_frame_width", 120,77 , 62,19 UI_TOOLTIP babel[18]
 		ENDIF
 	UI_STYLE 2,1
 	UI_OUTFIELD babel[35], 0,22 , 301,16, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 2,1
-	UI_OUTFIELD babel[20], 29,57 , 163,16, 2+0
+	UI_OUTFIELD babel[20], 37,57 , 163,16, 2+0
 	UI_STYLE 0,0
 	IF gs_sidelight_left OR gs_sidelight_right THEN
 		UI_STYLE 2,1
 		
-		UI_OUTFIELD babel[21], 263,57 , 163,16, 2+0
+		UI_OUTFIELD babel[21], 293,57 , 163,16, 2+0
 		UI_STYLE 0,0
 		ENDIF
-	UI_PICT dk_slices_blatt_01, 56,99 , 100,60, 1
-	UI_PICT dk_slices_blatt_02, 56,159 , 100,65, 1
-	UI_PICT dk_slices_blatt_03, 56,224 , 100,40, 1
+	UI_PICT dk_slices_blatt_01, 64,99 , 100,60, 1
+	UI_PICT dk_slices_blatt_02, 64,159 , 100,65, 1
+	UI_PICT dk_slices_blatt_03, 64,224 , 100,40, 1
 	IF gs_sidelight_left OR gs_sidelight_right THEN
-		UI_PICT dk_slices_feld_01, 287,99 , 100,60, 1
+		UI_PICT dk_slices_feld_01, 310,99 , 100,60, 1
 		ENDIF
 	IF gs_sidelight_left OR gs_sidelight_right THEN
-		UI_PICT dk_slices_feld_02, 287,159 , 100,65, 1
+		UI_PICT dk_slices_feld_02, 310,159 , 100,65, 1
 		ENDIF
 	IF gs_sidelight_left OR gs_sidelight_right THEN
-		UI_PICT dk_slices_feld_03, 287,224 , 100,40, 1
+		UI_PICT dk_slices_feld_03, 310,224 , 100,40, 1
 		ENDIF
-	IF upperTi = 1 THEN UI_INFIELD{3} "dk_frame_thk_transom", 0,181 , 55,19 UI_TOOLTIP bubble[50]
+	IF upperTi = 1 THEN UI_INFIELD{3} "dk_frame_thk_transom", 0,181 , 62,19 UI_TOOLTIP bubble[50]
 	IF lowerT = 1 THEN
-		UI_INFIELD{3} "dk_frame_thk_bottom", 231,244 , 55,19 UI_TOOLTIP bubble[51]
+		UI_INFIELD{3} "dk_frame_thk_bottom", 247,244 , 62,19 UI_TOOLTIP bubble[51]
 		ENDIF
 	IF lowerw = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_bottom_sl", 389,244 , 55,19 UI_TOOLTIP bubble[47]
+		UI_INFIELD{3} "gs_frame_width_bottom_sl", 418,244 , 62,19 UI_TOOLTIP bubble[47]
 		ENDIF
-	IF gs_door_transom AND bs_inner_frame # 2 THEN UI_INFIELD{3} "bs_fanlight_filling_thk", 0,159 , 55,19 UI_TOOLTIP bubble[71]
-	IF upperTsi = 2 AND bs_inner_frame = 2 THEN UI_INFIELD{3} "dk_frame_thk_transom", 230,181 , 55,19 UI_TOOLTIP bubble[50]
-	UI_INFIELD{3} "bs_spiegel_br_ob_bgs", 158,113 , 55,19 UI_TOOLTIP bubble[69]
-	UI_INFIELD{3} "bs_spiegel_br_ob_bs", 0,108 , 55,19 UI_TOOLTIP bubble[68]
-	IF gs_door_transom = 0 THEN UI_INFIELD{3} "ac_unit_height", 158,176 , 55,19 UI_TOOLTIP bubble[48]
+	IF gs_door_transom AND bs_inner_frame # 2 THEN UI_INFIELD{3} "bs_fanlight_filling_thk", 0,159 , 62,19 UI_TOOLTIP bubble[71]
+	IF upperTsi = 2 AND bs_inner_frame = 2 THEN UI_INFIELD{3} "dk_frame_thk_transom", 246,181 , 62,19 UI_TOOLTIP bubble[50]
+	UI_INFIELD{3} "bs_spiegel_br_ob_bgs", 172,113 , 62,19 UI_TOOLTIP bubble[69]
+	UI_INFIELD{3} "bs_spiegel_br_ob_bs", 0,108 , 62,19 UI_TOOLTIP bubble[68]
+	IF gs_door_transom = 0 THEN UI_INFIELD{3} "ac_unit_height", 172,176 , 62,19 UI_TOOLTIP bubble[48]
 	IF upperWi = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_transom", 158,181 , 55,19 UI_TOOLTIP bubble[46]
+		UI_INFIELD{3} "gs_frame_width_transom", 172,181 , 62,19 UI_TOOLTIP bubble[46]
 		ENDIF
-	IF gs_door_transom THEN UI_INFIELD{3} "ac_egress_height", 158,213 , 55,19 UI_TOOLTIP bubble[15]
-	UI_INFIELD{3} "gs_different_framewidth", 373,20 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[42]
+	IF gs_door_transom THEN UI_INFIELD{3} "ac_egress_height", 172,213 , 62,19 UI_TOOLTIP bubble[15]
+	UI_INFIELD{3} "gs_different_framewidth", 409,20 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[42]
 	IF gs_sidelight_left OR gs_sidelight_right THEN
 		out_val =dk_frame_thk_upper
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 280,80 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke"
+		UI_OUTFIELD out_txt, 303,80 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke"
 		ENDIF
 	sts = (oberLichtBlende = 1 OR gs_sidelight_left OR gs_sidelight_right)
-	IF sts THEN UI_INFIELD{3} "dk_different_frame_thk", 305,20 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[54]
+	IF sts THEN UI_INFIELD{3} "dk_different_frame_thk", 341,20 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[54]
 	IF upperWo = 2 THEN
 		out_val =gs_frame_width_upper
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 341,80 , 60,16, 0+0 UI_TOOLTIP "Rahmenbreite"
+		UI_OUTFIELD out_txt, 364,80 , 60,16, 0+0 UI_TOOLTIP "Rahmenbreite"
 		ENDIF
 	RETURN
 ! ------------------ ROHRRAHMEN [ 4500 ]
@@ -1758,91 +1758,91 @@ END offsetFrameSurfaceBGS,
 	out_val = bs_internal_rim_width
 	GOSUB "out_format"
 	UI_OUTFIELD out_txt, 135,250 , 57,16, 0+0 UI_TOOLTIP "Wandstärke ohne Wandschalen/Bekleidungen"
-	UI_SEPARATOR 0,225, 445,225
-	IF rightWi THEN UI_PICT "dk_label_line 1x17.png", 160,183 , 1,17, 1
-	IF leftWi THEN UI_PICT "dk_label_line 1x17.png", 283,183 , 1,17, 1
-	UI_PICT "dk_label_line 1x17.png", 221,183 , 1,17, 1
-	UI_PICT dk_slices_01, 54,82 , 74,87, 1   !»» "dk_dims_RR_SR_74x87.png"
-	UI_PICT dk_slices_02, 128,82 , 74,87, 1   !»» "dk_dims_RR_MiRe_Se_74x87.png"
-	UI_PICT dk_slices_03, 202,82 , 52,87, 1   !»» "dk_dims_RR_MiMi_2_52x87.png"
-	UI_PICT dk_slices_04, 254,82 , 65,87, 1   !»» "dk_dims_RR_MiLi_Se_Pfeil_65x87.png"
-	UI_PICT dk_slices_05, 319,82 , 70,87, 1   !»» "dk_dims_RR_SL_70x87.png"
-	UI_PICT dk_slices_dims, 54,169 , 336,13, 1   !»» "dk_dims_kette_beidseitig_336x13.png"
-	UI_INFIELD{3} "dk_frame_thk_EZ", 332,62 , 53,19 UI_TOOLTIP bubble[49]
+	UI_SEPARATOR 0,225, 481,225
+	IF rightWi THEN UI_PICT "dk_label_line 1x17.png", 178,183 , 1,17, 1
+	IF leftWi THEN UI_PICT "dk_label_line 1x17.png", 301,183 , 1,17, 1
+	UI_PICT "dk_label_line 1x17.png", 239,183 , 1,17, 1
+	UI_PICT dk_slices_01, 72,82 , 74,87, 1   !»» "dk_dims_RR_SR_74x87.png"
+	UI_PICT dk_slices_02, 146,82 , 74,87, 1   !»» "dk_dims_RR_MiRe_Se_74x87.png"
+	UI_PICT dk_slices_03, 220,82 , 52,87, 1   !»» "dk_dims_RR_MiMi_2_52x87.png"
+	UI_PICT dk_slices_04, 272,82 , 65,87, 1   !»» "dk_dims_RR_MiLi_Se_Pfeil_65x87.png"
+	UI_PICT dk_slices_05, 337,82 , 70,87, 1   !»» "dk_dims_RR_SL_70x87.png"
+	UI_PICT dk_slices_dims, 72,169 , 336,13, 1   !»» "dk_dims_kette_beidseitig_336x13.png"
+	UI_INFIELD{3} "dk_frame_thk_EZ", 349,62 , 54,19 UI_TOOLTIP bubble[49]
 	IF leftTi = 1 THEN
-		UI_INFIELD{3} "dk_frame_thk_post", 219,62 , 53,19 UI_TOOLTIP bubble[72]
+		UI_INFIELD{3} "dk_frame_thk_post", 236,62 , 54,19 UI_TOOLTIP bubble[72]
 		ENDIF
 	IF gs_sidelight_right THEN
-		UI_INFIELD{3} "bs_sidelight_filling_thk1", 103,62 , 53,19 UI_TOOLTIP bubble[41]
+		UI_INFIELD{3} "bs_sidelight_filling_thk1", 120,62 , 54,19 UI_TOOLTIP bubble[41]
 		ENDIF
-	UI_INFIELD{3} "wall_shell_thk_1", 0,83 , 53,19 UI_TOOLTIP bubble[44]
-	UI_INFIELD{3} "wall_shell_thk_2", 0,161 , 53,19 UI_TOOLTIP bubble[43]
-	UI_INFIELD{3} "ac_egress_width", 204,202 , 53,19 UI_TOOLTIP bubble[14]
-	IF gs_different_framewidth THEN UI_INFIELD{3} "gs_frame_width_right", 0,131 , 53,19 UI_TOOLTIP bubble[37]
+	UI_INFIELD{3} "wall_shell_thk_1", 0,83 , 62,19 UI_TOOLTIP bubble[44]
+	UI_INFIELD{3} "wall_shell_thk_2", 0,161 , 62,19 UI_TOOLTIP bubble[43]
+	UI_INFIELD{3} "ac_egress_width", 213,202 , 62,19 UI_TOOLTIP bubble[14]
+	IF gs_different_framewidth THEN UI_INFIELD{3} "gs_frame_width_right", 0,131 , 62,19 UI_TOOLTIP bubble[37]
 	IF leftWi = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_left_2", 261,202 , 53,19 UI_TOOLTIP bubble[27]
+		UI_INFIELD{3} "gs_frame_width_left_2", 280,202 , 62,19 UI_TOOLTIP bubble[27]
 		ENDIF
 	IF rightWi = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_right_2", 147,202 , 53,19 UI_TOOLTIP bubble[28]
+		UI_INFIELD{3} "gs_frame_width_right_2", 146,202 , 62,19 UI_TOOLTIP bubble[28]
 		ENDIF
 	IF rightTi = 1 THEN
-		UI_INFIELD{3} "dk_frame_thk_post", 160,62 , 53,19 UI_TOOLTIP bubble[73]
+		UI_INFIELD{3} "dk_frame_thk_post", 177,62 , 54,19 UI_TOOLTIP bubble[73]
 		ENDIF
 	IF gs_different_framewidth THEN
-		UI_INFIELD{3} "gs_frame_width_left", 391,131 , 53,19 UI_TOOLTIP bubble[36]
+		UI_INFIELD{3} "gs_frame_width_left", 418,131 , 62,19 UI_TOOLTIP bubble[36]
 		ENDIF
 	IF rightS = 1 THEN
-		UI_INFIELD{3} "gs_sidelight_width_right", 100,182 , 53,19 UI_TOOLTIP bubble[22]
+		UI_INFIELD{3} "gs_sidelight_width_right", 94,182 , 62,19 UI_TOOLTIP bubble[22]
 		ENDIF
 	IF gs_sidelight_left THEN
 		out_val = gs_sidelight_width_left
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 293,185 , 57,16, 2+0 UI_TOOLTIP "Breite Seitenfeld links"
+		UI_OUTFIELD out_txt, 311,185 , 57,16, 2+0 UI_TOOLTIP "Breite Seitenfeld links"
 		ENDIF
 	IF rightS = 2 THEN
 		out_val = gs_sidelight_width_right
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 95,185 , 57,16, 2+0 UI_TOOLTIP "Breite Seitenfeld rechts"
+		UI_OUTFIELD out_txt, 100,185 , 57,16, 2+0 UI_TOOLTIP "Breite Seitenfeld rechts"
 		ENDIF
 	IF gs_sidelight_left THEN
-		UI_INFIELD{3} "bs_sidelight_filling_thk2", 275,62 , 53,19 UI_TOOLTIP bubble[40]
+		UI_INFIELD{3} "bs_sidelight_filling_thk2", 292,62 , 54,19 UI_TOOLTIP bubble[40]
 		ENDIF
 	UI_STYLE 2,1
-	UI_OUTFIELD babel[38], 0,26 , 233,31, 0+0
+	UI_OUTFIELD babel[38], 0,26 , 269,16, 0+0
 	UI_STYLE 0, 0
 	IF gs_sidelight_left OR gs_sidelight_right THEN
-		UI_INFIELD{3} "dk_different_frame_thk", 305,26 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[38]
+		UI_INFIELD{3} "dk_different_frame_thk", 341,26 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[38]
 		ENDIF
 	IF NOT(gs_different_framewidth) THEN
-		UI_INFIELD{3} "gs_frame_width", 391,131 , 53,19 UI_TOOLTIP bubble[18]
+		UI_INFIELD{3} "gs_frame_width", 427,131 , 53,19 UI_TOOLTIP bubble[18]
 		ENDIF
 	IF rightTi = 2 THEN
 		out_val = dk_frame_thk_post
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 160,65 , 54,16, 0+0 UI_TOOLTIP "Pfostenstärke rechts"
+		UI_OUTFIELD out_txt, 178,65 , 54,16, 0+0 UI_TOOLTIP "Pfostenstärke rechts"
 		ENDIF
 	IF leftTi = 2 THEN
 		out_val = dk_frame_thk_post
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 218,65 , 53,16, 1+0 UI_TOOLTIP "Pfostenstärke links"
+		UI_OUTFIELD out_txt, 236,65 , 53,16, 1+0 UI_TOOLTIP "Pfostenstärke links"
 		ENDIF
 	IF NOT(gs_different_framewidth) THEN
 		out_val = gs_frame_width_right
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 0,134 , 52,16, 1+0 UI_TOOLTIP "Rahmenbreite"
+		UI_OUTFIELD out_txt, 10,134 , 52,16, 1+0 UI_TOOLTIP "Rahmenbreite"
 		ENDIF
 	IF rightWi = 2 THEN
 		out_val = gs_frame_width_left_2
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 131,205 , 55,16, 2+0 UI_TOOLTIP "Breite Pfosten rechts"
+		UI_OUTFIELD out_txt, 149,205 , 55,16, 2+0 UI_TOOLTIP "Breite Pfosten rechts"
 		ENDIF
 	IF leftWi = 2 THEN
 		out_val = gs_frame_width_left_2
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 258,205 , 53,16, 2+0 UI_TOOLTIP "Breite Pfosten links"
+		UI_OUTFIELD out_txt, 285,205 , 53,16, 2+0 UI_TOOLTIP "Breite Pfosten links"
 		ENDIF
-	UI_INFIELD{3} "gs_different_framewidth", 373,26 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[39]
-	IF gs_sidelight_left AND gs_sidelight_right THEN UI_INFIELD{3} "bDiffSidelightWidth", 237,26 , 66,31, 6, 5, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[24]
+	UI_INFIELD{3} "gs_different_framewidth", 409,26 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[39]
+	IF gs_sidelight_left AND gs_sidelight_right THEN UI_INFIELD{3} "bDiffSidelightWidth", 273,26 , 66,31, 6, 5, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[24]
 	RETURN
 ! ------------------ ROHRRAHMEN [ 4600 ]
 	4600:   ! #### LOI 1+ - Rohrrahmenzarge Vertikale Abmessungen
@@ -1851,27 +1851,27 @@ END offsetFrameSurfaceBGS,
 	IF gs_door_transom THEN
 		out_val = gs_transom_height - gs_frame_width_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 163,143 , 55,16, 0+0 UI_TOOLTIP "Oberlicht/Oberblende"
+		UI_OUTFIELD out_txt, 172,143 , 55,16, 0+0 UI_TOOLTIP "Oberlicht/Oberblende"
 		ENDIF
 	IF lowerW = 2 THEN
 		out_val = gs_frame_width_bottom_sl
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 393,247 , 51,16, 0+0 UI_TOOLTIP "Rahmenbreite Sockelprofil"
+		UI_OUTFIELD out_txt, 429,247 , 51,16, 0+0 UI_TOOLTIP "Rahmenbreite Sockelprofil"
 		ENDIF   !»» gs_frame_width
 	IF upperWi = 2 THEN
 		out_val = gs_frame_width_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 163,183 , 55,16, 0+0 UI_TOOLTIP "Rahmenbreite Kämpfer"
+		UI_OUTFIELD out_txt, 172,183 , 55,16, 0+0 UI_TOOLTIP "Rahmenbreite Kämpfer"
 		ENDIF
 	IF lowerT = 2 THEN
 		out_val = dk_frame_thk_bottom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 230,247 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke Sockelprofil"
+		UI_OUTFIELD out_txt, 253,247 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke Sockelprofil"
 		ENDIF
 	IF upperTsi = 2 THEN
 		out_val =dk_frame_thk_transom
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 230,183 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke Kämpfer"
+		UI_OUTFIELD out_txt, 253,183 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke Kämpfer"
 		ENDIF
 	IF upperTi = 2 THEN
 		out_val = dk_frame_thk_transom
@@ -1881,58 +1881,58 @@ END offsetFrameSurfaceBGS,
 	IF gs_sidelight_left OR gs_sidelight_right THEN
 		out_val =dk_frame_thk_upper
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 230,118 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke"
+		UI_OUTFIELD out_txt, 253,118 , 55,16, 1+0 UI_TOOLTIP "Rahmenstärke"
 		ENDIF
 	IF gs_different_framewidth THEN
-		UI_INFIELD{3} "gs_frame_width_upper", 84,77 , 53,19 UI_TOOLTIP bubble[45]
+		UI_INFIELD{3} "gs_frame_width_upper", 91,77 , 62,19 UI_TOOLTIP bubble[45]
 		ELSE
-		UI_INFIELD{3} "gs_frame_width", 84,77 , 53,19 UI_TOOLTIP babel[18]
+		UI_INFIELD{3} "gs_frame_width", 91,77 , 62,19 UI_TOOLTIP babel[18]
 		ENDIF
 	UI_STYLE 2,1
 	UI_OUTFIELD babel[34], 0,22 , 301,16, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 2,1
-	UI_OUTFIELD babel[20], 29,57 , 163,16, 2+0
+	UI_OUTFIELD babel[20], 38,57 , 163,16, 2+0
 	UI_STYLE 0,0
 	IF gs_sidelight_left OR gs_sidelight_right THEN
 		UI_STYLE 2,1
 		
-		UI_OUTFIELD babel[21], 263,57 , 163,16, 2+0
+		UI_OUTFIELD babel[21], 286,57 , 163,16, 2+0
 		UI_STYLE 0,0
 		ENDIF
-	UI_PICT dk_slices_blatt_01, 56,99 , 100,60, 1
-	UI_PICT dk_slices_blatt_02, 56,159 , 100,65, 1
-	UI_PICT dk_slices_blatt_03, 56,224 , 100,40, 1
+	UI_PICT dk_slices_blatt_01, 65,99 , 100,60, 1
+	UI_PICT dk_slices_blatt_02, 65,159 , 100,65, 1
+	UI_PICT dk_slices_blatt_03, 65,224 , 100,40, 1
 	IF gs_sidelight_left OR gs_sidelight_right THEN
-		UI_PICT dk_slices_feld_01, 287,99 , 100,60, 1
+		UI_PICT dk_slices_feld_01, 310,99 , 100,60, 1
 		ENDIF
 	IF gs_sidelight_left OR gs_sidelight_right THEN
-		UI_PICT dk_slices_feld_02, 287,159 , 100,65, 1
+		UI_PICT dk_slices_feld_02, 310,159 , 100,65, 1
 		ENDIF
 	IF gs_sidelight_left OR gs_sidelight_right THEN
-		UI_PICT dk_slices_feld_03, 287,224 , 100,40, 1
+		UI_PICT dk_slices_feld_03, 310,224 , 100,40, 1
 		ENDIF
-	IF upperTi = 1 THEN UI_INFIELD{3} "dk_frame_thk_transom", 0,181 , 55,19 UI_TOOLTIP bubble[50]
+	IF upperTi = 1 THEN UI_INFIELD{3} "dk_frame_thk_transom", 0,181 , 62,19 UI_TOOLTIP bubble[50]
 	IF lowerT = 1 THEN
-		UI_INFIELD{3} "dk_frame_thk_bottom", 231,244 , 55,19 UI_TOOLTIP bubble[51]
+		UI_INFIELD{3} "dk_frame_thk_bottom", 247,244 , 62,19 UI_TOOLTIP bubble[51]
 		ENDIF
 	IF lowerw = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_bottom_sl", 389,244 , 55,19 UI_TOOLTIP bubble[47]
+		UI_INFIELD{3} "gs_frame_width_bottom_sl", 418,244 , 62,19 UI_TOOLTIP bubble[47]
 		ENDIF
-	IF gs_door_transom AND bs_inner_frame # 2 THEN UI_INFIELD{3} "bs_fanlight_filling_thk", 0,159 , 55,19 UI_TOOLTIP bubble[71]
-	UI_INFIELD{3} "dk_frame_thk_EZ", 0,117 , 55,19 UI_TOOLTIP bubble[52]
+	IF gs_door_transom AND bs_inner_frame # 2 THEN UI_INFIELD{3} "bs_fanlight_filling_thk", 0,159 , 62,19 UI_TOOLTIP bubble[71]
+	UI_INFIELD{3} "dk_frame_thk_EZ", 0,117 , 62,19 UI_TOOLTIP bubble[52]
 	IF upperWi = 1 THEN
-		UI_INFIELD{3} "gs_frame_width_transom", 158,181 , 55,19 UI_TOOLTIP bubble[46]
+		UI_INFIELD{3} "gs_frame_width_transom", 167,181 , 62,19 UI_TOOLTIP bubble[46]
 		ENDIF
-	IF gs_door_transom THEN UI_INFIELD{3} "ac_egress_height", 158,213 , 55,19 UI_TOOLTIP bubble[15]
-	IF gs_door_transom = 0 THEN UI_INFIELD{3} "ac_unit_height", 158,176 , 55,19 UI_TOOLTIP bubble[48]
-	UI_INFIELD{3} "gs_different_framewidth", 373,20 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[42]
+	IF gs_door_transom THEN UI_INFIELD{3} "ac_egress_height", 167,213 , 62,19 UI_TOOLTIP bubble[15]
+	IF gs_door_transom = 0 THEN UI_INFIELD{3} "ac_unit_height", 167,176 , 62,19 UI_TOOLTIP bubble[48]
+	UI_INFIELD{3} "gs_different_framewidth", 409,20 , 66,31, 6, 7, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[42]
 	sts = (oberLichtBlende = 1 OR gs_sidelight_left OR gs_sidelight_right)
-	IF sts THEN UI_INFIELD{3} "dk_different_frame_thk", 305,20 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[54]
+	IF sts THEN UI_INFIELD{3} "dk_different_frame_thk", 341,20 , 66,31, 6, 6, 2, 1, 60, 25, 60, 25, 2,"gleich",0, 1,"ungleich",1 UI_TOOLTIP bubble[54]
 	IF gs_sidelight_left OR gs_sidelight_right THEN
 		out_val =gs_frame_width_upper
 		GOSUB "out_format"
-		UI_OUTFIELD out_txt, 306,80 , 60,16, 2+0 UI_TOOLTIP "Rahmenbreite"
+		UI_OUTFIELD out_txt, 329,80 , 60,16, 2+0 UI_TOOLTIP "Rahmenbreite"
 		ENDIF
 	RETURN
 ! ------------------ MATERIAL Ausführung [ 4700 ]
@@ -1940,123 +1940,123 @@ END offsetFrameSurfaceBGS,
 	GOSUB 9900
 	GOSUB "Oberlicht-Material-Anzeige"
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[43], 328,242 , 116,24, 0+0
+	UI_OUTFIELD babel[43], 250,250 , 230,16, 1+0
 	UI_STYLE 0,0
 	IF gs_sidelight_left THEN
-		UI_OUTFIELD babel[29], 0,120 , 130,15, 0+0
+		UI_OUTFIELD babel[29], 0,125 , 137,15, 0+0
 		ENDIF
-	UI_OUTFIELD babel[41], 0,48 , 130,15, 0+0
+	UI_OUTFIELD babel[41], 0,53 , 137,15, 0+0
 	IF gs_sidelight_left THEN
-		UI_OUTFIELD babel[28], 0,98 , 130,15, 0+0
+		UI_OUTFIELD babel[28], 0,103 , 137,15, 0+0
 		ENDIF
-	UI_OUTFIELD babel[40], 0,70 , 130,15, 0+0
+	UI_OUTFIELD babel[40], 0,75 , 137,15, 0+0
 	IF gs_sidelight_right THEN
-		UI_OUTFIELD babel[31], 0,170 , 130,15, 0+0
+		UI_OUTFIELD babel[31], 0,175 , 137,15, 0+0
 		ENDIF
 	IF gs_sidelight_right THEN
-		UI_OUTFIELD babel[30], 0,148 , 130,15, 0+0
+		UI_OUTFIELD babel[30], 0,153 , 137,15, 0+0
 		ENDIF
-	UI_INFIELD{3} dk_fills[dka_frame_fill], 263,54 , 57,21 UI_TOOLTIP bubble[13]
+	UI_INFIELD{3} dk_fills[dka_frame_fill], 285,59 , 57,21 UI_TOOLTIP bubble[13]
 	IF gs_sidelight_right THEN
-		UI_INFIELD{3} dk_fills[dka_side1_fill], 263,154 , 57,21 UI_TOOLTIP bubble[13]
-		ENDIF
-	IF gs_sidelight_left THEN
-		UI_INFIELD{3} dk_fills[dka_side2_fill], 263,104 , 57,21 UI_TOOLTIP bubble[13]
-		ENDIF
-	UI_PICT "ui_fill_type_flat 20x20.png", 280,20 , 20,20, 1 UI_TOOLTIP txt
-	UI_PICT "ui_list_surface_flat 32x15.png", 222,23 , 32,15, 1 UI_TOOLTIP txt
-	UI_PICT "ui_fill_pen_flat 29x16.png", 334,22 , 29,16, 1 UI_TOOLTIP txt
-	IF gs_sidelight_left THEN
-		UI_INFIELD{3} dk_materials[dka_side2_mat_BGS], 201,115 , 57,21 UI_TOOLTIP bubble[10]
+		UI_INFIELD{3} dk_fills[dka_side1_fill], 285,159 , 57,21 UI_TOOLTIP bubble[13]
 		ENDIF
 	IF gs_sidelight_left THEN
-		UI_INFIELD{3} dk_materials[dka_side2_mat_BS], 201,93 , 57,21 UI_TOOLTIP bubble[10]
+		UI_INFIELD{3} dk_fills[dka_side2_fill], 285,109 , 57,21 UI_TOOLTIP bubble[13]
 		ENDIF
-	IF gs_sidelight_right THEN
-		UI_INFIELD{3} dk_materials[dka_side1_mat_BGS], 201,165 , 57,21 UI_TOOLTIP bubble[10]
-		ENDIF
-	IF gs_sidelight_right THEN
-		UI_INFIELD{3} dk_materials[dka_side1_mat_BS], 201,143 , 57,21 UI_TOOLTIP bubble[10]
-		ENDIF
-	UI_INFIELD{3} dk_materials[dka_frame_mat_BGS], 201,65 , 57,21 UI_TOOLTIP bubble[10]
-	UI_INFIELD{3} dk_materials[dka_frame_mat_BS], 201,43 , 57,21 UI_TOOLTIP bubble[10]
+	UI_PICT "ui_fill_type_flat 20x20.png", 302,20 , 20,20, 1 UI_TOOLTIP txt
+	UI_PICT "ui_list_surface_flat 32x15.png", 237,23 , 32,15, 1 UI_TOOLTIP txt
+	UI_PICT "ui_fill_pen_flat 29x16.png", 363,22 , 29,16, 1 UI_TOOLTIP txt
 	IF gs_sidelight_left THEN
-		UI_INFIELD{3} dk_bkg_pens[dka_side2_penB], 387,104 , 57,21 UI_TOOLTIP bubble[11]
+		UI_INFIELD{3} dk_materials[dka_side2_mat_BGS], 216,120 , 57,21 UI_TOOLTIP bubble[10]
 		ENDIF
-	IF gs_sidelight_right THEN
-		UI_INFIELD{3} dk_bkg_pens[dka_side1_penB], 387,154 , 57,21 UI_TOOLTIP bubble[11]
-		ENDIF
-	UI_INFIELD{3} dk_bkg_pens[dka_frame_penB], 387,54 , 57,21 UI_TOOLTIP bubble[11]
 	IF gs_sidelight_left THEN
-		UI_INFIELD{3} dk_fill_pens[dka_side2_penF], 325,104 , 57,21 UI_TOOLTIP bubble[12]
+		UI_INFIELD{3} dk_materials[dka_side2_mat_BS], 216,98 , 57,21 UI_TOOLTIP bubble[10]
 		ENDIF
 	IF gs_sidelight_right THEN
-		UI_INFIELD{3} dk_fill_pens[dka_side1_penF], 325,154 , 57,21 UI_TOOLTIP bubble[12]
+		UI_INFIELD{3} dk_materials[dka_side1_mat_BGS], 216,170 , 57,21 UI_TOOLTIP bubble[10]
 		ENDIF
-	UI_INFIELD{3} dk_fill_pens[dka_frame_penF], 325,54 , 57,21 UI_TOOLTIP bubble[12]
-	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 396,22 , 29,16, 1 UI_TOOLTIP txt
+	IF gs_sidelight_right THEN
+		UI_INFIELD{3} dk_materials[dka_side1_mat_BS], 216,148 , 57,21 UI_TOOLTIP bubble[10]
+		ENDIF
+	UI_INFIELD{3} dk_materials[dka_frame_mat_BGS], 216,70 , 57,21 UI_TOOLTIP bubble[10]
+	UI_INFIELD{3} dk_materials[dka_frame_mat_BS], 216,48 , 57,21 UI_TOOLTIP bubble[10]
+	IF gs_sidelight_left THEN
+		UI_INFIELD{3} dk_bkg_pens[dka_side2_penB], 423,109 , 57,21 UI_TOOLTIP bubble[11]
+		ENDIF
+	IF gs_sidelight_right THEN
+		UI_INFIELD{3} dk_bkg_pens[dka_side1_penB], 423,159 , 57,21 UI_TOOLTIP bubble[11]
+		ENDIF
+	UI_INFIELD{3} dk_bkg_pens[dka_frame_penB], 423,59 , 57,21 UI_TOOLTIP bubble[11]
+	IF gs_sidelight_left THEN
+		UI_INFIELD{3} dk_fill_pens[dka_side2_penF], 354,109 , 57,21 UI_TOOLTIP bubble[12]
+		ENDIF
+	IF gs_sidelight_right THEN
+		UI_INFIELD{3} dk_fill_pens[dka_side1_penF], 354,159 , 57,21 UI_TOOLTIP bubble[12]
+		ENDIF
+	UI_INFIELD{3} dk_fill_pens[dka_frame_penF], 354,59 , 57,21 UI_TOOLTIP bubble[12]
+	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 432,22 , 29,16, 1 UI_TOOLTIP txt
 	IF oL_mat_anzeige THEN
-		UI_OUTFIELD babel[27], 0,220 , 130,15, 0+0
+		UI_OUTFIELD babel[27], 0,225 , 137,15, 0+0
 		ENDIF
 	IF oL_mat_anzeige THEN
-		UI_OUTFIELD babel[26], 0,198 , 130,15, 0+0
+		UI_OUTFIELD babel[26], 0,203 , 137,15, 0+0
 		ENDIF
 	IF oL_mat_anzeige THEN
-		UI_INFIELD{3} dk_fills[dka_fan_fill], 263,204 , 57,21 UI_TOOLTIP bubble[13]
+		UI_INFIELD{3} dk_fills[dka_fan_fill], 285,209 , 57,21 UI_TOOLTIP bubble[13]
 		ENDIF
 	IF oL_mat_anzeige THEN
-		UI_INFIELD{3} dk_materials[dka_fan_mat_BGS], 201,215 , 57,21 UI_TOOLTIP bubble[10]
+		UI_INFIELD{3} dk_materials[dka_fan_mat_BGS], 216,220 , 57,21 UI_TOOLTIP bubble[10]
 		ENDIF
 	IF oL_mat_anzeige THEN
-		UI_INFIELD{3} dk_materials[dka_fan_mat_BS], 201,193 , 57,21 UI_TOOLTIP bubble[10]
+		UI_INFIELD{3} dk_materials[dka_fan_mat_BS], 216,198 , 57,21 UI_TOOLTIP bubble[10]
 		ENDIF
 	IF oL_mat_anzeige THEN
-		UI_INFIELD{3} dk_fill_pens[dka_fan_penF], 325,204 , 57,21 UI_TOOLTIP bubble[12]
+		UI_INFIELD{3} dk_fill_pens[dka_fan_penF], 354,209 , 57,21 UI_TOOLTIP bubble[12]
 		ENDIF
 	IF oL_mat_anzeige THEN
-		UI_INFIELD{3} dk_bkg_pens[dka_fan_penB], 387,204 , 57,21 UI_TOOLTIP bubble[11]
+		UI_INFIELD{3} dk_bkg_pens[dka_fan_penB], 423,209 , 57,21 UI_TOOLTIP bubble[11]
 		ENDIF
 	IF gs_sidelight_left THEN
 		GOSUB "VALUES_dk_sidelight_filling"
-		UI_INFIELD{3} dk_sidelight_filling[2], 131,93 , 65,43, 2, 10, 3, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray
+		UI_INFIELD{3} dk_sidelight_filling[2], 139,98 , 65,43, 2, 10, 3, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray
 		ENDIF
 	IF gs_sidelight_right THEN
 		GOSUB "VALUES_dk_sidelight_filling"
-		UI_INFIELD{3} dk_sidelight_filling[1], 131,143 , 65,43, 2, 10, 3, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray
+		UI_INFIELD{3} dk_sidelight_filling[1], 139,148 , 65,43, 2, 10, 3, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray
 		ENDIF
 	IF oL_mat_anzeige THEN
-		UI_INFIELD{3} dk_sidelight_filling[3], 131,193 , 65,43, 2, 10, 3, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray
+		UI_INFIELD{3} dk_sidelight_filling[3], 139,198 , 65,43, 2, 10, 3, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray
 		ENDIF
-	UI_OUTFIELD babel[23], 131,18 , 65,30, 2+0
-	UI_SEPARATOR -1,238, 444,238
+	UI_OUTFIELD babel[23], 132,18 , 70,30, 2+0
+	UI_SEPARATOR -1,245, 481,245
 	RETURN
 ! ------------------ ZARGENFALZABMESSUNGEN [5050]
 	5050:   ! #### Zargenfalzabmessungen
 	UI_STYLE 2,1
-	UI_OUTFIELD babel[45], 0,177 , 129,16, 0+0
+	UI_OUTFIELD babel[45], 0,177 , 172,16, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[42], 0,242 , 116,24, 0+0
+	UI_OUTFIELD babel[42], 0,236 , 160,32, 0+0
 	UI_STYLE 0,0
-	IF dk_frametype # "RR" THEN UI_OUTFIELD babel[22], 369,213 , 75,31, 0+0
-	IF dk_frametype # "RR" THEN UI_INFIELD{3} "dk_design_folding_depth", 369,246 , 75,19 UI_TOOLTIP bubble[64]
-	UI_INFIELD{3} "gs_vt", 288,220 , 52,19 UI_TOOLTIP bubble[20]
-	UI_INFIELD{3} "gs_vb", 288,246 , 52,19 UI_TOOLTIP bubble[19]
+	IF dk_frametype # "RR" THEN UI_OUTFIELD babel[22], 405,213 , 75,32, 0+0
+	IF dk_frametype # "RR" THEN UI_INFIELD{3} "dk_design_folding_depth", 405,246 , 75,19 UI_TOOLTIP bubble[64]
+	UI_INFIELD{3} "gs_vt", 312,220 , 52,19 UI_TOOLTIP bubble[20]
+	UI_INFIELD{3} "gs_vb", 312,246 , 52,19 UI_TOOLTIP bubble[19]
 	GOSUB "SELECT_bs_folding_nmbr"
-	UI_INFIELD{3} "bs_folding_nmbr", 210,196 , 75,70, 2, 8, 18, 6, 60, 60, 60, 60, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[70]
-	IF bs_folding_nmbr=3 THEN UI_INFIELD{3} dk_folding_dimensions[1][1], 155,240 , 52,19 UI_TOOLTIP bubble[61]
-	IF bs_folding_nmbr=2 THEN UI_INFIELD{3} dk_folding_dimensions[1][1], 155,228 , 52,19 UI_TOOLTIP bubble[61]
-	IF bs_folding_nmbr=3 THEN UI_INFIELD{3} dk_folding_dimensions[1][2], 186,175 , 52,19 UI_TOOLTIP bubble[60]
-	IF bs_folding_nmbr=2 THEN UI_INFIELD{3} dk_folding_dimensions[1][2], 218,175 , 52,19 UI_TOOLTIP bubble[60]
-	IF bs_folding_nmbr=3 THEN UI_INFIELD{3} dk_folding_dimensions[2][1], 155,218 , 52,19 UI_TOOLTIP bubble[63]
-	IF bs_folding_nmbr=3 THEN UI_INFIELD{3} dk_folding_dimensions[2][2], 241,175 , 52,19 UI_TOOLTIP bubble[62]
+	UI_INFIELD{3} "bs_folding_nmbr", 228,196 , 75,70, 2, 8, 18, 6, 60, 60, 60, 60, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[70]
+	IF bs_folding_nmbr=3 THEN UI_INFIELD{3} dk_folding_dimensions[1][1], 167,240 , 52,19 UI_TOOLTIP bubble[61]
+	IF bs_folding_nmbr=2 THEN UI_INFIELD{3} dk_folding_dimensions[1][1], 167,228 , 52,19 UI_TOOLTIP bubble[61]
+	IF bs_folding_nmbr=3 THEN UI_INFIELD{3} dk_folding_dimensions[1][2], 204,175 , 52,19 UI_TOOLTIP bubble[60]
+	IF bs_folding_nmbr=2 THEN UI_INFIELD{3} dk_folding_dimensions[1][2], 236,175 , 52,19 UI_TOOLTIP bubble[60]
+	IF bs_folding_nmbr=3 THEN UI_INFIELD{3} dk_folding_dimensions[2][1], 167,218 , 52,19 UI_TOOLTIP bubble[63]
+	IF bs_folding_nmbr=3 THEN UI_INFIELD{3} dk_folding_dimensions[2][2], 259,175 , 52,19 UI_TOOLTIP bubble[62]
 	RETURN
 ! ------------------ TITLE [ 9900 ]
 	9900:   ! #### TITEL on all pages
 	IF develop THEN GOSUB "devshow"
 	UI_STYLE 0,0
-	UI_PICT 1, 305,-2 , 139,15, 1
-	UI_SEPARATOR 0,15, 445,15
+	UI_PICT 1, 341,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 481,15
 	IF errorI>0 THEN
 		txt = ""
 		FOR i=1 TO errorI
@@ -2065,4 +2065,6 @@ END offsetFrameSurfaceBGS,
 		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
 		ENDIF
 	RETURN
+
+
 

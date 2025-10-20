@@ -60,8 +60,8 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 		babel[13] = "( ANFORDERUNGEN / SOLL )"
 		babel[14] = "ÜBERWACHUNG TÜRZUSTAND"
 		babel[15] = "MINIMALABMESSUNGEN"
-		babel[16] = "Besuchen sie uns im Internet unter www.bim-all-doors.de\noder auf github (https://github.com/dormakaba/bim-all-doors) direkt.\nHier finden sie Anleitungen, die jeweils neueste Version\nund hilfreiches Bonusmaterial:"
-		babel[17] = "www.bim-all-doors.de"
+		babel[16] = "Besuchen sie uns auf github (Link unten). Hier finden sie Anleitungen, \ndie jeweils neueste Version und hilfreiches Bonusmaterial:"
+		babel[17] = "github.com"
 		babel[18] = "Die funktionalen und Schutzziele dürfen von den Eigenschaften der gewählten Türkomponenten abweichen, wenn die Komponente die Anforderung erfüllt."
 		babel[19] = "Die Schutzziele dürfen von den Eigenschaften der gewählten Türkomponenten abweichen, wenn die Komponente die Anforderung erfüllt."
 		babel[20] = "Brandschutz:"
@@ -114,7 +114,6 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 		babel[67] = "Zugang von der BS:"
 		babel[68] = "Öffnen von der BGS:"
 		babel[69] = "Öffnen von der BS:"
-		babel[70] = "Flügelposition:"
 		babel[71] = "Schließverhalten:"
 		babel[72] = "SCHLOSS:"
 		babel[73] = "STOSSGRIFF:"
@@ -224,7 +223,7 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 		babel[13] = "( DEMANDS / LIMITS )"
 		babel[14] = "MONITORING DOOR STATE"
 		babel[15] = "MINIMAL DIMENSIONS"
-		babel[16] = "Besuchen sie uns im Internet unter www.bim-all-doors.de\noder auf github (https://github.com/dormakaba/bim-all-doors) direkt.\nHier finden sie Anleitungen, die jeweils neueste Version\nund hilfreiches Bonusmaterial:"
+		babel[16] = "Besuchen sie uns auf github (Link unten). Hier finden sie Anleitungen, \ndie jeweils neueste Version und hilfreiches Bonusmaterial:"
 		babel[17] = "www.bim-all-doors.de"
 		babel[18] = "The functional requirements may differ from properties of the component, if the component fullfills at least the requierements."
 		babel[19] = "The protection requirements can differ from the qualities of the components, if the component fullfills at least the requierements."
@@ -278,7 +277,6 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 		babel[67] = "Access from SwS:"
 		babel[68] = "Open from oSwS:"
 		babel[69] = "Open from SwS:"
-		babel[70] = "Leaf position:"
 		babel[71] = "Schließverhalten:"
 		babel[72] = "LOCK CASE:"
 		babel[73] = "PUSHER:"
@@ -301,13 +299,13 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 		babel[90] = " ... Minimal space"
 		babel[91] = "ANNOTATION"
 		babel[92] = "QUICK INFORMATION"
-		babel[94] = "5. Bekleidungs-\n    außenmaß"
-		babel[95] = "2. Rohbauöffnung"
-		babel[96] = "3. Baurichtmaß"
-		babel[97] = "4. Rahmenaußenmaß"
-		babel[98] = "6. Durchgangslichte"
-		babel[99] = "7. Zargenfalzmaß"
-		babel[100] = "8. Türblattmaß"
+		babel[94] = "4. Bekleidungs-\n    außenmaß"
+		babel[95] = "1. Rohbauöffnung"
+		babel[96] = "2. Baurichtmaß"
+		babel[97] = "3. Rahmenaußenmaß"
+		babel[98] = "5. Durchgangslichte"
+		babel[99] = "6. Zargenfalzmaß"
+		babel[100] = "7. Türblattmaß"
 		babel[101] = "Gangflügel:"
 		babel[102] = "Standflügel:"
 		babel[103] = "BS:"
@@ -494,8 +492,8 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 		bubble[122] = "Öffnungslinien in Schnitten+Ansichten"
 		bubble[123] = "Schnittdarstellung der Maße"
 		bubble[124] = "seitliche Wandkontur"
-		bubble[125] = "Symbol an Öffnungslinie Gangflügel"
 		bubble[125] = "Symbol an Öffnungslinie Standflügel"
+		bubble[125] = "Symbol an Öffnungslinie Gangflügel"
 		bubble[127] = "Sturzlinien / Wandkontur längs"
 		bubble[129] = "Baurichtmaß (BRM) Breite"
 		bubble[130] = "Baurichtmaß (BRM) Höhe"
@@ -706,7 +704,7 @@ format = "" : sts = REQUEST ("Working_length_unit", "",format)   ! Format für U
 		bubble[167] = "Platzbedarf Bandseite am Schloss"
 		bubble[168] = "Platzbedarf Bandseite am Standflügel"
 		bubble[169] = "Platzbedarf Bandseite in der Tiefe"
-		bubble[170] = "Verfügbare Zugangskontrollsysteme"
+		bubble[170] = "Available Access control systems"
 		ENDIF
 
 ! ----------------------------------- MULTILINGUAL TEXT (end)
@@ -1659,7 +1657,7 @@ END
 	UI_INFIELD{3} "bs_demand_MoistureProofing", 379,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[26]   !»» "dk_yes_no_na 72x18.png"
 	UI_INFIELD{3} "bs_demand_EscapeRoute", 448,175 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[27]   !»» "dk_yes_no_na 72x18.png"
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[1], 10,219 , 221,28, 2+0 UI_TOOLTIP bubble[11]
+	UI_OUTFIELD babel[1], 10,219 , 221,32, 2+0 UI_TOOLTIP bubble[11]
 	UI_STYLE 0,0
 	UI_STYLE 1,2
 	IF dk_LoI > -1 AND dk_LoI < 6 THEN
@@ -1747,8 +1745,8 @@ END
 	UIpage = UIpage + 1
 	UI_PAGE UIpage, UIpage_masterparent, babel[82], "dk_title_functional_props2 18x18.png"
 	GOSUB 9900
-	UI_SEPARATOR 0,185, 445,185
-	UI_SEPARATOR 0,84, 445,84
+	UI_SEPARATOR 0,185, 481,185
+	UI_SEPARATOR 0,84, 481,84
 	UI_STYLE 1,2
 	UI_OUTFIELD babel[13], 244,20 , 133,12, 0+0
 	UI_STYLE 0,0
@@ -1761,106 +1759,106 @@ END
 	UI_STYLE 0,1
 	UI_OUTFIELD babel[14], 0,189 , 444,15, 2+0
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[63], 0,43 , 135,15, 1+0
-	UI_OUTFIELD babel[65], 0,64 , 135,15, 1+0
-	UI_OUTFIELD babel[62], 222,43 , 135,15, 1+0
-	UI_OUTFIELD babel[64], 222,64 , 135,15, 1+0
-	UI_OUTFIELD babel[67], 0,110 , 118,15, 1+0
-	UI_OUTFIELD babel[69], 0,136 , 118,15, 1+0
-	UI_OUTFIELD babel[68], 222,136 , 118,15, 1+0
-	UI_OUTFIELD babel[71], 0,162 , 118,15, 1+0
-	UI_OUTFIELD babel[66], 222,110 , 118,15, 1+0
-	UI_OUTFIELD babel[53], 222,162 , 118,15, 1+0
+	UI_OUTFIELD babel[63], 0,43 , 145,15, 1+0
+	UI_OUTFIELD babel[65], 0,64 , 145,15, 1+0
+	UI_OUTFIELD babel[62], 240,43 , 150,15, 1+0
+	UI_OUTFIELD babel[64], 240,64 , 150,15, 1+0
+	UI_OUTFIELD babel[67], 0,110 , 125,15, 1+0
+	UI_OUTFIELD babel[69], 0,136 , 125,15, 1+0
+	UI_OUTFIELD babel[68], 240,136 , 130,15, 1+0
+	UI_OUTFIELD babel[71], 0,162 , 125,15, 1+0
+	UI_OUTFIELD babel[66], 240,110 , 130,15, 1+0
+	UI_OUTFIELD babel[53], 240,162 , 130,15, 1+0
 	UI_OUTFIELD babel[53], 0,207 , 99,15, 1+0
 	UI_OUTFIELD babel[52], 0,228 , 99,15, 1+0
-	UI_OUTFIELD babel[51], 134,239 , 65,15, 1+0
-	UI_OUTFIELD babel[50], 134,218 , 65,15, 1+0
+	UI_OUTFIELD babel[51], 136,239 , 75,15, 1+0
+	UI_OUTFIELD babel[50], 136,218 , 75,15, 1+0
 	UI_OUTFIELD babel[49], 0,249 , 99,15, 1+0
-	UI_OUTFIELD babel[48], 242,218 , 65,15, 1+0
-	UI_OUTFIELD babel[47], 242,239 , 65,15, 1+0
-	UI_OUTFIELD babel[46], 349,207 , 65,15, 1+0
-	UI_OUTFIELD babel[45], 349,228 , 65,15, 1+0
-	UI_OUTFIELD babel[44], 349,249 , 65,15, 1+0
+	UI_OUTFIELD babel[48], 251,218 , 80,15, 1+0
+	UI_OUTFIELD babel[47], 251,239 , 80,15, 1+0
+	UI_OUTFIELD babel[46], 370,207 , 80,15, 1+0
+	UI_OUTFIELD babel[45], 370,228 , 80,15, 1+0
+	UI_OUTFIELD babel[44], 370,249 , 80,15, 1+0
 	IF bs_door_leafs = 1 THEN
-		UI_INFIELD{3} "bs_quality_UsableClearance", 142,40 , 80,19 UI_TOOLTIP bubble[53]
+		UI_INFIELD{3} "bs_quality_UsableClearance", 155,40 , 80,19 UI_TOOLTIP bubble[53]
 		ELSE
 		
-		UI_INFIELD{3} "bs_quality_UsableClearance", 142,40 , 38,19 UI_TOOLTIP bubble[57]
-		UI_INFIELD{3} "bs_quality_TotalClearance", 184,40 , 38,19 UI_TOOLTIP bubble[56]
+		UI_INFIELD{3} "bs_quality_UsableClearance", 155,40 , 38,19 UI_TOOLTIP bubble[57]
+		UI_INFIELD{3} "bs_quality_TotalClearance", 197,40 , 38,19 UI_TOOLTIP bubble[56]
 		ENDIF
-	UI_INFIELD{3} "bs_quality_UsableHeight", 364,40 , 80,19 UI_TOOLTIP bubble[54]
-	UI_INFIELD{3} "bs_quality_GuardrailHeight", 142,61 , 80,19 UI_TOOLTIP bubble[66]
-	UI_INFIELD{3} "bs_quality_OpeningAngle", 364,61 , 80,19 UI_TOOLTIP bubble[55]
+	UI_INFIELD{3} "bs_quality_UsableHeight", 400,40 , 80,19 UI_TOOLTIP bubble[54]
+	UI_INFIELD{3} "bs_quality_GuardrailHeight", 155,61 , 80,19 UI_TOOLTIP bubble[66]
+	UI_INFIELD{3} "bs_quality_OpeningAngle", 400,61 , 80,19 UI_TOOLTIP bubble[55]
 	GOSUB "VALUES_bs_ac_identify1"
-	UI_INFIELD{3} "bs_ac_identify1", 122,104 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[59]
+	UI_INFIELD{3} "bs_ac_identify1", 135,104 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[59]
 	GOSUB "VALUES_bs_ac_identify2"
-	UI_INFIELD{3} "bs_ac_identify2", 344,104 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[58]
+	UI_INFIELD{3} "bs_ac_identify2", 380,104 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[58]
 	GOSUB "VALUES_bs_ac_opening1"
-	UI_INFIELD{3} "bs_ac_opening1", 122,130 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[61]
+	UI_INFIELD{3} "bs_ac_opening1", 135,130 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[61]
 	GOSUB "VALUES_bs_ac_opening2"
-	UI_INFIELD{3} "bs_ac_opening2", 344,130 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[60]
+	UI_INFIELD{3} "bs_ac_opening2", 380,130 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[60]
 	GOSUB "VALUES_bs_ac_closing"
-	UI_INFIELD{3} "bs_ac_closing", 122,156 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[62]
+	UI_INFIELD{3} "bs_ac_closing", 135,156 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[62]
 	GOSUB "VALUES_bs_ac_status"
-	UI_INFIELD{3} "bs_ac_status", 344,156 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[87]
+	UI_INFIELD{3} "bs_ac_status", 380,156 , 100,24, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[87]
 	UI_INFIELD{3} "bs_ctrl_leaf_position", 102,205 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[68]   !»» "dk_yes_no_na 72x18.png"
 	UI_INFIELD{3} "bs_ctrl_locking", 102,226 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[69]   !»» "dk_yes_no_na 72x18.png"
-	UI_INFIELD{3} "bs_ctrl_handle_actuation", 202,237 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[70]   !»» "dk_yes_no_na 72x18.png"
-	UI_INFIELD{3} "bs_ctrl_key_actuation", 202,216 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[71]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_handle_actuation", 214,237 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[70]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_key_actuation", 214,216 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[71]   !»» "dk_yes_no_na 72x18.png"
 	UI_INFIELD{3} "bs_ctrl_distance_actuation", 102,247 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[72]   !»» "dk_yes_no_na 72x18.png"
-	UI_INFIELD{3} "bs_ctrl_time_opened", 310,216 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[73]   !»» "dk_yes_no_na 72x18.png"
-	UI_INFIELD{3} "bs_ctrl_emergency_opened", 310,237 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[74]   !»» "dk_yes_no_na 72x18.png"
-	UI_INFIELD{3} "bs_ctrl_breakthrough", 417,205 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[75]   !»» "dk_yes_no_na 72x18.png"
-	UI_INFIELD{3} "bs_ctrl_burst", 417,226 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[76]   !»» "dk_yes_no_na 72x18.png"
-	UI_INFIELD{3} "bs_ctrl_sabotage", 417,247 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[77]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_time_opened", 334,216 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[73]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_emergency_opened", 334,237 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[74]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_breakthrough", 453,205 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[75]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_burst", 453,226 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[76]   !»» "dk_yes_no_na 72x18.png"
+	UI_INFIELD{3} "bs_ctrl_sabotage", 453,247 , 27,19, 2, 3, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[77]   !»» "dk_yes_no_na 72x18.png"
 	RETURN
 ! ------------------------------------------------------------- PROPERTIES DEMAND [ 1300 ]
 	1300:   ! #### SEITE 4 - Funktionsanforderungen
 	UIpage = UIpage + 1
 	UI_PAGE UIpage, UIpage_masterparent, babel[83], "dk_title_functional_props 18x18.png"
 	GOSUB 9900
-	UI_SEPARATOR 0,98, 445,98
-	UI_OUTFIELD babel[56], 0,28 , 125,15, 1+0
+	UI_SEPARATOR 0,98, 481,98
+	UI_OUTFIELD babel[56], 0,28 , 140,15, 1+0
 	GOSUB "VALUES_bs_quality_EscapeRoute"
-	UI_INFIELD{3} "bs_quality_EscapeRoute", 128,24 , 76,21, 2, "", 6, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[27]
-	UI_OUTFIELD babel[58], 0,52 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_SelfClosing", 129,49 , 93,19 UI_TOOLTIP bubble[64]
-	UI_OUTFIELD babel[59], 0,76 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_Automation", 129,73 , 93,19 UI_TOOLTIP bubble[63]
-	UI_OUTFIELD babel[60], 0,108 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_Hygiene", 129,105 , 93,19 UI_TOOLTIP bubble[44]
-	UI_OUTFIELD babel[37], 0,131 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_ClimateClass", 129,129 , 93,19 UI_TOOLTIP bubble[49]
-	UI_OUTFIELD babel[40], 0,154 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_WetRoom", 129,152 , 93,19 UI_TOOLTIP bubble[51]
-	UI_OUTFIELD babel[39], 0,178 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_DampArea", 129,175 , 93,19 UI_TOOLTIP bubble[52]
-	UI_OUTFIELD babel[42], 0,202 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_Tightness", 129,200 , 93,19 UI_TOOLTIP bubble[48]
-	UI_OUTFIELD babel[33], 0,226 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_EMShielding", 129,223 , 93,19 UI_TOOLTIP bubble[43]
-	UI_OUTFIELD babel[54], 0,250 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_BurglaryAlarmSystem", 129,246 , 93,19 UI_TOOLTIP bubble[50]
-	UI_OUTFIELD babel[34], 222,28 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_Accessibility", 351,25 , 93,19 UI_TOOLTIP bubble[24]
-	UI_OUTFIELD babel[55], 222,52 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_ActuatingForce", 351,49 , 93,19 UI_TOOLTIP bubble[41]
-	UI_OUTFIELD babel[43], 222,76 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_SHE", 351,73 , 93,19 UI_TOOLTIP bubble[65]
-	UI_OUTFIELD babel[35], 222,108 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_AntiTrapProtection", 351,105 , 93,19 UI_TOOLTIP bubble[45]
-	UI_OUTFIELD babel[36], 222,131 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_AccidentPrevention", 351,129 , 93,19 UI_TOOLTIP bubble[46]
-	UI_OUTFIELD babel[32], 222,154 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_CorrosionPrevention", 351,152 , 93,19 UI_TOOLTIP bubble[38]
-	UI_OUTFIELD babel[38], 222,178 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_MechanicalLoad", 351,175 , 93,19 UI_TOOLTIP bubble[47]
-	UI_OUTFIELD babel[61], 222,202 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_IntensityOfUse", 351,200 , 93,19 UI_TOOLTIP bubble[42]
-	UI_OUTFIELD babel[41], 222,226 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_UsefulLife", 351,223 , 93,19 UI_TOOLTIP bubble[40]
-	UI_OUTFIELD babel[57], 222,250 , 125,15, 1+0
-	UI_INFIELD{3} "bs_quality_Sustainability", 351,246 , 93,19 UI_TOOLTIP bubble[67]
+	UI_INFIELD{3} "bs_quality_EscapeRoute", 146,24 , 76,21, 2, "", 6, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[27]
+	UI_OUTFIELD babel[58], 0,52 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_SelfClosing", 147,49 , 93,19 UI_TOOLTIP bubble[64]
+	UI_OUTFIELD babel[59], 0,76 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_Automation", 147,73 , 93,19 UI_TOOLTIP bubble[63]
+	UI_OUTFIELD babel[60], 0,108 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_Hygiene", 147,105 , 93,19 UI_TOOLTIP bubble[44]
+	UI_OUTFIELD babel[37], 0,131 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_ClimateClass", 147,129 , 93,19 UI_TOOLTIP bubble[49]
+	UI_OUTFIELD babel[40], 0,154 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_WetRoom", 147,152 , 93,19 UI_TOOLTIP bubble[51]
+	UI_OUTFIELD babel[39], 0,178 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_DampArea", 147,175 , 93,19 UI_TOOLTIP bubble[52]
+	UI_OUTFIELD babel[42], 0,202 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_Tightness", 147,200 , 93,19 UI_TOOLTIP bubble[48]
+	UI_OUTFIELD babel[33], 0,226 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_EMShielding", 147,223 , 93,19 UI_TOOLTIP bubble[43]
+	UI_OUTFIELD babel[54], 0,250 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_BurglaryAlarmSystem", 147,246 , 93,19 UI_TOOLTIP bubble[50]
+	UI_OUTFIELD babel[34], 240,28 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_Accessibility", 387,25 , 93,19 UI_TOOLTIP bubble[24]
+	UI_OUTFIELD babel[55], 240,52 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_ActuatingForce", 387,49 , 93,19 UI_TOOLTIP bubble[41]
+	UI_OUTFIELD babel[43], 240,76 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_SHE", 387,73 , 93,19 UI_TOOLTIP bubble[65]
+	UI_OUTFIELD babel[35], 240,108 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_AntiTrapProtection", 387,105 , 93,19 UI_TOOLTIP bubble[45]
+	UI_OUTFIELD babel[36], 240,131 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_AccidentPrevention", 387,129 , 93,19 UI_TOOLTIP bubble[46]
+	UI_OUTFIELD babel[32], 240,154 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_CorrosionPrevention", 387,152 , 93,19 UI_TOOLTIP bubble[38]
+	UI_OUTFIELD babel[38], 240,178 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_MechanicalLoad", 387,175 , 93,19 UI_TOOLTIP bubble[47]
+	UI_OUTFIELD babel[61], 240,202 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_IntensityOfUse", 387,200 , 93,19 UI_TOOLTIP bubble[42]
+	UI_OUTFIELD babel[41], 240,226 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_UsefulLife", 387,223 , 93,19 UI_TOOLTIP bubble[40]
+	UI_OUTFIELD babel[57], 240,250 , 140,15, 1+0
+	UI_INFIELD{3} "bs_quality_Sustainability", 387,246 , 93,19 UI_TOOLTIP bubble[67]
 	RETURN
 ! ------------------------------------------------------------- BASIC DEMANDS / GRUNDANFORDERUNGEN [ 1400 ]
 	1400:   ! #### SEITE 5 - Grundlegende Anforderungen
@@ -1871,32 +1869,32 @@ END
 	UI_INFIELD{3} "bs_quality_FireResistanceRating", 148,23 , 74,19 UI_TOOLTIP bubble[21]
 	UI_OUTFIELD babel[21], 0,53 , 143,15, 1+0
 	UI_INFIELD{3} "bs_quality_SmokeResistance", 148,50 , 74,19 UI_TOOLTIP bubble[22]
-	UI_OUTFIELD babel[22], 222,26 , 143,15, 1+0
-	UI_INFIELD{3} "bs_quality_NoiseInsulaion", 370,23 , 74,19 UI_TOOLTIP bubble[23]
-	UI_OUTFIELD babel[23], 222,53 , 143,15, 1+0
-	UI_INFIELD{3} "bs_quality_ThermalInsulaion", 370,50 , 74,19 UI_TOOLTIP bubble[29]
+	UI_OUTFIELD babel[22], 258,26 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_NoiseInsulaion", 406,23 , 74,19 UI_TOOLTIP bubble[23]
+	UI_OUTFIELD babel[23], 258,53 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_ThermalInsulaion", 406,50 , 74,19 UI_TOOLTIP bubble[29]
 	UI_OUTFIELD babel[24], 0,95 , 143,15, 1+0
 	UI_INFIELD{3} "bs_quality_BurglaryProtection", 148,92 , 74,19 UI_TOOLTIP bubble[39]
 	UI_OUTFIELD babel[56], 0,122 , 143,15, 1+0
 	UI_INFIELD{3} "bs_quality_EscapeRoute", 148,119 , 74,19 UI_TOOLTIP bubble[27]
 	UI_OUTFIELD babel[58], 0,149 , 143,15, 1+0
 	UI_INFIELD{3} "bs_quality_SelfClosing", 148,146 , 74,19 UI_TOOLTIP bubble[64]
-	UI_OUTFIELD babel[59], 222,149 , 143,15, 1+0
-	UI_INFIELD{3} "bs_quality_Automation", 370,146 , 74,19 UI_TOOLTIP bubble[63]
+	UI_OUTFIELD babel[59], 258,149 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_Automation", 406,146 , 74,19 UI_TOOLTIP bubble[63]
 	UI_OUTFIELD babel[60], 0,188 , 143,15, 1+0
 	UI_INFIELD{3} "bs_quality_Hygiene", 148,185 , 74,19 UI_TOOLTIP bubble[44]
 	UI_OUTFIELD babel[37], 0,214 , 143,15, 1+0
 	UI_INFIELD{3} "bs_quality_ClimateClass", 148,211 , 74,19 UI_TOOLTIP bubble[49]
-	UI_OUTFIELD babel[40], 222,188 , 143,15, 1+0
-	UI_INFIELD{3} "bs_quality_WetRoom", 370,184 , 74,19 UI_TOOLTIP bubble[51]
-	UI_OUTFIELD babel[39], 222,214 , 143,15, 1+0
-	UI_INFIELD{3} "bs_quality_DampArea", 370,211 , 74,19 UI_TOOLTIP bubble[52]
-	UI_OUTFIELD babel[54], 222,95 , 143,15, 1+0
-	UI_INFIELD{3} "bs_quality_BurglaryAlarmSystem", 370,92 , 74,19 UI_TOOLTIP bubble[50]
-	UI_OUTFIELD babel[34], 222,122 , 143,15, 1+0
-	UI_INFIELD{3} "bs_quality_Accessibility", 370,119 , 74,19 UI_TOOLTIP bubble[24]
+	UI_OUTFIELD babel[40], 258,188 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_WetRoom", 406,184 , 74,19 UI_TOOLTIP bubble[51]
+	UI_OUTFIELD babel[39], 258,214 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_DampArea", 406,211 , 74,19 UI_TOOLTIP bubble[52]
+	UI_OUTFIELD babel[54], 258,95 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_BurglaryAlarmSystem", 406,92 , 74,19 UI_TOOLTIP bubble[50]
+	UI_OUTFIELD babel[34], 258,122 , 143,15, 1+0
+	UI_INFIELD{3} "bs_quality_Accessibility", 406,119 , 74,19 UI_TOOLTIP bubble[24]
 	UI_STYLE 0,2
-	UI_OUTFIELD babel[18], 25,236 , 400,30, 2+4
+	UI_OUTFIELD babel[18], 20,236 , 424,32, 2+4
 	RETURN
 ! ------------------------------------------------------------- COMPONENTS / KOMPONENTEN [ 1600 ]
 	1600:   ! #### SEITE 6 - Türkomponenten
@@ -1930,42 +1928,42 @@ END
 	UIpage = UIpage + 1
 	UI_PAGE UIpage, UIpage_masterparent, babel[86], "dk_title_dimensions.png"
 	GOSUB "DYNVALUES_basic_dimension"   !»» Titel + Bitmaps für Gesamtabmessung bestimmen
-	UI_SEPARATOR 273,224, 445,224
-	UI_SEPARATOR 265,19, 265,267
+	UI_SEPARATOR 282,224, 472,224
+	UI_SEPARATOR 274,19, 274,267
 	GOSUB "checkUsableClearance"
 	GOSUB 9900
 	GOSUB "SELECT_gs_retain_nominal_sizes"
 	UI_INFIELD{3} "gs_retain_nominal_sizes", 0,18 , 26,24, 6, 70, 2, 1, 20, 20, 20, 20, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP txt
 	UI_STYLE 1,0
-	UI_OUTFIELD babel[108], 30,31 , 102,14, 0+0
+	UI_OUTFIELD babel[108], 30,31 , 110,14, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[105], 134,31 , 45,14, 2+0
+	UI_OUTFIELD babel[105], 141,31 , 45,14, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[106], 201,31 , 43,14, 2+0 UI_TOOLTIP bubble[99]
+	UI_OUTFIELD babel[106], 208,31 , 43,14, 2+0 UI_TOOLTIP bubble[99]
 	UI_STYLE 0,0
 	IF gs_nominal_size = 1 THEN UI_STYLE 0,1
-		UI_RADIOBUTTON{2} "gs_nominal_size", 1, babel[95], 0,53 , 132,18 UI_TOOLTIP bubble[98]
-	UI_INFIELD{3} "ac_wallhole_width", 134,53 , 60,19 UI_TOOLTIP bubble[96]
-	UI_INFIELD{3} "ac_wallhole_height", 200,53 , 60,19 UI_TOOLTIP bubble[97]
+		UI_RADIOBUTTON{2} "gs_nominal_size", 1, babel[95], 0,53 , 140,18 UI_TOOLTIP bubble[98]
+	UI_INFIELD{3} "ac_wallhole_width", 141,53 , 60,19 UI_TOOLTIP bubble[96]
+	UI_INFIELD{3} "ac_wallhole_height", 207,53 , 60,19 UI_TOOLTIP bubble[97]
 	UI_STYLE 0,0
 	IF gs_nominal_size = 2 THEN UI_STYLE 0,1
-		UI_RADIOBUTTON{2} "gs_nominal_size", 2, babel[96], 0,82 , 132,18 UI_TOOLTIP bubble[89]
-	UI_INFIELD{3} "ac_baurichtmass_width", 134,80 , 60,19 UI_TOOLTIP bubble[129]
-	UI_INFIELD{3} "ac_baurichtmass_height", 200,80 , 60,19 UI_TOOLTIP bubble[130]
+		UI_RADIOBUTTON{2} "gs_nominal_size", 2, babel[96], 0,82 , 140,18 UI_TOOLTIP bubble[89]
+	UI_INFIELD{3} "ac_baurichtmass_width", 141,80 , 60,19 UI_TOOLTIP bubble[129]
+	UI_INFIELD{3} "ac_baurichtmass_height", 207,80 , 60,19 UI_TOOLTIP bubble[130]
 	UI_STYLE 0,0
 	IF gs_nominal_size = 8 THEN UI_STYLE 0,1
-		UI_RADIOBUTTON{2} "gs_nominal_size", 8, babel[97], 0,107 , 136,18 UI_TOOLTIP bubble[93]
-	UI_INFIELD{3} "ac_unit_width", 134,107 , 60,19 UI_TOOLTIP bubble[94]
-	UI_INFIELD{3} "ac_unit_height", 200,107 , 60,19 UI_TOOLTIP bubble[95]
+		UI_RADIOBUTTON{2} "gs_nominal_size", 8, babel[97], 0,107 , 140,18 UI_TOOLTIP bubble[93]
+	UI_INFIELD{3} "ac_unit_width", 141,107 , 60,19 UI_TOOLTIP bubble[94]
+	UI_INFIELD{3} "ac_unit_height", 207,107 , 60,19 UI_TOOLTIP bubble[95]
 	UI_STYLE 0,0
 	twosidefacing = (dk_frametype = "UZ" OR dk_frametype = "FB")
-	UI_OUTFIELD babel[94], 16,131 , 91,28, 0+0 UI_TOOLTIP "Bekleidungsaußenmaß (ZFM + Spiegelbreiten)"
+	UI_OUTFIELD babel[94], 16,131 , 125,32, 0+0 UI_TOOLTIP "Bekleidungsaußenmaß (ZFM + Spiegelbreiten)"
 	IF NOT(twosidefacing) THEN
-		UI_INFIELD{3} "bs_OuterFrame_width", 134,136 , 60,19 UI_TOOLTIP bubble[131]
+		UI_INFIELD{3} "bs_OuterFrame_width", 141,136 , 60,19 UI_TOOLTIP bubble[131]
 		
-		UI_INFIELD{3} "bs_OuterFrame_height", 200,136 , 60,19 UI_TOOLTIP bubble[132]
+		UI_INFIELD{3} "bs_OuterFrame_height", 207,136 , 60,19 UI_TOOLTIP bubble[132]
 		ENDIF
 	IF twosidefacing THEN
 		UI_STYLE 1,2
@@ -1979,265 +1977,265 @@ END
 		UI_OUTFIELD str(format, bs_OuterFrame_height2) + "m", 204,146 , 47,14, 0+0 UI_TOOLTIP "Bekleidungs-/Zargenaußenmaß Höhe Bandgegenseite"
 		ENDIF
 	IF gs_nominal_size =16 THEN UI_STYLE 0,1
-		UI_RADIOBUTTON{2} "gs_nominal_size", 16, babel[98], 0,165 , 132,18 UI_TOOLTIP bubble[90]
-	UI_INFIELD{3} "ac_egress_width", 134,165 , 60,19 UI_TOOLTIP bubble[137]
-	UI_INFIELD{3} "ac_egress_height", 200,165 , 60,19 UI_TOOLTIP bubble[138]
+		UI_RADIOBUTTON{2} "gs_nominal_size", 16, babel[98], 0,165 , 140,18 UI_TOOLTIP bubble[90]
+	UI_INFIELD{3} "ac_egress_width", 141,165 , 60,19 UI_TOOLTIP bubble[137]
+	UI_INFIELD{3} "ac_egress_height", 207,165 , 60,19 UI_TOOLTIP bubble[138]
 	UI_STYLE 0,0
 	IF gs_nominal_size = 32 THEN UI_STYLE 0,1
-		UI_RADIOBUTTON{2} "gs_nominal_size", 32, babel[99], 0,192 , 132,18 UI_TOOLTIP bubble[93]
-	UI_INFIELD{3} "bs_FrameRebate_width", 134,192 , 60,19 UI_TOOLTIP bubble[108]
-	UI_INFIELD{3} "bs_FrameRebate_height", 200,192 , 60,19 UI_TOOLTIP bubble[109]
+		UI_RADIOBUTTON{2} "gs_nominal_size", 32, babel[99], 0,192 , 140,18 UI_TOOLTIP bubble[93]
+	UI_INFIELD{3} "bs_FrameRebate_width", 141,192 , 60,19 UI_TOOLTIP bubble[108]
+	UI_INFIELD{3} "bs_FrameRebate_height", 207,192 , 60,19 UI_TOOLTIP bubble[109]
 	UI_STYLE 0,0
 	IF gs_nominal_size = 64 THEN
 		UI_STYLE 0,1
 		ENDIF
 	IF bs_door_leafs > 0 THEN
-		UI_RADIOBUTTON{2} "gs_nominal_size", 64, babel[100], 0,233 , 132,18 UI_TOOLTIP bubble[92]
+		UI_RADIOBUTTON{2} "gs_nominal_size", 64, babel[100], 0,233 , 140,18 UI_TOOLTIP bubble[92]
 		ENDIF
 	IF bs_door_leafs = 2 THEN
 		UI_STYLE 1,2
-		UI_OUTFIELD babel[101], 70,219 , 60,14, 1+0
+		UI_OUTFIELD babel[101], 67,219 , 69,14, 1+0
 		UI_STYLE 0,0
-		UI_INFIELD{3} "ac_leaf_width", 134,219 , 60,19 UI_TOOLTIP bubble[104]
-		UI_INFIELD{3} "gs_SecondLeaf_w", 134,246 , 60,19 UI_TOOLTIP bubble[105]
+		UI_INFIELD{3} "ac_leaf_width", 141,219 , 60,19 UI_TOOLTIP bubble[104]
+		UI_INFIELD{3} "gs_SecondLeaf_w", 141,246 , 60,19 UI_TOOLTIP bubble[105]
 		UI_STYLE 1,2
-		UI_OUTFIELD babel[102], 70,251 , 60,14, 1+0
+		UI_OUTFIELD babel[102], 67,251 , 69,14, 1+0
 		UI_STYLE 0,0
 		ENDIF
 	IF bs_door_leafs = 1 THEN UI_INFIELD{3} "ac_leaf_width", 134,235 , 60,19 UI_TOOLTIP bubble[102]
 	IF bs_door_leafs > 0 THEN
-		UI_INFIELD{3} "ac_leaf_height", 200,233 , 60,19 UI_TOOLTIP bubble[103]
+		UI_INFIELD{3} "ac_leaf_height", 207,233 , 60,19 UI_TOOLTIP bubble[103]
 		ENDIF
 	UI_STYLE 0,0
 	GOSUB "initialize"
 	GOSUB "calcUsableClearance"
 	GOSUB "explainUsableClearance"
-	UI_OUTFIELD babel[107], 336,231 , 108,14, 2+0 UI_TOOLTIP txt
-	IF bs_door_leafs > 0 THEN UI_OUTFIELD str(format, bs_UsableClearance) + "m x " + str(format, bs_UsableHeight) + "m", 336,248 , 108,14, 2+0 UI_TOOLTIP txt
+	UI_OUTFIELD babel[107], 345,231 , 126,14, 2+0 UI_TOOLTIP txt
+	IF bs_door_leafs > 0 THEN UI_OUTFIELD str(format, bs_UsableClearance) + "m x " + str(format, bs_UsableHeight) + "m", 345,248 , 126,14, 2+0 UI_TOOLTIP txt
 	IF bs_door_leafs > 0 THEN
 		GOSUB "SELECT_dk_UCrelation"
-		UI_INFIELD{3} "dk_UCrelation", 273,228 , 61,37, 2, 62, 6, 1, 50, 32, 50, 32, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[134]
+		UI_INFIELD{3} "dk_UCrelation", 282,228 , 61,37, 2, 62, 6, 1, 50, 32, 50, 32, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[134]
 		ENDIF
 	UI_STYLE 1,0
-	UI_OUTFIELD babel[109], 286,200 , 76,14, 1+0
+	UI_OUTFIELD babel[109], 290,200 , 90,14, 1+0
 	UI_STYLE 0,0
 	GOSUB "VALUES_dk_tolerance"
-	UI_INFIELD{3} "dk_tolerance", 365,194 , 32,24, 2, 4, 3, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[133]   !»» "dk_tolerance 54x18.png"
-	UI_INFIELD{3} "gs_ui_sub_tabpage", 314,47 , 102,19 UI_TOOLTIP bubble[135]
+	UI_INFIELD{3} "dk_tolerance", 383,194 , 32,24, 2, 4, 3, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[133]   !»» "dk_tolerance 54x18.png"
+	UI_INFIELD{3} "gs_ui_sub_tabpage", 332,47 , 102,19 UI_TOOLTIP bubble[135]
 	IF gs_ui_sub_tabpage THEN GOSUB "dimensionV" ELSE GOSUB "dimensionH"
 	RETURN
 	"dimensionH":
-	IF dk_tolerance > 0 THEN UI_INFIELD{3} "gs_tolerance_right", 272,73 , 40,19 UI_TOOLTIP bubble[142]
-	IF dk_tolerance > 0 THEN UI_INFIELD{3} "gs_tolerance_left", 404,73 , 40,19 UI_TOOLTIP bubble[140]
+	IF dk_tolerance > 0 THEN UI_INFIELD{3} "gs_tolerance_right", 290,73 , 40,19 UI_TOOLTIP bubble[142]
+	IF dk_tolerance > 0 THEN UI_INFIELD{3} "gs_tolerance_left", 422,73 , 40,19 UI_TOOLTIP bubble[140]
 	UI_STYLE 1,0
-	UI_OUTFIELD "(*)", 385,76 , 18,12, 1+0
+	UI_OUTFIELD "(*)", 403,76 , 18,12, 1+0
 	UI_STYLE 0,0
 	UI_STYLE 1,0
-	UI_OUTFIELD "(*)", 313,76 , 18,12, 0+0
+	UI_OUTFIELD "(*)", 331,76 , 18,12, 0+0
 	UI_STYLE 0,0
-	IF dk_tolerance = 0 THEN UI_OUTFIELD "0,00", 271,79 , 42,12, 2+0
-	IF dk_tolerance = 0 THEN UI_OUTFIELD "0,00", 403,79 , 42,12, 2+0
-	UI_PICT ui_pict_AbmessungH, 271,92 , 173,94, 3 UI_TOOLTIP bubble[119]
+	IF dk_tolerance = 0 THEN UI_OUTFIELD "0,00", 289,79 , 42,12, 2+0
+	IF dk_tolerance = 0 THEN UI_OUTFIELD "0,00", 421,79 , 42,12, 2+0
+	UI_PICT ui_pict_AbmessungH, 289,92 , 173,94, 3 UI_TOOLTIP bubble[119]
 	RETURN
 	"dimensionV":
 	UI_STYLE 1,0
-	UI_OUTFIELD "(*)", 292,81 , 18,12, 2+0
+	UI_OUTFIELD "(*)", 310,81 , 18,12, 2+0
 	UI_STYLE 0,0
-	IF dk_tolerance = 0 THEN UI_OUTFIELD "0,00", 270,97 , 42,12, 2+0
-	IF dk_tolerance > 0 THEN UI_INFIELD{3} "gs_tolerance_upper", 271,94 , 40,19 UI_TOOLTIP bubble[141]
-	UI_PICT ui_pict_AbmessungV, 314,76 , 90,98, 1 UI_TOOLTIP bubble[123]
-	UI_PICT ui_pict_AbmessungVU, 273,174 , 170,12, 1 UI_TOOLTIP bubble[123]
+	IF dk_tolerance = 0 THEN UI_OUTFIELD "0,00", 288,97 , 42,12, 2+0
+	IF dk_tolerance > 0 THEN UI_INFIELD{3} "gs_tolerance_upper", 289,94 , 40,19 UI_TOOLTIP bubble[141]
+	UI_PICT ui_pict_AbmessungV, 332,76 , 90,98, 1 UI_TOOLTIP bubble[123]
+	UI_PICT ui_pict_AbmessungVU, 291,174 , 170,12, 1 UI_TOOLTIP bubble[123]
 	RETURN
 ! ------------------------------------------------------------- BASIC DIMENSIONS 4- / HAUPTABMESSUNGEN 4- [ 2100 ]
 	2100:   ! #### LoD<4  Abmessungen
 	UIpage = UIpage + 1
 	UI_PAGE UIpage, UIpage_masterparent, babel[86], "dk_title_dimensions.png"
 	GOSUB "DYNVALUES_basic_dimension"   !»» Titel + Bitmaps für Gesamtabmessung bestimmen
-	UI_SEPARATOR 0,136, 445,136
-	UI_SEPARATOR 246,141, 246,265
+	UI_SEPARATOR 0,136, 481,136
+	UI_SEPARATOR 255,141, 255,265
 	GOSUB "checkUsableClearance"
 	GOSUB 9900
 	UI_PICT ui_pict_AbmessungH, 29,172 , 173,94, 3 UI_TOOLTIP bubble[119]
-	UI_PICT ui_pict_AbmessungV, 314,150 , 90,98, 1 UI_TOOLTIP bubble[123]
-	UI_PICT ui_pict_AbmessungVU, 273,248 , 170,12, 1 UI_TOOLTIP bubble[123]
+	UI_PICT ui_pict_AbmessungV, 332,150 , 90,98, 1 UI_TOOLTIP bubble[123]
+	UI_PICT ui_pict_AbmessungVU, 291,248 , 170,12, 1 UI_TOOLTIP bubble[123]
 	UI_STYLE 1,0
-	UI_OUTFIELD babel[108], 58,25 , 107,11, 0+0
-	UI_STYLE 0,0
-	UI_STYLE 1,0
-	UI_OUTFIELD babel[110], 166,140 , 45,12, 2+0
-	UI_STYLE 0,0
-	UI_STYLE 1,1
-	UI_OUTFIELD babel[105], 215,25 , 50,11, 2+0
-	UI_STYLE 0,0
-	UI_STYLE 1,1
-	UI_OUTFIELD babel[106], 314,25 , 50,11, 2+0 UI_TOOLTIP bubble[99]
+	UI_OUTFIELD babel[108], 67,25 , 107,11, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 1,0
 	UI_OUTFIELD babel[110], 11,140 , 45,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,0
-	UI_OUTFIELD babel[110], 263,140 , 45,12, 2+0
+	UI_OUTFIELD babel[110], 166,140 , 45,12, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,0
+	UI_OUTFIELD babel[110], 281,140 , 45,12, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,1
+	UI_OUTFIELD babel[105], 233,25 , 50,11, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,1
+	UI_OUTFIELD babel[106], 332,25 , 50,11, 2+0 UI_TOOLTIP bubble[99]
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[111], 180,124 , 223,12, 2+0
+	UI_OUTFIELD babel[111], 189,124 , 223,12, 2+0
 	UI_STYLE 0,0
 	IF gs_nominal_size = 1 THEN UI_STYLE 0,1
-		UI_RADIOBUTTON{2} "gs_nominal_size", 1, babel[95], 58,39 , 140,18 UI_TOOLTIP bubble[91]
-	UI_INFIELD{3} "ac_wallhole_width", 215,39 , 70,19 UI_TOOLTIP bubble[99]
-	UI_INFIELD{3} "ac_wallhole_height", 314,39 , 70,19 UI_TOOLTIP bubble[99]
+		UI_RADIOBUTTON{2} "gs_nominal_size", 1, babel[95], 67,39 , 140,18 UI_TOOLTIP bubble[91]
+	UI_INFIELD{3} "ac_wallhole_width", 233,39 , 70,19 UI_TOOLTIP bubble[99]
+	UI_INFIELD{3} "ac_wallhole_height", 332,39 , 70,19 UI_TOOLTIP bubble[99]
 	UI_STYLE 0,0
 	IF gs_nominal_size = 16 THEN UI_STYLE 0,1
-		UI_RADIOBUTTON{2} "gs_nominal_size", 16, babel[98], 58,61 , 140,18 UI_TOOLTIP bubble[90]
-	UI_INFIELD{3} "ac_egress_width", 215,61 , 70,19 UI_TOOLTIP bubble[137]
-	UI_INFIELD{3} "ac_egress_height", 314,61 , 70,19 UI_TOOLTIP bubble[138]
+		UI_RADIOBUTTON{2} "gs_nominal_size", 16, babel[98], 67,61 , 140,18 UI_TOOLTIP bubble[90]
+	UI_INFIELD{3} "ac_egress_width", 233,61 , 70,19 UI_TOOLTIP bubble[137]
+	UI_INFIELD{3} "ac_egress_height", 332,61 , 70,19 UI_TOOLTIP bubble[138]
 	UI_STYLE 0,0
 	IF gs_nominal_size = 64 THEN
 		UI_STYLE 0,1
 		ENDIF
 	IF bs_door_leafs > 0 THEN
-		UI_RADIOBUTTON{2} "gs_nominal_size", 64, babel[100], 58,93 , 101,18 UI_TOOLTIP bubble[92]
+		UI_RADIOBUTTON{2} "gs_nominal_size", 64, babel[100], 67,93 , 101,18 UI_TOOLTIP bubble[92]
 		ENDIF
 	IF bs_door_leafs = 2 THEN
 		UI_STYLE 1,2
-		UI_OUTFIELD babel[101], 153,85 , 60,14, 1+0
+		UI_OUTFIELD babel[101], 162,85 , 60,14, 1+0
 		UI_STYLE 0,0
-		UI_INFIELD{3} "ac_leaf_width", 215,83 , 70,19 UI_TOOLTIP bubble[104]
-		UI_INFIELD{3} "gs_SecondLeaf_w", 215,103 , 70,19 UI_TOOLTIP bubble[105]
+		UI_INFIELD{3} "ac_leaf_width", 233,83 , 70,19 UI_TOOLTIP bubble[104]
+		UI_INFIELD{3} "gs_SecondLeaf_w", 233,103 , 70,19 UI_TOOLTIP bubble[105]
 		UI_STYLE 1,2
-		UI_OUTFIELD babel[102], 153,106 , 60,14, 1+0
+		UI_OUTFIELD babel[102], 162,106 , 60,14, 1+0
 		UI_STYLE 0,0
 		ENDIF
-	IF bs_door_leafs = 1 THEN UI_INFIELD{3} "ac_leaf_width", 215,93 , 70,19 UI_TOOLTIP bubble[102]
+	IF bs_door_leafs = 1 THEN UI_INFIELD{3} "ac_leaf_width", 233,93 , 70,19 UI_TOOLTIP bubble[102]
 	IF bs_door_leafs > 0 THEN
-		UI_INFIELD{3} "ac_leaf_height", 314,93 , 70,19 UI_TOOLTIP bubble[103]
+		UI_INFIELD{3} "ac_leaf_height", 332,93 , 70,19 UI_TOOLTIP bubble[103]
 		ENDIF
 	UI_STYLE 0,0
 	UI_INFIELD{3} "gs_tolerance_left", 11,153 , 45,19 UI_TOOLTIP bubble[140]
 	UI_INFIELD{3} "gs_tolerance_right", 166,153 , 45,19 UI_TOOLTIP bubble[142]
-	UI_INFIELD{3} "gs_tolerance_upper", 263,153 , 45,19 UI_TOOLTIP bubble[141]
+	UI_INFIELD{3} "gs_tolerance_upper", 281,153 , 45,19 UI_TOOLTIP bubble[141]
 	GOSUB "SELECT_gs_retain_nominal_sizes"
-	UI_INFIELD{3} "gs_retain_nominal_sizes", 28,19 , 24,24, 6, "dk_transferVAL 40x20.png", 2, 1, 20, 20, 20, 20, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP txt
+	UI_INFIELD{3} "gs_retain_nominal_sizes", 37,19 , 24,24, 6, "dk_transferVAL 40x20.png", 2, 1, 20, 20, 20, 20, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP txt
 	RETURN
 ! ------------------------------------------------------------- REPRESENTATION [ 3000 ]
 	3000:   ! #### LOI 1+ - Grundlegende Darstellungseinstellungen
 	UIpage = UIpage + 1
 	UI_PAGE UIpage, UIpage_masterparent, babel[87], "dk_title_representation 18x18.png"
 	GOSUB 9900
-	UI_SEPARATOR 0,137, 445,137
+	UI_SEPARATOR 0,137, 481,137
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[114], 0,33 , 165,27, 0+0
+	UI_OUTFIELD babel[114], 0,33 , 165,32, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
 	UI_OUTFIELD babel[113], 0,146 , 165,15, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[115], 198,31 , 50,12, 2+0
+	UI_OUTFIELD babel[115], 216,31 , 50,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[117], 249,31 , 52,25, 2+0
+	UI_OUTFIELD babel[117], 267,31 , 52,32, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[116], 302,31 , 50,12, 2+0
+	UI_OUTFIELD babel[116], 320,31 , 50,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
 	IF ef_LoD < 0 THEN
-		UI_OUTFIELD dk_LoDtxt, 156,110 , 221,15, 2+0
+		UI_OUTFIELD dk_LoDtxt, 174,114 , 221,15, 2+0
 		ENDIF
 	UI_STYLE 0,0
 	GOSUB "SELECT_dk_LOD_2D"
-	UI_INFIELD{3} dk_LOD[1], 206,86 , 40,24, 2, 93, 10, 10, 26, 16, 26, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[114]
+	UI_INFIELD{3} dk_LOD[1], 224,90 , 40,24, 2, 93, 10, 10, 26, 16, 26, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[114]
 	GOSUB "SELECT_dk_LOD_SA"
-	UI_INFIELD{3} dk_LOD[3], 256,86 , 40,24, 2, 93, 10, 10, 26, 16, 26, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[115]
+	UI_INFIELD{3} dk_LOD[3], 274,90 , 40,24, 2, 93, 10, 10, 26, 16, 26, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[115]
 	GOSUB "SELECT_dk_LOD_3D"
-	UI_INFIELD{3} dk_LOD[2], 306,86 , 40,24, 2, 93, 10, 10, 26, 16, 26, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[113]
+	UI_INFIELD{3} dk_LOD[2], 324,90 , 40,24, 2, 93, 10, 10, 26, 16, 26, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[113]
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[112], 209,155 , 146,11, 2+0
+	UI_OUTFIELD babel[112], 227,155 , 146,11, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[125], 209,229 , 146,11, 2+0
+	UI_OUTFIELD babel[125], 227,229 , 146,11, 2+0
 	UI_STYLE 0,0
-	UI_PICT "ui_list_contourPen_flat 32x15.png", 142,202 , 32,15, 1
-	UI_PICT "ui_fill_type_flat 20x20.png", 143,172 , 20,20, 1
-	UI_PICT "ui_fill_pen_flat 29x16.png", 227,202 , 29,16, 1
-	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 310,202 , 29,16, 1
-	UI_PICT "ui_list_contourPen_flat 32x15.png", 142,248 , 32,15, 1
-	UI_PICT "ui_list_contLineType_flat 32x15.png", 225,249 , 32,15, 1
-	UI_PICT 67, 214,59 , 21,21, 1 UI_TOOLTIP bubble[116]   !»» "DORMA_LoD_2D 21x21.png"
-	UI_PICT 68, 264,59 , 21,21, 1 UI_TOOLTIP bubble[118]   !»» "DORMA_LoD_SE 21x21.png"
-	UI_PICT 69, 314,59 , 21,21, 1 UI_TOOLTIP bubble[117]   !»» "DORMA_LoD_3D 21x21.png"
-	UI_INFIELD{3} dk_cont_pens[dka_topview_penC2], 175,199 , 50,21 UI_TOOLTIP bubble[146]
-	UI_INFIELD{3} dk_fills[dka_topview_fill], 175,171 , 215,21 UI_TOOLTIP bubble[100]
-	UI_INFIELD{3} dk_fill_pens[dka_topview_penF], 257,199 , 50,21 UI_TOOLTIP bubble[106]
-	UI_INFIELD{3} dk_bkg_pens[dka_topview_penB], 340,199 , 50,21 UI_TOOLTIP bubble[143]
-	UI_INFIELD{3} dk_cont_pens[dka_penInvisible], 175,245 , 50,21 UI_TOOLTIP bubble[145]
-	UI_INFIELD{3} dk_linetype[dka_invisible], 257,245 , 133,21 UI_TOOLTIP bubble[149]
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 160,202 , 32,15, 1
+	UI_PICT "ui_fill_type_flat 20x20.png", 161,172 , 20,20, 1
+	UI_PICT "ui_fill_pen_flat 29x16.png", 245,202 , 29,16, 1
+	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 328,202 , 29,16, 1
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 160,248 , 32,15, 1
+	UI_PICT "ui_list_contLineType_flat 32x15.png", 243,249 , 32,15, 1
+	UI_PICT 67, 232,63 , 21,21, 1 UI_TOOLTIP bubble[116]   !»» "DORMA_LoD_2D 21x21.png"
+	UI_PICT 68, 282,63 , 21,21, 1 UI_TOOLTIP bubble[118]   !»» "DORMA_LoD_SE 21x21.png"
+	UI_PICT 69, 332,63 , 21,21, 1 UI_TOOLTIP bubble[117]   !»» "DORMA_LoD_3D 21x21.png"
+	UI_INFIELD{3} dk_cont_pens[dka_topview_penC2], 193,199 , 50,21 UI_TOOLTIP bubble[146]
+	UI_INFIELD{3} dk_fills[dka_topview_fill], 193,171 , 215,21 UI_TOOLTIP bubble[100]
+	UI_INFIELD{3} dk_fill_pens[dka_topview_penF], 275,199 , 50,21 UI_TOOLTIP bubble[106]
+	UI_INFIELD{3} dk_bkg_pens[dka_topview_penB], 358,199 , 50,21 UI_TOOLTIP bubble[143]
+	UI_INFIELD{3} dk_cont_pens[dka_penInvisible], 193,245 , 50,21 UI_TOOLTIP bubble[145]
+	UI_INFIELD{3} dk_linetype[dka_invisible], 275,245 , 133,21 UI_TOOLTIP bubble[149]
 	RETURN
 ! ------------------------------------------------------------- OPENING LINES [ 3100 ]
 	3100:   ! #### Öffnungsflügel
 	UIpage = UIpage + 1
 	UI_PAGE UIpage, UIpage_masterparent, babel[88], "dk_title_opening_lines 18x18.png"
 	GOSUB 9900
-	UI_SEPARATOR 334,26, 334,103
-	UI_SEPARATOR 221,26, 221,173
+	UI_SEPARATOR 355,20, 355,97
+	UI_SEPARATOR 230,20, 230,167
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[120], 0,50 , 74,15, 0+0
+	UI_OUTFIELD babel[120], 0,44 , 74,15, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[115], 112,26 , 105,12, 2+0
+	UI_OUTFIELD babel[115], 112,20 , 110,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[118], 226,26 , 105,12, 2+0
+	UI_OUTFIELD babel[118], 238,20 , 105,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[116], 339,26 , 105,12, 2+0
+	UI_OUTFIELD babel[116], 363,20 , 105,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[119], 282,105 , 105,12, 2+0
+	UI_OUTFIELD babel[119], 294,99 , 105,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[103], 228,125 , 18,12, 2+0
+	UI_OUTFIELD babel[103], 237,119 , 29,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[104], 228,152 , 18,12, 2+0
+	UI_OUTFIELD babel[104], 237,146 , 29,12, 2+0
 	UI_STYLE 0,0
 	GOSUB "VALUES_dk_opening2D"
-	UI_INFIELD{3} "dk_opening2D", 112,45 , 105,24, 2, 92, 6, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[120]
+	UI_INFIELD{3} "dk_opening2D", 112,39 , 112,24, 2, 92, 6, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[120]
 	GOSUB "VALUES_dk_openingSA"
-	UI_INFIELD{3} "dk_openingSA", 225,45 , 106,24, 2, 92, 6, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[122]
+	UI_INFIELD{3} "dk_openingSA", 237,39 , 112,24, 2, 92, 6, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[122]
 	GOSUB "VALUES_dk_opening3D"
-	UI_INFIELD{3} "dk_opening3D", 338,45 , 106,24, 2, 92, 6, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[121]
-	UI_PICT "ui_pen_flat 23x17.png", 85,78 , 23,17, 1
-	UI_PICT "ui_angle 20x17.png", 88,149 , 20,17, 1
-	UI_PICT "ui_list_contLineType_flat 32x15.png", 76,124 , 32,15, 1
-	UI_INFIELD{3} dk_cont_pens[dka_opline2D], 112,76 , 105,21 UI_TOOLTIP bubble[152]
-	UI_INFIELD{3} dk_cont_pens[dka_oplineSA], 225,76 , 106,21 UI_TOOLTIP bubble[153]
-	UI_INFIELD{3} dk_cont_pens[dka_opline3D], 338,76 , 106,21 UI_TOOLTIP bubble[154]
-	UI_INFIELD{3} "gs_open_2D", 113,148 , 105,19 UI_TOOLTIP bubble[158]
-	UI_INFIELD{3} "or_swingLineType", 112,121 , 72,21 UI_TOOLTIP bubble[150]
+	UI_INFIELD{3} "dk_opening3D", 362,39 , 112,24, 2, 92, 6, 1, 18, 18, 18, 18, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[121]
+	UI_PICT "ui_pen_flat 23x17.png", 85,72 , 23,17, 1
+	UI_PICT "ui_angle 20x17.png", 88,143 , 20,17, 1
+	UI_PICT "ui_list_contLineType_flat 32x15.png", 76,118 , 32,15, 1
+	UI_INFIELD{3} dk_cont_pens[dka_opline2D], 112,70 , 112,21 UI_TOOLTIP bubble[152]
+	UI_INFIELD{3} dk_cont_pens[dka_oplineSA], 237,70 , 112,21 UI_TOOLTIP bubble[153]
+	UI_INFIELD{3} dk_cont_pens[dka_opline3D], 362,70 , 112,21 UI_TOOLTIP bubble[154]
+	UI_INFIELD{3} "gs_open_2D", 113,142 , 111,19 UI_TOOLTIP bubble[158]
+	UI_INFIELD{3} "or_swingLineType", 112,115 , 75,21 UI_TOOLTIP bubble[150]
 	GOSUB "VALUES_dk_openingLineSymbol"
-	UI_INFIELD{3} "dk_openingLineSymbol", 188,121 , 29,21, 2, 71, 6, 1, 15, 15, 15, 15, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[125]
-	UI_INFIELD{3} "dk_openLineType_BS", 254,122 , 190,19 UI_TOOLTIP bubble[156]
-	UI_INFIELD{3} "dk_openLineType_BGS", 254,148 , 190,19 UI_TOOLTIP bubble[155]
+	UI_INFIELD{3} "dk_openingLineSymbol", 195,115 , 29,21, 2, 71, 6, 1, 15, 15, 15, 15, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[125]
+	UI_INFIELD{3} "dk_openLineType_BS", 269,116 , 205,19 UI_TOOLTIP bubble[156]
+	UI_INFIELD{3} "dk_openLineType_BGS", 269,142 , 205,19 UI_TOOLTIP bubble[155]
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[101], 0,109 , 58,12, 0+0
+	UI_OUTFIELD babel[101], 0,103 , 58,12, 0+0
 	UI_STYLE 0,0
 	IF bs_door_leafs > 1 THEN
-		UI_SEPARATOR 221,172, 221,243
+		UI_SEPARATOR 230,166, 230,237
 		UI_STYLE 1,2
-		UI_OUTFIELD babel[102], 0,179 , 58,12, 0+0
+		UI_OUTFIELD babel[102], 0,173 , 58,12, 0+0
 		UI_STYLE 0,0
-		UI_PICT "ui_angle 20x17.png", 88,219 , 20,17, 1
-		UI_PICT "ui_list_contLineType_flat 32x15.png", 76,194 , 32,15, 1
-		UI_INFIELD{3} "gs_open_2D_s", 113,218 , 105,19 UI_TOOLTIP bubble[159]
-		UI_INFIELD{3} "or_swingLineType2", 112,191 , 72,21 UI_TOOLTIP bubble[151]
+		UI_PICT "ui_angle 20x17.png", 88,213 , 20,17, 1
+		UI_PICT "ui_list_contLineType_flat 32x15.png", 76,188 , 32,15, 1
+		UI_INFIELD{3} "gs_open_2D_s", 113,212 , 111,19 UI_TOOLTIP bubble[159]
+		UI_INFIELD{3} "or_swingLineType2", 112,185 , 75,21 UI_TOOLTIP bubble[151]
 		GOSUB "VALUES_dk_openingLineSymbol2"
-		UI_INFIELD{3} "dk_openingLineSymbol2", 188,191 , 29,21, 2, 71, 6, 1, 15, 15, 15, 15, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[125]
-		UI_INFIELD{3} "dk_openLineType_SF", 226,192 , 218,19 UI_TOOLTIP bubble[157]
+		UI_INFIELD{3} "dk_openingLineSymbol2", 195,185 , 29,21, 2, 71, 6, 1, 15, 15, 15, 15, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[125]
+		UI_INFIELD{3} "dk_openLineType_SF", 238,186 , 236,19 UI_TOOLTIP bubble[157]
 		ENDIF
 	txt = "automatische Einstellungen und Attribute über Modelldarstellungen, Abschnitt 'Weitere Einstellungen der Bibliothekselemente (ARCHICAD Bibliothek)'"
 	IF dk_openingSA = 4 OR dk_opening3D = 4 THEN
 		UI_STYLE 1,2
-		UI_OUTFIELD txt, 113,241 , 331,22, 0+0
+		UI_OUTFIELD txt, 113,235 , 331,32, 0+0
 		UI_STYLE 0,0
 		ENDIF
 	RETURN
@@ -2249,16 +2247,16 @@ END
 	UI_STYLE 0,1
 	UI_OUTFIELD babel[123], 0,22 , 107,15, 0+0
 	UI_STYLE 0,0
-	UI_INFIELD{3} "dk_wallhole_control", 138,51 , 35,35, 6, 74, 2, 1, 25, 25, 25, 25, 2,"keine Öffnung",0, 1,"wie Rohbauöffnung",1 UI_TOOLTIP bubble[111]
-	UI_INFIELD{3} "dk_wallhole_control", 103,51 , 35,35, 6, 73, 2, 1, 25, 10, 25, 10, 2,"keine Öffnung",0, 1,"wie Rohbauöffnung",1 UI_TOOLTIP bubble[111]
+	UI_INFIELD{3} "dk_wallhole_control", 145,51 , 35,35, 6, 74, 2, 1, 25, 25, 25, 25, 2,"keine Öffnung",0, 1,"wie Rohbauöffnung",1 UI_TOOLTIP bubble[111]
+	UI_INFIELD{3} "dk_wallhole_control", 110,51 , 35,35, 6, 73, 2, 1, 25, 10, 25, 10, 2,"keine Öffnung",0, 1,"wie Rohbauöffnung",1 UI_TOOLTIP bubble[111]
 	UI_STYLE 0,2
-	UI_OUTFIELD babel[127], 0,53 , 99,32, 0+0
+	UI_OUTFIELD babel[127], 0,53 , 110,32, 0+0
 	UI_STYLE 0,0
 	IF dk_wallhole_control = 0 THEN
 		UI_STYLE 0,2
-		UI_OUTFIELD uiTXT[40], 24,108 , 400,15, 2+0
-		UI_OUTFIELD uiTXT[41], 24,138 , 400,48, 2+0
-		UI_OUTFIELD uiTXT[42], 24,193 , 400,36, 2+0
+		UI_OUTFIELD uiTXT[40], 42,108 , 400,16, 2+0
+		UI_OUTFIELD uiTXT[41], 42,138 , 400,48, 2+0
+		UI_OUTFIELD uiTXT[42], 42,193 , 400,36, 2+0
 		UI_STYLE 0,0
 		RETURN
 		ENDIF
@@ -2269,59 +2267,59 @@ END
 	UI_OUTFIELD babel[122], 0,181 , 93,16, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[126], 26,162 , 78,11, 1+4
-	UI_OUTFIELD babel[128], 26,237 , 78,11, 1+4
+	UI_OUTFIELD babel[126], 26,162 , 78,16, 1+4
+	UI_OUTFIELD babel[128], 26,237 , 78,16, 1+4
 	UI_STYLE 0,0
 	GOSUB "VALUES_gs_wallcontour_id"
-	UI_INFIELD{3} "gs_wallcontour_id", 230,123 , 214,20, 4, 77, 4, 1, 25, 10, 25, 10, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[124]
+	UI_INFIELD{3} "gs_wallcontour_id", 266,123 , 214,20, 4, 77, 4, 1, 25, 10, 25, 10, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[124]
 	UI_INFIELD{3} "dk_wallcontour_unique", 122,119 , 27,27, 6, 72, 2, 1, 18, 18, 18, 18, 2,"Durgehende Linie",1, 1,"Wandkontur wie Wandende",0 UI_TOOLTIP bubble[110]
 	IF dk_wallcontour_unique THEN
-		UI_PICT "ui_list_contourPen_flat 32x15.png", 153,125 , 32,15, 1
+		UI_PICT "ui_list_contourPen_flat 32x15.png", 171,125 , 32,15, 1
 		
-		UI_INFIELD{3} dk_cont_pens[dka_wallhole_side2D], 186,122 , 31,21 UI_TOOLTIP bubble[147]
+		UI_INFIELD{3} dk_cont_pens[dka_wallhole_side2D], 204,122 , 31,21 UI_TOOLTIP bubble[147]
 		ENDIF
 	UI_STYLE 1,2
-	UI_OUTFIELD "100", 118,162 , 31,11, 2+0
-	UI_OUTFIELD "200", 175,162 , 31,11, 2+0
-	UI_OUTFIELD "300", 232,162 , 31,11, 2+0
-	UI_OUTFIELD "350", 289,162 , 31,11, 2+0
-	UI_OUTFIELD "400", 346,162 , 31,11, 2+0
-	UI_OUTFIELD "500", 403,162 , 31,11, 2+0
+	UI_OUTFIELD "100", 118,162 , 31,16, 2+0
+	UI_OUTFIELD "200", 182,162 , 31,16, 2+0
+	UI_OUTFIELD "300", 246,162 , 31,16, 2+0
+	UI_OUTFIELD "350", 310,162 , 31,16, 2+0
+	UI_OUTFIELD "400", 374,162 , 31,16, 2+0
+	UI_OUTFIELD "500", 438,162 , 31,16, 2+0
 	UI_STYLE 0,0
 	GOSUB "VALUES_dk_lintelcontour_id"
 	UI_INFIELD{3} dk_lintelcontour_id[1], 107,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
-	UI_INFIELD{3} dk_lintelcontour_id[2], 164,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
-	UI_INFIELD{3} dk_lintelcontour_id[3], 221,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
-	UI_INFIELD{3} dk_lintelcontour_id[4], 278,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
-	UI_INFIELD{3} dk_lintelcontour_id[5], 335,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
-	UI_INFIELD{3} dk_lintelcontour_id[6], 392,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
+	UI_INFIELD{3} dk_lintelcontour_id[2], 171,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
+	UI_INFIELD{3} dk_lintelcontour_id[3], 235,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
+	UI_INFIELD{3} dk_lintelcontour_id[4], 299,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
+	UI_INFIELD{3} dk_lintelcontour_id[5], 363,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
+	UI_INFIELD{3} dk_lintelcontour_id[6], 427,178 , 52,20, 9, 76, 5, 1, 25, 16, 25, 16, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[127]
 	txt = STRSUB("100200300350400500",1+3*(dk_wallcontourstyle_LoD-2),3)
-	UI_INFIELD{3} dk_cont_pens[dka_wallhole_lintel2D1], 142,233 , 31,21 UI_TOOLTIP "Konturstift Sturz-/Wanöffnungslinien (LoD 100-"+txt+")"
-	UI_INFIELD{3} dk_linetype[dka_wallhole_lintelBS1], 221,222 , 52,21 UI_TOOLTIP "Linientyp Sturz-/Wandöffnungslinie Bandseite (LoD 100-" + txt+")"
-	UI_INFIELD{3} dk_linetype[dka_wallhole_lintelBGS1], 221,245 , 52,21 UI_TOOLTIP "Linientyp Sturz-/Wandöffnungslinie Bandgegenseite (LoD 100-" + txt+")"
-	UI_PICT "ui_list_contourPen_flat 32x15.png", 106,236 , 32,15, 1
-	UI_PICT "ui_list_contLineType_flat 32x15.png", 185,236 , 32,15, 1
+	UI_INFIELD{3} dk_cont_pens[dka_wallhole_lintel2D1], 148,233 , 31,21 UI_TOOLTIP "Konturstift Sturz-/Wanöffnungslinien (LoD 100-"+txt+")"
+	UI_INFIELD{3} dk_linetype[dka_wallhole_lintelBS1], 231,222 , 52,21 UI_TOOLTIP "Linientyp Sturz-/Wandöffnungslinie Bandseite (LoD 100-" + txt+")"
+	UI_INFIELD{3} dk_linetype[dka_wallhole_lintelBGS1], 231,245 , 52,21 UI_TOOLTIP "Linientyp Sturz-/Wandöffnungslinie Bandgegenseite (LoD 100-" + txt+")"
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 112,236 , 32,15, 1
+	UI_PICT "ui_list_contLineType_flat 32x15.png", 196,236 , 32,15, 1
 	txt = STRSUB("100200300350400500",1+3*(dk_wallcontourstyle_LoD-1),3)
-	UI_INFIELD{3} dk_cont_pens[dka_wallhole_lintel2D2], 313,233 , 31,21 UI_TOOLTIP "Konturstift Sturz-/Wanöffnungslinien (LoD "+txt+"-500)"
-	UI_INFIELD{3} dk_linetype[dka_wallhole_lintelBS2], 392,222 , 52,21 UI_TOOLTIP "Linientyp Sturz-/Wandöffnungslinie Bandseite (LoD "+txt+"-500)"
-	UI_INFIELD{3} dk_linetype[dka_wallhole_lintelBGS2], 392,245 , 52,21 UI_TOOLTIP "Linientyp Sturz-/Wandöffnungslinie Bandgegenseite (LoD "+txt+"-500)"
-	UI_PICT "ui_list_contourPen_flat 32x15.png", 277,236 , 32,15, 1
-	UI_PICT "ui_list_contLineType_flat 32x15.png", 356,236 , 32,15, 1
+	UI_INFIELD{3} dk_cont_pens[dka_wallhole_lintel2D2], 340,233 , 31,21 UI_TOOLTIP "Konturstift Sturz-/Wanöffnungslinien (LoD "+txt+"-500)"
+	UI_INFIELD{3} dk_linetype[dka_wallhole_lintelBS2], 428,222 , 52,21 UI_TOOLTIP "Linientyp Sturz-/Wandöffnungslinie Bandseite (LoD "+txt+"-500)"
+	UI_INFIELD{3} dk_linetype[dka_wallhole_lintelBGS2], 428,245 , 52,21 UI_TOOLTIP "Linientyp Sturz-/Wandöffnungslinie Bandgegenseite (LoD "+txt+"-500)"
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 303,236 , 32,15, 1
+	UI_PICT "ui_list_contLineType_flat 32x15.png", 392,236 , 32,15, 1
 	txt = "Sturzliniendarstellung: Grenze des Stils (1 oder 2)"
-	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 145,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=2),"-",dk_wallcontourstyle_LoD, 1,"- 200 -",2 UI_TOOLTIP txt
-	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 202,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=3),"-",dk_wallcontourstyle_LoD, 1,"- 300 -",3 UI_TOOLTIP txt
-	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 259,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=4),"-",dk_wallcontourstyle_LoD, 1,"- 350 -",4 UI_TOOLTIP txt
-	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 316,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=5),"-",dk_wallcontourstyle_LoD, 1,"- 400 -",5 UI_TOOLTIP txt
-	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 373,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=6),"-",dk_wallcontourstyle_LoD, 1,"- 400 -",6 UI_TOOLTIP txt
-	UI_PICT 65, 271,59 , 11,9, 1
-	IF iHoleUnderThreshold=1 THEN UI_PICT 66, 390,64 , 59,25, 1
+	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 148,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=2),"-",dk_wallcontourstyle_LoD, 1,"- 200 -",2 UI_TOOLTIP txt
+	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 212,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=3),"-",dk_wallcontourstyle_LoD, 1,"- 300 -",3 UI_TOOLTIP txt
+	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 276,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=4),"-",dk_wallcontourstyle_LoD, 1,"- 350 -",4 UI_TOOLTIP txt
+	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 340,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=5),"-",dk_wallcontourstyle_LoD, 1,"- 400 -",5 UI_TOOLTIP txt
+	UI_INFIELD{3} "dk_wallcontourstyle_LoD", 404,203 , 34,13, 6, 75, 2, 1, 30, 9, 30, 9, 2-(dk_wallcontourstyle_LoD=6),"-",dk_wallcontourstyle_LoD, 1,"- 400 -",6 UI_TOOLTIP txt
+	UI_PICT 65, 301,59 , 11,9, 1
+	IF iHoleUnderThreshold=1 THEN UI_PICT 66, 420,64 , 59,25, 1
 	GOSUB "VALUES_iHoleUnderThreshold"
-	UI_INFIELD{3} "iHoleUnderThreshold", 282,23 , 108,76, 2, 64, 4, 1, 94, 70, 94, 70, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[107]
-	UI_INFIELD{3} "gapHeightUnderPanel", 207,54 , 62,19 UI_TOOLTIP bubble[101]
-	IF iHoleUnderThreshold=3 THEN UI_INFIELD{3} "thresholdBottomOversize", 400,63 , 44,19 UI_TOOLTIP bubble[139]
-	UI_SEPARATOR 0,107, 445,107
-	UI_SEPARATOR 0,157, 445,157
-	UI_SEPARATOR 275,222, 275,267
+	UI_INFIELD{3} "iHoleUnderThreshold", 312,23 , 108,76, 2, 64, 4, 1, 94, 70, 94, 70, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[107]
+	UI_INFIELD{3} "gapHeightUnderPanel", 231,54 , 62,19 UI_TOOLTIP bubble[101]
+	IF iHoleUnderThreshold=3 THEN UI_INFIELD{3} "thresholdBottomOversize", 436,63 , 44,19 UI_TOOLTIP bubble[139]
+	UI_SEPARATOR 0,107, 481,107
+	UI_SEPARATOR 0,157, 481,157
+	UI_SEPARATOR 293,222, 293,267
 	RETURN
 ! ------------------------------------------------------------- MINIMAL SPACE [ 3300 ]
 	3300:   ! #### Bewegungsflächen
@@ -2332,94 +2330,94 @@ END
 	UI_OUTFIELD babel[124], 0,28 , 113,15, 0+0
 	UI_STYLE 0,0
 	GOSUB "VALUES_msType"
-	UI_INFIELD{3} "msType", 0,45 , 141,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[136]
-	IF bs_door_leafs = 2 THEN 3400
-	IF BITTEST(msType,1) THEN 3500
+	UI_INFIELD{3} "msType", 0,45 , 172,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[136]
 	IF NOT(msType) THEN RETURN
-	IF ac_OpeningSide = "L" THEN UI_PICT 79, 210,50 , 55,186, 1
-	IF ac_OpeningSide = "R" THEN UI_PICT 78, 210,50 , 55,186, 1
-	UI_PICT "minSpace_top_smallL 51x95.tiff", 159,50 , 51,95, 1
-	UI_PICT "minSpace_top_smallR 51x95.tiff", 265,50 , 51,95, 1
-	UI_PICT "minSpace_arrow_largeV 13x83.tiff", 316,62 , 13,83, 1
-	UI_PICT "minSpace_arrow_middleV 11x61.tiff", 316,162 , 11,61, 1
-	UI_PICT "minSpace_arrow_smallH 20x13.tiff", 190,223 , 20,13, 1
-	UI_PICT "minSpace_arrow_tinyH 8x13.tiff", 265,223 , 8,13, 1
-	IF NOT(gs_sidelight_right) THEN UI_PICT "minSpace_middleL 51x78.tiff", 159,145 , 51,78, 1
-	IF gs_sidelight_right THEN UI_PICT "minSpace_middleL_side 51x78.tiff", 159,145 , 51,78, 1
-	IF NOT(gs_sidelight_left) THEN UI_PICT "minSpace_middleR 51x78.tiff", 265,145 , 51,78, 1
-	IF gs_sidelight_left THEN UI_PICT "minSpace_middleR_side 51x78.tiff", 265,145 , 51,78, 1
+	IF BITTEST(msType,1) THEN 3500
+	IF bs_door_leafs = 2 THEN 3400
+	IF ac_OpeningSide = "L" THEN UI_PICT 79, 230,50 , 55,186, 1
+	IF ac_OpeningSide = "R" THEN UI_PICT 78, 230,50 , 55,186, 1
+	UI_PICT "minSpace_top_smallL 51x95.tiff", 179,50 , 51,95, 1
+	UI_PICT "minSpace_top_smallR 51x95.tiff", 285,50 , 51,95, 1
+	UI_PICT "minSpace_arrow_largeV 13x83.tiff", 336,62 , 13,83, 1
+	UI_PICT "minSpace_arrow_middleV 11x61.tiff", 336,162 , 11,61, 1
+	UI_PICT "minSpace_arrow_smallH 20x13.tiff", 210,223 , 20,13, 1
+	UI_PICT "minSpace_arrow_tinyH 8x13.tiff", 285,223 , 8,13, 1
+	IF NOT(gs_sidelight_right) THEN UI_PICT "minSpace_middleL 51x78.tiff", 179,145 , 51,78, 1
+	IF gs_sidelight_right THEN UI_PICT "minSpace_middleL_side 51x78.tiff", 179,145 , 51,78, 1
+	IF NOT(gs_sidelight_left) THEN UI_PICT "minSpace_middleR 51x78.tiff", 285,145 , 51,78, 1
+	IF gs_sidelight_left THEN UI_PICT "minSpace_middleR_side 51x78.tiff", 285,145 , 51,78, 1
 	IF ac_OpeningSide = "L" THEN
-		UI_INFIELD{3} "msOpeningSideWidth1", 168,28 , 65,19 UI_TOOLTIP bubble[167]
-		UI_INFIELD{3} "msOpeningSideWidth2", 259,28 , 65,19 UI_TOOLTIP bubble[165]
-		UI_INFIELD{3} "msOppositeSideWidth1", 168,239 , 65,19 UI_TOOLTIP bubble[162]
-		UI_INFIELD{3} "msOppositeSideWidth2", 259,239 , 65,19 UI_TOOLTIP bubble[160]
+		UI_INFIELD{3} "msOpeningSideWidth1", 188,28 , 65,19 UI_TOOLTIP bubble[167]
+		UI_INFIELD{3} "msOpeningSideWidth2", 279,28 , 65,19 UI_TOOLTIP bubble[165]
+		UI_INFIELD{3} "msOppositeSideWidth1", 188,239 , 65,19 UI_TOOLTIP bubble[162]
+		UI_INFIELD{3} "msOppositeSideWidth2", 279,239 , 65,19 UI_TOOLTIP bubble[160]
 		ENDIF
 	IF ac_OpeningSide = "R" THEN
-		UI_INFIELD{3} "msOpeningSideWidth2", 168,28 , 65,19 UI_TOOLTIP bubble[165]
-		UI_INFIELD{3} "msOpeningSideWidth1", 259,28 , 65,19 UI_TOOLTIP bubble[167]
-		UI_INFIELD{3} "msOppositeSideWidth2", 168,239 , 65,19 UI_TOOLTIP bubble[160]
-		UI_INFIELD{3} "msOppositeSideWidth1", 259,239 , 65,19 UI_TOOLTIP bubble[162]
+		UI_INFIELD{3} "msOpeningSideWidth2", 188,28 , 65,19 UI_TOOLTIP bubble[165]
+		UI_INFIELD{3} "msOpeningSideWidth1", 279,28 , 65,19 UI_TOOLTIP bubble[167]
+		UI_INFIELD{3} "msOppositeSideWidth2", 188,239 , 65,19 UI_TOOLTIP bubble[160]
+		UI_INFIELD{3} "msOppositeSideWidth1", 279,239 , 65,19 UI_TOOLTIP bubble[162]
 		ENDIF
-	UI_INFIELD{3} "ms_openingSDepth", 330,93 , 65,19 UI_TOOLTIP bubble[169]
-	UI_INFIELD{3} "ms_oppositeSDepth", 330,181 , 65,19 UI_TOOLTIP bubble[164]
+	UI_INFIELD{3} "ms_openingSDepth", 350,93 , 65,19 UI_TOOLTIP bubble[169]
+	UI_INFIELD{3} "ms_oppositeSDepth", 350,181 , 65,19 UI_TOOLTIP bubble[164]
 	RETURN
 ! ------------------------------------------------------------- MINIMAL SPACE [ 3400 ]
 	3400:   ! #### Bewegungsflächen Doppelflügel
-	IF ac_OpeningSide = "L" THEN UI_PICT 81, 196,50 , 103,186, 1
-	IF ac_OpeningSide = "R" THEN UI_PICT 80, 196,50 , 103,186, 1
-	UI_PICT "minSpace_top_smallL 51x95.tiff", 145,50 , 51,95, 1
-	UI_PICT "minSpace_top_smallR 51x95.tiff", 299,50 , 51,95, 1
-	UI_PICT "minSpace_arrow_largeV 13x83.tiff", 350,62 , 13,83, 1
-	UI_PICT "minSpace_arrow_middleV 11x61.tiff", 350,162 , 11,61, 1
-	UI_PICT "minSpace_arrow_smallH 20x13.tiff", 176,223 , 20,13, 1
-	UI_PICT "minSpace_arrow_tinyH 8x13.tiff", 299,223 , 8,13, 1
-	IF NOT(gs_sidelight_right) THEN UI_PICT "minSpace_middleL 51x78.tiff", 145,145 , 51,78, 1
-	IF gs_sidelight_right THEN UI_PICT "minSpace_middleL_side 51x78.tiff", 145,145 , 51,78, 1
-	IF NOT(gs_sidelight_left) THEN UI_PICT "minSpace_middleR 51x78.tiff", 299,145 , 51,78, 1
-	IF gs_sidelight_left THEN UI_PICT "minSpace_middleR_side 51x78.tiff", 299,145 , 51,78, 1
+	IF ac_OpeningSide = "L" THEN UI_PICT 81, 230,50 , 103,186, 1
+	IF ac_OpeningSide = "R" THEN UI_PICT 80, 230,50 , 103,186, 1
+	UI_PICT "minSpace_top_smallL 51x95.tiff", 179,50 , 51,95, 1
+	UI_PICT "minSpace_top_smallR 51x95.tiff", 333,50 , 51,95, 1
+	UI_PICT "minSpace_arrow_largeV 13x83.tiff", 384,62 , 13,83, 1
+	UI_PICT "minSpace_arrow_middleV 11x61.tiff", 384,162 , 11,61, 1
+	UI_PICT "minSpace_arrow_smallH 20x13.tiff", 210,223 , 20,13, 1
+	UI_PICT "minSpace_arrow_tinyH 8x13.tiff", 333,223 , 8,13, 1
+	IF NOT(gs_sidelight_right) THEN UI_PICT "minSpace_middleL 51x78.tiff", 179,145 , 51,78, 1
+	IF gs_sidelight_right THEN UI_PICT "minSpace_middleL_side 51x78.tiff", 179,145 , 51,78, 1
+	IF NOT(gs_sidelight_left) THEN UI_PICT "minSpace_middleR 51x78.tiff", 333,145 , 51,78, 1
+	IF gs_sidelight_left THEN UI_PICT "minSpace_middleR_side 51x78.tiff", 333,145 , 51,78, 1
 	IF ac_OpeningSide = "L" THEN
-		UI_INFIELD{3} "msOpeningSideWidth1", 154,28 , 65,19 UI_TOOLTIP bubble[168]
-		UI_INFIELD{3} "msOpeningSideWidth2", 293,28 , 65,19 UI_TOOLTIP bubble[166]
-		UI_INFIELD{3} "msOppositeSideWidth1", 154,239 , 65,19 UI_TOOLTIP bubble[163]
-		UI_INFIELD{3} "msOppositeSideWidth2", 293,239 , 65,19 UI_TOOLTIP bubble[161]
+		UI_INFIELD{3} "msOpeningSideWidth1", 188,28 , 65,19 UI_TOOLTIP bubble[168]
+		UI_INFIELD{3} "msOpeningSideWidth2", 327,28 , 65,19 UI_TOOLTIP bubble[166]
+		UI_INFIELD{3} "msOppositeSideWidth1", 188,239 , 65,19 UI_TOOLTIP bubble[163]
+		UI_INFIELD{3} "msOppositeSideWidth2", 327,239 , 65,19 UI_TOOLTIP bubble[161]
 		ENDIF
 	IF ac_OpeningSide = "R" THEN
-		UI_INFIELD{3} "msOpeningSideWidth2", 154,28 , 65,19 UI_TOOLTIP bubble[166]
-		UI_INFIELD{3} "msOpeningSideWidth1", 293,28 , 65,19 UI_TOOLTIP bubble[168]
-		UI_INFIELD{3} "msOppositeSideWidth2", 154,239 , 65,19 UI_TOOLTIP bubble[161]
-		UI_INFIELD{3} "msOppositeSideWidth1", 293,239 , 65,19 UI_TOOLTIP bubble[163]
+		UI_INFIELD{3} "msOpeningSideWidth2", 188,28 , 65,19 UI_TOOLTIP bubble[166]
+		UI_INFIELD{3} "msOpeningSideWidth1", 327,28 , 65,19 UI_TOOLTIP bubble[168]
+		UI_INFIELD{3} "msOppositeSideWidth2", 188,239 , 65,19 UI_TOOLTIP bubble[161]
+		UI_INFIELD{3} "msOppositeSideWidth1", 327,239 , 65,19 UI_TOOLTIP bubble[163]
 		ENDIF
-	UI_INFIELD{3} "ms_openingSDepth", 364,93 , 65,19 UI_TOOLTIP bubble[169]
-	UI_INFIELD{3} "ms_oppositeSDepth", 364,181 , 65,19 UI_TOOLTIP bubble[164]
+	UI_INFIELD{3} "ms_openingSDepth", 398,93 , 65,19 UI_TOOLTIP bubble[169]
+	UI_INFIELD{3} "ms_oppositeSDepth", 398,181 , 65,19 UI_TOOLTIP bubble[164]
 	RETURN
 ! ------------------------------------------------------------- USABLE CLEARANCE [ 3500 ]
 	3500:   ! #### Lichter Durchgang
 	IF bs_door_leafs = 1 THEN
-		IF ac_OpeningSide = "R" THEN UI_PICT 87, 205,166 , 55,78, 1   !»» "usableClearance_right 55x78.png"
-		IF ac_OpeningSide = "L" THEN UI_PICT 86, 205,166 , 55,78, 1   !»» "usableClearance_left 55x78.png"
-		IF NOT(gs_sidelight_right) THEN UI_PICT 89, 154,222 , 51,18, 1   !»» "usableClearance_wallR 51x18.png"
-		IF gs_sidelight_right THEN UI_PICT 91, 154,222 , 51,18, 1   !»» "usableClearance_sideR 51x18.png"
-		IF gs_sidelight_left THEN UI_PICT 90, 260,222 , 51,18, 1   !»» "usableClearance_sideL 51x18.png"
+		IF ac_OpeningSide = "R" THEN UI_PICT 87, 254,166 , 55,78, 1   !»» "usableClearance_right 55x78.png"
+		IF ac_OpeningSide = "L" THEN UI_PICT 86, 254,166 , 55,78, 1   !»» "usableClearance_left 55x78.png"
+		IF NOT(gs_sidelight_right) THEN UI_PICT 89, 203,222 , 51,18, 1   !»» "usableClearance_wallR 51x18.png"
+		IF gs_sidelight_right THEN UI_PICT 91, 203,222 , 51,18, 1   !»» "usableClearance_sideR 51x18.png"
+		IF gs_sidelight_left THEN UI_PICT 90, 309,222 , 51,18, 1   !»» "usableClearance_sideL 51x18.png"
 		ENDIF
-	IF NOT(gs_sidelight_left) THEN UI_PICT 88, 260,222 , 51,18, 1   !»» "usableClearance_wallL 51x18.png"
+	IF NOT(gs_sidelight_left) THEN UI_PICT 88, 309,222 , 51,18, 1   !»» "usableClearance_wallL 51x18.png"
 	IF bs_door_leafs = 2 THEN
 		IF BITTEST(dk_UCrelation, 5) THEN
-			IF ac_OpeningSide = "L" THEN UI_PICT 82, 181,166 , 103,78, 1   !»» "usableClearance_double_left1 103x78.png"
-			IF ac_OpeningSide = "R" THEN UI_PICT 83, 181,166 , 103,72, 1   !»» "usableClearance_double_right1 103x78.png"
+			IF ac_OpeningSide = "L" THEN UI_PICT 82, 230,166 , 103,78, 1   !»» "usableClearance_double_left1 103x78.png"
+			IF ac_OpeningSide = "R" THEN UI_PICT 83, 230,166 , 103,72, 1   !»» "usableClearance_double_right1 103x78.png"
 			ELSE
-			IF ac_OpeningSide = "L" THEN UI_PICT 84, 181,166 , 103,78, 1   !»» "usableClearance_double_left2 103x78.png"
-			IF ac_OpeningSide = "R" THEN UI_PICT 85, 181,166 , 103,78, 1   !»» "usableClearance_double_right2 103x78.png"
+			IF ac_OpeningSide = "L" THEN UI_PICT 84, 230,166 , 103,78, 1   !»» "usableClearance_double_left2 103x78.png"
+			IF ac_OpeningSide = "R" THEN UI_PICT 85, 230,166 , 103,78, 1   !»» "usableClearance_double_right2 103x78.png"
 			ENDIF
-		IF gs_sidelight_right THEN UI_PICT 91, 130,222 , 51,18, 1   !»» "usableClearance_sideR 51x18.png"
-		IF NOT(gs_sidelight_right) THEN UI_PICT 89, 130,222 , 51,18, 1   !»» "usableClearance_wallR 51x18.png"
-		IF gs_sidelight_left THEN UI_PICT 90, 284,222 , 51,18, 1   !»» "usableClearance_sideL 51x18.png"
-		IF NOT(gs_sidelight_left) THEN UI_PICT 88, 284,222 , 51,18, 1   !»» "usableClearance_wallL 51x18.png"
+		IF gs_sidelight_right THEN UI_PICT 91, 179,222 , 51,18, 1   !»» "usableClearance_sideR 51x18.png"
+		IF NOT(gs_sidelight_right) THEN UI_PICT 89, 179,222 , 51,18, 1   !»» "usableClearance_wallR 51x18.png"
+		IF gs_sidelight_left THEN UI_PICT 90, 333,222 , 51,18, 1   !»» "usableClearance_sideL 51x18.png"
+		IF NOT(gs_sidelight_left) THEN UI_PICT 88, 333,222 , 51,18, 1   !»» "usableClearance_wallL 51x18.png"
 		ENDIF
-	UI_OUTFIELD babel[107], 178,123 , 108,14, 2+0 UI_TOOLTIP txt
-	IF bs_door_leafs > 0 THEN UI_OUTFIELD str(format, bs_UsableClearance) + "m x " + str(format, bs_UsableHeight) + "m", 178,140 , 108,14, 2+0 UI_TOOLTIP txt
+	UI_OUTFIELD babel[107], 227,123 , 108,14, 2+0 UI_TOOLTIP txt
+	IF bs_door_leafs > 0 THEN UI_OUTFIELD str(format, bs_UsableClearance) + "m x " + str(format, bs_UsableHeight) + "m", 227,140 , 108,14, 2+0 UI_TOOLTIP txt
 	IF bs_door_leafs > 0 THEN
 		GOSUB "SELECT_dk_UCrelation"
-		UI_INFIELD{3} "dk_UCrelation", 145,79 , 175,37, 2, 62, 6, 1, 50, 32, 50, 32, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[134]
+		UI_INFIELD{3} "dk_UCrelation", 194,79 , 175,37, 2, 62, 6, 1, 50, 32, 50, 32, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[134]
 		ENDIF
 	RETURN
 ! ------------------------------------------------------------- START SCREEN [ 6000 ]
@@ -2432,10 +2430,10 @@ END
 	UI_STYLE 0,1
 	UI_OUTFIELD babel[2], 11,32 , 456,15, 2+0
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[129], 0,55 , 480,16, 2+0
-	UI_OUTFIELD babel[16], 0,76 , 480,70, 2+0
-	UI_OUTFIELD babel[132], 0,153 , 480,36, 2+0
-	UI_BUTTON UI_LINK, babel[17], 141,198 , 211,20, 0, "http://www.bim-all-doors.de" UI_TOOLTIP bubble[88]
+	UI_OUTFIELD babel[129], 0,63 , 480,16, 2+0
+	UI_OUTFIELD babel[16], 0,84 , 480,32, 2+0
+	UI_OUTFIELD babel[132], 0,124 , 480,36, 2+0
+	UI_BUTTON UI_LINK, babel[17], 141,180 , 211,20, 0, "https://github.com/dormakaba/bim-all-doors" UI_TOOLTIP bubble[88]
 	UI_INFIELD{3} "show_start_screen", 394,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"zur Eingabe",0, 1,"zur Eingabe",1 UI_TOOLTIP bubble[144]
 	UI_INFIELD{3} "show_start_screen", 301,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"Kurzinfo",2, 1,"Kurzinfo",1 UI_TOOLTIP bubble[148]
 	RETURN
@@ -2477,6 +2475,8 @@ END
 	UI_SEPARATOR 0,15, 456,15
 	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 458,-5 , 22,22, 0, "http://www.bim-all-doors.de" UI_TOOLTIP "Homepage »bim-all-doors«"
 	RETURN
+
+
 
 
 ! ------------------------------------------------------------- Plausibilitätschecks
