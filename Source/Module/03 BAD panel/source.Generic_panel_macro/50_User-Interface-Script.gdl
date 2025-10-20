@@ -1011,62 +1011,62 @@ END
 	5000:   ! #### LOI 1-4 -Grundeinstellungen 1/2 Flügel
 	GOSUB 9900
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[30], 146,187 , 60,12, 2+0
+	UI_OUTFIELD babel[30], 155,187 , 60,16, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[31], 354,187 , 90,12, 2+0
+	UI_OUTFIELD babel[31], 390,187 , 90,16, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD "3D", 260,187 , 80,12, 2+0
+	UI_OUTFIELD "3D", 281,187 , 80,16, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[33], 147,130 , 40,12, 1+0
+	UI_OUTFIELD babel[33], 153,130 , 40,16, 1+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[9], 147,82 , 40,12, 1+0
+	UI_OUTFIELD babel[9], 153,82 , 40,16, 1+0
 	UI_STYLE 0,0
 	GOSUB "CHECK_glass"
 	IF sts THEN
 		UI_STYLE 1,2
-		UI_OUTFIELD babel[32], 147,106 , 40,12, 1+0
+		UI_OUTFIELD babel[32], 153,106 , 40,16, 1+0
 		UI_STYLE 0,0
 		ENDIF
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[34], 300,130 , 40,12, 2+0
+	UI_OUTFIELD babel[34], 336,130 , 40,16, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[35], 291,66 , 39,12, 1+0
+	UI_OUTFIELD babel[35], 327,66 , 39,16, 1+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[3], 0,155 , 70,15, 0+0
+	UI_OUTFIELD babel[3], 0,155 , 70,16, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[4], 0,182 , 142,15, 0+0
+	UI_OUTFIELD babel[4], 0,182 , 142,16, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[8], 0,127 , 70,15, 0+0
+	UI_OUTFIELD babel[8], 0,127 , 70,16, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[1], 0,30 , 125,15, 0+0
+	UI_OUTFIELD babel[1], 0,30 , 120,16, 0+0
 	UI_STYLE 0,0
 	IF bs_door_leafs > 1 THEN
 		UI_STYLE 1,2
-		UI_OUTFIELD babel[11], 62,207 , 58,12, 0+0
+		UI_OUTFIELD babel[11], 62,207 , 58,16, 0+0
 		UI_STYLE 0,0
 		ENDIF
 	IF bs_door_leafs > 1 THEN
 		UI_STYLE 1,2
-		UI_OUTFIELD babel[11], 332,20 , 56,12, 2+0
+		UI_OUTFIELD babel[11], 368,20 , 56,12, 2+0
 		UI_STYLE 0,0
 		ENDIF
 	IF bs_door_leafs > 1 THEN
 		UI_STYLE 1,2
-		UI_OUTFIELD babel[13], 61,231 , 58,12, 0+0
+		UI_OUTFIELD babel[13], 61,231 , 58,16, 0+0
 		UI_STYLE 0,0
 		ENDIF
 	IF bs_door_leafs > 1 THEN
 		UI_STYLE 1,2
-		UI_OUTFIELD babel[13], 388,20 , 56,12, 2+0
+		UI_OUTFIELD babel[13], 424,20 , 56,12, 2+0
 		UI_STYLE 0,0
 		ENDIF
 	UI_PICT "ui_general_surface_flat 23x23.png", 116,77 , 23,23, 1
@@ -1075,333 +1075,333 @@ END
 		UI_PICT "ui_general_surface_flat 23x23.png", 116,101 , 23,23, 1
 		ENDIF
 	UI_PICT "ui_list_contourPen_flat 32x15.png", 117,130 , 32,15, 1
-	UI_PICT "ui_fill_pen_flat 29x16.png", 251,153 , 29,16, 1
-	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 355,153 , 29,16, 1
-	UI_PICT "ui_angle 20x17.png", 121,205 , 20,17, 1
-	IF bs_door_leafs > 1 THEN UI_PICT "ui_angle 20x17.png", 121,229 , 20,17, 1
+	UI_PICT "ui_fill_pen_flat 29x16.png", 260,153 , 29,16, 1
+	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 379,153 , 29,16, 1
+	UI_PICT "ui_angle 20x17.png", 130,205 , 20,17, 1
+	IF bs_door_leafs > 1 THEN UI_PICT "ui_angle 20x17.png", 130,229 , 20,17, 1
 	UI_PICT "ui_fill_type_flat 20x20.png", 117,152 , 20,20, 1
 	GOSUB "SELECT_bs_panel_type"
-	UI_INFIELD{3} "bs_panel_type", 120,30 , 171,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[35]
+	UI_INFIELD{3} "bs_panel_type", 120,30 , 200,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[35]
 	GOSUB "SELECT_bs_panel_material"
-	UI_INFIELD{3} "bs_panel_material", 120,54 , 171,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[38]
+	UI_INFIELD{3} "bs_panel_material", 120,54 , 200,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[38]
 	IF bs_door_leafs < 2 THEN
 		GOSUB "VALUES_iDoorPanelType"
-		UI_INFIELD{3} "iDoorPanelType", 346,33 , 98,85, 2, 45, 32, 4, 40, 80, 40, 80, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[99]
+		UI_INFIELD{3} "iDoorPanelType", 382,33 , 98,85, 2, 45, 32, 4, 40, 80, 40, 80, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[99]
 		ENDIF
 	IF bs_door_leafs > 1 THEN
 		GOSUB "VALUES_iDoorPanelType"
-		UI_INFIELD{3} "iDoorPanelType", 332,33 , 54,85, 2, 45, 32, 4, 40, 80, 40, 80, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[102]
+		UI_INFIELD{3} "iDoorPanelType", 368,33 , 54,85, 2, 45, 32, 4, 40, 80, 40, 80, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[102]
 		ENDIF
 	IF bs_door_leafs > 1 THEN
 		GOSUB "VALUES_iDoorPanelType"
-		UI_INFIELD{3} "iDoorPanelType2", 390,33 , 54,85, 2, 45, 32, 4, 40, 80, 40, 80, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[104]
+		UI_INFIELD{3} "iDoorPanelType2", 426,33 , 54,85, 2, 45, 32, 4, 40, 80, 40, 80, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[104]
 		ENDIF
-	UI_INFIELD{3} dk_materials[dka_panel_mat_BS ], 193,78 , 98,21 UI_TOOLTIP bubble[43]
+	UI_INFIELD{3} dk_materials[dka_panel_mat_BS ], 199,78 , 121,21 UI_TOOLTIP bubble[43]
 	GOSUB "CHECK_glass"
 	IF sts = 1 THEN
-		UI_INFIELD{3} dk_materials[dka_panel2fill1_mat_BS], 193,102 , 98,21 UI_TOOLTIP bubble[30]
+		UI_INFIELD{3} dk_materials[dka_panel2fill1_mat_BS], 199,102 , 121,21 UI_TOOLTIP bubble[30]
 		ENDIF
 	GOSUB "CHECK_glass"
 	IF sts = 2 THEN
-		UI_INFIELD{3} dk_materials[dka_panel2fill1_mat_BS], 193,102 , 98,21 UI_TOOLTIP bubble[31]
+		UI_INFIELD{3} dk_materials[dka_panel2fill1_mat_BS], 199,102 , 121,21 UI_TOOLTIP bubble[31]
 		ENDIF
 	GOSUB "CHECK_glass"
 	IF sts = 3 THEN
-		UI_INFIELD{3} dk_materials[dka_panelfill1_mat_BS], 193,102 , 46,21 UI_TOOLTIP bubble[30]
+		UI_INFIELD{3} dk_materials[dka_panelfill1_mat_BS], 199,102 , 46,21 UI_TOOLTIP bubble[30]
 		ENDIF
 	GOSUB "CHECK_glass"
 	IF sts = 3 THEN
-		UI_INFIELD{3} dk_materials[dka_panel2fill1_mat_BS], 245,102 , 46,21 UI_TOOLTIP bubble[31]
+		UI_INFIELD{3} dk_materials[dka_panel2fill1_mat_BS], 251,102 , 69,21 UI_TOOLTIP bubble[31]
 		ENDIF
-	UI_INFIELD{3} dk_cont_pens[dka_panel_penC2], 193,126 , 98,21 UI_TOOLTIP bubble[36]
-	UI_INFIELD{3} dk_cont_pens[dka_panel_penC3], 346,126 , 98,21 UI_TOOLTIP bubble[37]
-	UI_INFIELD{3} dk_fills[dka_panel_fill ], 146,150 , 90,21 UI_TOOLTIP bubble[69]
-	UI_INFIELD{3} dk_fill_pens[dka_panel_penF], 282,150 , 58,21 UI_TOOLTIP bubble[110]
-	UI_INFIELD{3} dk_bkg_pens[dka_panel_penB], 386,150 , 58,21 UI_TOOLTIP bubble[32]
-	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle2D], 146,204 , 90,19 UI_TOOLTIP bubble[56]
-	IF dk_opening_locked THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle3D], 191,204 , 90,19 UI_TOOLTIP bubble[54]
-	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle3D], 250,204 , 90,19 UI_TOOLTIP bubble[55]
-	UI_INFIELD{3} dk_open_leaf[dka_leaf_angleSA], 354,204 , 90,19 UI_TOOLTIP bubble[57]
-	IF bs_door_leafs > 1 AND NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf2_angle2D], 146,228 , 90,19 UI_TOOLTIP bubble[61]
-	IF bs_door_leafs > 1 AND dk_opening_locked THEN UI_INFIELD{3} dk_open_leaf[dka_leaf2_angle3D], 191,228 , 90,19 UI_TOOLTIP bubble[59]
-	IF bs_door_leafs > 1 AND NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf2_angle3D], 250,228 , 90,19 UI_TOOLTIP bubble[60]
-	IF bs_door_leafs > 1 THEN UI_INFIELD{3} dk_open_leaf[dka_leaf2_angleSA], 354,228 , 90,19 UI_TOOLTIP bubble[62]
-	UI_INFIELD{3} "dk_opening_locked", 206,186 , 54,15, 6, 42, 2, 2, 50, 7, 50, 7, 1,"identisch",0, 2,"individuell",1 UI_TOOLTIP bubble[58]
+	UI_INFIELD{3} dk_cont_pens[dka_panel_penC2], 199,126 , 121,21 UI_TOOLTIP bubble[36]
+	UI_INFIELD{3} dk_cont_pens[dka_panel_penC3], 380,126 , 100,21 UI_TOOLTIP bubble[37]
+	UI_INFIELD{3} dk_fills[dka_panel_fill ], 146,150 , 98,21 UI_TOOLTIP bubble[69]
+	UI_INFIELD{3} dk_fill_pens[dka_panel_penF], 291,150 , 70,21 UI_TOOLTIP bubble[110]
+	UI_INFIELD{3} dk_bkg_pens[dka_panel_penB], 410,150 , 70,21 UI_TOOLTIP bubble[32]
+	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle2D], 155,204 , 90,19 UI_TOOLTIP bubble[56]
+	IF dk_opening_locked THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle3D], 206,204 , 90,19 UI_TOOLTIP bubble[54]
+	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle3D], 271,204 , 90,19 UI_TOOLTIP bubble[55]
+	UI_INFIELD{3} dk_open_leaf[dka_leaf_angleSA], 390,204 , 90,19 UI_TOOLTIP bubble[57]
+	IF bs_door_leafs > 1 AND NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf2_angle2D], 155,228 , 90,19 UI_TOOLTIP bubble[61]
+	IF bs_door_leafs > 1 AND dk_opening_locked THEN UI_INFIELD{3} dk_open_leaf[dka_leaf2_angle3D], 206,228 , 90,19 UI_TOOLTIP bubble[59]
+	IF bs_door_leafs > 1 AND NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf2_angle3D], 271,228 , 90,19 UI_TOOLTIP bubble[60]
+	IF bs_door_leafs > 1 THEN UI_INFIELD{3} dk_open_leaf[dka_leaf2_angleSA], 390,228 , 90,19 UI_TOOLTIP bubble[62]
+	UI_INFIELD{3} "dk_opening_locked", 221,186 , 54,15, 6, 42, 2, 2, 50, 7, 50, 7, 1,"identisch",0, 2,"individuell",1 UI_TOOLTIP bubble[58]
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[48], 5,254 , 200,12, 0+0
+	UI_OUTFIELD babel[48], 5,254 , 200,16, 0+0
 	UI_STYLE 0,0
-	UI_SEPARATOR 0,177, 445,177
+	UI_SEPARATOR 0,177, 481,177
 	RETURN
 ! ------------------------------------------------------------- GRUNDEINSTELLUNG 1 FLÜGEL [ 5100 ]
 	5100:   ! #### LOI 5+ -Grundeinstellungen 1 Flügel
 	GOSUB 9900
 	UI_OUTFIELD babel[38], 52,115 , 128,15, 0+4*(NOT(dk_panel_segments))
 	IF dk_filling_position = 0 THEN txt = "Ausmitte:" ELSE txt = "Abstand:"
-	UI_OUTFIELD babel[39], 327,115 , 54,15, 2+4*(NOT(dk_panel_segments))
+	UI_OUTFIELD babel[39], 355,115 , 63,15, 2+4*(NOT(dk_panel_segments))
 	UI_STYLE 0,1
 	UI_OUTFIELD babel[5], 0,36 , 52,15, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
 	UI_OUTFIELD babel[6], 0,162 , 52,15, 0+0
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[40], 52,162 , 128,15, 0+0
-	UI_OUTFIELD babel[41], 52,189 , 128,15, 0+0
-	UI_OUTFIELD babel[43], 86,217 , 94,16, 0+0
+	UI_OUTFIELD babel[40], 52,162 , 137,15, 0+0
+	UI_OUTFIELD babel[41], 52,189 , 137,15, 0+0
+	UI_OUTFIELD babel[43], 86,217 , 103,16, 0+0
 	UI_OUTFIELD babel[1], 52,36 , 128,15, 0+0
 	UI_OUTFIELD babel[36], 52,62 , 128,15, 0+0
 	UI_OUTFIELD babel[16], 52,88 , 128,15, 0+0
-	UI_INFIELD{3} "bs_door_leafs", 180,29 , 30,22, 9, "dk_DoorNumber 72x18.png", 4, 1, 18, 18, 18, 18, 2,"1",1, 4-symm,"2",2 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} "bs_door_leafs", 192,29 , 30,22, 9, "dk_DoorNumber 72x18.png", 4, 1, 18, 18, 18, 18, 2,"1",1, 4-symm,"2",2 UI_TOOLTIP bubble[1]
 	GOSUB "SELECT_bs_panel_type"
-	UI_INFIELD{3} "bs_panel_type", 215,29 , 112,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[35]
+	UI_INFIELD{3} "bs_panel_type", 231,29 , 120,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[35]
 	GOSUB "SELECT_bs_panel_material"
-	UI_INFIELD{3} "bs_panel_material", 332,29 , 112,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[38]
-	UI_INFIELD{3} "bs_panel_manufacturer", 181,58 , 262,19 UI_TOOLTIP bubble[40]
-	UI_INFIELD{3} "dk_filling_position", 181,112 , 146,19 UI_TOOLTIP bubble[64]
-	UI_INFIELD{3} "bs_panel_model", 181,85 , 262,19 UI_TOOLTIP bubble[39]
-	UI_INFIELD{3} "dk_panel_fill_offset", 381,112 , 62,19 UI_TOOLTIP bubble[63]
+	UI_INFIELD{3} "bs_panel_material", 361,29 , 120,22, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[38]
+	UI_INFIELD{3} "dk_filling_position", 193,112 , 151,19 UI_TOOLTIP bubble[64]
+	UI_INFIELD{3} "bs_panel_manufacturer", 193,58 , 287,19 UI_TOOLTIP bubble[40]
+	UI_INFIELD{3} "dk_panel_fill_offset", 418,112 , 62,19 UI_TOOLTIP bubble[63]
+	UI_INFIELD{3} "bs_panel_model", 193,85 , 287,19 UI_TOOLTIP bubble[39]
 	UI_PICT "ui_general_surface_flat 23x23.png", 52,212 , 23,23, 1
 	GOSUB "SELECT_bs_panel_surface_BS"
 	IF sts THEN
-		UI_INFIELD{3} "bs_panel_surface_BS", 180,158 , 85,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[45]
+		UI_INFIELD{3} "bs_panel_surface_BS", 192,158 , 90,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[45]
 		ELSE
-		UI_INFIELD{3} "bs_panel_surface_BS", 181,159 , 84,19 UI_TOOLTIP bubble[45]
+		UI_INFIELD{3} "bs_panel_surface_BS", 193,159 , 88,19 UI_TOOLTIP bubble[45]
 		ENDIF
 	GOSUB "SELECT_bs_panel_surface_BGS"
 	IF sts THEN
-		UI_INFIELD{3} "bs_panel_surface_BGS", 269,158 , 85,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[44]
+		UI_INFIELD{3} "bs_panel_surface_BGS", 291,158 , 92,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[44]
 		ELSE
-		UI_INFIELD{3} "bs_panel_surface_BGS", 270,159 , 84,19 UI_TOOLTIP bubble[44]
+		UI_INFIELD{3} "bs_panel_surface_BGS", 292,159 , 91,19 UI_TOOLTIP bubble[44]
 		ENDIF
 	GOSUB "SELECT_bs_panel_surface_KA"
 	IF sts THEN
-		UI_INFIELD{3} "bs_panel_surface_KA", 358,158 , 85,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[50]
+		UI_INFIELD{3} "bs_panel_surface_KA", 390,158 , 90,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[50]
 		ELSE
-		UI_INFIELD{3} "bs_panel_surface_KA", 359,159 , 84,19 UI_TOOLTIP bubble[50]
+		UI_INFIELD{3} "bs_panel_surface_KA", 390,159 , 90,19 UI_TOOLTIP bubble[50]
 		ENDIF
-	UI_INFIELD{3} "bs_panel_colour_BS", 181,186 , 84,19 UI_TOOLTIP bubble[25]
-	UI_INFIELD{3} "bs_panel_colour_BGS", 270,186 , 83,19 UI_TOOLTIP bubble[24]
-	UI_INFIELD{3} "bs_panel_colour_KA", 359,186 , 84,19 UI_TOOLTIP bubble[26]
-	UI_INFIELD{3} dk_materials[dka_panel_mat_BS ], 180,212 , 85,21 UI_TOOLTIP bubble[45]
-	UI_INFIELD{3} dk_materials[dka_panel_mat_BGS ], 269,212 , 85,21 UI_TOOLTIP bubble[44]
-	UI_INFIELD{3} dk_materials[dka_panel_bandings_mat], 358,212 , 85,21 UI_TOOLTIP bubble[50]
+	UI_INFIELD{3} "bs_panel_colour_BS", 193,186 , 88,19 UI_TOOLTIP bubble[25]
+	UI_INFIELD{3} "bs_panel_colour_BGS", 292,186 , 90,19 UI_TOOLTIP bubble[24]
+	UI_INFIELD{3} "bs_panel_colour_KA", 390,186 , 89,19 UI_TOOLTIP bubble[26]
+	UI_INFIELD{3} dk_materials[dka_panel_mat_BS ], 192,212 , 90,21 UI_TOOLTIP bubble[45]
+	UI_INFIELD{3} dk_materials[dka_panel_mat_BGS ], 291,212 , 90,21 UI_TOOLTIP bubble[44]
+	UI_INFIELD{3} dk_materials[dka_panel_bandings_mat], 390,212 , 90,21 UI_TOOLTIP bubble[50]
 	UI_STYLE 1,2
 	UI_OUTFIELD babel[49], 5,254 , 288,12, 0+0
 	UI_STYLE 0,0
-	UI_SEPARATOR 0,143, 445,143
+	UI_SEPARATOR 0,143, 481,143
 	RETURN
 ! ------------------------------------------------------------- GRUNDEINSTELLUNG 1 FLÜGEL [ 5200 ]
 	5200:   ! #### LOI 5+ -Grundeinstellungen 1 Flügel
 	GOSUB 9900
-	UI_SEPARATOR 0,167, 445,167
+	UI_SEPARATOR 0,167, 481,167
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[30], 146,110 , 60,12, 2+0
+	UI_OUTFIELD babel[30], 158,110 , 60,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[31], 354,110 , 90,12, 2+0
+	UI_OUTFIELD babel[31], 390,110 , 90,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD "3D", 260,110 , 53,12, 2+0
+	UI_OUTFIELD "3D", 284,110 , 53,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[7], 0,31 , 107,15, 0+0
+	UI_OUTFIELD babel[7], 0,31 , 140,15, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[4], 0,108 , 107,15, 0+0
+	UI_OUTFIELD babel[4], 0,108 , 140,15, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[33], 194,32 , 44,12, 2+0
+	UI_OUTFIELD babel[33], 218,32 , 44,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[34], 320,32 , 44,12, 2+0
+	UI_OUTFIELD babel[34], 356,32 , 44,12, 2+0
 	UI_STYLE 0,0
-	UI_PICT "ui_list_contourPen_flat 32x15.png", 155,32 , 32,15, 1
-	UI_PICT "ui_fill_type_flat 20x20.png", 93,64 , 20,20, 1
-	UI_PICT "ui_fill_pen_flat 29x16.png", 207,65 , 29,16, 1
-	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 333,65 , 29,16, 1
-	UI_PICT "ui_angle 20x17.png", 121,138 , 20,17, 1
-	UI_INFIELD{3} dk_cont_pens[dka_panel_penC2], 238,28 , 80,21 UI_TOOLTIP bubble[36]
-	UI_INFIELD{3} dk_cont_pens[dka_panel_penC3], 364,28 , 80,21 UI_TOOLTIP bubble[37]
-	UI_INFIELD{3} dk_fills[dka_panel_fill ], 116,62 , 80,21 UI_TOOLTIP bubble[69]
-	UI_INFIELD{3} dk_fill_pens[dka_panel_penF], 238,62 , 80,21 UI_TOOLTIP bubble[110]
-	UI_INFIELD{3} dk_bkg_pens[dka_panel_penB], 364,62 , 80,21 UI_TOOLTIP bubble[32]
-	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle2D], 146,137 , 90,19 UI_TOOLTIP bubble[56]
-	IF dk_opening_locked THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle3D], 193,137 , 96,19 UI_TOOLTIP bubble[54]
-	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle3D], 250,137 , 90,19 UI_TOOLTIP bubble[55]
-	UI_INFIELD{3} dk_open_leaf[dka_leaf_angleSA], 354,137 , 90,19 UI_TOOLTIP bubble[57]
-	UI_INFIELD{3} "dk_opening_locked", 206,109 , 54,15, 6, 42, 2, 2, 50, 7, 50, 7, 1,"identisch",0, 2,"individuell",1 UI_TOOLTIP bubble[58]
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 179,32 , 32,15, 1
+	UI_PICT "ui_fill_type_flat 20x20.png", 105,64 , 20,20, 1
+	UI_PICT "ui_fill_pen_flat 29x16.png", 231,65 , 29,16, 1
+	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 369,65 , 29,16, 1
+	UI_PICT "ui_angle 20x17.png", 133,138 , 20,17, 1
+	UI_INFIELD{3} dk_cont_pens[dka_panel_penC2], 262,28 , 80,21 UI_TOOLTIP bubble[36]
+	UI_INFIELD{3} dk_cont_pens[dka_panel_penC3], 400,28 , 80,21 UI_TOOLTIP bubble[37]
+	UI_INFIELD{3} dk_fills[dka_panel_fill ], 128,62 , 80,21 UI_TOOLTIP bubble[69]
+	UI_INFIELD{3} dk_fill_pens[dka_panel_penF], 262,62 , 80,21 UI_TOOLTIP bubble[110]
+	UI_INFIELD{3} dk_bkg_pens[dka_panel_penB], 400,62 , 80,21 UI_TOOLTIP bubble[32]
+	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle2D], 158,137 , 90,19 UI_TOOLTIP bubble[56]
+	IF dk_opening_locked THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle3D], 211,137 , 96,19 UI_TOOLTIP bubble[54]
+	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle3D], 274,137 , 90,19 UI_TOOLTIP bubble[55]
+	UI_INFIELD{3} dk_open_leaf[dka_leaf_angleSA], 390,137 , 90,19 UI_TOOLTIP bubble[57]
+	UI_INFIELD{3} "dk_opening_locked", 224,109 , 54,15, 6, 42, 2, 2, 50, 7, 50, 7, 1,"identisch",0, 2,"individuell",1 UI_TOOLTIP bubble[58]
 	RETURN
 ! ------------------------------------------------------------- GRUNDEINSTELLUNG 2 FLÜGEL [ 5300 ]
 	5300:   ! #### LOI 5+ -Grundeinstellungen 2 Flügel (Seite 1)
 	GOSUB 9900
-	UI_OUTFIELD babel[59], 18,30 , 125,15, 0+0
-	UI_OUTFIELD babel[1], 18,53 , 125,15, 0+0
-	UI_OUTFIELD babel[37], 18,76 , 125,15, 0+0
-	UI_OUTFIELD babel[38], 18,100 , 125,15, 0+4*(NOT(dk_panel_segments + dk_panel_segments2 * (bs_door_leafs > 1)))
+	UI_OUTFIELD babel[59], 0,30 , 145,15, 0+0
+	UI_OUTFIELD babel[1], 0,53 , 145,15, 0+0
+	UI_OUTFIELD babel[37], 0,76 , 145,15, 0+0
+	UI_OUTFIELD babel[38], 0,100 , 145,15, 0+4*(NOT(dk_panel_segments + dk_panel_segments2 * (bs_door_leafs > 1)))
 	IF dk_filling_position = 0 THEN txt = "Ausmitte:" ELSE txt = "Abstand:"
-	UI_OUTFIELD babel[39], 274,100 , 54,15, 0+4*(NOT(dk_panel_segments + dk_panel_segments2 * (bs_door_leafs > 1)))
-	UI_INFIELD{3} "bs_door_leafs", 151,25 , 30,22, 9, "dk_DoorNumber 72x18.png", 4, 1, 18, 18, 18, 18, 2,"1",1, 4-symm,"2",2 UI_TOOLTIP bubble[1]
-	UI_INFIELD{3} "symm", 273,25 , 22,22, 6, "dk_SymetricLeaf 18x18.png", 1, 1, 18, 18, 18, 18, 1,"asymetrisch",0, 1,"symetrisch",1 UI_TOOLTIP bubble[88]
-	UI_INFIELD{3} "ac_leaf_width", 186,27 , 83,19 UI_TOOLTIP bubble[100]
-	UI_INFIELD{3} "gs_SecondLeaf_w", 298,27 , 93,19 UI_TOOLTIP bubble[101]
+	UI_OUTFIELD babel[39], 326,100 , 65,15, 0+4*(NOT(dk_panel_segments + dk_panel_segments2 * (bs_door_leafs > 1)))
+	UI_INFIELD{3} "bs_door_leafs", 147,25 , 30,22, 9, "dk_DoorNumber 72x18.png", 4, 1, 18, 18, 18, 18, 2,"1",1, 4-symm,"2",2 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} "symm", 325,25 , 22,22, 6, "dk_SymetricLeaf 18x18.png", 1, 1, 18, 18, 18, 18, 1,"asymetrisch",0, 1,"symetrisch",1 UI_TOOLTIP bubble[88]
+	UI_INFIELD{3} "ac_leaf_width", 182,27 , 133,19 UI_TOOLTIP bubble[100]
+	UI_INFIELD{3} "gs_SecondLeaf_w", 353,27 , 128,19 UI_TOOLTIP bubble[101]
 	GOSUB "SELECT_bs_panel_type"
-	UI_INFIELD{3} "bs_panel_type", 151,49 , 118,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[35]
-	UI_INFIELD{3} "bs_panel_manufacturer", 152,73 , 116,19 UI_TOOLTIP bubble[40]
-	UI_INFIELD{3} "bs_panel_model", 274,73 , 116,19 UI_TOOLTIP bubble[39]
+	UI_INFIELD{3} "bs_panel_type", 147,49 , 168,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[35]
+	UI_INFIELD{3} "bs_panel_manufacturer", 148,73 , 167,19 UI_TOOLTIP bubble[40]
+	UI_INFIELD{3} "bs_panel_model", 326,73 , 154,19 UI_TOOLTIP bubble[39]
 	GOSUB "SELECT_bs_panel_material"
-	UI_INFIELD{3} "bs_panel_material", 273,49 , 118,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[38]
-	UI_INFIELD{3} "dk_filling_position", 152,97 , 116,19 UI_TOOLTIP bubble[64]
-	UI_INFIELD{3} "dk_panel_fill_offset", 328,97 , 62,19 UI_TOOLTIP bubble[63]
-	UI_OUTFIELD babel[40], 18,144 , 132,15, 0+0
-	UI_OUTFIELD babel[40], 18,212 , 132,15, 0+0
-	UI_OUTFIELD babel[42], 18,168 , 132,15, 0+0
-	UI_OUTFIELD babel[42], 18,236 , 132,15, 0+0
+	UI_INFIELD{3} "bs_panel_material", 325,49 , 156,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[38]
+	UI_INFIELD{3} "dk_filling_position", 148,97 , 167,19 UI_TOOLTIP bubble[64]
+	UI_INFIELD{3} "dk_panel_fill_offset", 400,97 , 80,19 UI_TOOLTIP bubble[63]
+	UI_OUTFIELD babel[40], 0,144 , 145,15, 0+0
+	UI_OUTFIELD babel[40], 0,212 , 145,15, 0+0
+	UI_OUTFIELD babel[42], 0,168 , 145,15, 0+0
+	UI_OUTFIELD babel[42], 0,236 , 145,15, 0+0
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[10], 194,125 , 124,12, 2+0
+	UI_OUTFIELD babel[10], 252,125 , 124,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[12], 194,193 , 124,12, 2+0
+	UI_OUTFIELD babel[12], 252,193 , 124,12, 2+0
 	UI_STYLE 0,0
 	GOSUB "SELECT_bs_panel_surface_BS"
 	IF sts THEN
-		UI_INFIELD{3} "bs_panel_surface_BS", 151,140 , 76,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[47]
+		UI_INFIELD{3} "bs_panel_surface_BS", 148,140 , 106,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[47]
 		ELSE
-		UI_INFIELD{3} "bs_panel_surface_BS", 152,141 , 75,19 UI_TOOLTIP bubble[47]
+		UI_INFIELD{3} "bs_panel_surface_BS", 149,141 , 106,19 UI_TOOLTIP bubble[47]
 		ENDIF
 	GOSUB "SELECT_bs_panel_surface_BGS"
 	IF sts THEN
-		UI_INFIELD{3} "bs_panel_surface_BGS", 233,140 , 77,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[46]
+		UI_INFIELD{3} "bs_panel_surface_BGS", 260,140 , 106,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[46]
 		ELSE
-		UI_INFIELD{3} "bs_panel_surface_BGS", 233,141 , 77,19 UI_TOOLTIP bubble[46]
+		UI_INFIELD{3} "bs_panel_surface_BGS", 260,141 , 106,19 UI_TOOLTIP bubble[46]
 		ENDIF
 	GOSUB "SELECT_bs_panel_surface_KA"
 	IF sts THEN
-		UI_INFIELD{3} "bs_panel_surface_KA", 315,140 , 76,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[48]
+		UI_INFIELD{3} "bs_panel_surface_KA", 375,140 , 106,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[48]
 		ELSE
-		UI_INFIELD{3} "bs_panel_surface_KA", 316,141 , 75,19 UI_TOOLTIP bubble[48]
+		UI_INFIELD{3} "bs_panel_surface_KA", 375,141 , 106,19 UI_TOOLTIP bubble[48]
 		ENDIF
-	UI_INFIELD{3} "bs_panel_colour_BS", 152,165 , 75,19 UI_TOOLTIP bubble[25]
-	UI_INFIELD{3} "bs_panel_colour_BGS", 233,165 , 76,19 UI_TOOLTIP bubble[24]
-	UI_INFIELD{3} "bs_panel_colour_KA", 315,165 , 75,19 UI_TOOLTIP bubble[26]
+	UI_INFIELD{3} "bs_panel_colour_BS", 149,165 , 105,19 UI_TOOLTIP bubble[25]
+	UI_INFIELD{3} "bs_panel_colour_BGS", 260,165 , 105,19 UI_TOOLTIP bubble[24]
+	UI_INFIELD{3} "bs_panel_colour_KA", 375,165 , 105,19 UI_TOOLTIP bubble[26]
 	GOSUB "SELECT_bs_panel_surface2_BS"
 	IF sts THEN
-		UI_INFIELD{3} "bs_panel_surface2_BS", 151,208 , 76,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[86]
+		UI_INFIELD{3} "bs_panel_surface2_BS", 148,208 , 106,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[86]
 		ELSE
-		UI_INFIELD{3} "bs_panel_surface2_BS", 152,209 , 75,19 UI_TOOLTIP bubble[86]
+		UI_INFIELD{3} "bs_panel_surface2_BS", 149,209 , 106,19 UI_TOOLTIP bubble[86]
 		ENDIF
 	GOSUB "SELECT_bs_panel_surface2_BGS"
 	IF sts THEN
-		UI_INFIELD{3} "bs_panel_surface2_BGS", 233,208 , 77,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[85]
+		UI_INFIELD{3} "bs_panel_surface2_BGS", 260,208 , 106,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[85]
 		ELSE
-		UI_INFIELD{3} "bs_panel_surface2_BGS", 233,209 , 77,19 UI_TOOLTIP bubble[85]
+		UI_INFIELD{3} "bs_panel_surface2_BGS", 260,209 , 106,19 UI_TOOLTIP bubble[85]
 		ENDIF
 	GOSUB "SELECT_bs_panel_surface2_KA"
 	IF sts THEN
-		UI_INFIELD{3} "bs_panel_surface2_KA", 315,208 , 76,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[53]
+		UI_INFIELD{3} "bs_panel_surface2_KA", 375,208 , 106,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[53]
 		ELSE
-		UI_INFIELD{3} "bs_panel_surface2_KA", 316,209 , 75,19 UI_TOOLTIP bubble[53]
+		UI_INFIELD{3} "bs_panel_surface2_KA", 375,209 , 106,19 UI_TOOLTIP bubble[53]
 		ENDIF
-	UI_INFIELD{3} "bs_panel_colour2_BS", 152,233 , 75,19 UI_TOOLTIP bubble[83]
-	UI_INFIELD{3} "bs_panel_colour2_BGS", 233,233 , 76,19 UI_TOOLTIP bubble[82]
-	UI_INFIELD{3} "bs_panel_colour2_KA", 315,233 , 75,19 UI_TOOLTIP bubble[84]
+	UI_INFIELD{3} "bs_panel_colour2_BS", 149,233 , 105,19 UI_TOOLTIP bubble[83]
+	UI_INFIELD{3} "bs_panel_colour2_BGS", 260,233 , 105,19 UI_TOOLTIP bubble[82]
+	UI_INFIELD{3} "bs_panel_colour2_KA", 375,233 , 105,19 UI_TOOLTIP bubble[84]
 	UI_STYLE 1,2
 	UI_OUTFIELD babel[49], 5,254 , 237,12, 0+0
 	UI_STYLE 0,0
-	UI_SEPARATOR 19,120, 391,120
-	UI_SEPARATOR 19,188, 391,188
+	UI_SEPARATOR -1,120, 481,120
+	UI_SEPARATOR -1,188, 481,188
 	RETURN
 ! ------------------------------------------------------------- GRUNDEINSTELLUNG 2 FLÜGEL [ 5400 ]
 	5400:   ! #### LOI 5+ -Grundeinstellungen 2 Flügel (Seite 2)
 	GOSUB 9900
-	UI_SEPARATOR 0,103, 445,103
-	UI_SEPARATOR 0,174, 445,174
+	UI_SEPARATOR 0,103, 481,103
+	UI_SEPARATOR 0,174, 481,174
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[30], 141,190 , 65,12, 2+0
-	UI_STYLE 0,0
-	UI_STYLE 1,1
-	UI_OUTFIELD babel[31], 354,190 , 90,12, 2+0
+	UI_OUTFIELD babel[30], 153,190 , 65,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD "3D", 260,190 , 53,12, 2+0
+	UI_OUTFIELD babel[31], 390,190 , 90,12, 2+0
+	UI_STYLE 0,0
+	UI_STYLE 1,1
+	UI_OUTFIELD "3D", 284,190 , 53,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[8], 0,117 , 102,15, 0+0
+	UI_OUTFIELD babel[8], 0,117 , 120,15, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[74], 0,21 , 117,15, 0+0
+	UI_OUTFIELD babel[74], 0,21 , 128,15, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[4], 0,179 , 126,15, 0+0
+	UI_OUTFIELD babel[4], 0,179 , 150,15, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[3], 0,148 , 102,15, 0+0
+	UI_OUTFIELD babel[3], 0,148 , 120,15, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[11], 62,208 , 58,12, 0+0
+	UI_OUTFIELD babel[11], 74,208 , 58,12, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[13], 61,232 , 58,12, 0+0
+	UI_OUTFIELD babel[13], 73,232 , 58,12, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[33], 147,116 , 40,12, 1+0
+	UI_OUTFIELD babel[33], 154,116 , 48,12, 1+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[34], 300,116 , 40,12, 1+0
+	UI_OUTFIELD babel[34], 331,116 , 48,12, 1+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[45], 145,38 , 30,12, 1+0
+	UI_OUTFIELD babel[45], 157,38 , 30,12, 1+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[45], 145,78 , 30,12, 1+0
+	UI_OUTFIELD babel[45], 157,78 , 30,12, 1+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[46], 245,38 , 30,12, 1+0
+	UI_OUTFIELD babel[46], 269,38 , 30,12, 1+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[46], 245,78 , 30,12, 1+0
+	UI_OUTFIELD babel[46], 269,78 , 30,12, 1+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[47], 349,38 , 30,12, 1+4*(dk_panel_bandings = "-")
+	UI_OUTFIELD babel[47], 385,38 , 30,12, 1+4*(dk_panel_bandings = "-")
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[47], 349,78 , 30,12, 1+4*(dk_panel_bandings = "-")
+	UI_OUTFIELD babel[47], 385,78 , 30,12, 1+4*(dk_panel_bandings = "-")
 	UI_STYLE 0,0
 	UI_STYLE 1,2
 	UI_OUTFIELD babel[49], 5,254 , 295,12, 0+0
 	UI_STYLE 0,0
-	UI_PICT "ui_list_contourPen_flat 32x15.png", 109,116 , 32,15, 1
-	UI_PICT "ui_fill_type_flat 20x20.png", 120,145 , 20,20, 1
-	UI_PICT "ui_fill_pen_flat 29x16.png", 249,146 , 29,16, 1
-	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 353,146 , 29,16, 1
-	UI_PICT "ui_angle 20x17.png", 121,206 , 20,17, 1
-	IF bs_door_leafs > 1 THEN UI_PICT "ui_angle 20x17.png", 121,230 , 20,17, 1
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 121,116 , 32,15, 1
+	UI_PICT "ui_fill_type_flat 20x20.png", 132,145 , 20,20, 1
+	UI_PICT "ui_fill_pen_flat 29x16.png", 273,146 , 29,16, 1
+	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 389,146 , 29,16, 1
+	UI_PICT "ui_angle 20x17.png", 133,206 , 20,17, 1
+	IF bs_door_leafs > 1 THEN UI_PICT "ui_angle 20x17.png", 133,230 , 20,17, 1
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[10], 249,19 , 124,12, 2+0
+	UI_OUTFIELD babel[10], 273,19 , 124,12, 2+0
 	UI_STYLE 0,0
 	UI_STYLE 1,1
-	UI_OUTFIELD babel[12], 249,60 , 124,12, 2+0
+	UI_OUTFIELD babel[12], 273,60 , 124,12, 2+0
 	UI_STYLE 0,0
-	UI_INFIELD{3} dk_materials[dka_panel_mat_BS ], 180,34 , 60,21 UI_TOOLTIP bubble[45]
-	UI_INFIELD{3} dk_materials[dka_panel2_mat_BS ], 180,74 , 60,21 UI_TOOLTIP bubble[52]
-	UI_INFIELD{3} dk_materials[dka_panel_mat_BGS ], 280,34 , 60,21 UI_TOOLTIP bubble[44]
-	UI_INFIELD{3} dk_materials[dka_panel2_mat_BGS ], 280,74 , 60,21 UI_TOOLTIP bubble[51]
-	UI_INFIELD{3} dk_materials[dka_panel_bandings_mat], 384,34 , 60,21 UI_TOOLTIP bubble[49]
-	UI_INFIELD{3} dk_materials[dka_panel2_bandings_mat], 384,74 , 60,21 UI_TOOLTIP bubble[53]
-	UI_INFIELD{3} dk_cont_pens[dka_panel_penC2], 193,112 , 98,21 UI_TOOLTIP bubble[36]
-	UI_INFIELD{3} dk_cont_pens[dka_panel_penC3], 346,112 , 98,21 UI_TOOLTIP bubble[37]
-	UI_INFIELD{3} dk_fills[dka_panel_fill ], 146,143 , 90,21 UI_TOOLTIP bubble[69]
-	UI_INFIELD{3} dk_fill_pens[dka_panel_penF], 280,143 , 60,21 UI_TOOLTIP bubble[110]
-	UI_INFIELD{3} dk_bkg_pens[dka_panel_penB], 384,143 , 60,21 UI_TOOLTIP bubble[32]
-	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle2D], 146,205 , 90,19 UI_TOOLTIP bubble[56]
-	IF dk_opening_locked THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle3D], 191,205 , 96,19 UI_TOOLTIP bubble[54]
-	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle3D], 250,205 , 90,19 UI_TOOLTIP bubble[55]
-	UI_INFIELD{3} dk_open_leaf[dka_leaf_angleSA], 354,205 , 90,19 UI_TOOLTIP bubble[57]
-	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf2_angle2D], 146,229 , 90,19 UI_TOOLTIP bubble[61]
-	UI_PICT "ui_general_surface_flat 23x23.png", 117,32 , 23,23, 1
-	IF dk_opening_locked THEN UI_INFIELD{3} dk_open_leaf[dka_leaf2_angle3D], 191,229 , 96,19 UI_TOOLTIP bubble[59]
-	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf2_angle3D], 250,229 , 90,19 UI_TOOLTIP bubble[60]
-	UI_PICT "ui_general_surface_flat 23x23.png", 117,72 , 23,23, 1
-	UI_INFIELD{3} dk_open_leaf[dka_leaf2_angleSA], 354,229 , 90,19 UI_TOOLTIP bubble[62]
-	UI_INFIELD{3} "dk_opening_locked", 206,188 , 54,15, 6, 42, 2, 2, 50, 7, 50, 7, 1,"identisch",0, 2,"individuell",1 UI_TOOLTIP bubble[58]
+	UI_INFIELD{3} dk_materials[dka_panel_mat_BS ], 192,34 , 60,21 UI_TOOLTIP bubble[45]
+	UI_INFIELD{3} dk_materials[dka_panel2_mat_BS ], 192,74 , 60,21 UI_TOOLTIP bubble[52]
+	UI_INFIELD{3} dk_materials[dka_panel_mat_BGS ], 304,34 , 60,21 UI_TOOLTIP bubble[44]
+	UI_INFIELD{3} dk_materials[dka_panel2_mat_BGS ], 304,74 , 60,21 UI_TOOLTIP bubble[51]
+	UI_INFIELD{3} dk_materials[dka_panel_bandings_mat], 420,34 , 60,21 UI_TOOLTIP bubble[49]
+	UI_INFIELD{3} dk_materials[dka_panel2_bandings_mat], 420,74 , 60,21 UI_TOOLTIP bubble[53]
+	UI_INFIELD{3} dk_cont_pens[dka_panel_penC2], 205,112 , 98,21 UI_TOOLTIP bubble[36]
+	UI_INFIELD{3} dk_cont_pens[dka_panel_penC3], 382,112 , 98,21 UI_TOOLTIP bubble[37]
+	UI_INFIELD{3} dk_fills[dka_panel_fill ], 158,143 , 90,21 UI_TOOLTIP bubble[69]
+	UI_INFIELD{3} dk_fill_pens[dka_panel_penF], 304,143 , 60,21 UI_TOOLTIP bubble[110]
+	UI_INFIELD{3} dk_bkg_pens[dka_panel_penB], 420,143 , 60,21 UI_TOOLTIP bubble[32]
+	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle2D], 158,205 , 90,19 UI_TOOLTIP bubble[56]
+	IF dk_opening_locked THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle3D], 209,205 , 96,19 UI_TOOLTIP bubble[54]
+	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf_angle3D], 274,205 , 90,19 UI_TOOLTIP bubble[55]
+	UI_INFIELD{3} dk_open_leaf[dka_leaf_angleSA], 390,205 , 90,19 UI_TOOLTIP bubble[57]
+	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf2_angle2D], 158,229 , 90,19 UI_TOOLTIP bubble[61]
+	UI_PICT "ui_general_surface_flat 23x23.png", 129,32 , 23,23, 1
+	IF dk_opening_locked THEN UI_INFIELD{3} dk_open_leaf[dka_leaf2_angle3D], 209,229 , 96,19 UI_TOOLTIP bubble[59]
+	UI_PICT "ui_general_surface_flat 23x23.png", 129,72 , 23,23, 1
+	IF NOT(dk_opening_locked) THEN UI_INFIELD{3} dk_open_leaf[dka_leaf2_angle3D], 274,229 , 90,19 UI_TOOLTIP bubble[60]
+	UI_INFIELD{3} dk_open_leaf[dka_leaf2_angleSA], 390,229 , 90,19 UI_TOOLTIP bubble[62]
+	UI_INFIELD{3} "dk_opening_locked", 224,188 , 54,15, 6, 42, 2, 2, 50, 7, 50, 7, 1,"identisch",0, 2,"individuell",1 UI_TOOLTIP bubble[58]
 	RETURN
 ! ------------------------------------------------------------- ABMESSUNG GANGFLÜGEL [ 5500 ]
 	5500:   ! #### LOI 5+ - Abmessungen Gangflügel
@@ -1409,273 +1409,273 @@ END
 	sts = REQUEST ("Working_length_unit", "",format)   !»» Format für UI-Outfield -Längenwerte
 	GOSUB 9900
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[10], 191,21 , 100,15, 2+0
-	UI_OUTFIELD babel[22], 24,55 , 41,15, 0+0
-	UI_OUTFIELD babel[18], 120,90 , 145,15, 0+4*(dk_panel_segments<1)
-	UI_OUTFIELD babel[2], 120,55 , 105,15, 0+0
-	UI_OUTFIELD babel[20], 274,90 , 145,15, 0+4*(dk_panel_segments<2)
+	UI_OUTFIELD babel[10], 209,21 , 100,15, 2+0
+	UI_OUTFIELD babel[22], 42,55 , 41,15, 0+0
+	UI_OUTFIELD babel[2], 138,55 , 105,15, 0+0
+	UI_OUTFIELD babel[18], 138,90 , 145,15, 0+4*(dk_panel_segments<1)
+	UI_OUTFIELD babel[20], 292,90 , 145,15, 0+4*(dk_panel_segments<2)
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[17], 274,55 , 105,15, 0+0
+	UI_OUTFIELD babel[17], 292,55 , 105,15, 0+0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[21], 274,153 , 145,15, 0+4*(nobar=63)
+	UI_OUTFIELD babel[21], 292,153 , 145,15, 0+4*(nobar=63)
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[50], 120,110 , 85,15, 0+4*(dk_panel_segments<1)
-	UI_OUTFIELD babel[51], 120,131 , 85,15, 0+4*(dk_panel_segments<1)
-	UI_OUTFIELD babel[52], 120,152 , 85,15, 0+4*(dk_panel_segments<1)
-	UI_OUTFIELD babel[53], 120,173 , 85,15, 0+4*(dk_panel_segments<1)
-	UI_OUTFIELD babel[54], 120,194 , 85,15, 0+4*(dk_panel_segments<1)
-	UI_OUTFIELD babel[55], 120,215 , 85,15, 0+4*(dk_panel_segments<1)
-	IF BITTEST(dk_mainpanel_design,6) OR BITTEST(dk_mainpanel_design,7) THEN UI_OUTFIELD babel[58], 120,236 , 85,15, 0+4*(dk_panel_segments<1)
-	UI_OUTFIELD babel[56], 274,110 , 85,15, 0+4*(dk_panel_segments<2)
-	UI_OUTFIELD babel[57], 274,131 , 85,15, 0+4*(dk_panel_segments<3)
-	UI_OUTFIELD babel[60], 274,173 , 85,15, 0+4*(nobar=63)
-	UI_OUTFIELD babel[71], 274,194 , 85,15, 0+4*(nobar=63) UI_TOOLTIP bubble[6]
+	UI_OUTFIELD babel[50], 138,110 , 85,15, 0+4*(dk_panel_segments<1)
+	UI_OUTFIELD babel[51], 138,131 , 85,15, 0+4*(dk_panel_segments<1)
+	UI_OUTFIELD babel[52], 138,152 , 85,15, 0+4*(dk_panel_segments<1)
+	UI_OUTFIELD babel[53], 138,173 , 85,15, 0+4*(dk_panel_segments<1)
+	UI_OUTFIELD babel[54], 138,194 , 85,15, 0+4*(dk_panel_segments<1)
+	UI_OUTFIELD babel[55], 138,215 , 85,15, 0+4*(dk_panel_segments<1)
+	IF BITTEST(dk_mainpanel_design,6) OR BITTEST(dk_mainpanel_design,7) THEN UI_OUTFIELD babel[58], 138,236 , 85,15, 0+4*(dk_panel_segments<1)
+	UI_OUTFIELD babel[56], 292,110 , 85,15, 0+4*(dk_panel_segments<2)
+	UI_OUTFIELD babel[57], 292,131 , 85,15, 0+4*(dk_panel_segments<3)
+	UI_OUTFIELD babel[60], 292,173 , 85,15, 0+4*(nobar=63)
+	UI_OUTFIELD babel[71], 292,194 , 85,15, 0+4*(nobar=63) UI_TOOLTIP bubble[6]
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[14], 274,215 , 85,15, 0+0 UI_TOOLTIP bubble[73]
+	UI_OUTFIELD babel[14], 292,215 , 85,15, 0+0 UI_TOOLTIP bubble[73]
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[15], 274,236 , 85,15, 0+0 UI_TOOLTIP bubble[4]
+	UI_OUTFIELD babel[15], 292,236 , 85,15, 0+0 UI_TOOLTIP bubble[4]
 	UI_STYLE 0,0
 	GOSUB "SELECT_panel_dimensionT"
-	UI_PICT uiBitmap, 24,90 , 83,52, 1 UI_TOOLTIP bubble[27]
+	UI_PICT uiBitmap, 42,90 , 83,52, 1 UI_TOOLTIP bubble[27]
 	GOSUB "SELECT_panel_dimensionB"
-	UI_PICT uiBitmap, 24,142 , 83,109, 1 UI_TOOLTIP bubble[27]
+	UI_PICT uiBitmap, 42,142 , 83,109, 1 UI_TOOLTIP bubble[27]
 	GOSUB "SELECT_dk_panel_segments"
-	UI_INFIELD{3} "dk_panel_segments", 227,48 , 38,31, 2, 47, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[8]
+	UI_INFIELD{3} "dk_panel_segments", 245,48 , 38,31, 2, 47, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[8]
 	GOSUB "SELECT_dk_mainpanel_design"
-	UI_INFIELD{3} "dk_mainpanel_design", 381,48 , 38,31, 2, 46, 10, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[87]
-	UI_INFIELD{3} "leafFrWidthLeft", 205,108 , 60,19 UI_TOOLTIP bubble[66]
-	UI_INFIELD{3} "leafFrWidthRight", 205,129 , 60,19 UI_TOOLTIP bubble[65]
-	UI_INFIELD{3} "leafFrWidthTop", 205,150 , 60,19 UI_TOOLTIP bubble[67]
-	UI_INFIELD{3} "leafFrWidthBottom", 205,171 , 60,19 UI_TOOLTIP bubble[68]
-	UI_INFIELD{3} "dk_leafFrWidthHorizontal", 205,192 , 60,19 UI_TOOLTIP bubble[13]
-	UI_INFIELD{3} "dk_leafFrWidthVertical", 205,213 , 60,19 UI_TOOLTIP bubble[11]
-	IF BITTEST(dk_mainpanel_design,6) OR BITTEST(dk_mainpanel_design,7) THEN UI_INFIELD{3} "dk_arch_height", 205,234 , 60,19 UI_TOOLTIP bubble[33]
-	UI_INFIELD{3} "dk_panel_division_bottom", 359,108 , 60,19 UI_TOOLTIP bubble[108]
-	UI_INFIELD{3} "dk_panel_division_top", 359,129 , 60,19 UI_TOOLTIP bubble[41]
-	UI_INFIELD{3} "mullWidth", 359,171 , 60,19 UI_TOOLTIP bubble[75]
-	UI_INFIELD{3} "mullThickness", 359,192 , 60,19 UI_TOOLTIP bubble[80]
-	UI_INFIELD{3} "gapHeightUnderPanel", 359,213 , 60,19 UI_TOOLTIP bubble[73]
-	UI_INFIELD{3} "bs_spyhole", 359,234 , 60,19 UI_TOOLTIP bubble[4]
-	UI_SEPARATOR 268,108, 268,254
+	UI_INFIELD{3} "dk_mainpanel_design", 399,48 , 38,31, 2, 46, 10, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[87]
+	UI_INFIELD{3} "leafFrWidthLeft", 223,108 , 60,19 UI_TOOLTIP bubble[66]
+	UI_INFIELD{3} "leafFrWidthRight", 223,129 , 60,19 UI_TOOLTIP bubble[65]
+	UI_INFIELD{3} "leafFrWidthTop", 223,150 , 60,19 UI_TOOLTIP bubble[67]
+	UI_INFIELD{3} "leafFrWidthBottom", 223,171 , 60,19 UI_TOOLTIP bubble[68]
+	UI_INFIELD{3} "dk_leafFrWidthHorizontal", 223,192 , 60,19 UI_TOOLTIP bubble[13]
+	UI_INFIELD{3} "dk_leafFrWidthVertical", 223,213 , 60,19 UI_TOOLTIP bubble[11]
+	IF BITTEST(dk_mainpanel_design,6) OR BITTEST(dk_mainpanel_design,7) THEN UI_INFIELD{3} "dk_arch_height", 223,234 , 60,19 UI_TOOLTIP bubble[33]
+	UI_INFIELD{3} "dk_panel_division_bottom", 377,108 , 60,19 UI_TOOLTIP bubble[108]
+	UI_INFIELD{3} "dk_panel_division_top", 377,129 , 60,19 UI_TOOLTIP bubble[41]
+	UI_INFIELD{3} "mullWidth", 377,171 , 60,19 UI_TOOLTIP bubble[75]
+	UI_INFIELD{3} "mullThickness", 377,192 , 60,19 UI_TOOLTIP bubble[80]
+	UI_INFIELD{3} "gapHeightUnderPanel", 377,213 , 60,19 UI_TOOLTIP bubble[73]
+	UI_INFIELD{3} "bs_spyhole", 377,234 , 60,19 UI_TOOLTIP bubble[4]
+	UI_SEPARATOR 286,108, 286,254
 	RETURN
 ! ------------------------------------------------------------- ABMESSUNG STANDFLÜGEL [ 5600 ]
 	5600:   ! #### LOI 5+ - Abmessungen Standflügel
 	GOSUB 9900
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[12], 191,21 , 100,15, 2+0
-	UI_OUTFIELD babel[22], 24,55 , 41,15, 0+0
-	UI_OUTFIELD babel[18], 120,91 , 145,15, 0+4*(dk_panel_segments2<1)
-	UI_OUTFIELD babel[2], 120,55 , 105,15, 0+0
-	UI_OUTFIELD babel[20], 274,91 , 145,15, 0+4*(dk_panel_segments2<1)
+	UI_OUTFIELD babel[12], 209,21 , 100,15, 2+0
+	UI_OUTFIELD babel[22], 42,55 , 41,15, 0+0
+	UI_OUTFIELD babel[2], 138,55 , 105,15, 0+0
+	UI_OUTFIELD babel[18], 138,91 , 145,15, 0+4*(dk_panel_segments2<1)
+	UI_OUTFIELD babel[17], 292,55 , 105,15, 0+0
+	UI_OUTFIELD babel[20], 292,91 , 145,15, 0+4*(dk_panel_segments2<1)
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[17], 274,55 , 105,15, 0+0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[21], 274,154 , 145,15, 0+4*(nobar2 = 63)
+	UI_OUTFIELD babel[21], 292,154 , 145,15, 0+4*(nobar2 = 63)
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[50], 120,111 , 85,15, 0+4*(dk_panel_segments2<1)
-	UI_OUTFIELD babel[51], 120,132 , 85,15, 0+4*(dk_panel_segments2<1)
-	UI_OUTFIELD babel[52], 120,153 , 85,15, 0+4*(dk_panel_segments2<1)
-	UI_OUTFIELD babel[53], 120,174 , 85,15, 0+4*(dk_panel_segments2<1)
-	UI_OUTFIELD babel[54], 120,195 , 85,15, 0+4*(dk_panel_segments2<1)
-	UI_OUTFIELD babel[55], 120,216 , 85,15, 0+4*(dk_panel_segments2<1)
-	UI_OUTFIELD babel[56], 274,111 , 85,15, 0+4*(dk_panel_segments2<2)
-	UI_OUTFIELD babel[57], 274,132 , 85,15, 0+4*(dk_panel_segments2<3)
+	UI_OUTFIELD babel[50], 138,111 , 85,15, 0+4*(dk_panel_segments2<1)
+	UI_OUTFIELD babel[51], 138,132 , 85,15, 0+4*(dk_panel_segments2<1)
+	UI_OUTFIELD babel[52], 138,153 , 85,15, 0+4*(dk_panel_segments2<1)
+	UI_OUTFIELD babel[53], 138,174 , 85,15, 0+4*(dk_panel_segments2<1)
+	UI_OUTFIELD babel[54], 138,195 , 85,15, 0+4*(dk_panel_segments2<1)
+	UI_OUTFIELD babel[55], 138,216 , 85,15, 0+4*(dk_panel_segments2<1)
+	UI_OUTFIELD babel[56], 292,111 , 85,15, 0+4*(dk_panel_segments2<2)
+	UI_OUTFIELD babel[57], 292,132 , 85,15, 0+4*(dk_panel_segments2<3)
 	IF BITTEST(dk_mainpanel_design2,6) OR BITTEST(dk_mainpanel_design2,7) THEN UI_OUTFIELD babel[58], 120,237 , 85,15, 0+4*(dk_panel_segments2<1)
-	UI_OUTFIELD babel[60], 274,174 , 85,15, 0+4*(nobar2 = 63)
-	UI_OUTFIELD babel[71], 274,195 , 85,15, 0+4*(nobar2 = 63) UI_TOOLTIP bubble[6]
+	UI_OUTFIELD babel[60], 292,174 , 85,15, 0+4*(nobar2 = 63)
+	UI_OUTFIELD babel[71], 292,195 , 85,15, 0+4*(nobar2 = 63) UI_TOOLTIP bubble[6]
 	GOSUB "SELECT_panel_dimensionTS"
-	UI_PICT uiBitmap, 21,91 , 83,52, 1 UI_TOOLTIP bubble[27]
+	UI_PICT uiBitmap, 39,91 , 83,52, 1 UI_TOOLTIP bubble[27]
 	GOSUB "SELECT_panel_dimensionBS"
-	UI_PICT uiBitmap, 21,143 , 83,109, 1 UI_TOOLTIP bubble[27]
+	UI_PICT uiBitmap, 39,143 , 83,109, 1 UI_TOOLTIP bubble[27]
 	GOSUB "SELECT_dk_panel_segments"
-	UI_INFIELD{3} "dk_panel_segments2", 227,48 , 38,31, 2, 47, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[9]
+	UI_INFIELD{3} "dk_panel_segments2", 245,48 , 38,31, 2, 47, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[9]
 	GOSUB "SELECT_dk_mainpanel_design"
-	UI_INFIELD{3} "dk_mainpanel_design2", 381,48 , 38,31, 2, 46, 10, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[28]
-	UI_INFIELD{3} "leafFrWidthLeft2", 205,109 , 60,19 UI_TOOLTIP bubble[66]
-	UI_INFIELD{3} "leafFrWidthRight2", 205,130 , 60,19 UI_TOOLTIP bubble[65]
-	UI_INFIELD{3} "leafFrWidthTop2", 205,151 , 60,19 UI_TOOLTIP bubble[67]
-	UI_INFIELD{3} "leafFrWidthBottom2", 205,172 , 60,19 UI_TOOLTIP bubble[68]
-	UI_INFIELD{3} "dk_leafFrWidthHorizontal2", 205,193 , 60,19 UI_TOOLTIP bubble[14]
-	UI_INFIELD{3} "dk_leafFrWidthVertical2", 205,214 , 60,19 UI_TOOLTIP bubble[12]
+	UI_INFIELD{3} "dk_mainpanel_design2", 399,48 , 38,31, 2, 46, 10, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[28]
+	UI_INFIELD{3} "leafFrWidthLeft2", 223,109 , 60,19 UI_TOOLTIP bubble[66]
+	UI_INFIELD{3} "leafFrWidthRight2", 223,130 , 60,19 UI_TOOLTIP bubble[65]
+	UI_INFIELD{3} "leafFrWidthTop2", 223,151 , 60,19 UI_TOOLTIP bubble[67]
+	UI_INFIELD{3} "leafFrWidthBottom2", 223,172 , 60,19 UI_TOOLTIP bubble[68]
+	UI_INFIELD{3} "dk_leafFrWidthHorizontal2", 223,193 , 60,19 UI_TOOLTIP bubble[14]
+	UI_INFIELD{3} "dk_leafFrWidthVertical2", 223,214 , 60,19 UI_TOOLTIP bubble[12]
 	IF BITTEST(dk_mainpanel_design2,6) OR BITTEST(dk_mainpanel_design2,7) THEN UI_INFIELD{3} "dk_arch_height2", 205,235 , 60,19 UI_TOOLTIP bubble[34]
-	UI_INFIELD{3} "dk_panel_division_bottom2", 359,109 , 60,19 UI_TOOLTIP bubble[109]
-	UI_INFIELD{3} "dk_panel_division_top2", 359,130 , 60,19 UI_TOOLTIP bubble[42]
-	UI_INFIELD{3} "mullWidth2", 359,172 , 60,19 UI_TOOLTIP bubble[76]
-	UI_INFIELD{3} "mullThickness2", 359,193 , 60,19 UI_TOOLTIP bubble[81]
-	UI_SEPARATOR 268,109, 268,255
+	UI_INFIELD{3} "dk_panel_division_bottom2", 377,109 , 60,19 UI_TOOLTIP bubble[109]
+	UI_INFIELD{3} "dk_panel_division_top2", 377,130 , 60,19 UI_TOOLTIP bubble[42]
+	UI_INFIELD{3} "mullWidth2", 377,172 , 60,19 UI_TOOLTIP bubble[76]
+	UI_INFIELD{3} "mullThickness2", 377,193 , 60,19 UI_TOOLTIP bubble[81]
+	UI_SEPARATOR 286,109, 286,255
 	RETURN
 ! ------------------------------------------------------------- GESTALTUNG GANGFLÜGEL [ 5700 ]
 	5700:   ! #### LOI 5+ - Gestaltung Gangflügel
 	GOSUB 9900
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[23], 92,25 , 110,15, 2+4*(dk_panel_segments<1)
+	UI_OUTFIELD babel[23], 101,25 , 119,15, 2+4*(dk_panel_segments<1)
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[24], 213,25 , 110,15, 2+4*(dk_panel_segments<2)
+	UI_OUTFIELD babel[24], 231,25 , 119,15, 2+4*(dk_panel_segments<2)
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[25], 334,25 , 110,15, 2+4*(dk_panel_segments<3)
+	UI_OUTFIELD babel[25], 361,25 , 119,15, 2+4*(dk_panel_segments<3)
 	UI_STYLE 0,0
 	UI_STYLE 1,2
 	UI_OUTFIELD babel[48], 0,253 , 200,12, 0+0
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[63], 0,53 , 92,16, 0+0
-	IF nodiv # 63 THEN UI_OUTFIELD babel[19], 0,97 , 92,16, 0+0
-	IF nobar # 63 THEN UI_OUTFIELD babel[21], 0,145 , 92,16, 0+0
-	UI_OUTFIELD babel[62], 0,178 , 92,16, 0+0
+	UI_OUTFIELD babel[63], 0,53 , 101,16, 0+0
+	IF nodiv # 63 THEN UI_OUTFIELD babel[19], 0,97 , 101,16, 0+0
+	IF nobar # 63 THEN UI_OUTFIELD babel[21], 0,145 , 101,16, 0+0
+	UI_OUTFIELD babel[62], 0,178 , 101,16, 0+0
 	UI_PICT "ui_fill_type_flat 20x20.png", 5,198 , 20,20, 1
 	UI_PICT "ui_general_surface_flat 23x23.png", 2,220 , 23,23, 1
-	UI_PICT "ui_fill_pen_flat 29x16.png", 28,200 , 29,16, 1
-	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 61,200 , 29,16, 1
-	UI_OUTFIELD babel[44], 32,224 , 57,16, 0+0
-	UI_SEPARATOR 208,40, 208,244
-	UI_SEPARATOR 327,40, 327,244
+	UI_PICT "ui_fill_pen_flat 29x16.png", 29,200 , 29,16, 1
+	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 65,200 , 29,16, 1
+	UI_OUTFIELD babel[44], 36,224 , 57,16, 0+0
+	UI_SEPARATOR 226,40, 226,244
+	UI_SEPARATOR 354,40, 354,244
 	IF dk_panel_segments>0 THEN
 		GOSUB "SELECT_dk_mainpanel_design"
-		UI_INFIELD{3} "dk_mainpanel_design", 92,44 , 38,31, 2, 46, 10, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[87]
+		UI_INFIELD{3} "dk_mainpanel_design", 101,44 , 38,31, 2, 46, 10, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[87]
 		GOSUB "VALUES_dk_panel_filling"
-		UI_INFIELD{3} dk_panel_filling[1], 133,44 , 71,31, 2, 48, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[5]
-		IF NOT(BITTEST(nobar,0)) THEN UI_INFIELD{3} dk_panel_bar[1][1], 93,153 , 54,19 UI_TOOLTIP bubble[2]
-		IF NOT(BITTEST(nobar,1)) THEN UI_INFIELD{3} dk_panel_bar[1][2], 150,153 , 54,19 UI_TOOLTIP bubble[3]
-		IF NOT(BITTEST(nodiv,0)) THEN UI_INFIELD{3} dk_panel_division[1][1], 93,105 , 54,19 UI_TOOLTIP bubble[96]
-		IF NOT(BITTEST(nodiv,1)) THEN UI_INFIELD{3} dk_panel_division[1][2], 150,105 , 54,19 UI_TOOLTIP bubble[95]
-		UI_INFIELD{3} dk_panel_filling_thk[1], 93,175 , 111,19 UI_TOOLTIP bubble[18]
-		IF NOT(BITTEST(nodiv,0)) THEN UI_PICT 51, 99,79 , 25,25, 1 UI_TOOLTIP bubble[91]
-		IF NOT(BITTEST(nodiv,1)) THEN UI_PICT 52, 155,79 , 25,25, 1 UI_TOOLTIP bubble[91]
-		IF NOT(BITTEST(nobar,0)) THEN UI_PICT 49, 99,127 , 25,25, 1 UI_TOOLTIP bubble[78]
-		IF NOT(BITTEST(nobar,1)) THEN UI_PICT 50, 155,127 , 25,25, 1 UI_TOOLTIP bubble[78]
-		UI_INFIELD{3} dk_fills[dka_panelfill1_fill ], 92,197 , 36,21 UI_TOOLTIP bubble[71]
-		UI_INFIELD{3} dk_fill_pens[dka_panelfill1_penF ], 130,197 , 36,21 UI_TOOLTIP bubble[110]
-		UI_INFIELD{3} dk_bkg_pens[dka_panelfill1_penB ], 168,197 , 36,21 UI_TOOLTIP bubble[32]
-		UI_INFIELD{3} dk_materials[dka_panelfill1_mat_BS ], 92,220 , 55,21 UI_TOOLTIP bubble[45]
-		UI_INFIELD{3} dk_materials[dka_panelfill1_mat_BGS ], 149,220 , 55,21 UI_TOOLTIP bubble[44]
+		UI_INFIELD{3} dk_panel_filling[1], 142,44 , 80,31, 2, 48, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[5]
+		IF NOT(BITTEST(nobar,0)) THEN UI_INFIELD{3} dk_panel_bar[1][1], 102,153 , 58,19 UI_TOOLTIP bubble[2]
+		IF NOT(BITTEST(nobar,1)) THEN UI_INFIELD{3} dk_panel_bar[1][2], 164,153 , 58,19 UI_TOOLTIP bubble[3]
+		IF NOT(BITTEST(nodiv,0)) THEN UI_INFIELD{3} dk_panel_division[1][1], 102,105 , 58,19 UI_TOOLTIP bubble[96]
+		IF NOT(BITTEST(nodiv,1)) THEN UI_INFIELD{3} dk_panel_division[1][2], 164,105 , 58,19 UI_TOOLTIP bubble[95]
+		UI_INFIELD{3} dk_panel_filling_thk[1], 102,175 , 120,19 UI_TOOLTIP bubble[18]
+		IF NOT(BITTEST(nodiv,0)) THEN UI_PICT 51, 108,79 , 25,25, 1 UI_TOOLTIP bubble[91]
+		IF NOT(BITTEST(nodiv,1)) THEN UI_PICT 52, 173,79 , 25,25, 1 UI_TOOLTIP bubble[91]
+		IF NOT(BITTEST(nobar,0)) THEN UI_PICT 49, 108,127 , 25,25, 1 UI_TOOLTIP bubble[78]
+		IF NOT(BITTEST(nobar,1)) THEN UI_PICT 50, 173,127 , 25,25, 1 UI_TOOLTIP bubble[78]
+		UI_INFIELD{3} dk_fills[dka_panelfill1_fill ], 101,197 , 39,21 UI_TOOLTIP bubble[71]
+		UI_INFIELD{3} dk_fill_pens[dka_panelfill1_penF ], 142,197 , 39,21 UI_TOOLTIP bubble[110]
+		UI_INFIELD{3} dk_bkg_pens[dka_panelfill1_penB ], 183,197 , 39,21 UI_TOOLTIP bubble[32]
+		UI_INFIELD{3} dk_materials[dka_panelfill1_mat_BS ], 101,220 , 59,21 UI_TOOLTIP bubble[45]
+		UI_INFIELD{3} dk_materials[dka_panelfill1_mat_BGS ], 163,220 , 59,21 UI_TOOLTIP bubble[44]
 		ENDIF
 	IF dk_panel_segments>1 THEN
 		GOSUB "VALUES_dk_panel_filling"
-		UI_INFIELD{3} dk_panel_filling[2], 212,44 , 112,31, 2, 48, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[5]
-		IF NOT(BITTEST(nobar,2)) THEN UI_INFIELD{3} dk_panel_bar[2][1], 213,153 , 54,19 UI_TOOLTIP bubble[2]
-		IF NOT(BITTEST(nobar,3)) THEN UI_INFIELD{3} dk_panel_bar[2][2], 270,153 , 54,19 UI_TOOLTIP bubble[3]
-		IF NOT(BITTEST(nodiv,2)) THEN UI_INFIELD{3} dk_panel_division[2][1], 213,105 , 54,19 UI_TOOLTIP bubble[94]
-		IF NOT(BITTEST(nodiv,3)) THEN UI_INFIELD{3} dk_panel_division[2][2], 270,105 , 54,19 UI_TOOLTIP bubble[93]
-		UI_INFIELD{3} dk_panel_filling_thk[2], 213,175 , 111,19 UI_TOOLTIP bubble[16]
-		IF NOT(BITTEST(nodiv,2)) THEN UI_PICT 51, 219,79 , 25,25, 1 UI_TOOLTIP bubble[89]
-		IF NOT(BITTEST(nodiv,3)) THEN UI_PICT 52, 275,79 , 25,25, 1 UI_TOOLTIP bubble[89]
-		IF NOT(BITTEST(nobar,2)) THEN UI_PICT 49, 219,127 , 25,25, 1 UI_TOOLTIP bubble[77]
-		IF NOT(BITTEST(nobar,3)) THEN UI_PICT 50, 275,127 , 25,25, 1 UI_TOOLTIP bubble[77]
-		UI_INFIELD{3} dk_fills[dka_panelfill2_fill ], 212,197 , 36,21 UI_TOOLTIP bubble[70]
-		UI_INFIELD{3} dk_bkg_pens[dka_panelfill2_penB ], 288,197 , 36,21 UI_TOOLTIP bubble[32]
-		UI_INFIELD{3} dk_fill_pens[dka_panelfill2_penF ], 250,197 , 36,21 UI_TOOLTIP bubble[110]
-		UI_INFIELD{3} dk_materials[dka_panelfill2_mat_BS ], 212,220 , 55,21 UI_TOOLTIP bubble[45]
-		UI_INFIELD{3} dk_materials[dka_panelfill2_mat_BGS ], 269,220 , 55,21 UI_TOOLTIP bubble[44]
+		UI_INFIELD{3} dk_panel_filling[2], 230,44 , 121,31, 2, 48, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[5]
+		IF NOT(BITTEST(nobar,2)) THEN UI_INFIELD{3} dk_panel_bar[2][1], 231,153 , 58,19 UI_TOOLTIP bubble[2]
+		IF NOT(BITTEST(nobar,3)) THEN UI_INFIELD{3} dk_panel_bar[2][2], 293,153 , 58,19 UI_TOOLTIP bubble[3]
+		IF NOT(BITTEST(nodiv,2)) THEN UI_INFIELD{3} dk_panel_division[2][1], 231,105 , 58,19 UI_TOOLTIP bubble[94]
+		IF NOT(BITTEST(nodiv,3)) THEN UI_INFIELD{3} dk_panel_division[2][2], 293,105 , 58,19 UI_TOOLTIP bubble[93]
+		UI_INFIELD{3} dk_panel_filling_thk[2], 231,175 , 120,19 UI_TOOLTIP bubble[16]
+		IF NOT(BITTEST(nodiv,2)) THEN UI_PICT 51, 237,79 , 25,25, 1 UI_TOOLTIP bubble[89]
+		IF NOT(BITTEST(nodiv,3)) THEN UI_PICT 52, 302,79 , 25,25, 1 UI_TOOLTIP bubble[89]
+		IF NOT(BITTEST(nobar,2)) THEN UI_PICT 49, 237,127 , 25,25, 1 UI_TOOLTIP bubble[77]
+		IF NOT(BITTEST(nobar,3)) THEN UI_PICT 50, 302,127 , 25,25, 1 UI_TOOLTIP bubble[77]
+		UI_INFIELD{3} dk_fills[dka_panelfill2_fill ], 230,197 , 39,21 UI_TOOLTIP bubble[70]
+		UI_INFIELD{3} dk_bkg_pens[dka_panelfill2_penB ], 312,197 , 39,21 UI_TOOLTIP bubble[32]
+		UI_INFIELD{3} dk_fill_pens[dka_panelfill2_penF ], 271,197 , 39,21 UI_TOOLTIP bubble[110]
+		UI_INFIELD{3} dk_materials[dka_panelfill2_mat_BS ], 230,220 , 59,21 UI_TOOLTIP bubble[45]
+		UI_INFIELD{3} dk_materials[dka_panelfill2_mat_BGS ], 292,220 , 59,21 UI_TOOLTIP bubble[44]
 		ENDIF
 	IF dk_panel_segments>2 THEN
 		GOSUB "VALUES_dk_panel_filling"
-		UI_INFIELD{3} dk_panel_filling[3], 332,44 , 112,31, 2, 48, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[5]
-		IF NOT(BITTEST(nobar,4)) THEN UI_INFIELD{3} dk_panel_bar[3][1], 333,153 , 54,19 UI_TOOLTIP bubble[2]
-		IF NOT(BITTEST(nobar,5)) THEN UI_INFIELD{3} dk_panel_bar[3][2], 390,153 , 54,19 UI_TOOLTIP bubble[3]
-		IF NOT(BITTEST(nodiv,4)) THEN UI_INFIELD{3} dk_panel_division[3][1], 333,105 , 54,19 UI_TOOLTIP bubble[98]
-		IF NOT(BITTEST(nodiv,5)) THEN UI_INFIELD{3} dk_panel_division[3][2], 390,105 , 54,19 UI_TOOLTIP bubble[97]
-		UI_INFIELD{3} dk_panel_filling_thk[3], 333,175 , 111,19 UI_TOOLTIP bubble[20]
-		IF NOT(BITTEST(nodiv,4)) THEN UI_PICT 51, 339,79 , 25,25, 1 UI_TOOLTIP bubble[92]
-		IF NOT(BITTEST(nodiv,5)) THEN UI_PICT 52, 395,79 , 25,25, 1 UI_TOOLTIP bubble[92]
-		IF NOT(BITTEST(nobar,4)) THEN UI_PICT 49, 339,127 , 25,25, 1 UI_TOOLTIP bubble[79]
-		IF NOT(BITTEST(nobar,5)) THEN UI_PICT 50, 395,127 , 25,25, 1 UI_TOOLTIP bubble[79]
-		UI_INFIELD{3} dk_fills[dka_panelfill3_fill ], 332,197 , 36,21 UI_TOOLTIP bubble[72]
-		UI_INFIELD{3} dk_bkg_pens[dka_panelfill3_penB ], 408,197 , 36,21 UI_TOOLTIP bubble[32]
-		UI_INFIELD{3} dk_fill_pens[dka_panelfill3_penF ], 370,197 , 36,21 UI_TOOLTIP bubble[110]
-		UI_INFIELD{3} dk_materials[dka_panelfill3_mat_BS ], 332,220 , 55,21 UI_TOOLTIP bubble[45]
-		UI_INFIELD{3} dk_materials[dka_panelfill3_mat_BGS ], 389,220 , 55,21 UI_TOOLTIP bubble[44]
+		UI_INFIELD{3} dk_panel_filling[3], 359,44 , 121,31, 2, 48, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[5]
+		IF NOT(BITTEST(nobar,4)) THEN UI_INFIELD{3} dk_panel_bar[3][1], 360,153 , 58,19 UI_TOOLTIP bubble[2]
+		IF NOT(BITTEST(nobar,5)) THEN UI_INFIELD{3} dk_panel_bar[3][2], 422,153 , 58,19 UI_TOOLTIP bubble[3]
+		IF NOT(BITTEST(nodiv,4)) THEN UI_INFIELD{3} dk_panel_division[3][1], 360,105 , 58,19 UI_TOOLTIP bubble[98]
+		IF NOT(BITTEST(nodiv,5)) THEN UI_INFIELD{3} dk_panel_division[3][2], 422,105 , 58,19 UI_TOOLTIP bubble[97]
+		UI_INFIELD{3} dk_panel_filling_thk[3], 360,175 , 120,19 UI_TOOLTIP bubble[20]
+		IF NOT(BITTEST(nodiv,4)) THEN UI_PICT 51, 366,79 , 25,25, 1 UI_TOOLTIP bubble[92]
+		IF NOT(BITTEST(nodiv,5)) THEN UI_PICT 52, 431,79 , 25,25, 1 UI_TOOLTIP bubble[92]
+		IF NOT(BITTEST(nobar,4)) THEN UI_PICT 49, 366,127 , 25,25, 1 UI_TOOLTIP bubble[79]
+		IF NOT(BITTEST(nobar,5)) THEN UI_PICT 50, 431,127 , 25,25, 1 UI_TOOLTIP bubble[79]
+		UI_INFIELD{3} dk_fills[dka_panelfill3_fill ], 359,197 , 39,21 UI_TOOLTIP bubble[72]
+		UI_INFIELD{3} dk_fill_pens[dka_panelfill3_penF ], 400,197 , 39,21 UI_TOOLTIP bubble[110]
+		UI_INFIELD{3} dk_bkg_pens[dka_panelfill3_penB ], 441,197 , 39,21 UI_TOOLTIP bubble[32]
+		UI_INFIELD{3} dk_materials[dka_panelfill3_mat_BS ], 359,220 , 59,21 UI_TOOLTIP bubble[45]
+		UI_INFIELD{3} dk_materials[dka_panelfill3_mat_BGS ], 421,220 , 59,21 UI_TOOLTIP bubble[44]
 		ENDIF
-	IF dk_panel_segments<1 THEN UI_OUTFIELD babel[65], 92,53 , 112,30, 2+4
-	IF dk_panel_segments<2 THEN UI_OUTFIELD babel[63], 212,53 , 112,30, 2+4
-	IF dk_panel_segments<3 THEN UI_OUTFIELD babel[64], 332,53 , 112,30, 2+4
+	IF dk_panel_segments<1 THEN UI_OUTFIELD babel[65], 101,53 , 121,30, 2+4
+	IF dk_panel_segments<2 THEN UI_OUTFIELD babel[63], 230,53 , 121,30, 2+4
+	IF dk_panel_segments<3 THEN UI_OUTFIELD babel[64], 359,53 , 121,30, 2+4
 	RETURN
 ! ------------------------------------------------------------- GESTALTUNG STEHFLÜGEL [ 5800 ]
 	5800:   ! #### LOI 5+ - Gestaltung Standflügel
 	GOSUB 9900
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[23], 92,25 , 110,15, 2+4*(dk_panel_segments2<1)
+	UI_OUTFIELD babel[23], 101,25 , 110,15, 2+4*(dk_panel_segments2<1)
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[24], 213,25 , 110,15, 2+4*(dk_panel_segments2<2)
+	UI_OUTFIELD babel[24], 231,25 , 110,15, 2+4*(dk_panel_segments2<2)
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[25], 334,25 , 110,15, 2+4*(dk_panel_segments2<3)
+	UI_OUTFIELD babel[25], 370,25 , 110,15, 2+4*(dk_panel_segments2<3)
 	UI_STYLE 0,0
 	UI_STYLE 1,2
 	UI_OUTFIELD babel[48], 0,253 , 200,12, 0+0
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[63], 0,53 , 92,16, 0+0
-	IF nodiv2 # 63 THEN UI_OUTFIELD babel[19], 0,97 , 92,16, 0+0
-	IF nobar2 # 63 THEN UI_OUTFIELD babel[21], 0,145 , 92,16, 0+0
-	UI_OUTFIELD babel[62], 0,178 , 92,16, 0+0
+	UI_OUTFIELD babel[63], 0,53 , 101,16, 0+0
+	IF nodiv2 # 63 THEN UI_OUTFIELD babel[19], 0,97 , 101,16, 0+0
+	IF nobar2 # 63 THEN UI_OUTFIELD babel[21], 0,145 , 101,16, 0+0
+	UI_OUTFIELD babel[62], 0,178 , 101,16, 0+0
 	UI_PICT "ui_fill_type_flat 20x20.png", 5,198 , 20,20, 1
 	UI_PICT "ui_general_surface_flat 23x23.png", 2,220 , 23,23, 1
-	UI_PICT "ui_fill_pen_flat 29x16.png", 28,200 , 29,16, 1
-	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 61,200 , 29,16, 1
-	UI_OUTFIELD babel[44], 32,224 , 57,16, 0+0
-	UI_SEPARATOR 208,40, 208,244
-	UI_SEPARATOR 327,40, 327,244
+	UI_PICT "ui_fill_pen_flat 29x16.png", 32,200 , 29,16, 1
+	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 67,200 , 29,16, 1
+	UI_OUTFIELD babel[44], 38,224 , 57,16, 0+0
+	UI_SEPARATOR 226,40, 226,244
+	UI_SEPARATOR 354,40, 354,244
 	IF dk_panel_segments2>0 THEN
 		GOSUB "SELECT_dk_mainpanel_design"
-		UI_INFIELD{3} "dk_mainpanel_design2", 92,44 , 38,31, 2, 46, 10, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[28]
+		UI_INFIELD{3} "dk_mainpanel_design2", 101,44 , 38,31, 2, 46, 10, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[28]
 		GOSUB "VALUES_dk_panel_filling2"
-		UI_INFIELD{3} dk_panel_filling2[1], 133,44 , 71,31, 2, 48, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[5]
-		IF NOT(BITTEST(nobar2,0)) THEN UI_INFIELD{3} dk_panel_bar2[1][1], 93,153 , 54,19 UI_TOOLTIP bubble[2]
-		IF NOT(BITTEST(nobar2,1)) THEN UI_INFIELD{3} dk_panel_bar2[1][2], 150,153 , 54,19 UI_TOOLTIP bubble[3]
-		IF NOT(BITTEST(nodiv2,0)) THEN UI_INFIELD{3} dk_panel_division2[1][1], 93,105 , 54,19 UI_TOOLTIP bubble[96]
-		IF NOT(BITTEST(nodiv2,1)) THEN UI_INFIELD{3} dk_panel_division2[1][2], 150,105 , 54,19 UI_TOOLTIP bubble[95]
-		UI_INFIELD{3} dk_panel_filling_thk2[1], 93,175 , 111,19 UI_TOOLTIP bubble[19]
-		IF NOT(BITTEST(nodiv2,0)) THEN UI_PICT 51, 99,79 , 25,25, 1 UI_TOOLTIP bubble[91]
-		IF NOT(BITTEST(nodiv2,1)) THEN UI_PICT 52, 155,79 , 25,25, 1 UI_TOOLTIP bubble[91]
-		IF NOT(BITTEST(nobar2,0)) THEN UI_PICT 49, 99,127 , 25,25, 1 UI_TOOLTIP bubble[78]
-		IF NOT(BITTEST(nobar2,1)) THEN UI_PICT 50, 155,127 , 25,25, 1 UI_TOOLTIP bubble[78]
-		UI_INFIELD{3} dk_fills[dka_panel2fill1_fill ], 92,197 , 36,21 UI_TOOLTIP bubble[71]
-		UI_INFIELD{3} dk_fill_pens[dka_panel2fill1_penF ], 130,197 , 36,21 UI_TOOLTIP bubble[110]
-		UI_INFIELD{3} dk_bkg_pens[dka_panel2fill1_penB ], 168,197 , 36,21 UI_TOOLTIP bubble[32]
-		UI_INFIELD{3} dk_materials[dka_panel2fill1_mat_BS ], 92,220 , 55,21 UI_TOOLTIP bubble[45]
-		UI_INFIELD{3} dk_materials[dka_panel2fill1_mat_BGS ], 149,220 , 55,21 UI_TOOLTIP bubble[44]
+		UI_INFIELD{3} dk_panel_filling2[1], 142,44 , 80,31, 2, 48, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[5]
+		IF NOT(BITTEST(nobar2,0)) THEN UI_INFIELD{3} dk_panel_bar2[1][1], 102,153 , 58,19 UI_TOOLTIP bubble[2]
+		IF NOT(BITTEST(nobar2,1)) THEN UI_INFIELD{3} dk_panel_bar2[1][2], 164,153 , 58,19 UI_TOOLTIP bubble[3]
+		IF NOT(BITTEST(nodiv2,0)) THEN UI_INFIELD{3} dk_panel_division2[1][1], 102,105 , 58,19 UI_TOOLTIP bubble[96]
+		IF NOT(BITTEST(nodiv2,1)) THEN UI_INFIELD{3} dk_panel_division2[1][2], 164,105 , 58,19 UI_TOOLTIP bubble[95]
+		UI_INFIELD{3} dk_panel_filling_thk2[1], 102,175 , 120,19 UI_TOOLTIP bubble[19]
+		IF NOT(BITTEST(nodiv2,0)) THEN UI_PICT 51, 108,79 , 25,25, 1 UI_TOOLTIP bubble[91]
+		IF NOT(BITTEST(nodiv2,1)) THEN UI_PICT 52, 173,79 , 25,25, 1 UI_TOOLTIP bubble[91]
+		IF NOT(BITTEST(nobar2,0)) THEN UI_PICT 49, 108,127 , 25,25, 1 UI_TOOLTIP bubble[78]
+		IF NOT(BITTEST(nobar2,1)) THEN UI_PICT 50, 173,127 , 25,25, 1 UI_TOOLTIP bubble[78]
+		UI_INFIELD{3} dk_fills[dka_panel2fill1_fill ], 101,197 , 39,21 UI_TOOLTIP bubble[71]
+		UI_INFIELD{3} dk_fill_pens[dka_panel2fill1_penF ], 142,197 , 39,21 UI_TOOLTIP bubble[110]
+		UI_INFIELD{3} dk_bkg_pens[dka_panel2fill1_penB ], 183,197 , 39,21 UI_TOOLTIP bubble[32]
+		UI_INFIELD{3} dk_materials[dka_panel2fill1_mat_BS ], 101,220 , 59,21 UI_TOOLTIP bubble[45]
+		UI_INFIELD{3} dk_materials[dka_panel2fill1_mat_BGS ], 163,220 , 59,21 UI_TOOLTIP bubble[44]
 		ENDIF
 	IF dk_panel_segments2>1 THEN
 		GOSUB "VALUES_dk_panel_filling2"
-		UI_INFIELD{3} dk_panel_filling2[2], 212,44 , 112,31, 2, 48, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[5]
-		IF NOT(BITTEST(nobar2,2)) THEN UI_INFIELD{3} dk_panel_bar2[2][1], 213,153 , 54,19 UI_TOOLTIP bubble[2]
-		IF NOT(BITTEST(nobar2,3)) THEN UI_INFIELD{3} dk_panel_bar2[2][2], 270,153 , 54,19 UI_TOOLTIP bubble[3]
-		IF NOT(BITTEST(nodiv2,2)) THEN UI_INFIELD{3} dk_panel_division2[2][1], 213,105 , 54,19 UI_TOOLTIP bubble[94]
-		IF NOT(BITTEST(nodiv2,3)) THEN UI_INFIELD{3} dk_panel_division2[2][2], 270,105 , 54,19 UI_TOOLTIP bubble[93]
-		UI_INFIELD{3} dk_panel_filling_thk2[2], 213,175 , 111,19 UI_TOOLTIP bubble[17]
-		IF NOT(BITTEST(nodiv2,2)) THEN UI_PICT 51, 219,79 , 25,25, 1 UI_TOOLTIP bubble[89]
-		IF NOT(BITTEST(nodiv2,3)) THEN UI_PICT 52, 275,79 , 25,25, 1 UI_TOOLTIP bubble[89]
-		IF NOT(BITTEST(nobar2,2)) THEN UI_PICT 49, 219,127 , 25,25, 1 UI_TOOLTIP bubble[77]
-		IF NOT(BITTEST(nobar2,3)) THEN UI_PICT 50, 275,127 , 25,25, 1 UI_TOOLTIP bubble[77]
-		UI_INFIELD{3} dk_fills[dka_panel2fill2_fill ], 212,197 , 36,21 UI_TOOLTIP bubble[69]
-		UI_INFIELD{3} dk_bkg_pens[dka_panel2fill2_penB ], 288,197 , 36,21 UI_TOOLTIP bubble[32]
-		UI_INFIELD{3} dk_fill_pens[dka_panel2fill2_penF ], 250,197 , 36,21 UI_TOOLTIP bubble[110]
-		UI_INFIELD{3} dk_materials[dka_panel2fill2_mat_BS ], 212,220 , 55,21 UI_TOOLTIP bubble[45]
-		UI_INFIELD{3} dk_materials[dka_panel2fill2_mat_BGS ], 269,220 , 55,21 UI_TOOLTIP bubble[44]
+		UI_INFIELD{3} dk_panel_filling2[2], 230,44 , 121,31, 2, 48, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[5]
+		IF NOT(BITTEST(nobar2,2)) THEN UI_INFIELD{3} dk_panel_bar2[2][1], 231,153 , 58,19 UI_TOOLTIP bubble[2]
+		IF NOT(BITTEST(nobar2,3)) THEN UI_INFIELD{3} dk_panel_bar2[2][2], 293,153 , 58,19 UI_TOOLTIP bubble[3]
+		IF NOT(BITTEST(nodiv2,2)) THEN UI_INFIELD{3} dk_panel_division2[2][1], 231,105 , 58,19 UI_TOOLTIP bubble[94]
+		IF NOT(BITTEST(nodiv2,3)) THEN UI_INFIELD{3} dk_panel_division2[2][2], 293,105 , 58,19 UI_TOOLTIP bubble[93]
+		UI_INFIELD{3} dk_panel_filling_thk2[2], 231,175 , 120,19 UI_TOOLTIP bubble[17]
+		IF NOT(BITTEST(nodiv2,2)) THEN UI_PICT 51, 237,79 , 25,25, 1 UI_TOOLTIP bubble[89]
+		IF NOT(BITTEST(nodiv2,3)) THEN UI_PICT 52, 302,79 , 25,25, 1 UI_TOOLTIP bubble[89]
+		IF NOT(BITTEST(nobar2,2)) THEN UI_PICT 49, 237,127 , 25,25, 1 UI_TOOLTIP bubble[77]
+		IF NOT(BITTEST(nobar2,3)) THEN UI_PICT 50, 302,127 , 25,25, 1 UI_TOOLTIP bubble[77]
+		UI_INFIELD{3} dk_fills[dka_panel2fill2_fill ], 230,197 , 39,21 UI_TOOLTIP bubble[69]
+		UI_INFIELD{3} dk_bkg_pens[dka_panel2fill2_penB ], 312,197 , 39,21 UI_TOOLTIP bubble[32]
+		UI_INFIELD{3} dk_fill_pens[dka_panel2fill2_penF ], 271,197 , 39,21 UI_TOOLTIP bubble[110]
+		UI_INFIELD{3} dk_materials[dka_panel2fill2_mat_BS ], 230,220 , 59,21 UI_TOOLTIP bubble[45]
+		UI_INFIELD{3} dk_materials[dka_panel2fill2_mat_BGS ], 292,220 , 59,21 UI_TOOLTIP bubble[44]
 		ENDIF
 	IF dk_panel_segments2>2 THEN
 		GOSUB "VALUES_dk_panel_filling"
-		UI_INFIELD{3} dk_panel_filling2[3], 332,44 , 112,31, 2, 48, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[5]
-		IF NOT(BITTEST(nobar2,4)) THEN UI_INFIELD{3} dk_panel_bar2[3][1], 333,153 , 54,19 UI_TOOLTIP bubble[2]
-		IF NOT(BITTEST(nobar2,5)) THEN UI_INFIELD{3} dk_panel_bar2[3][2], 390,153 , 54,19 UI_TOOLTIP bubble[3]
-		IF NOT(BITTEST(nodiv2,4)) THEN UI_INFIELD{3} dk_panel_division2[3][1], 333,105 , 54,19 UI_TOOLTIP bubble[98]
-		IF NOT(BITTEST(nodiv2,5)) THEN UI_INFIELD{3} dk_panel_division2[3][2], 390,105 , 54,19 UI_TOOLTIP bubble[97]
-		UI_INFIELD{3} dk_panel_filling_thk2[3], 333,175 , 111,19 UI_TOOLTIP bubble[21]
-		IF NOT(BITTEST(nodiv2,4)) THEN UI_PICT 51, 339,79 , 25,25, 1 UI_TOOLTIP bubble[92]
-		IF NOT(BITTEST(nodiv2,5)) THEN UI_PICT 52, 395,79 , 25,25, 1 UI_TOOLTIP bubble[90]
-		IF NOT(BITTEST(nobar2,4)) THEN UI_PICT 49, 339,127 , 25,25, 1 UI_TOOLTIP bubble[79]
-		IF NOT(BITTEST(nobar2,5)) THEN UI_PICT 50, 395,127 , 25,25, 1 UI_TOOLTIP bubble[79]
-		UI_INFIELD{3} dk_fills[dka_panel2fill3_fill ], 332,197 , 36,21 UI_TOOLTIP bubble[72]
-		UI_INFIELD{3} dk_bkg_pens[dka_panel2fill3_penB ], 408,197 , 36,21 UI_TOOLTIP bubble[32]
-		UI_INFIELD{3} dk_fill_pens[dka_panel2fill3_penF ], 370,197 , 36,21 UI_TOOLTIP bubble[110]
-		UI_INFIELD{3} dk_materials[dka_panel2fill3_mat_BS ], 332,220 , 55,21 UI_TOOLTIP bubble[45]
-		UI_INFIELD{3} dk_materials[dka_panel2fill3_mat_BGS ], 389,220 , 55,21 UI_TOOLTIP bubble[44]
+		UI_INFIELD{3} dk_panel_filling2[3], 359,44 , 121,31, 2, 48, 5, 1, 25, 25, 25, 25, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[5]
+		IF NOT(BITTEST(nobar2,4)) THEN UI_INFIELD{3} dk_panel_bar2[3][1], 360,153 , 58,19 UI_TOOLTIP bubble[2]
+		IF NOT(BITTEST(nobar2,5)) THEN UI_INFIELD{3} dk_panel_bar2[3][2], 422,153 , 58,19 UI_TOOLTIP bubble[3]
+		IF NOT(BITTEST(nodiv2,4)) THEN UI_INFIELD{3} dk_panel_division2[3][1], 360,105 , 58,19 UI_TOOLTIP bubble[98]
+		IF NOT(BITTEST(nodiv2,5)) THEN UI_INFIELD{3} dk_panel_division2[3][2], 422,105 , 58,19 UI_TOOLTIP bubble[97]
+		UI_INFIELD{3} dk_panel_filling_thk2[3], 360,175 , 120,19 UI_TOOLTIP bubble[21]
+		IF NOT(BITTEST(nodiv2,4)) THEN UI_PICT 51, 366,79 , 25,25, 1 UI_TOOLTIP bubble[92]
+		IF NOT(BITTEST(nodiv2,5)) THEN UI_PICT 52, 431,79 , 25,25, 1 UI_TOOLTIP bubble[90]
+		IF NOT(BITTEST(nobar2,4)) THEN UI_PICT 49, 366,127 , 25,25, 1 UI_TOOLTIP bubble[79]
+		IF NOT(BITTEST(nobar2,5)) THEN UI_PICT 50, 431,127 , 25,25, 1 UI_TOOLTIP bubble[79]
+		UI_INFIELD{3} dk_fills[dka_panel2fill3_fill ], 359,197 , 39,21 UI_TOOLTIP bubble[72]
+		UI_INFIELD{3} dk_fill_pens[dka_panel2fill3_penF ], 400,197 , 39,21 UI_TOOLTIP bubble[110]
+		UI_INFIELD{3} dk_bkg_pens[dka_panel2fill3_penB ], 441,197 , 39,21 UI_TOOLTIP bubble[32]
+		UI_INFIELD{3} dk_materials[dka_panel2fill3_mat_BS ], 359,220 , 59,21 UI_TOOLTIP bubble[45]
+		UI_INFIELD{3} dk_materials[dka_panel2fill3_mat_BGS ], 421,220 , 59,21 UI_TOOLTIP bubble[44]
 		ENDIF
-	IF dk_panel_segments2<1 THEN UI_OUTFIELD babel[65], 92,53 , 112,30, 2+4
-	IF dk_panel_segments2<2 THEN UI_OUTFIELD babel[63], 212,53 , 112,30, 2+4
-	IF dk_panel_segments2<3 THEN UI_OUTFIELD babel[64], 332,53 , 112,30, 2+4
+	IF dk_panel_segments2<1 THEN UI_OUTFIELD babel[65], 101,53 , 121,30, 2+4
+	IF dk_panel_segments2<2 THEN UI_OUTFIELD babel[63], 230,53 , 121,30, 2+4
+	IF dk_panel_segments2<3 THEN UI_OUTFIELD babel[64], 359,53 , 121,30, 2+4
 	RETURN
 ! ------------------------------------------------------------- GESTALTUNG KANTEN [ 5900 ]
 	5900:   ! #### LOI 5+ - Gestaltung Kanten
@@ -1683,76 +1683,76 @@ END
 	sts = REQUEST ("Working_length_unit", "",format)   !»» Format für UI-Outfield -Längenwerte
 	GOSUB 9900
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[26], 0,22 , 119,15
+	UI_OUTFIELD babel[26], 0,22 , 135,15
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[27], 0,96 , 119,15
+	UI_OUTFIELD babel[27], 0,96 , 135,15
 	UI_STYLE 0,0
 	GOSUB "SELECT_dk_panel_bandings"
-	UI_INFIELD{3} "dk_panel_bandings", 150,19 , 75,70, 2, uiBitmap, 15, 5, 60, 60, 60, 60, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[103]
-	UI_OUTFIELD babel[61], 256,45 , 100,15, 0+4*(sts=0)
-	UI_INFIELD{3} "dk_leaf_bandings_width", 356,42 , 60,19 UI_TOOLTIP bubble[15]
+	UI_INFIELD{3} "dk_panel_bandings", 162,19 , 75,70, 2, uiBitmap, 15, 5, 60, 60, 60, 60, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[103]
+	UI_OUTFIELD babel[61], 280,45 , 105,15, 0+4*(sts=0)
+	UI_INFIELD{3} "dk_leaf_bandings_width", 386,42 , 60,19 UI_TOOLTIP bubble[15]
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[45], 125,100 , 22,12, 1+0
+	UI_OUTFIELD babel[45], 137,100 , 22,12, 1+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[46], 117,157 , 30,12, 1+0
+	UI_OUTFIELD babel[46], 129,157 , 30,12, 1+0
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[66], 256,117 , 100,15
-	UI_OUTFIELD babel[67], 256,138 , 100,15
-	UI_OUTFIELD babel[29], 0,124 , 128,15, 2+0 UI_TOOLTIP bubble[22]
+	UI_OUTFIELD babel[66], 280,117 , 105,15
+	UI_OUTFIELD babel[67], 280,138 , 105,15
+	UI_OUTFIELD babel[29], 0,124 , 135,15, 2+0 UI_TOOLTIP bubble[22]
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[73], 0,176 , 416,15, 2+0
+	UI_OUTFIELD babel[73], 12,176 , 416,16, 2+0
 	UI_STYLE 0,0
-	IF bs_folding_nmbr>0 AND (bs_leaf_oversize > tlr OR dk_panel_folding_ancor = 3) THEN UI_OUTFIELD babel[68], 256,159 , 100,15
-	IF bs_leaf_oversize < tlr AND dk_panel_folding_ancor = 1 THEN UI_OUTFIELD babel[69], 256,159 , 98,15
+	IF bs_folding_nmbr>0 AND (bs_leaf_oversize > tlr OR dk_panel_folding_ancor = 3) THEN UI_OUTFIELD babel[68], 280,159 , 105,15
+	IF bs_leaf_oversize < tlr AND dk_panel_folding_ancor = 1 THEN UI_OUTFIELD babel[69], 280,159 , 102,15
 	out_value = STR (format, bs_leaf_overhang)
 	IF bs_leaf_oversize < tlr AND dk_panel_folding_ancor = 1 THEN
-		UI_OUTFIELD out_value, 359,159 , 57,15
+		UI_OUTFIELD out_value, 389,159 , 57,15
 		ENDIF
-	UI_OUTFIELD babel[72], 256,96 , 100,15
+	UI_OUTFIELD babel[72], 280,96 , 105,15
 	GOSUB "SELECT_dk_panel_folding_ancor"
-	UI_INFIELD{3} "dk_panel_folding_ancor", 150,100 , 75,70, 2, 44, 18, 6, 60, 60, 60, 60, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[7]
-	IF dk_panel_folding_ancor = 2 THEN UI_PICT 41, 227,114 , 24,7, 1
-	IF dk_panel_folding_ancor = 1 THEN UI_PICT 41, 123,150 , 24,7, 1
-	UI_INFIELD{3} "gs_leaf_thk", 356,114 , 60,19 UI_TOOLTIP bubble[105]
-	UI_INFIELD{3} "bs_leaf_oversize", 356,135 , 60,19 UI_TOOLTIP bubble[74]
+	UI_INFIELD{3} "dk_panel_folding_ancor", 162,100 , 75,70, 2, 44, 18, 6, 60, 60, 60, 60, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[7]
+	IF dk_panel_folding_ancor = 2 THEN UI_PICT 41, 239,114 , 24,7, 1
+	IF dk_panel_folding_ancor = 1 THEN UI_PICT 41, 135,150 , 24,7, 1
+	UI_INFIELD{3} "gs_leaf_thk", 386,114 , 60,19 UI_TOOLTIP bubble[105]
+	UI_INFIELD{3} "bs_leaf_oversize", 386,135 , 60,19 UI_TOOLTIP bubble[74]
 	sts = (ABS(bs_leaf_oversize) < tlr)
-	UI_INFIELD{3} "bs_leaf_oversize", 361,96 , 32,16, 4, 40, 4, 1, 16, 16, 16, 16, 1+sts,"off",0, 4 - sts,"on",bs_leaf_oversize + 0.013*sts UI_TOOLTIP bubble[106]
-	IF bs_folding_nmbr>0 AND (bs_leaf_oversize > tlr OR dk_panel_folding_ancor = 3) THEN UI_INFIELD{3} "bs_leaf_overhang", 356,156 , 60,19 UI_TOOLTIP bubble[107]
-	UI_SEPARATOR 0,91, 445,91
+	UI_INFIELD{3} "bs_leaf_oversize", 391,96 , 32,16, 4, 40, 4, 1, 16, 16, 16, 16, 1+sts,"off",0, 4 - sts,"on",bs_leaf_oversize + 0.013*sts UI_TOOLTIP bubble[106]
+	IF bs_folding_nmbr>0 AND (bs_leaf_oversize > tlr OR dk_panel_folding_ancor = 3) THEN UI_INFIELD{3} "bs_leaf_overhang", 386,156 , 60,19 UI_TOOLTIP bubble[107]
+	UI_SEPARATOR 0,91, 481,91
 	IF bs_door_leafs < 2 THEN RETURN
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[28], 0,196 , 125,15, 0+0
+	UI_OUTFIELD babel[28], 0,196 , 135,15, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[46], 117,253 , 30,12, 1+0
+	UI_OUTFIELD babel[46], 129,253 , 30,12, 1+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[45], 125,196 , 22,12, 1+0
+	UI_OUTFIELD babel[45], 137,196 , 22,12, 1+0
 	UI_STYLE 0,0
 	GOSUB "VALUES_dk_panel_folding_nmbr"
-	UI_INFIELD{3} "dk_panel_folding_nmbr", 150,196 , 75,70, 2, 43, 4, 1, 60, 60, 60, 60, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[23]
-	IF dk_panel_folding_nmbr>0 THEN UI_INFIELD{3} dk_panel_folding_dimensions[1][1], 274,200 , 55,19 UI_TOOLTIP bubble[29]
-	IF dk_panel_folding_nmbr>0 THEN UI_INFIELD{3} dk_panel_folding_dimensions[1][2], 356,200 , 55,19 UI_TOOLTIP bubble[112]
-	IF dk_panel_folding_nmbr>1 THEN UI_INFIELD{3} dk_panel_folding_dimensions[2][1], 274,221 , 55,19 UI_TOOLTIP bubble[111]
-	IF dk_panel_folding_nmbr>1 THEN UI_INFIELD{3} dk_panel_folding_dimensions[2][2], 356,221 , 55,19 UI_TOOLTIP bubble[114]
-	IF dk_panel_folding_nmbr>2 THEN UI_INFIELD{3} dk_panel_folding_dimensions[3][1], 274,242 , 55,19 UI_TOOLTIP bubble[113]
-	IF dk_panel_folding_nmbr>2 THEN UI_INFIELD{3} dk_panel_folding_dimensions[3][2], 356,242 , 55,19 UI_TOOLTIP bubble[115]
-	IF dk_panel_folding_nmbr>0 THEN UI_OUTFIELD "1.", 256,203 , 18,15, 2+0
-	IF dk_panel_folding_nmbr>0 THEN UI_OUTFIELD "2.", 338,203 , 18,15, 2+0
-	IF dk_panel_folding_nmbr>1 THEN UI_OUTFIELD "5.", 256,224 , 18,15, 2+0
-	IF dk_panel_folding_nmbr>1 THEN UI_OUTFIELD "3.", 338,224 , 18,15, 2+0
-	IF dk_panel_folding_nmbr>2 THEN UI_OUTFIELD "6.", 256,245 , 18,15, 2+0
-	IF dk_panel_folding_nmbr>2 THEN UI_OUTFIELD "4.", 338,245 , 18,15, 2+0
-	UI_SEPARATOR 0,191, 445,191
+	UI_INFIELD{3} "dk_panel_folding_nmbr", 162,196 , 75,70, 2, 43, 4, 1, 60, 60, 60, 60, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[23]
+	IF dk_panel_folding_nmbr>0 THEN UI_INFIELD{3} dk_panel_folding_dimensions[1][1], 298,200 , 55,19 UI_TOOLTIP bubble[29]
+	IF dk_panel_folding_nmbr>0 THEN UI_INFIELD{3} dk_panel_folding_dimensions[1][2], 386,200 , 55,19 UI_TOOLTIP bubble[112]
+	IF dk_panel_folding_nmbr>1 THEN UI_INFIELD{3} dk_panel_folding_dimensions[2][1], 298,221 , 55,19 UI_TOOLTIP bubble[111]
+	IF dk_panel_folding_nmbr>1 THEN UI_INFIELD{3} dk_panel_folding_dimensions[2][2], 386,221 , 55,19 UI_TOOLTIP bubble[114]
+	IF dk_panel_folding_nmbr>2 THEN UI_INFIELD{3} dk_panel_folding_dimensions[3][1], 298,242 , 55,19 UI_TOOLTIP bubble[113]
+	IF dk_panel_folding_nmbr>2 THEN UI_INFIELD{3} dk_panel_folding_dimensions[3][2], 386,242 , 55,19 UI_TOOLTIP bubble[115]
+	IF dk_panel_folding_nmbr>0 THEN UI_OUTFIELD "1.", 280,203 , 18,15, 2+0
+	IF dk_panel_folding_nmbr>0 THEN UI_OUTFIELD "2.", 368,203 , 18,15, 2+0
+	IF dk_panel_folding_nmbr>1 THEN UI_OUTFIELD "5.", 280,224 , 18,15, 2+0
+	IF dk_panel_folding_nmbr>1 THEN UI_OUTFIELD "3.", 368,224 , 18,15, 2+0
+	IF dk_panel_folding_nmbr>2 THEN UI_OUTFIELD "6.", 280,245 , 18,15, 2+0
+	IF dk_panel_folding_nmbr>2 THEN UI_OUTFIELD "4.", 368,245 , 18,15, 2+0
+	UI_SEPARATOR 0,191, 481,191
 	RETURN
-! -------------------------------------------------------------TITLE [ 9900 ]
+! ------------------------------------------------------------- TITLE [ 9900 ]
 	9900:   ! #### TITEL on all pages
 	IF develop THEN GOSUB "devshow"
 	UI_STYLE 0,0
-	UI_PICT 1, 305,-2 , 139,15, 1
-	UI_SEPARATOR 0,15, 445,15
+	UI_PICT 1, 341,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 481,15
 	IF errorI>0 THEN
 		txt = ""
 		FOR i=1 TO errorI
@@ -1761,4 +1761,6 @@ END
 		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
 		ENDIF
 	RETURN
+
+
 

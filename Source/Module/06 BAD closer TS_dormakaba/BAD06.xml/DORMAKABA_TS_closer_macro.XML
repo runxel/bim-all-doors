@@ -3673,7 +3673,7 @@ END
 	UI_INFIELD{3} "bs_closer_orientation", 378,21 , 50,47, 2, uiBitmapIDX, 8, 1, 35, 35, 35, 35, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[24]   !»» "Dorma_closer_orientation_O 280x35.png"
 	GOSUB "SELECT_bs_closer_position"
 	UI_INFIELD{3} "bs_closer_position", 430,21 , 50,47, 2, uiBitmapIDX, 8, 1, 35, 35, 35, 35, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[23]   !»» "Dorma_closer_position_O 280x35.png"
-	UI_SEPARATOR 99,75, 455,75
+	UI_SEPARATOR 99,75, 481,75
 	UI_OUTFIELD babel[10], 0,84 , 90,15, 0+0
 	UI_OUTFIELD babel[20], 100,84 , 112,15, 0+0
 	UI_OUTFIELD babel[16], 100,112 , 112,15, 0+0
@@ -3692,7 +3692,7 @@ END
 	UI_SEPARATOR 197,249, 213,266
 	UI_SEPARATOR 216,249, 232,266
 	IF NOT( bs_door_leafs > 1 AND bs_closer2 = 2 ) THEN
-		UI_OUTFIELD babel[22], 100,132 , 112,30, 0+0
+		UI_OUTFIELD babel[22], 100,132 , 112,32, 0+0
 		GOSUB "VALUES_bs_closer_force"
 		UI_INFIELD{3} "bs_closer_force", 221,82 , 104,19, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[9]
 		IF bs_closer_type = "OTS" AND bs_slider_system = "G" THEN GOSUB "VALUES_bs_closer_fix" ELSE GOSUB "SELECT_bs_closer_fix"
@@ -3703,7 +3703,7 @@ END
 		UI_INFIELD{3} "bs_closer_damping", 348,102 , 132,16, 2, "", 1, 1, 0, 0, 0, 0, 0,"Öffnungsdämpfung",0, 0,"Öffnungsdämpfung",1 UI_TOOLTIP bubble[28]
 		UI_INFIELD{3} "bs_closer_manual", 348,122 , 132,16, 2, "", 1, 1, 0, 0, 0, 0, 0,"Handauslösung",0, 0,"Handauslösung",1 UI_TOOLTIP bubble[18]
 		IF bs_door_leafs >1 AND bs_closer2 THEN UI_INFIELD{3} "bs_closing_order", 348,142 , 132,16, 2, "", 1, 1, 0, 0, 0, 0, 0,"Schließfolgeregelung",0, 0,"Schließfolgeregelung",1 UI_TOOLTIP bubble[11]
-		UI_INFIELD{3} "bs_closer_model", 100,219 , 353,24, 2, "", 99, 1, 0, 0, 0, 0, UIcloserModelPic, UIcloserModelText, UIcloserModelVal UI_TOOLTIP bubble[6]
+		UI_INFIELD{3} "bs_closer_model", 100,219 , 380,24, 2, "", 99, 1, 0, 0, 0, 0, UIcloserModelPic, UIcloserModelText, UIcloserModelVal UI_TOOLTIP bubble[6]
 		UI_STYLE 0,1
 		IF bs_door_leafs > 1 AND bs_closer2 # 7 THEN
 			txt =babel[8]
@@ -3775,25 +3775,25 @@ END
 	IF no_closer > 1 THEN RETURN
 	GOSUB "SELECT_bs_closer_material"
 	IF sts THEN
-		UI_INFIELD{3} "bs_closer_material", 240,60 , 163,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+		UI_INFIELD{3} "bs_closer_material", 224,60 , 163,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
 		ENDIF
-	IF not(sts) THEN UI_INFIELD{3} "bs_closer_material", 241,60 , 162,21 UI_TOOLTIP bubble[3]
+	IF not(sts) THEN UI_INFIELD{3} "bs_closer_material", 225,60 , 162,21 UI_TOOLTIP bubble[3]
 	GOSUB "SELECT_bs_closer_surface"
 	IF sts THEN
-		UI_INFIELD{3} "bs_closer_surface", 240,90 , 163,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[4]
+		UI_INFIELD{3} "bs_closer_surface", 224,90 , 163,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[4]
 		ENDIF
-	IF not(sts) THEN UI_INFIELD{3} "bs_closer_surface", 241,90 , 162,21 UI_TOOLTIP bubble[4]
-	UI_INFIELD{3} dk_materials[dka_closer_mat], 270,189 , 133,21 UI_TOOLTIP bubble[25]
-	UI_INFIELD{3} dk_cont_pens[dka_closer_penSA], 270,129 , 133,21 UI_TOOLTIP bubble[21]
-	UI_INFIELD{3} dk_cont_pens[dka_closer_penC3], 270,159 , 133,21 UI_TOOLTIP bubble[20]
-	UI_PICT "ui_list_contourPen_flat 32x15.png", 238,133 , 32,15, 1
-	UI_PICT "ui_list_3DPen_flat 32x15.png", 237,162 , 32,15, 1
-	UI_PICT "ui_list_surface_flat 32x15.png", 238,192 , 32,15, 1
-	UI_OUTFIELD babel[17], 109,65 , 110,15, 0+0
-	UI_OUTFIELD babel[19], 109,95 , 110,15, 0+0
-	UI_OUTFIELD babel[14], 109,132 , 110,15, 0+0
-	UI_OUTFIELD babel[15], 109,162 , 110,15, 0+0
-	UI_SEPARATOR 109,118, 404,118
+	IF not(sts) THEN UI_INFIELD{3} "bs_closer_surface", 225,90 , 162,21 UI_TOOLTIP bubble[4]
+	UI_INFIELD{3} dk_materials[dka_closer_mat], 254,189 , 133,21 UI_TOOLTIP bubble[25]
+	UI_INFIELD{3} dk_cont_pens[dka_closer_penSA], 254,129 , 133,21 UI_TOOLTIP bubble[21]
+	UI_INFIELD{3} dk_cont_pens[dka_closer_penC3], 254,159 , 133,21 UI_TOOLTIP bubble[20]
+	UI_PICT "ui_list_contourPen_flat 32x15.png", 222,133 , 32,15, 1
+	UI_PICT "ui_list_3DPen_flat 32x15.png", 221,162 , 32,15, 1
+	UI_PICT "ui_list_surface_flat 32x15.png", 222,192 , 32,15, 1
+	UI_OUTFIELD babel[17], 93,65 , 110,15, 0+0
+	UI_OUTFIELD babel[19], 93,95 , 110,15, 0+0
+	UI_OUTFIELD babel[14], 93,132 , 110,15, 0+0
+	UI_OUTFIELD babel[15], 93,162 , 110,15, 0+0
+	UI_SEPARATOR 93,118, 388,118
 	RETURN
 ! --------------------2nd LEAF + PROPS [ 6700 ]
 	6700:   ! #### LOI 5 -Grundeinstellungen DORMAKABA  Türschließer
@@ -3845,7 +3845,7 @@ END
 	IF sts THEN
 		UI_INFIELD{3} "bs_closer_material", 113,185 , 181,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
 		ENDIF
-	IF not(sts) THEN UI_INFIELD{3} "bs_closer_material", 114,185 , 179,21 UI_TOOLTIP bubble[3]
+	IF not(sts) THEN UI_INFIELD{3} "bs_closer_material", 114,185 , 180,21 UI_TOOLTIP bubble[3]
 	GOSUB "SELECT_bs_closer_surface"
 	IF sts THEN
 		UI_INFIELD{3} "bs_closer_surface", 299,185 , 181,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[4]
@@ -3952,8 +3952,8 @@ END
 	UI_STYLE 0,0
 	UI_PICT 1, 316,-2 , 139,15, 1
 	UI_SEPARATOR 0,15, 456,15
-	IF no_closer = 2 THEN UI_OUTFIELD babel[26], 109,47 , 243,30, 2+0
-	IF no_closer = 4 THEN UI_OUTFIELD babel[24], 117,47 , 235,56, 2+0
+	IF no_closer = 2 THEN UI_OUTFIELD babel[26], 109,47 , 255,32, 2+0
+	IF no_closer = 4 THEN UI_OUTFIELD babel[24], 117,47 , 235,64, 2+0
 	GOSUB "SELECT_url"
 	UI_PICT_BUTTON UI_LINK, "", "uiTab_Info.png", 458,-5 , 22,22, 0, url UI_TOOLTIP bubble[36]
 	IF errorI>0 THEN
@@ -3964,6 +3964,9 @@ END
 		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
 		ENDIF
 	RETURN
+
+
+
 
 ]]></Script_UI>
   <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->

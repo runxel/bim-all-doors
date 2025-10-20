@@ -459,9 +459,9 @@ END
 ! ------------------------------------------------------------- MAIN PAGE [ 8000 ]
 	8000:   ! #### LOI 6 -Grundeinstellungen 1/2 Flügel
 	GOSUB 9900
-	UI_SEPARATOR 0,89, 445,89
-	UI_SEPARATOR 0,142, 445,142
-	UI_SEPARATOR 208,148, 208,267
+	UI_SEPARATOR 0,89, 481,89
+	UI_SEPARATOR 0,142, 481,142
+	UI_SEPARATOR 228,148, 228,267
 	UI_STYLE 0,1
 	UI_OUTFIELD babel[1], 0,24 , 58,15, 0+0
 	UI_STYLE 0,0
@@ -471,111 +471,111 @@ END
 	UI_STYLE 0,1
 	UI_OUTFIELD babel[27], 0,150 , 77,15, 0+0
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[2], 58,24 , 137,15, 0+0
-	UI_OUTFIELD babel[3], 58,45 , 137,15, 0+0
-	UI_OUTFIELD babel[5], 58,69 , 137,15, 0+0
+	UI_OUTFIELD babel[2], 58,24 , 149,15, 0+0
+	UI_OUTFIELD babel[3], 58,45 , 149,15, 0+0
+	UI_OUTFIELD babel[5], 58,69 , 149,15, 0+0
 	GOSUB "SELECT_bs_lock_type"
-	UI_INFIELD{3} "bs_lock_type", 196,19 , 247,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[20]
-	UI_INFIELD{3} "bs_case_manufacturer", 197,43 , 119,19 UI_TOOLTIP bubble[4]
-	UI_INFIELD{3} "bs_case_model", 323,43 , 120,19 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} "bs_lock_type", 208,19 , 272,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[20]
+	UI_INFIELD{3} "bs_case_manufacturer", 209,43 , 133,19 UI_TOOLTIP bubble[4]
+	UI_INFIELD{3} "bs_case_model", 347,43 , 133,19 UI_TOOLTIP bubble[1]
 	GOSUB "VALUES_bs_latch_plate"
-	UI_INFIELD{3} "bs_latch_plate", 196,64 , 78,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[13]
+	UI_INFIELD{3} "bs_latch_plate", 208,64 , 86,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[13]
 	GOSUB "SELECT_bs_case_material"
-	IF sts THEN UI_INFIELD{3} "bs_case_material", 280,64 , 79,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[16]
-	IF NOT(sts) THEN UI_INFIELD{3} "bs_case_material", 280,65 , 79,19 UI_TOOLTIP bubble[16]
+	IF sts THEN UI_INFIELD{3} "bs_case_material", 300,64 , 86,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[16]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_case_material", 300,65 , 86,19 UI_TOOLTIP bubble[16]
 	GOSUB "SELECT_bs_case_surface"
-	IF sts THEN UI_INFIELD{3} "bs_case_surface", 365,64 , 78,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[17]
+	IF sts THEN UI_INFIELD{3} "bs_case_surface", 394,64 , 86,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[17]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_case_surface", 394,65 , 86,19 UI_TOOLTIP bubble[17]
 	UI_STYLE 0,1
 	IF bs_door_leafs > 1 THEN txt = babel[6] ELSE txt = babel[7]
 		UI_OUTFIELD txt, 0,97 , 77,15, 0+0
 		UI_STYLE 0,0
-	IF NOT(sts) THEN UI_INFIELD{3} "bs_case_surface", 365,65 , 78,19 UI_TOOLTIP bubble[17]
-	UI_OUTFIELD babel[10], 77,97 , 60,15, 0+0
-	UI_OUTFIELD babel[22], 200,97 , 55,15, 2+0
-	UI_OUTFIELD babel[11], 318,97 , 66,15, 2+0
+	UI_OUTFIELD babel[10], 77,97 , 63,15, 0+0
+	UI_OUTFIELD babel[22], 210,97 , 62,15, 2+0
+	UI_OUTFIELD babel[11], 342,97 , 72,15, 2+0
 	GOSUB "SELECT_gs_han_pos"
-	IF sts THEN UI_INFIELD{3} "gs_han_pos", 137,94 , 60,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[6]
-	IF not(sts) THEN UI_INFIELD{3} "gs_han_pos", 137,95 , 60,19 UI_TOOLTIP bubble[6]
-	UI_INFIELD{3} "bs_case_hole", 255,95 , 60,19 UI_TOOLTIP bubble[14]
+	IF sts THEN UI_INFIELD{3} "gs_han_pos", 141,94 , 65,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[6]
+	IF not(sts) THEN UI_INFIELD{3} "gs_han_pos", 141,95 , 65,19 UI_TOOLTIP bubble[6]
+	UI_INFIELD{3} "bs_case_hole", 273,95 , 65,19 UI_TOOLTIP bubble[14]
 	GOSUB "SELECT_bs_case_distance"
-	IF sts THEN UI_INFIELD{3} "bs_case_distance", 384,94 , 60,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[10]
-	IF NOT(sts) THEN UI_INFIELD{3} "bs_case_distance", 384,95 , 60,19 UI_TOOLTIP bubble[10]
+	IF sts THEN UI_INFIELD{3} "bs_case_distance", 415,94 , 65,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[10]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_case_distance", 415,95 , 65,19 UI_TOOLTIP bubble[10]
 	IF bs_door_leafs > 1 THEN
 		UI_STYLE 0,1
 		
 		UI_OUTFIELD babel[26], 0,120 , 77,15, 0+0
 		UI_STYLE 0,0
-		UI_OUTFIELD babel[10], 77,120 , 60,15, 0+0
-		UI_OUTFIELD babel[22], 200,120 , 55,15, 2+0
-		UI_OUTFIELD babel[11], 318,120 , 66,15, 2+0
+		UI_OUTFIELD babel[10], 77,120 , 63,15, 0+0
+		UI_OUTFIELD babel[22], 210,120 , 62,15, 2+0
+		UI_OUTFIELD babel[11], 342,120 , 72,15, 2+0
 		GOSUB "SELECT_gs_han_pos2"
-		IF sts THEN UI_INFIELD{3} "gs_han_pos2", 137,117 , 60,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[7]
-		IF not(sts) THEN UI_INFIELD{3} "gs_han_pos2", 137,118 , 60,19 UI_TOOLTIP bubble[7]
-		UI_INFIELD{3} "bs_case_hole2", 255,118 , 60,19 UI_TOOLTIP bubble[15]
+		IF sts THEN UI_INFIELD{3} "gs_han_pos2", 141,117 , 65,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[7]
+		IF not(sts) THEN UI_INFIELD{3} "gs_han_pos2", 141,118 , 65,19 UI_TOOLTIP bubble[7]
+		UI_INFIELD{3} "bs_case_hole2", 273,118 , 65,19 UI_TOOLTIP bubble[15]
 		GOSUB "SELECT_bs_case_distance2"
-		IF sts THEN UI_INFIELD{3} "bs_case_distance2", 384,117 , 60,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[11]
-		IF not(sts) THEN UI_INFIELD{3} "bs_case_distance2", 384,118 , 60,19 UI_TOOLTIP bubble[11]
+		IF sts THEN UI_INFIELD{3} "bs_case_distance2", 415,117 , 65,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvalRealArray UI_TOOLTIP bubble[11]
+		IF not(sts) THEN UI_INFIELD{3} "bs_case_distance2", 415,118 , 65,19 UI_TOOLTIP bubble[11]
 		ENDIF
 	GOSUB "SELECT_bs_access_control_type"
-	IF sts THEN UI_INFIELD{3} "bs_access_control_type", 317,147 , 126,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
-	IF NOT(sts) THEN UI_INFIELD{3} "bs_access_control_type", 318,148 , 124,19 UI_TOOLTIP bubble[2]
+	IF sts THEN UI_INFIELD{3} "bs_access_control_type", 342,147 , 138,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_access_control_type", 343,148 , 137,19 UI_TOOLTIP bubble[2]
 	GOSUB "VALUES_bs_lock_barrel"
-	UI_INFIELD{3} "bs_lock_barrel", 318,172 , 126,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+	UI_INFIELD{3} "bs_lock_barrel", 342,172 , 138,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
 	GOSUB "VALUES_bs_locking_side"
-	UI_INFIELD{3} "bs_locking_side", 318,220 , 126,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+	UI_INFIELD{3} "bs_locking_side", 342,220 , 138,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
 	GOSUB "VALUES_bs_lock_system"
-	UI_INFIELD{3} "bs_lock_system", 318,245 , 126,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[24]
+	UI_INFIELD{3} "bs_lock_system", 342,245 , 138,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[24]
 	IF bs_lock_type = "FA" THEN sts = 1 ELSE sts = 0
-	UI_INFIELD{3} "bs_lock_panic", 77,147 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[18]   !»» "dk_yes_no_na 72x18.png"
-	UI_OUTFIELD babel[14], 108,150 , 98,15, 0+4*(sts OR bs_lock_type = "RI")
-	UI_INFIELD{3} "bs_lock_change", 317,197 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[12]   !»» "dk_yes_no_na 72x18.png"
-	UI_OUTFIELD babel[20], 346,200 , 98,15, 0+4*(sts OR bs_lock_type = "RI")
-	UI_INFIELD{3} "bs_selflocking", 77,167 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[22]   !»» "dk_yes_no_na 72x18.png"
-	UI_OUTFIELD babel[25], 108,170 , 98,15, 0+4*(sts)
-	UI_INFIELD{3} "bs_lock_SF", 77,187 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[23]   !»» "dk_yes_no_na 72x18.png"
-	UI_OUTFIELD babel[24], 108,190 , 98,15, 0+4*(bs_door_leafs < 2)
-	UI_INFIELD{3} "bs_lock_master", 77,207 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[19]   !»» "dk_yes_no_na 72x18.png"
-	UI_OUTFIELD babel[16], 108,210 , 98,15, 0+4*(sts)
-	UI_INFIELD{3} "bs_lock_electric", 77,227 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[9]   !»» "dk_yes_no_na 72x18.png"
-	UI_OUTFIELD babel[12], 108,230 , 98,15, 0+0
-	UI_INFIELD{3} "bs_lock_opener", 77,247 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[8]   !»» "dk_yes_no_na 72x18.png"
-	UI_OUTFIELD babel[18], 108,250 , 98,15, 0+0
-	UI_OUTFIELD babel[9], 212,175 , 105,15, 0+4*(sts) UI_TOOLTIP bubble[5]
-	UI_OUTFIELD babel[17], 212,223 , 105,15, 0+4*(sts)
-	UI_OUTFIELD babel[23], 212,248 , 105,15, 0+4*(sts)
-	UI_OUTFIELD babel[8], 212,150 , 105,15, 0+4*(sts) UI_TOOLTIP bubble[2]
+	UI_INFIELD{3} "bs_lock_panic", 89,147 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[18]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[14], 120,150 , 106,15, 0+4*(sts OR bs_lock_type = "RI")
+	UI_INFIELD{3} "bs_lock_change", 342,197 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[12]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[20], 371,200 , 109,15, 0+4*(sts OR bs_lock_type = "RI")
+	UI_INFIELD{3} "bs_selflocking", 89,167 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[22]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[25], 120,170 , 106,15, 0+4*(sts)
+	UI_INFIELD{3} "bs_lock_SF", 89,187 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[23]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[24], 120,190 , 106,15, 0+4*(bs_door_leafs < 2)
+	UI_INFIELD{3} "bs_lock_master", 89,207 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[19]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[16], 120,210 , 106,15, 0+4*(sts)
+	UI_INFIELD{3} "bs_lock_electric", 89,227 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[9]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[12], 120,230 , 106,15, 0+0
+	UI_INFIELD{3} "bs_lock_opener", 89,247 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[8]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[18], 120,250 , 106,15, 0+0
+	UI_OUTFIELD babel[9], 232,175 , 109,15, 0+4*(sts) UI_TOOLTIP bubble[5]
+	UI_OUTFIELD babel[17], 232,223 , 109,15, 0+4*(sts)
+	UI_OUTFIELD babel[23], 232,248 , 109,15, 0+4*(sts)
+	UI_OUTFIELD babel[8], 232,150 , 109,15, 0+4*(sts) UI_TOOLTIP bubble[2]
 	RETURN
 ! ------------------------------------------------------------- MAIN PAGE [ 8100 ]
 	8100:   ! #### LOI 5 -Grundeinstellungen 1/2 Flügel
 	GOSUB 9900
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[4], 60,40 , 89,15, 0+0
+	UI_OUTFIELD babel[4], 72,40 , 89,15, 0+0
 	UI_STYLE 0,0
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[27], 60,89 , 91,15, 0+0
+	UI_OUTFIELD babel[27], 72,89 , 91,15, 0+0
 	UI_STYLE 0,0
-	UI_SEPARATOR 60,72, 385,72
+	UI_SEPARATOR 72,72, 409,72
 	GOSUB "SELECT_bs_lock_type"
-	UI_INFIELD{3} "bs_lock_type", 154,35 , 230,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[20]
+	UI_INFIELD{3} "bs_lock_type", 166,35 , 242,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[20]
 	GOSUB "SELECT_bs_access_control_type"
-	IF sts THEN UI_INFIELD{3} "bs_access_control_type", 254,86 , 131,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
-	IF NOT(sts) THEN UI_INFIELD{3} "bs_access_control_type", 255,87 , 129,19 UI_TOOLTIP bubble[2]
+	IF sts THEN UI_INFIELD{3} "bs_access_control_type", 272,86 , 136,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[2]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_access_control_type", 273,87 , 135,19 UI_TOOLTIP bubble[2]
 	GOSUB "VALUES_bs_lock_barrel"
-	UI_INFIELD{3} "bs_lock_barrel", 254,112 , 131,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+	UI_INFIELD{3} "bs_lock_barrel", 272,112 , 136,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
 	GOSUB "VALUES_bs_locking_side"
-	UI_INFIELD{3} "bs_locking_side", 254,162 , 131,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
+	UI_INFIELD{3} "bs_locking_side", 272,162 , 136,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[21]
 	IF bs_lock_type = "FA" THEN sts = 1 ELSE sts = 0
-	UI_INFIELD{3} "bs_lock_panic", 254,188 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[18]   !»» "dk_yes_no_na 72x18.png"
-	UI_OUTFIELD babel[15], 154,191 , 100,15, 0+4*(sts OR bs_lock_type = "RI")
-	UI_INFIELD{3} "bs_lock_change", 254,138 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[12]   !»» "dk_yes_no_na 72x18.png"
-	UI_OUTFIELD babel[21], 154,141 , 100,15, 0+4*(sts OR bs_lock_type = "RI")
-	UI_INFIELD{3} "bs_lock_electric", 254,212 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[9]   !»» "dk_yes_no_na 72x18.png"
-	UI_OUTFIELD babel[13], 154,215 , 100,15, 0+0
-	UI_INFIELD{3} "bs_lock_opener", 254,236 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[8]   !»» "dk_yes_no_na 72x18.png"
-	UI_OUTFIELD babel[19], 154,239 , 100,15, 0+0
-	UI_OUTFIELD babel[8], 154,89 , 97,15, 0+4*(sts) UI_TOOLTIP bubble[2]
-	UI_OUTFIELD babel[9], 154,115 , 97,15, 0+4*(sts)
-	UI_OUTFIELD babel[17], 154,165 , 100,15, 0+4*(sts)
+	UI_INFIELD{3} "bs_lock_panic", 272,188 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[18]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[15], 166,191 , 105,15, 0+4*(sts OR bs_lock_type = "RI")
+	UI_INFIELD{3} "bs_lock_change", 272,138 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[12]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[21], 166,141 , 105,15, 0+4*(sts OR bs_lock_type = "RI")
+	UI_INFIELD{3} "bs_lock_electric", 272,212 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[9]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[13], 166,215 , 105,15, 0+0
+	UI_INFIELD{3} "bs_lock_opener", 272,236 , 27,19, 2, 2, 4, 1, 18, 18, 18, 18, 1,"Nein",0, 2,"Ja",1, 3,"undefiniert",2 UI_TOOLTIP bubble[8]   !»» "dk_yes_no_na 72x18.png"
+	UI_OUTFIELD babel[19], 166,239 , 105,15, 0+0
+	UI_OUTFIELD babel[8], 166,89 , 105,15, 0+4*(sts) UI_TOOLTIP bubble[2]
+	UI_OUTFIELD babel[9], 166,115 , 105,15, 0+4*(sts)
+	UI_OUTFIELD babel[17], 166,165 , 105,15, 0+4*(sts)
 	RETURN
 ! ------------------------------------------------------------- MAIN PAGE [ 8200 ]
 	9800:   ! #### TITEL on all pages
@@ -596,8 +596,8 @@ END
 	9900:   ! #### TITEL on all pages
 	IF develop THEN GOSUB "devshow"
 	UI_STYLE 0,0
-	UI_PICT 1, 305,-2 , 139,15, 1
-	UI_SEPARATOR 0,15, 445,15
+	UI_PICT 1, 341,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 481,15
 	IF errorI>0 THEN
 		txt = ""
 		FOR i=1 TO errorI
@@ -606,4 +606,3 @@ END
 		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
 		ENDIF
 	RETURN
-

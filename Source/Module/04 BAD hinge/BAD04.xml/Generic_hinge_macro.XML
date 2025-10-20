@@ -206,7 +206,7 @@ DIM UI_page_names[], UI_page_icons[], UI_page_type[]
 
 ! »»» Constants
 tlr = 0.00001  !»» accurancy
-version = 1.56 !»» Objektversion
+version = 1.90 !»» Objektversion
 txt = ""	   !»»  Text für alles
 checkTXT = ""  !»»  Text für Prüfungen
 
@@ -1008,120 +1008,120 @@ END
 	GOSUB 9900
 	UI_OUTFIELD babel[16], 61,39 , 125,15, 0+0
 	GOSUB "SELECT_bs_hinge_type"
-	UI_INFIELD{3} "bs_hinge_type", 187,34 , 204,21, 2, "", 99, 1, 0, 0, 0, 0, UIpic, UItxt, UIval UI_TOOLTIP bubble[14]
+	UI_INFIELD{3} "bs_hinge_type", 205,34 , 210,21, 2, "", 99, 1, 0, 0, 0, 0, UIpic, UItxt, UIval UI_TOOLTIP bubble[14]
 	GOSUB 6200
 	RETURN
 ! ------------------------------------------------------------- MAIN PAGE [ 6100 ]
 	6100:   ! #### LOI 5 -Grundeinstellungen Türbänder
 	GOSUB 9900
-	UI_OUTFIELD babel[16], 61,30 , 125,15, 0+0
-	UI_OUTFIELD babel[13], 61,53 , 125,15, 0+0
+	UI_OUTFIELD babel[16], 61,30 , 137,16, 0+0
+	UI_OUTFIELD babel[13], 61,53 , 137,16, 0+0
 	GOSUB "SELECT_bs_hinge_type"
-	UI_INFIELD{3} "bs_hinge_type", 187,25 , 204,21, 2, "", 99, 1, 0, 0, 0, 0, UIpic, UItxt, UIval UI_TOOLTIP bubble[14]
-	UI_INFIELD{3} "bs_hinge_nmbr", 187,51 , 45,19 UI_TOOLTIP bubble[5]
+	UI_INFIELD{3} "bs_hinge_type", 205,25 , 210,21, 2, "", 99, 1, 0, 0, 0, 0, UIpic, UItxt, UIval UI_TOOLTIP bubble[14]
+	UI_INFIELD{3} "bs_hinge_nmbr", 205,51 , 45,19 UI_TOOLTIP bubble[5]
 	GOSUB "SELECT_bs_hinge_chuck"
 	IF sts THEN
-		UI_INFIELD{3} "bs_hinge_chuck", 247,50 , 144,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[11]
+		UI_INFIELD{3} "bs_hinge_chuck", 271,50 , 144,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[11]
 		ENDIF
-	IF NOT(sts) THEN UI_INFIELD{3} "bs_hinge_chuck", 247,51 , 144,19 UI_TOOLTIP bubble[11]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_hinge_chuck", 271,51 , 144,19 UI_TOOLTIP bubble[11]
 	GOSUB 6200
 	RETURN
 ! ------------------------------------------------------------- SUB PAGE [ 6200 ]
 	6200:   ! #### SUB Grundeinstellungen Türbänder
-	UI_OUTFIELD babel[2], 61,122 , 125,15, 0+0
-	UI_OUTFIELD babel[1], 61,98 , 125,15, 0+0
-	UI_OUTFIELD babel[7], 61,169 , 125,15, 0+0
-	UI_OUTFIELD babel[15], 61,193 , 125,15, 0+0
-	UI_INFIELD{3} "bs_hinge_manufacturer", 188,95 , 202,19 UI_TOOLTIP bubble[1]
-	UI_INFIELD{3} "bs_hinge_model", 188,120 , 202,19 UI_TOOLTIP bubble[2]
+	UI_OUTFIELD babel[2], 73,122 , 125,16, 0+0
+	UI_OUTFIELD babel[1], 73,98 , 125,16, 0+0
+	UI_OUTFIELD babel[7], 73,169 , 125,16, 0+0
+	UI_OUTFIELD babel[15], 73,193 , 125,16, 0+0
+	UI_INFIELD{3} "bs_hinge_manufacturer", 200,95 , 202,19 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} "bs_hinge_model", 200,120 , 202,19 UI_TOOLTIP bubble[2]
 	GOSUB "SELECT_bs_hinge_material"
 	IF sts THEN
-		UI_INFIELD{3} "bs_hinge_material", 188,164 , 100,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
+		UI_INFIELD{3} "bs_hinge_material", 200,164 , 100,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[3]
 		ENDIF
-	UI_INFIELD{3} dk_materials[dka_hinge_mat], 213,189 , 178,21 UI_TOOLTIP bubble[16]
-	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_material", 188,165 , 100,19 UI_TOOLTIP bubble[3]
+	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_material", 200,165 , 100,19 UI_TOOLTIP bubble[3]
+	UI_INFIELD{3} dk_materials[dka_hinge_mat], 225,189 , 178,21 UI_TOOLTIP bubble[16]
 	GOSUB "SELECT_bs_hinge_surface"
 	IF sts THEN
-		UI_INFIELD{3} "bs_hinge_surface", 291,164 , 100,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[4]
+		UI_INFIELD{3} "bs_hinge_surface", 303,164 , 100,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[4]
 		ENDIF
-	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_surface", 291,165 , 100,19 UI_TOOLTIP bubble[4]
-	UI_PICT "ui_general_surface_flat 23x23.png", 187,189 , 23,23, 1
-	UI_SEPARATOR 61,158, 391,158
-	UI_SEPARATOR 61,215, 391,215
-	UI_SEPARATOR 61,76, 391,76
+	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_surface", 303,165 , 100,19 UI_TOOLTIP bubble[4]
+	UI_PICT "ui_general_surface_flat 23x23.png", 199,189 , 23,23, 1
+	UI_SEPARATOR 73,158, 403,158
+	UI_SEPARATOR 73,215, 403,215
+	UI_SEPARATOR 73,76, 403,76
 	RETURN
 ! ------------------------------------------------------------- MAIN PAGE [ 6300 ]
 	6300:   ! #### LOI 6 -Abmessungen Türbänder
 	GOSUB 9900
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[3], 12,22 , 59,15, 0+0
+	UI_OUTFIELD babel[3], 12,22 , 59,16, 0+0
 	UI_STYLE 0,0
 	IF rolle THEN
 		UI_STYLE 0,1
-		UI_OUTFIELD babel[5], 237,22 , 79,15, 0+0
+		UI_OUTFIELD babel[5], 261,22 , 79,16, 0+0
 		UI_STYLE 0,0
 		ENDIF
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[8], 238,205 , 179,15, 0+0
+	UI_OUTFIELD babel[8], 262,205 , 179,16, 0+0
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[6], 12,202 , 100,15, 0+0
-	UI_OUTFIELD babel[14], 12,224 , 100,15, 0+0
-	IF rolle THEN UI_OUTFIELD babel[11], 237,40 , 100,15, 0+0
-	UI_OUTFIELD babel[17], 12,247 , 100,15, 0+0
-	IF rolle THEN UI_OUTFIELD babel[4], 237,63 , 100,15, 0+0 UI_TOOLTIP bubble[20]
-	UI_OUTFIELD babel[9], 238,225 , 100,15, 0+0
-	UI_OUTFIELD babel[10], 238,248 , 100,15, 0+0
-	UI_INFIELD{3} "bs_hinge_nmbr", 116,20 , 40,19 UI_TOOLTIP bubble[5]
-	UI_INFIELD{3} "bs_hinge_safety_pin", 116,200 , 39,19 UI_TOOLTIP bubble[17]
+	UI_OUTFIELD babel[6], 12,202 , 100,16, 0+0
+	UI_OUTFIELD babel[14], 12,224 , 100,16, 0+0
+	IF rolle THEN UI_OUTFIELD babel[11], 261,40 , 125,16, 0+0
+	UI_OUTFIELD babel[17], 12,247 , 100,16, 0+0
+	IF rolle THEN UI_OUTFIELD babel[4], 261,63 , 125,16, 0+0 UI_TOOLTIP bubble[20]
+	UI_OUTFIELD babel[9], 262,225 , 125,16, 0+0
+	UI_OUTFIELD babel[10], 262,248 , 125,16, 0+0
+	UI_INFIELD{3} "bs_hinge_nmbr", 125,20 , 40,19 UI_TOOLTIP bubble[5]
+	UI_INFIELD{3} "bs_hinge_safety_pin", 128,200 , 39,19 UI_TOOLTIP bubble[17]
 	GOSUB "SELECT_bs_hinge_chuck"
 	IF sts THEN
-		UI_INFIELD{3} "bs_hinge_chuck", 116,222 , 90,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[11]
+		UI_INFIELD{3} "bs_hinge_chuck", 128,222 , 96,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[11]
 		ENDIF
-	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_chuck", 116,223 , 90,19 UI_TOOLTIP bubble[11]
-	UI_INFIELD{3} "bs_hinge_adjust", 116,246 , 90,19 UI_TOOLTIP bubble[10]
-	IF rolle THEN UI_INFIELD{3} "bs_hinge_reel_diameter", 352,38 , 65,19 UI_TOOLTIP bubble[18]
-	IF rolle THEN UI_INFIELD{3} "bs_hinge_height", 352,61 , 65,19 UI_TOOLTIP bubble[19]
-	UI_INFIELD{3} "bs_ancor_hinge_X", 352,223 , 65,19 UI_TOOLTIP bubble[21]
-	UI_INFIELD{3} "bs_ancor_hinge_Y", 352,246 , 65,19 UI_TOOLTIP bubble[22]
-	UI_OUTFIELD babel[12], 1,81 , 57,28, 2+0
-	UI_INFIELD{3} "bs_hinge_DIN", 18,109 , 22,22, 6, 3, 3, 1, 18, 18, 18, 18, 3,"-",0, 2,"X",1 UI_TOOLTIP bubble[6]
-	UI_PICT 2, 106,69 , 6,1, 1
-	UI_PICT 2, 106,123 , 6,1, 1
+	IF not(sts) THEN UI_INFIELD{3} "bs_hinge_chuck", 128,223 , 96,19 UI_TOOLTIP bubble[11]
+	UI_INFIELD{3} "bs_hinge_adjust", 128,246 , 96,19 UI_TOOLTIP bubble[10]
+	IF rolle THEN UI_INFIELD{3} "bs_hinge_reel_diameter", 388,38 , 71,19 UI_TOOLTIP bubble[18]
+	IF rolle THEN UI_INFIELD{3} "bs_hinge_height", 388,61 , 71,19 UI_TOOLTIP bubble[19]
+	UI_INFIELD{3} "bs_ancor_hinge_X", 388,223 , 71,19 UI_TOOLTIP bubble[21]
+	UI_INFIELD{3} "bs_ancor_hinge_Y", 388,246 , 71,19 UI_TOOLTIP bubble[22]
+	UI_OUTFIELD babel[12], 10,77 , 57,32, 2+0
+	UI_INFIELD{3} "bs_hinge_DIN", 27,109 , 22,22, 6, 3, 3, 1, 18, 18, 18, 18, 3,"-",0, 2,"X",1 UI_TOOLTIP bubble[6]
+	UI_PICT 2, 115,69 , 6,1, 1
+	UI_PICT 2, 115,123 , 6,1, 1
 	IF bs_hinge_DIN THEN
 		out_value = STR (format, hinge_pos1)
-		UI_OUTFIELD out_value, 120,62 , 54,15, 0+0
+		UI_OUTFIELD out_value, 129,62 , 64,16, 0+0
 		out_value = STR (format, hinge_pos2)
-		UI_OUTFIELD out_value, 120,116 , 54,15, 0+0
+		UI_OUTFIELD out_value, 128,116 , 65,16, 0+0
 		ELSE
-		UI_INFIELD{3} "bs_hinge_pos1", 116,60 , 58,19 UI_TOOLTIP bubble[13]
-		UI_INFIELD{3} "bs_hinge_pos2", 116,113 , 58,19 UI_TOOLTIP bubble[7]
+		UI_INFIELD{3} "bs_hinge_pos1", 128,60 , 65,19 UI_TOOLTIP bubble[13]
+		UI_INFIELD{3} "bs_hinge_pos2", 128,113 , 65,19 UI_TOOLTIP bubble[7]
 		ENDIF
 	IF bs_hinge_nmbr>2 THEN
-		UI_INFIELD{3} "bs_hinge_pos3", 116,83 , 58,19 UI_TOOLTIP bubble[8]
-		UI_PICT 2, 107,92 , 6,1, 1
+		UI_INFIELD{3} "bs_hinge_pos3", 128,83 , 65,19 UI_TOOLTIP bubble[8]
+		UI_PICT 2, 116,92 , 6,1, 1
 		ENDIF
 	IF bs_hinge_nmbr=4 THEN
-		UI_INFIELD{3} "bs_hinge_pos4", 116,143 , 58,19 UI_TOOLTIP bubble[9]
-		UI_PICT 2, 106,151 , 6,1, 1
+		UI_INFIELD{3} "bs_hinge_pos4", 128,143 , 65,19 UI_TOOLTIP bubble[9]
+		UI_PICT 2, 115,151 , 6,1, 1
 		ENDIF
 	GOSUB "SELECT_HingePosBitmap2"
-	UI_PICT uiBitmap, 283,92 , 80,90, 1 UI_TOOLTIP bubble[15]
+	UI_PICT uiBitmap, 319,92 , 80,90, 1 UI_TOOLTIP bubble[15]
 	GOSUB "SELECT_HingePosBitmap"
-	UI_PICT uiBitmap, 66,49 , 40,140, 1 UI_TOOLTIP bubble[12]
+	UI_PICT uiBitmap, 75,49 , 40,140, 1 UI_TOOLTIP bubble[12]
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[18], 236,178 , 37,12, 1+0
+	UI_OUTFIELD babel[18], 260,178 , 50,16, 1+0
 	UI_STYLE 0,0
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[19], 373,108 , 39,12, 0+0
+	UI_OUTFIELD babel[19], 409,108 , 50,12, 0+0
 	UI_STYLE 0,0
-	UI_SEPARATOR 221,18, 221,266
+	UI_SEPARATOR 239,18, 239,266
 	RETURN
 ! -------------------------------------------------------------TITLE [ 9900 ]
 	9900:   ! #### TITEL on all pages
 	IF develop THEN GOSUB "devshow"
 	UI_STYLE 0,0
-	UI_PICT 1, 305,-2 , 139,15, 1
-	UI_SEPARATOR 0,15, 445,15
+	UI_PICT 1, 341,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 481,15
 	IF errorI>0 THEN
 		txt = ""
 		FOR i=1 TO errorI

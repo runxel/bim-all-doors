@@ -1159,73 +1159,73 @@ END
 	UI_STYLE 0,1
 	UI_OUTFIELD babel[7], 0,22 , 125,15, 0+0
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[1], 134,22 , 98,15, 0+0
-	UI_OUTFIELD babel[4], 134,45 , 98,15, 0+0
-	UI_OUTFIELD babel[3], 134,68 , 98,15, 0+0
+	UI_OUTFIELD babel[1], 134,22 , 108,15, 0+0
+	UI_OUTFIELD babel[4], 134,45 , 108,15, 0+0
+	UI_OUTFIELD babel[3], 134,68 , 108,15, 0+0
 	GOSUB "VALUES_bs_pushbar_BS"
-	UI_INFIELD{3} "bs_pushbar_BS", 243,19 , 151,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[15]
-	UI_INFIELD{3} "bs_pushbar_posY_BS", 324,43 , 70,19 UI_TOOLTIP bubble[17]
-	UI_OUTFIELD "/", 313,46 , 11,15, 2+0
-	UI_INFIELD{3} "bs_pushbar_posX_BS", 243,43 , 70,19 UI_TOOLTIP bubble[10]
+	UI_INFIELD{3} "bs_pushbar_BS", 243,19 , 187,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[15]
+	UI_INFIELD{3} "bs_pushbar_posY_BS", 348,43 , 82,19 UI_TOOLTIP bubble[17]
+	UI_OUTFIELD "/", 334,46 , 11,15, 2+0
+	UI_INFIELD{3} "bs_pushbar_posX_BS", 244,43 , 82,19 UI_TOOLTIP bubble[10]
 	GOSUB "SELECT_bs_pushbar_surface_BS"
-	IF sts THEN UI_INFIELD{3} "bs_pushbar_surface_BS", 243,65 , 151,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[12]
-	IF NOT(sts) THEN UI_INFIELD{3} "bs_pushbar_surface_BS", 244,66 , 150,19 UI_TOOLTIP bubble[12]
+	IF sts THEN UI_INFIELD{3} "bs_pushbar_surface_BS", 243,65 , 187,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[12]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_pushbar_surface_BS", 244,66 , 186,19 UI_TOOLTIP bubble[12]
 	UI_STYLE 0,1
 	UI_OUTFIELD babel[8], 0,98 , 125,15, 0+0
 	UI_STYLE 0,0
-	UI_OUTFIELD babel[1], 134,99 , 98,15, 0+0
-	UI_OUTFIELD babel[4], 134,122 , 98,15, 0+0
-	UI_OUTFIELD babel[3], 134,145 , 98,15, 0+0
+	UI_OUTFIELD babel[1], 134,99 , 108,15, 0+0
+	UI_OUTFIELD babel[4], 134,122 , 108,15, 0+0
+	UI_OUTFIELD babel[3], 134,145 , 108,15, 0+0
 	GOSUB "VALUES_bs_pushbar_BGS"
-	UI_INFIELD{3} "bs_pushbar_BGS", 243,96 , 151,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[14]
-	UI_INFIELD{3} "bs_pushbar_posY_BGS", 324,120 , 70,19 UI_TOOLTIP bubble[16]
-	UI_OUTFIELD "/", 313,123 , 11,15, 2+0
-	UI_INFIELD{3} "bs_pushbar_posX_BGS", 243,120 , 70,19 UI_TOOLTIP bubble[9]
+	UI_INFIELD{3} "bs_pushbar_BGS", 243,96 , 187,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[14]
+	UI_INFIELD{3} "bs_pushbar_posY_BGS", 348,120 , 82,19 UI_TOOLTIP bubble[16]
+	UI_OUTFIELD "/", 334,123 , 11,15, 2+0
+	UI_INFIELD{3} "bs_pushbar_posX_BGS", 244,120 , 82,19 UI_TOOLTIP bubble[9]
 	GOSUB "SELECT_bs_pushbar_surface_BGS"
-	IF sts THEN UI_INFIELD{3} "bs_pushbar_surface_BGS", 243,142 , 151,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[11]
-	IF NOT(sts) THEN UI_INFIELD{3} "bs_pushbar_surface_BGS", 244,143 , 150,19 UI_TOOLTIP bubble[13]
+	IF sts THEN UI_INFIELD{3} "bs_pushbar_surface_BGS", 243,142 , 187,21, 2, "", 99, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[11]
+	IF NOT(sts) THEN UI_INFIELD{3} "bs_pushbar_surface_BGS", 244,143 , 186,19 UI_TOOLTIP bubble[13]
 	IF bs_door_leafs > 1 THEN
-		UI_SEPARATOR 0,166, 445,166
+		UI_SEPARATOR 0,166, 481,166
 		UI_STYLE 0,1
-		UI_OUTFIELD babel[10], 0,172 , 110,15, 0+0
+		UI_OUTFIELD babel[10], 0,172 , 125,15, 0+0
 		UI_STYLE 0,0
-		UI_OUTFIELD babel[2], 110,172 , 98,15, 0+0
-		UI_INFIELD{3} "bs_pushbar_SF", 208,170 , 236,17, 2, "", 1, 1, 0, 0, 0, 0, 0,"Stossgriff aus",0, 0,"Stossgriff auf Standflügel wie Gangflügel",1 UI_TOOLTIP bubble[8]
+		UI_OUTFIELD babel[2], 134,172 , 106,15, 0+0
+		UI_INFIELD{3} "bs_pushbar_SF", 244,170 , 236,17, 2, "", 1, 1, 0, 0, 0, 0, 0,"Stossgriff aus",0, 0,"Stossgriff auf Standflügel wie Gangflügel",1 UI_TOOLTIP bubble[8]
 		ENDIF
 	UI_STYLE 0,1
-	UI_OUTFIELD babel[9], 0,198 , 110,15, 0+0
+	UI_OUTFIELD babel[9], 0,198 , 125,15, 0+0
 	UI_STYLE 0,0
-	UI_INFIELD{3} dk_cont_pens[dka_grip_penC2], 33,221 , 100,21 UI_TOOLTIP bubble[2]
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[5], 310,196 , 98,14, 0+0
+	UI_OUTFIELD babel[5], 322,196 , 98,14, 0+0
 	UI_STYLE 0,0
-	UI_INFIELD{3} dk_fills[dka_grip_fill], 187,197 , 100,21 UI_TOOLTIP bubble[7]
+	UI_INFIELD{3} dk_cont_pens[dka_grip_penC2], 39,221 , 100,21 UI_TOOLTIP bubble[2]
+	UI_INFIELD{3} dk_fills[dka_grip_fill], 199,197 , 100,21 UI_TOOLTIP bubble[7]
 	UI_STYLE 1,2
-	UI_OUTFIELD babel[6], 310,231 , 98,14, 0+0
+	UI_OUTFIELD babel[6], 322,231 , 98,14, 0+0
 	UI_STYLE 0,0
-	UI_INFIELD{3} dk_fill_pens[dka_grip_penF], 187,221 , 100,21 UI_TOOLTIP bubble[6]
-	UI_INFIELD{3} dk_bkg_pens[dka_grip_penB], 187,245 , 100,21 UI_TOOLTIP bubble[5]
-	UI_INFIELD{3} dk_cont_pens[dka_grip_penC3], 33,245 , 100,21 UI_TOOLTIP bubble[1]
-	UI_INFIELD{3} dk_materials[dka_grip_mat_BS1], 344,210 , 48,21 UI_TOOLTIP bubble[4]
-	UI_INFIELD{3} dk_materials[dka_grip_mat_BS2], 396,210 , 48,21 UI_TOOLTIP bubble[4]
-	UI_INFIELD{3} dk_materials[dka_grip_mat_BGS1], 344,245 , 48,21 UI_TOOLTIP bubble[4]
-	UI_INFIELD{3} dk_materials[dka_grip_mat_BGS2], 396,245 , 48,21 UI_TOOLTIP bubble[4]
+	UI_INFIELD{3} dk_fill_pens[dka_grip_penF], 199,221 , 100,21 UI_TOOLTIP bubble[6]
+	UI_INFIELD{3} dk_bkg_pens[dka_grip_penB], 199,245 , 100,21 UI_TOOLTIP bubble[5]
+	UI_INFIELD{3} dk_cont_pens[dka_grip_penC3], 39,245 , 100,21 UI_TOOLTIP bubble[1]
+	UI_INFIELD{3} dk_materials[dka_grip_mat_BS1], 356,210 , 54,21 UI_TOOLTIP bubble[4]
+	UI_INFIELD{3} dk_materials[dka_grip_mat_BS2], 426,210 , 54,21 UI_TOOLTIP bubble[4]
+	UI_INFIELD{3} dk_materials[dka_grip_mat_BGS1], 356,245 , 54,21 UI_TOOLTIP bubble[4]
+	UI_INFIELD{3} dk_materials[dka_grip_mat_BGS2], 426,245 , 54,21 UI_TOOLTIP bubble[4]
 	UI_PICT "ui_list_contourPen_flat 32x15.png", 0,225 , 32,15, 1 UI_TOOLTIP bubble[2]
-	UI_PICT "ui_fill_type_flat 20x20.png", 154,197 , 20,20, 1 UI_TOOLTIP bubble[7]
-	UI_PICT "ui_fill_pen_flat 29x16.png", 157,224 , 29,16, 1 UI_TOOLTIP bubble[6]
-	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 157,247 , 29,16, 1 UI_TOOLTIP bubble[5]
+	UI_PICT "ui_fill_type_flat 20x20.png", 160,197 , 20,20, 1 UI_TOOLTIP bubble[7]
+	UI_PICT "ui_fill_pen_flat 29x16.png", 163,224 , 29,16, 1 UI_TOOLTIP bubble[6]
+	UI_PICT "ui_fill_bg_pen_flat 29x16.png", 163,247 , 29,16, 1 UI_TOOLTIP bubble[5]
 	UI_PICT "ui_list_3DPen_flat 32x15.png", 0,248 , 32,15, 1 UI_TOOLTIP bubble[1]
-	UI_PICT "ui_list_surface_flat 32x15.png", 311,213 , 32,15, 1 UI_TOOLTIP bubble[3]
-	UI_PICT "ui_list_surface_flat 32x15.png", 311,248 , 32,15, 1 UI_TOOLTIP bubble[3]
-	UI_SEPARATOR 0,90, 445,90
-	UI_SEPARATOR 0,191, 445,191
+	UI_PICT "ui_list_surface_flat 32x15.png", 323,213 , 32,15, 1 UI_TOOLTIP bubble[3]
+	UI_PICT "ui_list_surface_flat 32x15.png", 323,248 , 32,15, 1 UI_TOOLTIP bubble[3]
+	UI_SEPARATOR 0,90, 481,90
+	UI_SEPARATOR 0,191, 481,191
 	RETURN
 ! -------------------------------------------------------------TITLE [ 9900 ]
 	9900:   ! #### TITEL on all pages
 	IF develop THEN GOSUB "devshow"
 	UI_STYLE 0,0
-	UI_PICT 1, 305,-2 , 139,15, 1
-	UI_SEPARATOR 0,15, 445,15
+	UI_PICT 1, 341,-2 , 139,15, 1
+	UI_SEPARATOR 0,15, 481,15
 	IF errorI>0 THEN
 		txt = ""
 		FOR i=1 TO errorI
@@ -1234,7 +1234,6 @@ END
 		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
 		ENDIF
 	RETURN
-
 ]]></Script_UI>
   <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
   <Script_VL SectVersion="20" SectionFlags="40" SubIdent="0"><![CDATA[

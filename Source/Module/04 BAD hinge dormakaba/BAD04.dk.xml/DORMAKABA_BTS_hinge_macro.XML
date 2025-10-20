@@ -1283,7 +1283,7 @@ DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[] ! Arrays für diskrete Auswa
 
 ! --------- User Interface - Tooltip text (Deutsch)
 	IF language = 1 THEN
-		bubble[1] = "Band Hersteller"
+		bubble[1] = "Nicht mehr im Lieferprogramm von dormakaba."
 		bubble[2] = "Band Material"
 		bubble[3] = "Bezug- und Drehachsen"
 		bubble[4] = "Oberflächenmaterial"
@@ -1297,7 +1297,7 @@ DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[] ! Arrays für diskrete Auswa
 		ENDIF
 ! --------- User Interface - Tooltip text (Englisch)
 	IF language = 4 THEN
-		bubble[1] = "Band Hersteller"
+		bubble[1] = "not available at dormakaba anymore"
 		bubble[2] = "Band Material"
 		bubble[3] = "Bezug- und Drehachsen"
 		bubble[4] = "Oberflächenmaterial"
@@ -1527,6 +1527,8 @@ END
 		UI_PICT "dk_attention 16x16.png", 36,-2 , 16,16, 1 UI_TOOLTIP txt
 		ENDIF
 	RETURN
+
+
 
 ]]></Script_UI>
   <!-- GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT ===== GDL SCRIPT -->
