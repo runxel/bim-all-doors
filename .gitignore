@@ -10,7 +10,8 @@ temp/
 *.sh
 *.fish
 
-# NO big binaries / proprietary image files in git
+# NO big binaries / proprietary image files in git.
+*.zip
 *.psd
 *.ai
 *.af
