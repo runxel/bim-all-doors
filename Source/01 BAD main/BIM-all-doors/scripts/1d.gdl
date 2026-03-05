@@ -411,8 +411,8 @@ IF frame_system = "Blockzarge" THEN
 					IF frame_system = "Stockrahmen" THEN
 						frame_macro = "Generic_frame_macro.gsm"
 						dk_frametype = "SR"
-						ELSE
-						IF frame_system # commonKey THEN frame_macro = frame_system+"_frame_macro"
+						!ELSE
+						!IF frame_system # commonKey THEN frame_macro = frame_system+"_frame_macro"
 						ENDIF
 					ENDIF
 				ENDIF
@@ -435,7 +435,8 @@ IF hinge_system = commonKey THEN
 	ENDIF
 
 ! »»» BESCHLÄGE | HANDLE - DORMAKABA
-handle_macro = handle_system+"_handle_macro"
+!handle_macro = handle_system+"_handle_macro"
+handle_macro = "OGRO_handle_macro"
 
 ! »»» TÜRSCHLIESSER | CLOSER - DORMAKABA
 closer_macro = closer_system+"_closer_macro"
