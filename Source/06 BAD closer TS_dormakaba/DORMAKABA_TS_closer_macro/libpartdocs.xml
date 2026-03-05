@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<libpartdocs>
+	<Copyright>
+		<Author>©2018 dormakaba, written by Frank Beister, Hamburg, Germany</Author>
+		<License>
+			<Type>Commercial</Type>
+			<Version>
+      </Version>
+		</License>
+	</Copyright>
+	<Keywords SectVersion="1" SectionFlags="0" SubIdent="0">
+		<![CDATA["door, Tür, closer, Türschließer"]]>
+	</Keywords>
+	<CommentSection>
+		<![CDATA["Generische, erweiterbare Tür"]]>
+	</CommentSection>
+
+</libpartdocs>

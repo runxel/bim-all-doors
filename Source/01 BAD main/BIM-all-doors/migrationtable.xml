@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>EADEB5EA-E05E-4AE8-8C09-767CCB09F8C0</MainGUID>
+		<Version>19</Version>
+		<Name><![CDATA[""]]></Name>
+		<AutoMigration>false</AutoMigration>
+	</MigrationTableElement>
+	<MigrationTableElement>
+		<MainGUID>48333195-14D7-41EA-B16F-484DCA94C718</MainGUID>
+		<Version>0</Version>
+		<Name><![CDATA[""]]></Name>
+		<AutoMigration>false</AutoMigration>
+	</MigrationTableElement>
+	<MigrationTableElement>
+		<MainGUID>4E92AAA1-CF11-4CB3-A7AE-BCF048FA3CC0</MainGUID>
+		<Version>0</Version>
+		<Name><![CDATA[""]]></Name>
+		<AutoMigration>false</AutoMigration>
+	</MigrationTableElement>
+	<MigrationTableElement>
+		<MainGUID>01281F9E-1746-4B07-AC79-5A5BEB2AE5CF</MainGUID>
+		<Version>0</Version>
+		<Name><![CDATA[""]]></Name>
+		<AutoMigration>false</AutoMigration>
+	</MigrationTableElement>
+	<MigrationTableElement>
+		<MainGUID>8E75ECA7-6939-49A2-9FA0-77FC98533D98</MainGUID>
+		<Version>0</Version>
+		<Name><![CDATA[""]]></Name>
+		<AutoMigration>false</AutoMigration>
+	</MigrationTableElement>
+	<MigrationTableElement>
+		<MainGUID>89A0BB34-7B40-431A-AF56-A1EF18130DDA</MainGUID>
+		<Version>0</Version>
+		<Name><![CDATA[""]]></Name>
+		<AutoMigration>false</AutoMigration>
+	</MigrationTableElement>
+	<MigrationTableElement>
+		<MainGUID>4969C37C-9434-4CF7-A88B-317E32885E9C</MainGUID>
+		<Version>0</Version>
+		<Name><![CDATA[""]]></Name>
+		<AutoMigration>false</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

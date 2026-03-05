@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CalledMacros>
+	<Macro>
+		<MName><![CDATA["PlasterGeometry"]]></MName>
+		<MainGUID>98FA003A-2EEA-11E0-AF68-03A0DFD72085</MainGUID>
+	</Macro>
+	<Macro>
+		<MName><![CDATA["RevealGeometry"]]></MName>
+		<MainGUID>1BADC4DE-6D3E-11E1-9330-72D24824019B</MainGUID>
+	</Macro>
+	<Macro>
+		<MName><![CDATA["OpenLibraryGlobals"]]></MName>
+		<MainGUID>F6E84797-9702-487A-BFCC-2634771D6379</MainGUID>
+	</Macro>
+	<Macro>
+		<MName><![CDATA["LibraryGlobals13"]]></MName>
+		<MainGUID>9137124A-DDF2-4A06-A532-5FC0CE873258</MainGUID>
+	</Macro>
+	<Macro>
+		<MName><![CDATA["Threshold_CHE"]]></MName>
+		<MainGUID>BC6DBC4B-3423-49FC-AFB1-66D38018B1B4</MainGUID>
+	</Macro>
+	<Macro>
+		<MName><![CDATA["WallholeStructure"]]></MName>
+		<MainGUID>5E86C21E-409C-454E-9513-CFF4F3149920</MainGUID>
+	</Macro>
+	<Macro>
+		<MName><![CDATA["WallholeFraming"]]></MName>
+		<MainGUID>76B2AC5E-4705-490E-A18F-A3FEFCBE8609</MainGUID>
+	</Macro>
+	<Macro>
+		<MName><![CDATA["Blindstock"]]></MName>
+		<MainGUID>C00F630C-0369-4B3D-830F-B9EABD417178</MainGUID>
+	</Macro>
+	<Macro>
+		<MName><![CDATA["WallContourLines_CHE"]]></MName>
+		<MainGUID>1910C42D-E17F-41A2-BB6E-C9C9F0CB6E3B</MainGUID>
+	</Macro>
+</CalledMacros>

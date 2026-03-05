@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<libpartdocs>
+	<CommentSection>
+		<![CDATA[Generischer Türkonfigurator.
+Ursprünglich (2018-2021) von dormakaba entwickelt, ab Version 1.90 unter CC0 1.0 freigegeben.]]>
+	</CommentSection>
+
+	<Keywords SectVersion="1" SectionFlags="0" SubIdent="0">
+		<![CDATA[door, Tür, dormakaba]]>
+	</Keywords>
+	<Copyright>
+		<Author>originally by Frank Beister, Hamburg, Germany</Author>
+		<License>
+			<Type>CC0</Type>
+			<Version>1.0</Version>
+		</License>
+	</Copyright>
+</libpartdocs>
