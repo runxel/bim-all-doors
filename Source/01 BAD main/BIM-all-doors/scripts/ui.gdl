@@ -2550,9 +2550,9 @@ END
 ! ------------------------------------------------------------- FRAME [500]
 500:
 
-	CALL frame_macro PARAMETERS ALL dk_frametype = dk_frametype, macro_runtype = 1, RETURNED_PARAMETERS UI_page_type
-	CALL frame_macro PARAMETERS ALL dk_frametype = dk_frametype, macro_runtype = 2, RETURNED_PARAMETERS UI_page_names
-	CALL frame_macro PARAMETERS ALL dk_frametype = dk_frametype, macro_runtype = 4, RETURNED_PARAMETERS UI_page_icons
+	CALL frame_macro PARAMETERS ALL dk_LOD = dk_LOD[dki_LOD], dk_frametype = dk_frametype, macro_runtype = 1, RETURNED_PARAMETERS UI_page_type
+	CALL frame_macro PARAMETERS ALL dk_LOD = dk_LOD[dki_LOD], dk_frametype = dk_frametype, macro_runtype = 2, RETURNED_PARAMETERS UI_page_names
+	CALL frame_macro PARAMETERS ALL dk_LOD = dk_LOD[dki_LOD], dk_frametype = dk_frametype, macro_runtype = 4, RETURNED_PARAMETERS UI_page_icons
 
 	ui_seiten = VARDIM1(UI_page_type)    !»» Anzahl der UI-Seiten im Makro
 	UIpage_subparent = UIpage_masterparent  !»» default: dirct under sub-root
@@ -2577,12 +2577,14 @@ END
 			GOSUB "allshow"
 
 			IF gs_ui_current_page = UIpage THEN
-				CALL frame_macro PARAMETERS ALL,
-					dk_frametype = dk_frametype, 
-					macro_runtype = 128,
-					UIpage_number = i,
-					UIpage = UIpage,
-					UIpage_parent = UIpage_parent,
+				CALL frame_macro,
+					PARAMETERS ALL,
+						dk_LOD = dk_LOD[dki_LOD],
+						dk_frametype = dk_frametype, 
+						macro_runtype = 128,
+						UIpage_number = i,
+						UIpage = UIpage,
+						UIpage_parent = UIpage_parent,
 					RETURNED_PARAMETERS offsetFrameSurfaceBGS,
 						facingLintelBS, facingLintelBGS,
 						frame2wallSurfaceBS, frame2wallSurfaceBGS
@@ -2595,8 +2597,12 @@ END
 		NEXT i
 
 	IF gs_ui_current_page > UIpage OR gs_ui_current_page < UIpage - ui_seiten + 1 THEN
-		CALL frame_macro PARAMETERS ALL dk_frametype = dk_frametype, macro_runtype = 512, 
-			RETURNED_PARAMETERS offsetFrameSurfaceBGS,
+		call frame_macro,
+			parameters ALL,
+				dk_LOD = dk_LOD[dki_LOD],
+				dk_frametype = dk_frametype,
+				macro_runtype = 512,
+			returned_parameters offsetFrameSurfaceBGS,
 				facingLintelBS, facingLintelBGS,
 				frame2wallSurfaceBS, frame2wallSurfaceBGS
 		ENDIF
@@ -2607,9 +2613,9 @@ END
 ! ------------------------------------------------------------- LEAFS [550]
 550:
 
-	CALL panel_macro PARAMETERS ALL macro_runtype = 1, RETURNED_PARAMETERS UI_page_type
-	CALL panel_macro PARAMETERS ALL macro_runtype = 2, RETURNED_PARAMETERS UI_page_names
-	CALL panel_macro PARAMETERS ALL macro_runtype = 4, RETURNED_PARAMETERS UI_page_icons
+	call panel_macro parameters ALL dk_LOD = dk_LOD[dki_LOD], macro_runtype = 1, returned_parameters UI_page_type
+	call panel_macro parameters ALL dk_LOD = dk_LOD[dki_LOD], macro_runtype = 2, returned_parameters UI_page_names
+	call panel_macro parameters ALL dk_LOD = dk_LOD[dki_LOD], macro_runtype = 4, returned_parameters UI_page_icons
 
 	ui_seiten = VARDIM1(UI_page_type)    !»» Anzahl der UI-Seiten im Makro
 	UIpage_subparent = UIpage_masterparent  !»» default: dirct under sub-root
@@ -2634,11 +2640,13 @@ END
 			GOSUB "allshow"
 
 			IF gs_ui_current_page = UIpage THEN
-				CALL panel_macro PARAMETERS ALL,
-					macro_runtype=128,
-					UIpage_number=i,
-					UIpage=UIpage,
-					UIpage_parent=UIpage_parent
+				call panel_macro,
+					parameters ALL,
+						dk_LOD = dk_LOD[dki_LOD],
+						macro_runtype=128,
+						UIpage_number=i,
+						UIpage=UIpage,
+						UIpage_parent=UIpage_parent
 				ELSE
 				UI_OUTFIELD " ", 424,250, 20,15  !»» Dummy
 				ENDIF
@@ -2654,9 +2662,9 @@ END
 600:
 
 	DIM UI_page_type[] : UI_page_names[1] = "noPages" !»» Vorherige Settings löschen
-	CALL hinge_macro PARAMETERS ALL macro_runtype = 1, RETURNED_PARAMETERS UI_page_type
-	CALL hinge_macro PARAMETERS ALL macro_runtype = 2, RETURNED_PARAMETERS UI_page_names
-	CALL hinge_macro PARAMETERS ALL macro_runtype = 4, RETURNED_PARAMETERS UI_page_icons
+	call hinge_macro parameters ALL dk_LOD = dk_LOD[dki_LOD], macro_runtype = 1, returned_parameters UI_page_type
+	call hinge_macro parameters ALL dk_LOD = dk_LOD[dki_LOD], macro_runtype = 2, returned_parameters UI_page_names
+	call hinge_macro parameters ALL dk_LOD = dk_LOD[dki_LOD], macro_runtype = 4, returned_parameters UI_page_icons
 
 	ui_seiten = VARDIM1(UI_page_type) * (UI_page_names[1] # "noPages" & UI_page_names[1] # "" )    !»» Anzahl der UI-Seiten im Makro
 	UIpage_subparent = UIpage_masterparent  !»» default: dirct under sub-root
@@ -2681,12 +2689,14 @@ END
 			GOSUB "allshow"
 
 			IF gs_ui_current_page = UIpage THEN
-				CALL hinge_macro PARAMETERS ALL,
-					dk_frametype=dk_frametype,
-					macro_runtype=128,
-					UIpage_number=i,
-					UIpage=UIpage,
-					UIpage_parent=UIpage_parent
+				call hinge_macro,
+					parameters ALL,
+						dk_LOD = dk_LOD[dki_LOD],
+						dk_frametype=dk_frametype,
+						macro_runtype=128,
+						UIpage_number=i,
+						UIpage=UIpage,
+						UIpage_parent=UIpage_parent
 				ELSE
 				UI_OUTFIELD " ", 424,250, 20,15  !»» Dummy
 				ENDIF
