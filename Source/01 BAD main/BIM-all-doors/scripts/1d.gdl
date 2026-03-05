@@ -11,18 +11,17 @@
 ! 
 ! #############################################################################
 
-FILE_DEPENDENCE	"Generic_frame_macro.gsm",
-				"Generic_panel_macro.gsm",
-				"Generic_hinge_macro.gsm",
-				"Generic_case_macro.gsm",
-				"Generic_grip_macro.gsm",
-				"DORMAKABA_TS_closer_macro.gsm",
-				"DORMAKABA_BTS_hinge_macro.gsm",
-				"DORMAKABA_ED_automation_macro.gsm",
-				"DORMAKABA_ACS_access_control_macro.gsm",
-				"DORMAKABA_OGRO_handle_macro.gsm",
-				"DORMAKABA_OGRO_handles3D.gsm",
-				"DORMAKABA Logo XEA.gsm"
+file_dependence	\
+	"Generic_frame_macro.gsm",
+	"Generic_panel_macro.gsm",
+	"Generic_hinge_macro.gsm",
+	"Generic_case_macro.gsm",
+	"Generic_grip_macro.gsm",
+	"DORMAKABA_TS_closer_macro.gsm",
+	"DORMAKABA_BTS_hinge_macro.gsm",
+	"DORMAKABA_ED_automation_macro.gsm",
+	"DORMAKABA_ACS_access_control_macro.gsm",
+	"OGRO_handle_macro.gsm"
 
 ! macro_runtype = ...
 ! 1: return UI page hirarchy
