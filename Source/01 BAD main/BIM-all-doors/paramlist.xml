@@ -4099,15 +4099,6 @@
 			</Flags>
 			<Value>1</Value>
 		</Integer>
-		<Integer Name="show_start_screen">
-			<Description><![CDATA["Startbildschirm anzeigen"]]></Description>
-			<Fix/>
-			<Flags>
-				<ParFlg_Child/>
-				<ParFlg_Hidden/>
-			</Flags>
-			<Value>1</Value>
-		</Integer>
 		<Integer Name="gs_ui_sub_tabpage">
 			<Description><![CDATA["UI-Unterseite"]]></Description>
 			<Fix/>

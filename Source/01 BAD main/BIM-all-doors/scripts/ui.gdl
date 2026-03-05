@@ -797,66 +797,57 @@ UI_CURRENT_PAGE gs_ui_current_page
 ! Dialogaufrufe
 ! =============================================================================
 
-IF show_start_screen > 0 THEN
+! Regel-Dialoge
 
-	! Türobjekt wird gerade neu abgesetzt
-
-	IF show_start_screen = 1 THEN GOSUB 9700 ELSE GOSUB 9800 ! Start screen / Splash
-
-	ELSE
-
-	! Regel-Dialoge
-
-	GOSUB 1000 ! Common, basic settings
-	if dk_LOI=4 then
-		UIpage_masterparent = UIpage
-		GOSUB 1400 ! demands
-		UIpage_masterparent = -1
-		ENDIF
-	if dk_LOI>4 then
-		UIpage_masterparent = UIpage
-		GOSUB 1100 ! protection demands
-		GOSUB 1200 ! dimension demands
-		GOSUB 1300 ! functional demands
-		UIpage_masterparent = -1
-		ENDIF
-
-	GOSUB 1600 ! Loaded components
-
-	if dk_LOI>3 then ! Basic settings
-		GOSUB 2000
-		ELSE
-		GOSUB 2100
-		ENDIF
-
-	GOSUB 500 ! Frame
-
-	IF bs_door_leafs > 0 THEN
-		GOSUB 550 ! Panels
-		GOSUB 600 ! Hinges
-		GOSUB 650 ! Door Automation
-		GOSUB 700 ! Closer
-		GOSUB 750 ! Case
-		GOSUB 800 ! Access control
-		GOSUB 850 ! Handles
-		GOSUB 900 ! Grips / Pushbar
-		ENDIF
-
-	GOSUB 3000 ! representation
+GOSUB 1000 ! Common, basic settings
+if dk_LOI=4 then
 	UIpage_masterparent = UIpage
-
-	GOSUB 3200 ! wallhole
-
-	IF bs_door_leafs > 0 THEN
-		GOSUB 3100 ! opening lines
-		GOSUB 3300 ! minimal (usable) space
-		ENDIF
-
+	GOSUB 1400 ! demands
 	UIpage_masterparent = -1
-
-	GOSUB 999  ! Infoseite
-
 	ENDIF
+if dk_LOI>4 then
+	UIpage_masterparent = UIpage
+	GOSUB 1100 ! protection demands
+	GOSUB 1200 ! dimension demands
+	GOSUB 1300 ! functional demands
+	UIpage_masterparent = -1
+	ENDIF
+
+GOSUB 1600 ! Loaded components
+
+if dk_LOI>3 then ! Basic settings
+	GOSUB 2000
+	ELSE
+	GOSUB 2100
+	ENDIF
+
+GOSUB 500 ! Frame
+
+IF bs_door_leafs > 0 THEN
+	GOSUB 550 ! Panels
+	GOSUB 600 ! Hinges
+	GOSUB 650 ! Door Automation
+	GOSUB 700 ! Closer
+	GOSUB 750 ! Case
+	GOSUB 800 ! Access control
+	GOSUB 850 ! Handles
+	GOSUB 900 ! Grips / Pushbar
+	ENDIF
+
+GOSUB 3000 ! representation
+UIpage_masterparent = UIpage
+
+GOSUB 3200 ! wallhole
+
+IF bs_door_leafs > 0 THEN
+	GOSUB 3100 ! opening lines
+	GOSUB 3300 ! minimal (usable) space
+	ENDIF
+
+UIpage_masterparent = -1
+
+GOSUB 999  ! Infoseite
+
 
 
 ! =============================================================================
@@ -1896,13 +1887,17 @@ END
 	UI_STYLE 0,2
 	UI_OUTFIELD babel[18], 20,236 , 424,32, 2+4
 	RETURN
+
 ! ------------------------------------------------------------- COMPONENTS / KOMPONENTEN [ 1600 ]
-	1600:   ! #### SEITE 6 - Türkomponenten
+!------------------------------------------------------------------------------!
+1600:   ! #### SEITE 6 - Türkomponenten
 	UIpage = UIpage + 1
 	UI_PAGE UIpage, UIpage_masterparent, babel[84], "dk_title_components 18x18.png"
 	GOSUB 9900
 	UI_PICT 63, 145,23 , 190,237, 1 UI_TOOLTIP bubble[86]
-	UI_INFIELD{3} "frame_system", 0,31 , 140,19 UI_TOOLTIP bubble[84]
+	!gosub "VALUES_gs_frame_type"
+	!UI_INFIELD{3} "frame_system", 0, 31, 140, 19, 7, "", 6, 1, 0, 0, 0, 0, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[84]
+	UI_INFIELD{3} "frame_system", 0, 31, 140, 19 UI_TOOLTIP bubble[84]
 	UI_INFIELD{3} "panel_system", 340,125 , 140,19 UI_TOOLTIP bubble[83]
 	UI_INFIELD{3} "closer_system", 340,31 , 140,19 UI_TOOLTIP bubble[81]
 	UI_INFIELD{3} "hinge_system", 340,225 , 140,19 UI_TOOLTIP bubble[79]
@@ -1922,7 +1917,8 @@ END
 	UI_OUTFIELD babel[75], 344,112 , 102,12, 0+0
 	UI_OUTFIELD babel[74], 344,212 , 102,12, 0+0
 	UI_STYLE 0,0
-	RETURN
+return
+
 ! ------------------------------------------------------------- BASIC DIMENSIONS 5+ / HAUPTABMESSUNGEN 5+ [ 2000 ]
 	2000:   ! #### LoD>3 - Abmessungen
 	UIpage = UIpage + 1
@@ -2420,40 +2416,7 @@ END
 		UI_INFIELD{3} "dk_UCrelation", 194,79 , 175,37, 2, 62, 6, 1, 50, 32, 50, 32, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[134]
 		ENDIF
 	RETURN
-! ------------------------------------------------------------- START SCREEN [ 6000 ]
-	9700:   ! #### START SCREEN
-	UIpage = UIpage + 1
-	UI_PAGE UIpage, -1, babel[91], "uiTab_Info.png"
-	UI_STYLE 0,0
-	UI_PICT 1, 341,-2 , 139,15, 1
-	UI_SEPARATOR 0,15, 481,15
-	UI_STYLE 0,1
-	UI_OUTFIELD babel[2], 11,32 , 456,15, 2+0
-	UI_STYLE 0,0
-	UI_OUTFIELD babel[129], 0,63 , 480,16, 2+0
-	UI_OUTFIELD babel[16], 0,84 , 480,32, 2+0
-	UI_OUTFIELD babel[132], 0,124 , 480,36, 2+0
-	UI_BUTTON UI_LINK, babel[17], 141,180 , 211,20, 0, "https://github.com/dormakaba/bim-all-doors" UI_TOOLTIP bubble[88]
-	UI_INFIELD{3} "show_start_screen", 394,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"zur Eingabe",0, 1,"zur Eingabe",1 UI_TOOLTIP bubble[144]
-	UI_INFIELD{3} "show_start_screen", 301,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"Kurzinfo",2, 1,"Kurzinfo",1 UI_TOOLTIP bubble[148]
-	RETURN
-! ------------------------------------------------------------- SHORT INFO [ 9800]
-	9800:   ! #### SHORT INFORMATION
-	UIpage = UIpage + 1
-	UI_PAGE UIpage, -1, babel[92], "uiTab_Info.png"
-	UI_STYLE 0,0
-	UI_PICT 1, 341,-2 , 139,15, 1
-	UI_SEPARATOR 0,15, 481,15
-	UI_OUTFIELD babel[131], 0,19 , 480,32, 0+0
-	UI_OUTFIELD babel[133], 0,51 , 480,48, 0+0
-	UI_OUTFIELD babel[134], 0,99 , 480,32, 0+0
-	UI_OUTFIELD babel[135], 0,131 , 480,32, 0+0
-	UI_OUTFIELD babel[136], 0,163 , 480,48, 0+0
-	UI_OUTFIELD babel[137], 0,211 , 444,32, 0+0
-	UI_INFIELD{3} "show_start_screen", 394,242 , 86,24, 5, "", 1, 1, 0, 0, 0, 0, 1,"zur Eingabe",0, 1,"zur Eingabe",2 UI_TOOLTIP bubble[144]
-	UI_PICT 6, 444,88 , 34,7, 1
-	UI_PICT "dk_attention 16x16.png", 461,220 , 16,16, 1
-	RETURN
+	
 ! ------------------------------------------------------------- TITLE [ 9900 ]
 	9900:   ! #### TITEL on all pages
 	IF develop THEN GOSUB "devshow" ELSE GOSUB "allshow"
