@@ -1519,7 +1519,7 @@ RETURN
 		poly_height = ac_egress_height + _frame_width_transom
 		_abzug_oben = _frame_width_transom
 	ELSE
-		poly_height = frame_out_dims_z - _frame_width_upper -  _ro_plus_0
+		poly_height = frame_out_dims_z - _frame_width_upper !-_ro_plus_0 !! nowhere defined <rxl>
 		_abzug_oben = 0
 	ENDIF
 	poly_mat		= dk_materials[dka_frame_mat_BGS]	
