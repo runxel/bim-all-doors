@@ -421,49 +421,52 @@ IF frame_system = "Blockzarge" THEN
 	ENDIF
 
 ! »»» TÜRBLATT | PANEL - Allgemein
-IF panel_system = commonKey THEN
+! if panel_system = commonKey then
 	panel_macro = "Generic_panel_macro"
-	ELSE
-	panel_macro = panel_system+"_panel_macro"
-	ENDIF
+! else
+! 	panel_macro = panel_system+"_panel_macro"
+! endif
 
 ! »»» BÄNDER | HINGE - Allgemein
-IF hinge_system = commonKey THEN
+! If hinge_system = commonKey then
 	hinge_macro = "Generic_hinge_macro"
-	ELSE
-	hinge_macro = hinge_system+"_hinge_macro"
-	ENDIF
+! else
+! 	hinge_macro = hinge_system+"_hinge_macro"
+! endif
 
 ! »»» BESCHLÄGE | HANDLE - DORMAKABA
 !handle_macro = handle_system+"_handle_macro"
 handle_macro = "OGRO_handle_macro"
 
 ! »»» TÜRSCHLIESSER | CLOSER - DORMAKABA
-closer_macro = closer_system+"_closer_macro"
+!closer_macro = closer_system+"_closer_macro"
+closer_macro = "DORMAKABA_TS_closer_macro"
 
 ! »»» TÜRAUTOMATION | AUTOMATION - DORMAKABA
-automation_macro = automation_system+"_automation_macro"
+!automation_macro = automation_system+"_automation_macro"
+automation_macro = "DORMAKABA_ED_automation_macro"
 
 ! »»» ZUGANGSKONTROLLE | ACCESS CONTROL - Allgemein
-IF access_control_system = commonKey OR access_control_system = "" THEN 
-	access_control_macro = "DORMAKABA_ACS_access_control_macro"
-	ELSE
-	access_control_macro = access_control_system+"_access_control_macro"
-	ENDIF
+! if access_control_system = commonKey OR access_control_system = "" then
+! 	access_control_macro = "DORMAKABA_ACS_access_control_macro"
+! else
+! 	access_control_macro = access_control_system+"_access_control_macro"
+! endif
+access_control_macro = "DORMAKABA_ACS_access_control_macro"
 
 ! »»» SCHLOSS | CASE - Allgemein
-IF case_system = commonKey THEN
+! if case_system = commonKey then
 	case_macro = "Generic_case_macro"
-	ELSE
-	case_macro = case_system+"_case_macro"
-	ENDIF
+! else
+! 	case_macro = case_system+"_case_macro"
+! endif
 
 ! »»» STOSSGRIFF | GRIP - Allgemein
-IF grip_system = commonKey THEN
+! if grip_system = commonKey then
 	grip_macro = "Generic_grip_macro"
-	ELSE
-	grip_macro = grip_system+"_grip_macro"
-	ENDIF
+! else
+! 	grip_macro = grip_system+"_grip_macro"
+! endif
 
 
 ! -------------------------------------------------- [ GS: Öffnungsmaße einstellen ]
