@@ -1,0 +1,72 @@
+# .gitignore
+
+.env
+
+temp/
+/test/
+
+# Everybody needs their own build process
+*.ps1
+*.sh
+*.fish
+
+# NO big binaries / proprietary image files in git
+*.psd
+*.ai
+*.af
+*.xcf
+# Image blobs are saved at another convenient place
+
+# NO Archicad Lib container binaries -> can always be build from source code
+*.lcf
+*.libpack
+
+# … same for .gsm
+*.gsm
+
+# … no other 3D file types
+*.skp
+*.dwg
+*.dxf
+*.3ds
+*.obj
+*.fbx
+*.ply
+*.stl
+
+# NO .pln either
+*.pln
+*.pla
+*.mod
+*.lck
+
+# IDE stuff
+*.sublime-*
+*.code-workspace
+.vscode/*
+
+
+#------------------------------------------------------------------------------
+# Thumbnails
+._*
+Thumbs.db
+.Bridge*
+
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+**/Network Trash Folder/
+**/Temporary Items/
+.apdisk

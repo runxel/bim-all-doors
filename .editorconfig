@@ -1,0 +1,34 @@
+# see docs at https://EditorConfig.org
+
+root = true
+
+[*]
+end_of_line = crlf
+indent_size = 4
+
+[*.{gdl, xml}]
+# charset required by LP_XMLConverter
+charset = utf-8-bom
+indent_style = tab
+
+[*.gdl]
+insert_final_newline = true
+
+[*.xml]
+insert_final_newline = false
+# for whatever reason but the converted XMLs are LF
+end_of_line = lf
+
+[*.{md, txt}]
+charset = utf-8
+indent_style = tab
+insert_final_newline = true
+
+[*.py]
+charset = utf-8
+indent_style = tab
+insert_final_newline = true
+
+[*.{fish, sh}]
+end_of_line = lf
+insert_final_newline = true
