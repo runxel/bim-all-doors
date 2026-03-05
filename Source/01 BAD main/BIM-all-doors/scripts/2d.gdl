@@ -383,20 +383,20 @@ IF bs_door_leafs > 0 THEN
 	DEL 2 ! zurück auf Bandachse
 	htspt = 1600
 	IF bs_automation_type # "-" THEN
-		CALL automation_macro PARAMETERS ALL htspt=htspt,
-		dk_frametype=dk_frametype,
-			dk_LOD=dk_LOD[dki_LOD], 
-			dk_visibleLeaf = dk_visibleLeaf,
-			HingePanelGap = HingePanelGap,
-			HingeEgressDistance = HingeEgressDistance,
-			offsetHingePanelSurfaceBS  = offsetHingePanelSurfaceBS,
-			offsetFrameSurfaceBGS = offsetFrameSurfaceBGS,
-			facingLintelBS  = facingLintelBS,
-			facingLintelBGS = facingLintelBGS,
-			frame2wallSurfaceBS  = frame2wallSurfaceBS,
-			frame2wallSurfaceBGS = frame2wallSurfaceBGS,
-			macro_runtype = 16+1, 
-			RETURNED_PARAMETERS htspt
+		call automation_macro,
+			parameters ALL htspt=htspt,
+				dk_LOD=dk_LOD[dki_LOD], 
+				dk_visibleLeaf = dk_visibleLeaf,
+				HingePanelGap = HingePanelGap,
+				HingeEgressDistance = HingeEgressDistance,
+				offsetHingePanelSurfaceBS  = offsetHingePanelSurfaceBS,
+				offsetFrameSurfaceBGS = offsetFrameSurfaceBGS,
+				facingLintelBS  = facingLintelBS,
+				facingLintelBGS = facingLintelBGS,
+				frame2wallSurfaceBS  = frame2wallSurfaceBS,
+				frame2wallSurfaceBGS = frame2wallSurfaceBGS,
+				macro_runtype = 16+1, 
+			returned_parameters htspt
 		ENDIF
 	htspt = 1700
 	IF bs_closer_type # "-" THEN
