@@ -1,11 +1,10 @@
-﻿
-! #############################################################################
+﻿! #############################################################################
 !
 ! BIM-all-doors - DOOR SYSTEM
 !
 ! Module: Model view options settings dialog
 !
-! © 2019 DORMAKABA / WRITTEN BY FRANK BEISTER
+! author: FRANK BEISTER
 ! 
 ! #############################################################################
 
@@ -17,6 +16,6 @@
 ! »»» Constants and commons
 
 tlr = 0.0001   !»» accurancy
-version = 1.61 !»» Objektversion
+version = 1.99 !»» Objektversion
 txt = ""       !»» Text für alles
 sprache = 1    !»» UI Sprache

@@ -132,7 +132,7 @@ uiDH = INT((uiFH-uiTH)/2+0.5)
 ! ------------------------------------------------------------------------------
 !  Dialog einrichten
 
-UI_DIALOG uiTXT[1]+" (v"+str("%^.2",version)+" ©2021 dormakaba)", maxX, maxY
+UI_DIALOG uiTXT[1]+" (v"+str("%^.2",version), maxX, maxY
 
 ui_current_page gs_ui_current_page
 
