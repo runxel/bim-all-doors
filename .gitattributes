@@ -10,8 +10,12 @@
 *.jpg  binary
 *.gsm  binary
 
+# we don't check these in, but just in case
+*.pln  filter=lfs diff=lfs merge=lfs -text
+*.pla  filter=lfs diff=lfs merge=lfs -text
+
 # proper json support ;)
-*.json linguist-language=JSON5
+*.json  linguist-language=JSON5
 
 # exlude from statistics
 test/*  linguist-vendored
