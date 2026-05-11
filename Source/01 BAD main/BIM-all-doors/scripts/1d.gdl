@@ -1,4 +1,4 @@
-﻿! #############################################################################
+﻿!--- Master script ---!
 !
 ! BIM-all-doors - DOOR SYSTEM
 !
@@ -6,10 +6,31 @@
 !
 ! (p) 2018-2021 BY DORMAKABA / WRITTEN BY FRANK BEISTER
 ! openSource by CCO1.0 license since 2025
+! extended by Lucas Becker / @runxel
 !
-! https://github.com/dormakaba/bim-all-doors
+! https://github.com/runxel/bim-all-doors/
 ! 
-! #############################################################################
+!------------------------------------------------------------------------------!
+
+
+EPS = 0.0001
+
+
+!:: iHoleUnderThreshold
+dim str_hole_under_threshold[4]
+	str_hole_under_threshold[1] = `Wandöffnung wie Elementgröße`
+	str_hole_under_threshold[2] = `Wandöffnung auf aktuelles Geschoss`
+	str_hole_under_threshold[3] = `Wandöffnung bis Wandunterkante`
+	str_hole_under_threshold[4] = `Eigene Höhe`
+
+WALLHOLE_THRESHOLD_OFF		= 0
+WALLHOLE_THRESHOLD_STORY	= 1
+WALLHOLE_THRESHOLD_WALL		= 2
+WALLHOLE_THRESHOLD_CUSTOM	= 3
+
+
+!------------------------------------------------------------------------------!
+
 
 file_dependence	\
 	"Generic_frame_macro.gsm",
@@ -220,7 +241,7 @@ frame2wallSurfaceBGS	= 0
 ! »»» Constants and commons
 
 tlr = 0.00001  !»» accurancy
-version = 1.90 !»» Objektversion
+version = 1.99 !»» Objektversion
 txt = ""       !»» Text für alles
 htspt = 1
 
@@ -273,7 +294,6 @@ dk_LoDtxt = "" ! UI-Text LoD
 IF dk_LOI = -2 THEN
 	ef_LoI = -3
 	sts = 0
-	IF versionStamp < 1.53 THEN sts = LIBRARYGLOBAL("OpenLibraryGlobals", "ef_LoI", ef_LoI)
 	IF sts=0 THEN sts = LIBRARYGLOBAL("BIM-all-doors_mvo", "dk_LOI", ef_LoI)
 	IF sts=0 THEN
 		dk_LoItxt = "Globale Einstellungen nicht geladen. (undefiniert)"
@@ -360,19 +380,21 @@ gs_am = gs_transom_height
 oberLichtBlende = gs_door_transom * (1 + (bs_inner_frame = 2))  ! 1: Oberlicht, 2:Oberblende
 
 ! »»»  Rohbauöffnung unten vergößern?
-	IF iHoleUnderThreshold = 1 THEN  ! Wandöffnung zum aktuellen Geschoss
+! "CHE Threshold Filling" -> GS Objekte
+if iHoleUnderThreshold = WALLHOLE_THRESHOLD_OFF then
+	thresholdExtraHole = 0
+else
+	if iHoleUnderThreshold = WALLHOLE_THRESHOLD_STORY then  ! Wandöffnung zum aktuellen Geschoss
 		thresholdExtraHole = max(0, AC_Sill_To_Curr_Story)
-		ELSE
-		IF iHoleUnderThreshold = 2 THEN  ! Wandöffnung zu Wandunterkante
+	else
+		if iHoleUnderThreshold = WALLHOLE_THRESHOLD_WALL then  ! Wandöffnung bis Wandunterkante
 			thresholdExtraHole = max(0, SYMB_POS_Y) !WIDO_SILL_HEIGHT
-			ELSE
-			IF iHoleUnderThreshold = 3 THEN  ! Wandöffnung individuelle Höhe
-				thresholdExtraHole = max(0, min(thresholdBottomOversize, SYMB_POS_Y))
-				ELSE  ! Wandöffnung wie Rohbauöffnung
-				thresholdExtraHole = 0
-				ENDIF
-			ENDIF
-		ENDIF
+		else
+		!= WALLHOLE_THRESHOLD_CUSTOM  // Wandöffnung individuelle Höhe
+			thresholdExtraHole = max(0, min(thresholdBottomOversize, SYMB_POS_Y))
+		endif
+	endif
+endif
 
 
 ! »»» Falzart

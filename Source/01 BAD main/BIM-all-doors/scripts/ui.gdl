@@ -1,4 +1,5 @@
-﻿
+﻿!--- UI script ---!
+
 ! =============================================================================
 ! GLOBAL SETTINGS
 ! =============================================================================
@@ -1046,10 +1047,10 @@ END
 
 "VALUES_iHoleUnderThreshold":
 	j = 0 : DIM UIpicIdxArray[], UItextArray[], UIvaluesArray[]
-	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Wandöffnung wie Rohbauöffnung" : UIvaluesArray[j] = 0
-	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Wandöffnung zum aktuellen Geschoss" : UIvaluesArray[j] = 1
-	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Wandöffnung zu Wandunterkante" : UIvaluesArray[j] = 2
-	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = "Wandöffnung individuelle Höhe" : UIvaluesArray[j] = 3
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = str_hole_under_threshold[WALLHOLE_THRESHOLD_OFF+1] : UIvaluesArray[j] = 0
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = str_hole_under_threshold[WALLHOLE_THRESHOLD_STORY+1] : UIvaluesArray[j] = 1
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = str_hole_under_threshold[WALLHOLE_THRESHOLD_WALL+1] : UIvaluesArray[j] = 2
+	j=j+1 : UIpicIdxArray[j] = j : UItextArray[j] = str_hole_under_threshold[WALLHOLE_THRESHOLD_CUSTOM+1] : UIvaluesArray[j] = 3
 	RETURN
 
 "VALUES_AC_Hole_Display_Option":
@@ -2416,7 +2417,7 @@ return
 		UI_INFIELD{3} "dk_UCrelation", 194,79 , 175,37, 2, 62, 6, 1, 50, 32, 50, 32, UIpicIdxArray, UItextArray, UIvaluesArray UI_TOOLTIP bubble[134]
 		ENDIF
 	RETURN
-	
+
 ! ------------------------------------------------------------- TITLE [ 9900 ]
 	9900:   ! #### TITEL on all pages
 	IF develop THEN GOSUB "devshow" ELSE GOSUB "allshow"
@@ -2707,7 +2708,6 @@ return
 			IF gs_ui_current_page = UIpage THEN
 				CALL automation_macro PARAMETERS ALL,
 					macro_runtype=128,
-					dk_frametype=dk_frametype,
 					HingePanelGap = HingePanelGap,
 					HingeEgressDistance = HingeEgressDistance,
 					offsetHingePanelSurfaceBS  = offsetHingePanelSurfaceBS,

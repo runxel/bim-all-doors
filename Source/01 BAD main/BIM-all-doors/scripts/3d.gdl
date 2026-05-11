@@ -1,4 +1,5 @@
-﻿
+﻿!--- 3D script ---!
+
 DEFINE MATERIAL "schwarz" 2, 0,0,0
 
 ! IF develop = 7 THEN
@@ -97,7 +98,7 @@ GOSUB "startposition"
 IF dk_wallhole_control THEN
 
 	x = ac_wallhole_width
-	y = ac_wallhole_height
+	y = ac_wallhole_height_original
 
 	! #### Loch schneiden
 	msk = 1+2+4  + 8+16
@@ -306,7 +307,6 @@ IF bs_door_leafs > 0 THEN
 		IF bs_automation_type # "-" THEN
 			CALL automation_macro PARAMETERS ALL htspt=htspt,
 				dk_LOD=dk_LOD[dki_LOD], 
-				dk_frametype=dk_frametype,
 				dk_visibleLeaf = dk_visibleLeaf,
 				gs_open_3D = gs_open_3D, gs_open_3D_s = gs_open_3D_s,
 				HingePanelGap = HingePanelGap,
@@ -449,7 +449,6 @@ IF bs_door_leafs > 1 THEN
 		IF bs_automation_type # "-" THEN
 			CALL automation_macro PARAMETERS ALL htspt=htspt,
 				dk_LOD=dk_LOD[dki_LOD], 
-				dk_frametype=dk_frametype,
 				dk_visibleLeaf = dk_visibleLeaf,
 				HingePanelGap = HingePanelGap,
 				HingeEgressDistance = HingeEgressDistance,

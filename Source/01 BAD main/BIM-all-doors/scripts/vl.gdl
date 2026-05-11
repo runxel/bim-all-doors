@@ -1,4 +1,6 @@
-﻿! =============================================================================
+﻿!--- Param script ---!
+
+! =============================================================================
 ! GLOBAL SETTINGS
 ! =============================================================================
 
@@ -650,9 +652,6 @@ IF	bs_ctrl_leaf_position = 1 OR \
 	
 	ENDIF
 
-! =============================================================================
-! Ende
-! =============================================================================
 
 IF versionStamp < version THEN
 	IF GLOB_MODPAR_NAME # "" THEN PARAMETERS versionStamp = version
@@ -683,19 +682,21 @@ END
 ! Methoden
 ! =============================================================================
 
+!------------------------------------------------------------------------------!
 "equalizeYesNo":
 	IF equalize="ja" OR equalize="Ja" OR equalize ="JA" OR \
 	   equalize="an" OR equalize="An" OR equalize ="AN" THEN equalize = yesKey
 	IF equalize="nein" OR equalize="Nein" OR equalize ="NEIN" OR \
-	   equalize="AUS" OR equalize="Aus" OR equalize ="AUS" OR \
+	   equalize="aus" OR equalize="Aus" OR equalize ="AUS" OR \
 	   equalize="-" OR equalize ="" THEN equalize = noKey
-	RETURN
+return
 
 
 ! =============================================================================
 ! Anforderungen normalisieren und ggf. Grundeigenschaften setzen und sperren
 ! =============================================================================
 
+!------------------------------------------------------------------------------!
 "CheckQualityDemand":
 
 	! #### GRUNDANFORDERUNGEN
@@ -1077,7 +1078,7 @@ END
 			ENDIF
 		ENDIF
 
-	RETURN
+return
 
 
 ! =============================================================================
@@ -1085,8 +1086,38 @@ END
 ! =============================================================================
 
 ! -------------------------------------------------- [ GS+: Gesamtmaße verändert? ]
-
+!------------------------------------------------------------------------------!
 "CheckBasicSizeSettings":
+
+	![--- eingefügt rxl ---]
+	if ac_wallhole_height_original < EPS then
+		ac_wallhole_height_original = ac_wallhole_height
+		parameters \
+			ac_wallhole_height_original = ac_wallhole_height_original
+	endif
+	if ac_reveal_height_original < EPS then
+		ac_reveal_height_original = ac_reveal_height
+		parameters \
+			ac_reveal_height_original = ac_reveal_height_original
+	endif
+
+	if 	GLOB_MODPAR_NAME = "iHoleUnderThreshold" 	|\
+		GLOB_MODPAR_NAME = "thresholdBottomOversize" \
+	then
+		ac_wallhole_height	= ac_wallhole_height_original + thresholdExtraHole
+		ac_reveal_height	= ac_reveal_height_original + thresholdExtraHole
+		parameters	\
+			ac_wallhole_height	= ac_wallhole_height,
+			ac_reveal_height	= ac_reveal_height
+	else
+		ac_wallhole_height_original	= ac_wallhole_height - thresholdExtraHole
+		ac_reveal_height_original	= ac_reveal_height - thresholdExtraHole
+		parameters	\
+			ac_wallhole_height_original	= ac_wallhole_height_original,
+			ac_reveal_height_original	= ac_reveal_height_original
+	endif
+	![--- Ende eingefügt rxl ---]
+
 
 	bNominalSelectChanged = 0
 
@@ -1207,9 +1238,9 @@ END
 
 		TotalLeafWidth = ac_leaf_width + gs_SecondLeaf_w *(bs_door_leafs > 1)
 
-		IF gs_wallhole_nominal		then PARAMETERS A = ac_wallhole_width,		B = ac_wallhole_height !- thresholdExtraHole
+		IF gs_wallhole_nominal		then PARAMETERS A = ac_wallhole_width,		B = ac_wallhole_height - thresholdExtraHole
 		IF gs_baurichtmass_nominal	then PARAMETERS A = ac_baurichtmass_width,	B = ac_baurichtmass_height
-		IF gs_reveal_nominal		then PARAMETERS A = ac_reveal_width,		B = ac_reveal_height   !- thresholdExtraHole
+		IF gs_reveal_nominal		then PARAMETERS A = ac_reveal_width,		B = ac_reveal_height   - thresholdExtraHole
 		IF gs_unit_nominal			then PARAMETERS A = ac_unit_width,			B = ac_unit_height
 		IF gs_egress_nominal		then PARAMETERS A = ac_egress_width,		B = ac_egress_height
 		IF dk_FrameRebate_nominal	then PARAMETERS A = bs_FrameRebate_width,	B = bs_FrameRebate_height
@@ -1227,8 +1258,8 @@ END
 			minSize = minUnitWidth  + wallholeDLeft  + wallholeDRight : IF A < minSize THEN : A = minSize : PARAMETERS A = A : ENDIF
 			minSize = minUnitHeight + wallholeDUpper + wallholeDLower : IF B < minSize THEN : B = minSize : PARAMETERS B = B : ENDIF
 			ac_wallhole_width	= A
-			ac_wallhole_height	= B !+ thresholdExtraHole
-			PARAMETERS ac_wallhole_width = A, ac_wallhole_height = B !+ thresholdExtraHole
+			ac_wallhole_height	= B + thresholdExtraHole
+			PARAMETERS ac_wallhole_width = A, ac_wallhole_height = B + thresholdExtraHole
 			iSizeByNominal = 1
 			ENDIF
 
@@ -1245,8 +1276,8 @@ END
 			minSize = minUnitWidth  + wallholeDLeft  + wallholeDRight - revealDLeft  - revealDRight : IF A < minSize THEN : A = minSize : PARAMETERS A = A : ENDIF
 			minSize = minUnitHeight + wallholeDUpper + wallholeDLower - revealDUpper - revealDLower : IF B < minSize THEN : B = minSize : PARAMETERS B = B : ENDIF
 			ac_reveal_width  = A
-			ac_reveal_height = B !+ thresholdExtraHole
-			PARAMETERS ac_reveal_width = A, ac_reveal_height = B !+ thresholdExtraHole
+			ac_reveal_height = B + thresholdExtraHole
+			PARAMETERS ac_reveal_width = A, ac_reveal_height = B + thresholdExtraHole
 			iSizeByNominal = 4
 			ENDIF
 
@@ -1320,8 +1351,8 @@ END
 	RETURN
 
 
-! -------------------------------------------------- [ GS+: Gesamtmaße verändert? ]
-
+!------------------------------------------------ [ GS+: Gesamtmaße verändert? ]
+!------------------------------------------------------------------------------!
 "RecalcOpeningDimensions":
 
 	! #### BREITEN
@@ -1480,8 +1511,9 @@ END
 					bs_FrameRebate_width	= bs_FrameRebate_width
 
 		bSizeModified = 64
-		ENDIF
+	ENDIF
 
+	!------------------------------------------------------------------------------!
 	! #### HÖHEN
 
 	IF GLOB_MODPAR_NAME = "ac_wallhole_height" | (gs_wallhole_nominal & bRecalculate) | iSizeByNominal = 1 THEN
@@ -1618,14 +1650,15 @@ END
 		bs_FrameRebate_height	= ac_unit_height		- unitDUpper + gs_vb	- unitDLower
 		GOSUB "calcOuterFrame"
 
-		PARAMETERS	ac_wallhole_height		= ac_wallhole_height,
-					ac_baurichtmass_height	= ac_baurichtmass_height,
-					ac_reveal_height		= ac_reveal_height,
-					ac_unit_height			= ac_unit_height,
-					bs_OuterFrame_height	= bs_OuterFrame_height,
-					bs_OuterFrame_height2	= bs_OuterFrame_height2,
-					ac_egress_height		= ac_egress_height,
-					bs_FrameRebate_height	= bs_FrameRebate_height
+		parameters \
+			ac_wallhole_height		= ac_wallhole_height,
+			ac_baurichtmass_height	= ac_baurichtmass_height,
+			ac_reveal_height		= ac_reveal_height,
+			ac_unit_height			= ac_unit_height,
+			bs_OuterFrame_height	= bs_OuterFrame_height,
+			bs_OuterFrame_height2	= bs_OuterFrame_height2,
+			ac_egress_height		= ac_egress_height,
+			bs_FrameRebate_height	= bs_FrameRebate_height
 
 		bSizeModified = 128 + 64
 		ENDIF
@@ -1635,7 +1668,7 @@ END
 	! "ac_leaf_height"
 	! "gs_transom_height"
 
-	RETURN
+return
 
 
 ! =============================================================================
@@ -1710,7 +1743,7 @@ END
 
 
 ! -------------------------------------------------- [ GS+: Minimalabmessungen ]
-
+!------------------------------------------------------------------------------!
 "calcSizeLimitations":
 
 	! minimale Profilabmessungen
@@ -1775,7 +1808,7 @@ END
 	maxEgressWidth = ac_unit_width - minSidelightWidthLeft - minSidelightWidthRight - noSidelightWidthRight - noSidelightWidthLeft
 	maxLeafTotalWidth = maxEgressWidth + leafDLeft + leafDRight
 
-	RETURN
+RETURN
 
 
 ! -------------------------------------------------- [ GS+: Distanzen Lichter Durchgang zu Bezugsöffnungsmaß (?) bzw. Rahmenaußenmaß ]
